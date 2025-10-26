@@ -405,19 +405,20 @@ void remmina_icon_init(void)
 	} else {
 		//TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
 		REMMINA_INFO(_("%s not supported natively by your Desktop Environment. libappindicator will try to fallback to GtkStatusIcon/xembed"), msg);
+
+		if (g_strrstr(wmname, "mate") != NULL)
+			//TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
+			REMMINA_INFO(_("%s You may need to install, and use XApp Status Applet"), msg);
+		if (g_strrstr(wmname, "kde") != NULL)
+			//TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
+			REMMINA_INFO(_("%s You may need to install, and use KStatusNotifierItem"), msg);
+		if (g_strrstr(wmname, "plasma") != NULL)
+			//TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
+			REMMINA_INFO(_("%s You may need to install, and use XEmbed SNI Proxy"), msg);
+		if (g_strrstr(wmname, "gnome") != NULL)
+			//TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
+			REMMINA_INFO(_("%s You may need to install, and use Gnome Shell Extension Appindicator"), msg);
 	}
-	if (g_strrstr(wmname, "mate") != NULL)
-		//TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
-		REMMINA_INFO(_("%s You may need to install, and use XApp Status Applet"), msg);
-	if (g_strrstr(wmname, "kde") != NULL)
-		//TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
-		REMMINA_INFO(_("%s You may need to install, and use KStatusNotifierItem"), msg);
-	if (g_strrstr(wmname, "plasma") != NULL)
-		//TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
-		REMMINA_INFO(_("%s You may need to install, and use XEmbed SNI Proxy"), msg);
-	if (g_strrstr(wmname, "gnome") != NULL)
-		//TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
-		REMMINA_INFO(_("%s You may need to install, and use Gnome Shell Extension Appindicator"), msg);
 
 	if (!remmina_icon.icon && !remmina_pref.disable_tray_icon) {
 		remmina_icon.icon = app_indicator_new("remmina-icon", remmina_panel, APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
@@ -448,8 +449,9 @@ void remmina_icon_init(void)
 		remmina_icon_create_autostart_file();
 	}
 	// "connected" property means a visible indicator, otherwise could be hidden. or fall back to GtkStatusIcon
-	if (remmina_icon.icon)
+	if (remmina_icon.icon && sni_supported) {
 		g_signal_connect(G_OBJECT(remmina_icon.icon), "connection-changed", G_CALLBACK(remmina_icon_connection_changed_cb), NULL);
+	}
 }
 
 gboolean remmina_icon_is_autostart(void)
