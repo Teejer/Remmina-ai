@@ -708,6 +708,9 @@ static void remmina_file_editor_create_assistance(RemminaFileEditor *gfe, const 
 
 }
 
+static void file_entry_changed(GtkEntry *entry, void *gpointer) {
+	remmina_entry_live_strip_value_from_clipboard(entry);
+}
 
 static GtkWidget *remmina_file_editor_create_text2(RemminaFileEditor *gfe, GtkWidget *grid,
 						   gint row, gint col, const gchar *label, const gchar *value, gint left,
@@ -734,6 +737,8 @@ static GtkWidget *remmina_file_editor_create_text2(RemminaFileEditor *gfe, GtkWi
 	gtk_grid_attach(GTK_GRID(grid), widget, col + 1, row, 1, 1);
 	gtk_entry_set_max_length(GTK_ENTRY(widget), 300);
 	gtk_widget_set_hexpand(widget, TRUE);
+	g_signal_connect(GTK_ENTRY(widget), "changed", G_CALLBACK(file_entry_changed), NULL);
+			 
 	if (setting_name)
 		gtk_widget_set_name(widget, setting_name);
 

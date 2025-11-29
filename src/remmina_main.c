@@ -1724,11 +1724,34 @@ void remmina_main_quick_search_on_icon_press(GtkEntry *entry, GtkEntryIconPositi
 		gtk_entry_set_text(entry, "");
 }
 
+/**
+ * If entry values equals clipboard contents, and has spaces, then strip them automatically
+ */
+void remmina_entry_live_strip_value_from_clipboard(GtkEntry*entry) {
+	GtkClipboard *clip = gtk_clipboard_get(GDK_SELECTION_PRIMARY);
+	gchar* cliptext = gtk_clipboard_wait_for_text(clip);
+	if (cliptext == NULL)
+		return;
+
+	const gchar*text = gtk_entry_get_text(entry);
+	if (!g_str_equal(text, cliptext)) {
+		g_free(cliptext);
+		return;
+	}
+	g_free(cliptext);
+	gchar*stripped = g_strstrip(g_strdup(text));
+	if (!g_str_equal(text, stripped))
+		gtk_entry_set_text(entry, stripped);
+	g_free(stripped);
+}
+
 void remmina_main_quick_search_on_changed(GtkEditable *editable, gpointer user_data)
 {
 	TRACE_CALL(__func__);
 	/* If a search text was input then temporary set the file mode to list */
 	if (gtk_entry_get_text_length(remminamain->entry_quick_connect_server)) {
+		remmina_entry_live_strip_value_from_clipboard(remminamain->entry_quick_connect_server);
+
 		if (GTK_IS_TREE_STORE(remminamain->priv->file_model)) {
 			/* File view mode changed, put it to override and reload list */
 			remminamain->priv->override_view_file_mode_to_list = TRUE;
