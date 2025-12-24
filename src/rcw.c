@@ -53,6 +53,7 @@
 #include "remmina_applet_menu_item.h"
 #include "remmina_applet_menu.h"
 #include "remmina_file.h"
+#include "remmina_file_editor.h"
 #include "remmina_file_manager.h"
 #include "remmina_log.h"
 #include "remmina_message_panel.h"
@@ -128,6 +129,7 @@ struct _RemminaConnectionWindowPriv {
 	GtkToolItem *					toolitem_new;
 	GtkToolItem *					toolitem_duplicate;
 	GtkToolItem *					toolitem_screenshot;
+	GtkToolItem *					toolitem_edit_pref;
 	GtkWidget *					fullscreen_option_button;
 	GtkWidget *					fullscreen_scaler_button;
 	GtkWidget *					scaler_option_button;
@@ -2183,6 +2185,19 @@ static void rcw_toolbar_duplicate(GtkToolItem *toggle, RemminaConnectionWindow *
 	remmina_exec_command(REMMINA_COMMAND_CONNECT, cnnobj->remmina_file->filename);
 }
 
+static void rcw_toolbar_edit_pref(GtkToolItem *toggle, RemminaConnectionWindow *cnnwin)
+{
+	RemminaConnectionObject *cnnobj;
+
+	if (!(cnnobj = rcw_get_visible_cnnobj(cnnwin))) return;
+	GtkWidget* widget = remmina_file_editor_new_from_filename(cnnobj->remmina_file->filename);
+	
+	if (widget) {
+		gtk_window_set_transient_for(GTK_WINDOW(widget), GTK_WINDOW(cnnobj->cnnwin));
+		gtk_widget_show(widget);
+	}
+}
+
 static void rcw_toolbar_screenshot(GtkToolItem *toggle, RemminaConnectionWindow *cnnwin)
 {
 	TRACE_CALL(__func__);
@@ -2352,6 +2367,7 @@ static void rcw_toolbar_reconnect(GtkToolItem *toggle, RemminaConnectionWindow *
 		return;
 	if (!(cnnobj = rcw_get_visible_cnnobj(cnnwin))) return;
 	if (cnnobj->connected){
+		cnnobj->remmina_file= remmina_file_load(cnnobj->remmina_file->filename);
 		rcw_toolbar_disconnect(toggle, cnnwin);
 	}
 	rcw_open_from_file(cnnobj->remmina_file);
@@ -2679,6 +2695,15 @@ rcw_create_toolbar(RemminaConnectionWindow *cnnwin, gint mode, gboolean is_float
 	gtk_widget_show(GTK_WIDGET(toolitem));
 	g_signal_connect(G_OBJECT(toolitem), "clicked", G_CALLBACK(rcw_toolbar_screenshot), cnnwin);
 	priv->toolitem_screenshot = toolitem;
+
+
+	toolitem = gtk_tool_button_new(NULL, "_Edit_pref");
+	gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(toolitem), "edit-symbolic");
+	rcw_set_tooltip(GTK_WIDGET(toolitem), _("Edit Preferences"), remmina_pref.shortcutkey_screenshot, 0);
+	gtk_toolbar_insert(GTK_TOOLBAR(toolbar), toolitem, -1);
+	gtk_widget_show(GTK_WIDGET(toolitem));
+	g_signal_connect(G_OBJECT(toolitem), "clicked", G_CALLBACK(rcw_toolbar_edit_pref), cnnwin);
+	priv->toolitem_edit_pref = toolitem;
 
 	/* Separator */
 	toolitem = gtk_separator_tool_item_new();
