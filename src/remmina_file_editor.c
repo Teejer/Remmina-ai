@@ -1956,6 +1956,7 @@ static GError *remmina_file_editor_update(RemminaFileEditor *	gfe,
 	int res_w, res_h;
 	gchar *custom_resolution;
 	gchar* protocol;
+	gchar** hostname_array;
 	RemminaProtocolWidgetResolutionMode res_mode;
 
 	RemminaFileEditorPriv *priv = gfe->priv;
@@ -1970,8 +1971,20 @@ static GError *remmina_file_editor_update(RemminaFileEditor *	gfe,
 	protocol = remmina_public_combo_get_active_text(GTK_COMBO_BOX(priv->protocol_combo));
 	remmina_file_set_string(priv->remmina_file, "protocol", protocol);
 
-	remmina_file_set_string(priv->remmina_file, "server",
-				(priv->server_combo ? remmina_public_combo_get_active_text(GTK_COMBO_BOX(priv->server_combo)) : NULL));
+
+	if (priv->server_combo){
+		gchar* selection = remmina_public_combo_get_active_text(GTK_COMBO_BOX(priv->server_combo));
+		//remove any spaces from string
+		hostname_array = g_strsplit(selection, " ", -1);
+		g_free(selection);
+		selection = g_strjoinv(NULL, hostname_array);
+		remmina_file_set_string(priv->remmina_file, "server", selection);
+		g_free(selection);
+		g_strfreev(hostname_array);
+	}
+	else{
+		remmina_file_set_string(priv->remmina_file, "server", NULL);
+	}
 
 	if (priv->resolution_auto_radio) {
 		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(priv->resolution_auto_radio))) {
