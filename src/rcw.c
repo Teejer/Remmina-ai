@@ -125,6 +125,7 @@ struct _RemminaConnectionWindowPriv {
 	GtkToolItem *					toolitem_multimon;
 	GtkToolItem *					toolitem_preferences;
 	GtkToolItem *					toolitem_tools;
+	GtkToolItem *					toolitem_creds;
 	GtkToolItem *					toolitem_new;
 	GtkToolItem *					toolitem_duplicate;
 	GtkToolItem *					toolitem_screenshot;
@@ -2059,6 +2060,25 @@ static void rcw_toolbar_menu(GtkToolItem *toggle, RemminaConnectionWindow *cnnwi
 	g_signal_connect(G_OBJECT(menu), "deactivate", G_CALLBACK(rcw_toolbar_menu_popdown), cnnwin);
 }
 
+static void rcw_toolbar_creds(GtkToolItem *toggle, RemminaConnectionWindow *cnnwin)
+{
+	TRACE_CALL(__func__);
+	RemminaConnectionWindowPriv *priv;
+	RemminaConnectionObject *cnnobj;
+	const RemminaProtocolFeature *feature;
+	GtkWidget *menu;
+	GtkWidget *menuitem = NULL;
+	if (cnnwin->priv->toolbar_is_reconfiguring)
+		return;
+	if (!(cnnobj = rcw_get_visible_cnnobj(cnnwin))) return;
+	priv = cnnobj->cnnwin->priv;
+
+	if (!gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(toggle)))
+		return;
+
+	menu = gtk_menu_new();
+}
+
 static void rcw_toolbar_tools(GtkToolItem *toggle, RemminaConnectionWindow *cnnwin)
 {
 	TRACE_CALL(__func__);
@@ -2666,6 +2686,16 @@ rcw_create_toolbar(RemminaConnectionWindow *cnnwin, gint mode, gboolean is_float
 	gtk_widget_show(GTK_WIDGET(toolitem));
 	g_signal_connect(G_OBJECT(toolitem), "toggled", G_CALLBACK(rcw_toolbar_tools), cnnwin);
 	priv->toolitem_tools = toolitem;
+
+	/* Credentials */
+	toolitem = gtk_toggle_tool_button_new();
+	gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(toolitem), "lock-symbolic");
+	gtk_tool_button_set_label(GTK_TOOL_BUTTON(toolitem), _("_Tools"));
+	gtk_tool_item_set_tooltip_text(toolitem, _("Tools"));
+	gtk_toolbar_insert(GTK_TOOLBAR(toolbar), toolitem, -1);
+	gtk_widget_show(GTK_WIDGET(toolitem));
+	g_signal_connect(G_OBJECT(toolitem), "toggled", G_CALLBACK(rcw_toolbar_creds), cnnwin);
+	priv->toolitem_creds = toolitem;
 
 	/* Separator */
 	toolitem = gtk_separator_tool_item_new();
