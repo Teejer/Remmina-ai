@@ -1833,6 +1833,20 @@ static void rcw_toolbar_menu_popdown(GtkToolItem *toggle, RemminaConnectionWindo
 	rcw_floating_toolbar_show(cnnwin, FALSE);
 }
 
+static void rcw_toolbar_creds_popdown(GtkMenuShell *toggle, RemminaConnectionWindow *cnnwin)
+{
+	TRACE_CALL(__func__);
+	RemminaConnectionWindowPriv *priv = cnnwin->priv;
+
+	if (priv->toolbar_is_reconfiguring)
+		return;
+
+	priv->sticky = FALSE;
+
+	gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(priv->toolitem_creds), FALSE);
+	rcw_floating_toolbar_show(cnnwin, FALSE);
+}
+
 static void rcw_toolbar_tools_popdown(GtkToolItem *toggle, RemminaConnectionWindow *cnnwin)
 {
 	TRACE_CALL(__func__);
@@ -2076,7 +2090,46 @@ static void rcw_toolbar_creds(GtkToolItem *toggle, RemminaConnectionWindow *cnnw
 	if (!gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(toggle)))
 		return;
 
+	gchar* username = remmina_file_get_string(cnnobj->remmina_file, "username");
+	gchar* password = remmina_file_get_string(cnnobj->remmina_file, "password");
+
+	if (username == NULL && password == NULL){
+		return;
+	}
+
+
 	menu = gtk_menu_new();
+	//username
+	if (username != NULL){
+		menuitem = gtk_menu_item_new_with_label(_("Insert username"));
+		gtk_widget_show(menuitem);
+		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+		g_object_set_data(G_OBJECT(menuitem), "keystrokes", username);
+		g_signal_connect_swapped(G_OBJECT(menuitem), "activate",
+										G_CALLBACK(remmina_protocol_widget_send_keystrokes),
+										REMMINA_PROTOCOL_WIDGET(cnnobj->proto));
+	}
+	
+	//password
+	if (password != NULL){
+			menuitem = gtk_menu_item_new_with_label(_("Insert password"));
+		gtk_widget_show(menuitem);
+		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+		g_object_set_data(G_OBJECT(menuitem), "keystrokes", password);
+		g_signal_connect_swapped(G_OBJECT(menuitem), "activate",
+										G_CALLBACK(remmina_protocol_widget_send_keystrokes),
+										REMMINA_PROTOCOL_WIDGET(cnnobj->proto));
+	}
+
+
+	g_signal_connect(G_OBJECT(menu), "deactivate", G_CALLBACK(rcw_toolbar_creds_popdown), cnnwin);
+
+#if GTK_CHECK_VERSION(3, 22, 0)
+	gtk_menu_popup_at_widget(GTK_MENU(menu), GTK_WIDGET(toggle),
+				 GDK_GRAVITY_SOUTH_WEST, GDK_GRAVITY_NORTH_WEST, NULL);
+#else
+	gtk_menu_popup(GTK_MENU(menu), NULL, NULL, remmina_public_popup_position, widget, 0, gtk_get_current_event_time());
+#endif
 }
 
 static void rcw_toolbar_tools(GtkToolItem *toggle, RemminaConnectionWindow *cnnwin)
