@@ -1870,7 +1870,6 @@ It changes the background colour of connection names in the Remmina connection t
               <object class="GtkViewport">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="tooltip-text" translatable="yes">Time in seconds before Remmina will lock the session and asks for a password again. Default: 300 Seconds.</property>
                 <child>
                   <!-- n-columns=2 n-rows=8 -->
                   <object class="GtkGrid">
