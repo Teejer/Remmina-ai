@@ -2924,6 +2924,13 @@ static gboolean rcw_floating_toolbar_on_enter(GtkWidget *widget, GdkEventCrossin
 					      RemminaConnectionWindow *cnnwin)
 {
 	TRACE_CALL(__func__);
+	GtkStyleContext *style_context = gtk_widget_get_style_context(cnnwin->priv->overlay_ftb_fr);
+	GtkBorder margin;
+	gtk_style_context_get_margin(style_context, gtk_style_context_get_state(style_context), &margin);
+	if (cnnwin->priv->ftb_move_horiz >= 0 && event->x < cnnwin->priv->ftb_move_horiz + margin.left) {
+		// the toolbar must not pop (the mouse pointer is not over the visible area, but on the left)
+		return TRUE;
+	}
 	rcw_floating_toolbar_show(cnnwin, TRUE);
 	sleep(remmina_pref.fullscreen_toolbar_delay);
 	return TRUE;
