@@ -2,7 +2,7 @@
 # Copyright © 2012 Rosetta Contributors and Canonical Ltd 2012
 # This file is distributed under the same license as the remmina package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
-# Pavel Borecki <pavel.borecki@gmail.com>, 2019, 2020, 2021, 2022.
+# Pavel Borecki <pavel.borecki@gmail.com>, 2019, 2020, 2021, 2022, 2026.
 # Allan Nordhøy <epost@anotheragency.no>, 2019, 2020, 2021, 2023.
 # Antenore Gatta <antenore@simbiosi.org>, 2021.
 # Štěpán Adamec <adamec@yasas.org>, 2022, 2023.
@@ -14,16 +14,16 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2025-06-04 07:01+0000\n"
-"Last-Translator: Jakub Kalousek <jkalousek@posteo.cz>\n"
-"Language-Team: Czech <https://hosted.weblate.org/projects/remmina/remmina/cs/"
-">\n"
+"PO-Revision-Date: 2026-02-09 23:09+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/remmina/remmina/"
+"cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.12-dev\n"
+"X-Generator: Weblate 5.16-dev\n"
 "X-Launchpad-Export-Date: 2014-04-10 15:03+0000\n"
 
 #: src/remmina_icon.c:143
@@ -60,7 +60,7 @@ msgstr ""
 
 #: src/remmina_icon.c:395
 msgid "StatusNotifier/Appindicator support in “"
-msgstr "Podpora StatusNotifier/Appindicator  v \""
+msgstr "Podpora StatusNotifier/Appindicator v \""
 
 #. TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
 #: src/remmina_icon.c:402
@@ -223,7 +223,7 @@ msgstr "Zavřít"
 
 #: src/remmina_message_panel.c:255
 msgid "Do you accept?"
-msgstr ""
+msgstr "Přijímáte?"
 
 #: src/remmina_message_panel.c:261 src/remmina_message_panel.c:270
 msgid "Yes"
@@ -408,29 +408,24 @@ msgid "Increase font size"
 msgstr "Zvětšit velikost písma"
 
 #: src/remmina_ssh_plugin.c:1579
-#, fuzzy
 msgid "_Increase font size"
 msgstr "Zvětš_it velikost písma"
 
 #: src/remmina_ssh_plugin.c:1580
-#, fuzzy
 msgid "Decrease font size"
 msgstr "Zmenšit velikost písma"
 
 #: src/remmina_ssh_plugin.c:1580
-#, fuzzy
 msgid "_Decrease font size"
 msgstr "_Zmenšit velikost písma"
 
 #: src/remmina_ssh_plugin.c:1581
-#, fuzzy
 msgid "Find text"
-msgstr "Najít text"
+msgstr "Hledat text"
 
 #: src/remmina_ssh_plugin.c:1581
-#, fuzzy
 msgid "_Find text"
-msgstr "_Najít text"
+msgstr "_Hledat text"
 
 #: src/remmina_ssh_plugin.c:1606 src/remmina_sftp_plugin.c:354
 #: src/remmina_file_editor.c:1573
@@ -439,7 +434,6 @@ msgstr "Typ ověření"
 
 #: src/remmina_ssh_plugin.c:1608 plugins/spice/spice_plugin.c:723
 #: plugins/vnc/vnc_plugin.c:2151 plugins/vnc/vnc_plugin.c:2163
-#, fuzzy
 msgid "User password"
 msgstr "Heslo k uživatelskému účtu"
 
@@ -493,7 +487,6 @@ msgid "Terminal colour scheme"
 msgstr "Barevné schéma terminálu"
 
 #: src/remmina_ssh_plugin.c:1643
-#, fuzzy
 msgid "Character set"
 msgstr "Znaková sada"
 
@@ -502,7 +495,6 @@ msgid "SSH Proxy Command"
 msgstr "Příkaz pro SSH proxy"
 
 #: src/remmina_ssh_plugin.c:1645
-#, fuzzy
 msgid "KEX (Key Exchange) algorithms"
 msgstr "Algoritmy pro výměnu klíčů (KEX)"
 
@@ -512,12 +504,10 @@ msgid "Symmetric cipher client to server"
 msgstr "Klient symetrické šifry k serveru"
 
 #: src/remmina_ssh_plugin.c:1647
-#, fuzzy
 msgid "Preferred server host key types"
 msgstr "Upřednostňované typy klíčů serveru hostitele"
 
 #: src/remmina_ssh_plugin.c:1648
-#, fuzzy
 msgid "Folder for SSH session log"
 msgstr "Složka pro záznam z SSH relace"
 
@@ -526,27 +516,22 @@ msgid "Full path of an existing folder"
 msgstr "Úplná cesta k existujícímu adresáři"
 
 #: src/remmina_ssh_plugin.c:1649
-#, fuzzy
 msgid "Filename for SSH session log"
 msgstr "Soubor pro záznam z SSH relace"
 
 #: src/remmina_ssh_plugin.c:1650
-#, fuzzy
 msgid "Log SSH session when exiting Remmina"
 msgstr "Při ukončování Remmina uložit záznam SSH relace"
 
 #: src/remmina_ssh_plugin.c:1651
-#, fuzzy
 msgid "Log SSH session asynchronously"
 msgstr "Asynchronní protokolování relace SSH"
 
 #: src/remmina_ssh_plugin.c:1651
-#, fuzzy
 msgid "Saving the session asynchronously may have a notable performance impact"
-msgstr "Asynchronní uložení relace může mít znatelný dopad na výkon."
+msgstr "Asynchronní ukládání relace může mít znatelný dopad na výkon"
 
 #: src/remmina_ssh_plugin.c:1652
-#, fuzzy
 msgid "Audible terminal bell"
 msgstr "Zvukové upozorňování terminálu"
 
@@ -555,30 +540,26 @@ msgid "SSH X11 Forwarding"
 msgstr "SSH X11 přeposílání"
 
 #: src/remmina_ssh_plugin.c:1654
-#, fuzzy
 msgid "SSH compression"
 msgstr "Komprese SSH"
 
 #: src/remmina_ssh_plugin.c:1655
-#, fuzzy
 msgid "Don't remember passwords"
-msgstr "Nepamatuje si hesla"
+msgstr "Nepamatovat si hesla"
 
 #: src/remmina_ssh_plugin.c:1656
-#, fuzzy
 msgid "Strict host key checking"
 msgstr "Striktně ověřovat klíče hostitele"
 
 #: src/remmina_ssh_plugin.c:1657
 msgid "Copy text on selection"
-msgstr ""
+msgstr "Zkopírovat text na výběru"
 
 #: src/remmina_ssh_plugin.c:1658
 msgid "Allow keys using ssh-rsa (insecure)"
-msgstr ""
+msgstr "Umožnit klíče používající ssh-rsa (nebezpečné)"
 
 #: src/remmina_ssh_plugin.c:1678
-#, fuzzy
 msgid "SSH - Secure Shell"
 msgstr "SSH – Zabezpečený Shell"
 
@@ -1262,7 +1243,7 @@ msgstr "RDP Soubory"
 
 #: src/remmina_main.c:1390
 msgid "Virt-Viewer Files"
-msgstr ""
+msgstr "Soubory Virt-Viewer"
 
 #: src/remmina_main.c:1395
 msgid "All Files"
@@ -1396,7 +1377,7 @@ msgstr "Režim pomoci"
 
 #: src/remmina_file_editor.c:957
 msgid "Save to..."
-msgstr ""
+msgstr "Uložit do…"
 
 #: src/remmina_file_editor.c:958
 #, fuzzy
@@ -1406,7 +1387,7 @@ msgstr "_Uložit"
 
 #: src/remmina_file_editor.c:961
 msgid "Open ssh tunnel config"
-msgstr ""
+msgstr "Otevřít nastavení ssh tunelu"
 
 #: src/remmina_file_editor.c:970
 #, fuzzy
@@ -1416,7 +1397,7 @@ msgstr "Kiosek Remmina"
 
 #: src/remmina_file_editor.c:973
 msgid "ssh_export.remssh"
-msgstr ""
+msgstr "ssh_export.remssh"
 
 #: src/remmina_file_editor.c:1288
 msgid "Keyboard mapping"
@@ -1489,7 +1470,7 @@ msgstr "Stejný server na portu %i"
 
 #: src/remmina_file_editor.c:1527
 msgid "Command arguments"
-msgstr ""
+msgstr "Argumenty příkazu"
 
 #: src/remmina_file_editor.c:1528
 msgid ""
@@ -1526,11 +1507,11 @@ msgstr "Program při spouštění"
 
 #: src/remmina_file_editor.c:1651
 msgid "Export ssh tunnel settings"
-msgstr ""
+msgstr "Exportovat nastavení ssh tunelu"
 
 #: src/remmina_file_editor.c:1657
 msgid "Import ssh tunnel settings"
-msgstr ""
+msgstr "Naimportovat nastavení pro ssh tunel"
 
 #: src/remmina_file_editor.c:1692
 msgid "Basic"
@@ -2203,74 +2184,63 @@ msgstr ""
 "„Terminál“ v nastavení."
 
 #: plugins/spice/spice_plugin_usb.c:51 plugins/spice/spice_plugin.c:767
-#, fuzzy
 msgid "Select USB devices for redirection"
 msgstr "Vyberte USB zařízení, které přesměrovat"
 
 #: plugins/spice/spice_plugin_usb.c:54
-#, fuzzy
 msgid "_Close"
-msgstr "Zavřít"
+msgstr "_Zavřít"
 
 #: plugins/spice/spice_plugin_usb.c:94
-#, fuzzy
 msgid "USB redirection error"
 msgstr "Chyba přesměrování USB"
 
 #: plugins/spice/spice_plugin_file_transfer.c:82
-#, fuzzy
 msgid "File Transfers"
-msgstr "Přenos souborů"
+msgstr "Přenosy souborů"
 
 #: plugins/spice/spice_plugin_file_transfer.c:219
-#, fuzzy
 msgid "Transfer error"
 msgstr "Chyba přenosu"
 
 #: plugins/spice/spice_plugin_file_transfer.c:220
-#, fuzzy, c-format
+#, c-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
 #: plugins/spice/spice_plugin_file_transfer.c:223
-#, fuzzy
 msgid "Transfer completed"
 msgstr "Přenos dokončen"
 
 #: plugins/spice/spice_plugin_file_transfer.c:224
-#, fuzzy, c-format
+#, c-format
 msgid "The %s file has been transferred"
 msgstr "Soubor %s byl přenesen"
 
 #: plugins/spice/spice_plugin.c:356
-#, fuzzy
 msgid "Enter SPICE password"
 msgstr "Zadejte SPICE heslo"
 
 #: plugins/spice/spice_plugin.c:403
-#, fuzzy, c-format
-#| msgid "Disconnected from the SPICE server “%s”."
+#, c-format
 msgid "Disconnected from the SPICE %s."
-msgstr "Odpojeno od SPICE serveru „%s“."
+msgstr "Odpojeno od SPICE %s."
 
 #: plugins/spice/spice_plugin.c:405
-#, fuzzy, c-format
-#| msgid "Disconnected from the SPICE server “%s”."
+#, c-format
 msgid "Disconnected from %s via SPICE"
-msgstr "Odpojeno od SPICE serveru „%s“."
+msgstr "Odpojeno od %s (prostřednictvím SPICE)"
 
 #: plugins/spice/spice_plugin.c:408
-#, fuzzy, c-format
+#, c-format
 msgid "Connected to %s via SPICE"
-msgstr "Připojování k „%s“ prostřednictvím SSH…"
+msgstr "Připojování k %s prostřednictvím SPICE"
 
 #: plugins/spice/spice_plugin.c:419
-#, fuzzy
 msgid "TLS connection error."
 msgstr "Chyba TLS spojení."
 
 #: plugins/spice/spice_plugin.c:425
-#, fuzzy
 msgid "Connection to the SPICE server dropped."
 msgstr "Připojení ke SPICE serveru se přerušilo."
 
@@ -2289,37 +2259,30 @@ msgid "Auto GLZ"
 msgstr "Auto GLZ"
 
 #: plugins/spice/spice_plugin.c:686
-#, fuzzy
 msgid "Auto LZ"
 msgstr "Auto LZ"
 
 #: plugins/spice/spice_plugin.c:699
-#, fuzzy
 msgid "Disable video overlay if videos are not displayed properly.\n"
 msgstr "Pokud se videa nezobrazují správně, vypněte překrývání videa.\n"
 
 #: plugins/spice/spice_plugin.c:724
-#, fuzzy
 msgid "Use TLS encryption"
 msgstr "Použít TLS šifrování"
 
 #: plugins/spice/spice_plugin.c:725
-#, fuzzy
 msgid "Server CA certificate"
 msgstr "Certifikát cert. autority, která vydala certifikát serveru"
 
 #: plugins/spice/spice_plugin.c:726 plugins/rdp/rdp_plugin.c:3240
-#, fuzzy
 msgid "Share folder"
 msgstr "Sdílet složku"
 
 #: plugins/spice/spice_plugin.c:727
-#, fuzzy
 msgid "Proxy"
-msgstr "URL adresa proxy"
+msgstr "Proxy"
 
 #: plugins/spice/spice_plugin.c:728 plugins/rdp/rdp_plugin.c:3290
-#, fuzzy
 msgid "USB device redirection"
 msgstr "Přesměrování USB zařízení"
 
@@ -2346,17 +2309,14 @@ msgstr "Nesynchronizovat obsah schránky"
 #: plugins/spice/spice_plugin.c:753 plugins/rdp/rdp_plugin.c:3318
 #: plugins/gvnc/gvnc_plugin.c:844 plugins/www/www_plugin.c:927
 #: plugins/vnc/vnc_plugin.c:2188
-#, fuzzy
 msgid "Forget passwords after use"
-msgstr "Po použití heslo zapomenout"
+msgstr "Po použití hesla zapomenout"
 
 #: plugins/spice/spice_plugin.c:754 plugins/gvnc/gvnc_plugin.c:846
-#, fuzzy
 msgid "Enable audio channel"
 msgstr "Přenášet zvuk"
 
 #: plugins/spice/spice_plugin.c:755
-#, fuzzy
 msgid "Share smart card"
 msgstr "Sdílet čipovou kartu"
 
@@ -2364,24 +2324,21 @@ msgstr "Sdílet čipovou kartu"
 #: plugins/rdp/rdp_plugin.c:3342 plugins/gvnc/gvnc_plugin.c:847
 #: plugins/gvnc/gvnc_plugin.c:856 plugins/vnc/vnc_plugin.c:2194
 #: plugins/vnc/vnc_plugin.c:2211
-#, fuzzy
 msgid "View only"
 msgstr "Jen prohlížení"
 
 #: plugins/spice/spice_plugin.c:766 plugins/rdp/rdp_plugin.c:3347
 #: plugins/vnc/vnc_plugin.c:2208
-#, fuzzy
 msgid "Send Ctrl+Alt+Delete"
 msgstr "Poslat Ctrl+Alt+Delete"
 
 #: plugins/spice/spice_plugin.c:778
-#, fuzzy
 msgid "SPICE - Simple Protocol for Independent Computing Environments"
 msgstr "SPICE – Simple Protocol for Independent Computing Environments"
 
 #: plugins/spice/spice_plugin.c:803
 msgid "SPICE vv file"
-msgstr ""
+msgstr "Soubor SPICE vv"
 
 #: plugins/spice/spice_plugin.c:895
 #, fuzzy
@@ -2389,7 +2346,7 @@ msgid "Export connection in virt-viewer .vv file format"
 msgstr "Exportovat připojení do souboru ve Windows formátu *.rdp"
 
 #: plugins/x2go/x2go_plugin.c:71
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The command-line feature '%s' is not available! Attempting to start PyHoca-"
 "CLI without using this feature…"
@@ -2413,8 +2370,7 @@ msgstr ""
 #: plugins/x2go/x2go_plugin.c:3231 plugins/x2go/x2go_plugin.c:3246
 #: plugins/x2go/x2go_plugin.c:3251 plugins/x2go/x2go_plugin.c:3256
 #: plugins/x2go/x2go_plugin.c:3261
-#, fuzzy, c-format
-#| msgid "Transfer error"
+#, c-format
 msgid "Internal error: %s"
 msgstr "Interní chyba: %s"
 
@@ -2429,7 +2385,6 @@ msgid "Broken `DialogData`! Aborting…"
 msgstr "Rozbitý `DialogData`! Přerušení…"
 
 #: plugins/x2go/x2go_plugin.c:314
-#, fuzzy
 msgid "Can't retrieve `DialogData`! Aborting…"
 msgstr "Nelze načíst `DialogData`! Přerušení…"
 
@@ -2440,23 +2395,18 @@ msgid "X Display"
 msgstr "Obrazovka"
 
 #: plugins/x2go/x2go_plugin.c:475
-#, fuzzy
 msgid "Status"
 msgstr "Stav"
 
 #: plugins/x2go/x2go_plugin.c:476
-#, fuzzy
-#| msgid "Permission"
 msgid "Session ID"
-msgstr "ID relace"
+msgstr "Identif. relace"
 
 #: plugins/x2go/x2go_plugin.c:477
-#, fuzzy
 msgid "Create date"
 msgstr "Datum vytvoření"
 
 #: plugins/x2go/x2go_plugin.c:478
-#, fuzzy
 msgid "Suspended since"
 msgstr "Pozastaveno od"
 
@@ -2465,39 +2415,30 @@ msgid "Agent PID"
 msgstr "Agent PID"
 
 #: plugins/x2go/x2go_plugin.c:481
-#, fuzzy
-#| msgid "Username"
 msgid "Hostname"
-msgstr "Jméno hostitele"
+msgstr "Název hostitele"
 
 #: plugins/x2go/x2go_plugin.c:482
-#, fuzzy
 msgid "Cookie"
 msgstr "Cookie"
 
 #: plugins/x2go/x2go_plugin.c:483
-#, fuzzy
 msgid "Graphic port"
 msgstr "Grafický port"
 
 #: plugins/x2go/x2go_plugin.c:484
-#, fuzzy
 msgid "SND port"
 msgstr "Port SND"
 
 #: plugins/x2go/x2go_plugin.c:485
-#, fuzzy
-#| msgid "Local SSH port"
 msgid "SSHFS port"
 msgstr "Port SSHFS"
 
 #: plugins/x2go/x2go_plugin.c:486
-#, fuzzy
 msgid "Visible"
 msgstr "Viditelné"
 
 #: plugins/x2go/x2go_plugin.c:525
-#, fuzzy
 msgid "Could not retrieve valid `DialogData` or `sessions_list`! Aborting…"
 msgstr ""
 "Nepodařilo se načíst platné `DialogData` nebo `sessions_list`! Přerušení…"
@@ -2517,7 +2458,6 @@ msgid "_Resume"
 msgstr "Pokračovat"
 
 #: plugins/x2go/x2go_plugin.c:539
-#, fuzzy
 msgid "_New"
 msgstr "_Nový"
 
@@ -2528,12 +2468,11 @@ msgid "Terminating X2Go sessions can take a moment."
 msgstr "Ukončování X2Go sezení může chvíli trvat."
 
 #: plugins/x2go/x2go_plugin.c:622 plugins/x2go/x2go_plugin.c:624
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown property '%i'"
-msgstr "Neznámá vlastnost"
+msgstr "Neznámá vlastnost „%i“"
 
 #: plugins/x2go/x2go_plugin.c:711 plugins/x2go/x2go_plugin.c:758
-#, fuzzy
 msgid "Could not find child GtkTreeView of session chooser dialog."
 msgstr "Nepodařilo se najít podřízené okno GtkTreeView dialogu výběru relace."
 
@@ -2553,58 +2492,52 @@ msgid ""
 msgstr "Nepodařilo se najít podřízené okno GtkTreeView dialogu výběru relace."
 
 #: plugins/x2go/x2go_plugin.c:767
-#, fuzzy
-#| msgid "Couldn't get currently selected row (session)!"
 msgid "Could not get currently selected row (session)!"
 msgstr "Aktuálně vybraný řádek (relaci) nelze získat!"
 
 #: plugins/x2go/x2go_plugin.c:786
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Exactly one session should be selectable but '%i' rows (sessions) are "
 "selected."
-msgstr "mělo by být možné vybrat pouze jednu relaci."
+msgstr ""
+"Mělo by být možné vybrat pouze jednu relaci, ale navzdory tomu bylo vybráno "
+"„%i“ řádků (relací)."
 
 #: plugins/x2go/x2go_plugin.c:835
-#, fuzzy
 msgid "Failed to fill 'GtkTreeIter'."
 msgstr "Nepodařilo se vyplnit 'GtkTreeIter'."
 
 #: plugins/x2go/x2go_plugin.c:868
-#, fuzzy
 msgid "parameter 'argv' is 'NULL'."
 msgstr "parametr 'argv' je 'NULL'."
 
 #: plugins/x2go/x2go_plugin.c:879
-#, fuzzy
 msgid "parameter 'error' is 'NULL'."
 msgstr "parametr 'error' je 'NULL'."
 
 #: plugins/x2go/x2go_plugin.c:887
-#, fuzzy
 msgid "parameter 'env' is either invalid or uninitialized."
 msgstr "parametr 'env' je buď neplatný, nebo neinicializovaný."
 
 #: plugins/x2go/x2go_plugin.c:903 plugins/x2go/x2go_plugin.c:2480
-#, fuzzy
 msgid "Started PyHoca-CLI with the following arguments:"
 msgstr "Spustil PyHoca-CLI s následujícími argumenty:"
 
 #: plugins/x2go/x2go_plugin.c:927
-#, fuzzy
 msgid ""
 "The necessary PyHoca-CLI process has encountered a internet connection "
 "problem."
-msgstr ""
-"Potřebný proces PyHoca-CLI narazil na problém s připojením k internetu."
+msgstr "Potřebný proces PyHoca-CLI narazil na problém s připojením k Internetu."
 
 #: plugins/x2go/x2go_plugin.c:937
-#, fuzzy, c-format
-#| msgid "Could not start SSH session. %s"
+#, c-format
 msgid ""
 "Could not start PyHoca-CLI:\n"
 "%s"
-msgstr "Nelze spustit PyHoca-CLI (%i): '%s'"
+msgstr ""
+"Nebylo možné spustit PyHoca-CLI:\n"
+"%s"
 
 #: plugins/x2go/x2go_plugin.c:948
 #, fuzzy, c-format
@@ -2633,8 +2566,6 @@ msgstr "GtkTreePath 'path' označuje neexistující řádek!"
 
 #: plugins/x2go/x2go_plugin.c:1060 plugins/x2go/x2go_plugin.c:1070
 #: plugins/x2go/x2go_plugin.c:2150
-#, fuzzy
-#| msgid "Per connection"
 msgid "'Invalid connection data.'"
 msgstr "'Neplatná data připojení.'"
 
@@ -2643,12 +2574,13 @@ msgid "Parameter 'custom_data' is not fully initialized!"
 msgstr "Parametr 'custom_data' není inicializován!"
 
 #: plugins/x2go/x2go_plugin.c:1223
-#, fuzzy, c-format
-#| msgid "Could not start SSH session. %s"
+#, c-format
 msgid ""
 "Could not terminate X2Go session '%s':\n"
 "%s"
-msgstr "Nelze spustit relaci X2Go."
+msgstr ""
+"Nebylo možné ukončit relaci X2Go „%s“:\n"
+"%s"
 
 #: plugins/x2go/x2go_plugin.c:1235
 #, fuzzy
@@ -2656,14 +2588,13 @@ msgid "An error occurred."
 msgstr "Došlo k chybě."
 
 #: plugins/x2go/x2go_plugin.c:1330 plugins/x2go/x2go_plugin.c:1345
-#, fuzzy
 msgid "Could not get session ID from session chooser dialog."
 msgstr "Nelze získat ID relace z dialogu pro výběr relace."
 
 #: plugins/x2go/x2go_plugin.c:1337
-#, fuzzy, c-format
+#, c-format
 msgid "Resuming session: '%s'"
-msgstr "Obnovení relace: '%s'"
+msgstr "Obnovování relace: „%s“"
 
 #: plugins/x2go/x2go_plugin.c:1352
 #, fuzzy, c-format
@@ -2676,17 +2607,14 @@ msgid "Disconnected from %s:%d via X2Go"
 msgstr "Odpojeno od %s:%d prostřednictvím X2Go"
 
 #: plugins/x2go/x2go_plugin.c:1598
-#, fuzzy
 msgid "PyHoca-CLI exited unexpectedly. This connection will now be closed."
-msgstr "PyHoca-CLI se neočekávaně ukončil. Toto spojení bude nyní uzavřeno."
+msgstr "PyHoca-CLI se neočekávaně ukončilo. Toto spojení bude nyní uzavřeno."
 
 #: plugins/x2go/x2go_plugin.c:1606
-#, fuzzy
 msgid "An error occured."
 msgstr "Došlo k chybě."
 
 #: plugins/x2go/x2go_plugin.c:1607
-#, fuzzy
 msgid ""
 "The necessary child process 'pyhoca-cli' stopped unexpectedly.\n"
 "Please check your profile settings and PyHoca-CLI's output for possible "
@@ -2698,17 +2626,14 @@ msgstr ""
 "k chybě. Zkontrolujte také, zda je vzdálený server dosažitelný."
 
 #: plugins/x2go/x2go_plugin.c:1650
-#, fuzzy
 msgid "Can't save empty username!"
 msgstr "Nelze uložit prázdné uživatelské jméno!"
 
 #: plugins/x2go/x2go_plugin.c:1664
-#, fuzzy
 msgid "Could not save new credentials."
-msgstr "Nepodařilo se uložit nové pověření."
+msgstr "Nebylo možné uložit nové přihlašovací údaje."
 
 #: plugins/x2go/x2go_plugin.c:1667
-#, fuzzy
 msgid ""
 "Could not save new credentials: 's_password' or 's_username' strings were "
 "not set."
@@ -2717,16 +2642,12 @@ msgstr ""
 "nebo 's_username' nebyly nastaveny."
 
 #: plugins/x2go/x2go_plugin.c:1699
-#, fuzzy
-#| msgid "Password to unlock private key"
 msgid "Enter password to unlock the SSH key:"
-msgstr "Heslo pro odemčení soukromé části klíče"
+msgstr "Zadejte heslo pro odemčení soukromé části SSH klíče:"
 
 #: plugins/x2go/x2go_plugin.c:1710
-#, fuzzy
-#| msgid "Authentication type"
 msgid "Password input cancelled. Aborting…"
-msgstr "Selhání ověřování: %s"
+msgstr "Zadání hesla zrušeno. Přerušuje se…"
 
 #: plugins/x2go/x2go_plugin.c:1741
 msgid ""
@@ -2738,19 +2659,14 @@ msgstr ""
 "uložily."
 
 #: plugins/x2go/x2go_plugin.c:1772
-#, fuzzy
-#| msgid "Enter NX authentication credentials"
 msgid "Enter X2Go credentials"
-msgstr "Zadejte pověření X2Go"
+msgstr "Zadejte přihlašovací údaje do X2Go"
 
 #: plugins/x2go/x2go_plugin.c:1801
-#, fuzzy
-#| msgid "Authentication type"
 msgid "Authentication cancelled. Aborting…"
-msgstr "Selhání ověřování: %s"
+msgstr "Ověřování se zrušeno. Přerušuje se…"
 
 #: plugins/x2go/x2go_plugin.c:1988
-#, fuzzy
 msgid ""
 "Could not parse the output of PyHoca-CLI's --list-sessions option. Creating "
 "a new session now."
@@ -2759,14 +2675,13 @@ msgstr ""
 "Nyní vytváříme novou relaci."
 
 #: plugins/x2go/x2go_plugin.c:2025
-#, fuzzy
 msgid "Could not allocate enough memory!"
-msgstr "Nepodařilo se alokovat dostatek paměti!"
+msgstr "Nepodařilo se přidělit dostatek paměti!"
 
 #: plugins/x2go/x2go_plugin.c:2035
-#, fuzzy, c-format
+#, c-format
 msgid "Found already existing X2Go session with ID: '%s'"
-msgstr "Nalezena již existující relace X2Go s ID: '%s'"
+msgstr "Nalezena už existující relace X2Go s identif.: „%s“"
 
 #. TRANSLATORS: Please stick to X2GoClient's translation.
 #: plugins/x2go/x2go_plugin.c:2078
@@ -3436,11 +3351,11 @@ msgstr "Každé 3 minuty"
 
 #: plugins/rdp/rdp_plugin.c:3124
 msgid "ALT_L + Tab"
-msgstr ""
+msgstr "ALT_L + Tab"
 
 #: plugins/rdp/rdp_plugin.c:3125
 msgid "Win + Tab"
-msgstr ""
+msgstr "Win + Tab"
 
 #: plugins/rdp/rdp_plugin.c:3140
 msgid "0 — Windows 7 compatible"
@@ -3663,7 +3578,7 @@ msgstr "Povolení více monitorů"
 
 #: plugins/rdp/rdp_plugin.c:3248
 msgid "Force multi monitor when toggled"
-msgstr ""
+msgstr "Pokud přepnuto, vynutit vícero monitorů"
 
 #: plugins/rdp/rdp_plugin.c:3249
 #, fuzzy
@@ -4013,7 +3928,7 @@ msgstr "Aktualizovat framebuffer i když není viditelný"
 
 #: plugins/rdp/rdp_plugin.c:3334
 msgid "Allow sending empty password"
-msgstr ""
+msgstr "Umožnit odesílání prázdného hesla"
 
 #: plugins/rdp/rdp_plugin.c:3360
 #, fuzzy
@@ -4169,7 +4084,7 @@ msgstr "Upravit nastavení"
 
 #: plugins/rdp/rdp_settings.c:730
 msgid "FreeRDP auth-pkg-list"
-msgstr ""
+msgstr "FreeRDP auth-pkg-list"
 
 #: plugins/rdp/rdp_settings.c:743
 msgid "Authentication package filter(comma-separated list, use '!' to exclude)"
@@ -4634,7 +4549,7 @@ msgstr "Vynucený poměr stran dynamického rozlišení"
 
 #: plugins/vnc/vnc_plugin.c:2184
 msgid "TCP_USER_TIMEOUT length (seconds)"
-msgstr ""
+msgstr "délka TCP_USER_TIMEOUT (sekundy)"
 
 #: plugins/vnc/vnc_plugin.c:2186
 msgid "Force tight encoding"
@@ -5041,7 +4956,7 @@ msgstr "Skryté"
 
 #: data/ui/remmina_preferences.glade:761
 msgid "Minimal"
-msgstr ""
+msgstr "Minimální"
 
 #: data/ui/remmina_preferences.glade:777
 #, fuzzy
@@ -5083,19 +4998,19 @@ msgstr "Přidat sloupec zobrazující poznámky přidané k připojení."
 
 #: data/ui/remmina_preferences.glade:866
 msgid "Display message prompts on the left side of the screen"
-msgstr ""
+msgstr "Zobrazovat výzvy zpráv vlevo na obrazovce"
 
 #: data/ui/remmina_preferences.glade:883
 msgid "If supported, launch in fullscreen by default"
-msgstr ""
+msgstr "Pokud podporováno, spouštět ve výchozím stavu na celou obrazovku"
 
 #: data/ui/remmina_preferences.glade:900
 msgid "If supported, launch with dynamic resolution by default"
-msgstr ""
+msgstr "Pokud podporováno, spouštět ve výchozím stavu s dynamickým rozlišením"
 
 #: data/ui/remmina_preferences.glade:917
 msgid "Multimonitor: performs adjustments on the toolbar position"
-msgstr ""
+msgstr "Vícero monitorů: provádí přizpůsobení pozice lišty s nástroji"
 
 #: data/ui/remmina_preferences.glade:941
 #, fuzzy
