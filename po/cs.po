@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-02-10 22:09+0000\n"
+"PO-Revision-Date: 2026-02-11 10:09+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/remmina/remmina/"
 "cs/>\n"
@@ -36,7 +36,7 @@ msgstr "U_končit"
 
 #: src/remmina_icon.c:162
 msgid "_About"
-msgstr "O progr_amu"
+msgstr "O _aplikaci"
 
 #: src/remmina_icon.c:167 data/ui/remmina_main.glade:289
 msgid "_Preferences"
@@ -66,7 +66,7 @@ msgstr "Podpora StatusNotifier/Appindicator v \""
 #: src/remmina_icon.c:402
 #, c-format
 msgid "%s your desktop does support it"
-msgstr "%s váš počítač to podporuje"
+msgstr "%s vámi využívaný desktop toto podporuje"
 
 #. TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
 #: src/remmina_icon.c:404
@@ -83,7 +83,7 @@ msgid ""
 "try to fallback to GtkStatusIcon/xembed"
 msgstr ""
 "%s není nativně podporováno vaším desktopovým prostředím. libappindicator se "
-"pokusí vrátit k GtkStatusIcon/xembed"
+"náhradně pokusí použít GtkStatusIcon/xembed"
 
 #. TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
 #: src/remmina_icon.c:411
@@ -138,7 +138,7 @@ msgstr ""
 
 #: src/remmina_key_chooser.h:40
 msgid "Shift+"
-msgstr "Shift+"
+msgstr "Shift +"
 
 #: src/remmina_key_chooser.h:41
 msgid "Ctrl+"
@@ -169,7 +169,7 @@ msgid ""
 "Are you sure you want to fully quit Remmina?\n"
 " This will close any active connections."
 msgstr ""
-"Jste si jisti, že chcete ukončit Remminu?\n"
+"Opravdu chcete Remmina zcela ukončit?\n"
 " Zavřou se tím všechna aktivní spojení."
 
 #: src/remmina_exec.c:529
@@ -206,7 +206,7 @@ msgstr "Zadejte ve formátu „šířkaxvýška“."
 
 #: src/remmina_public.c:652
 msgid "Change security settings"
-msgstr "Změnit nastavení kvality"
+msgstr "Změnit nastavení zabezpečení"
 
 #: src/remmina_message_panel.c:161 data/ui/remmina_passwd.glade:21
 #: data/ui/remmina_unlock.glade:44 data/ui/remmina_mpc.glade:33
@@ -292,7 +292,7 @@ msgstr "Klíč k certifikátu klienta"
 #: src/remmina_ssh_plugin.c:343
 #, c-format
 msgid "Connected to %s:%d via SSH"
-msgstr "Připojování k %s:%d prostřednictvím SSH"
+msgstr "Připojeno k %s:%d prostřednictvím SSH"
 
 #. TRANSLATORS: %s is a placeholder for an error message
 #: src/remmina_ssh_plugin.c:551
@@ -340,7 +340,7 @@ msgstr "Otevřít SFTP přenos…"
 #: src/remmina_ssh_plugin.c:908
 #, c-format
 msgid "Disconnected from %s:%d via SSH"
-msgstr "Odpojen od %s:%d prostřednictvím SSH"
+msgstr "Odpojeno od %s:%d prostřednictvím SSH"
 
 #: src/remmina_ssh_plugin.c:1496 src/remmina_sftp_plugin.c:309
 #: src/remmina_sftp_plugin.c:353 src/remmina_protocol_widget.c:1792
@@ -379,11 +379,11 @@ msgstr "Interaktivní klávesnicí"
 
 #: src/remmina_ssh_plugin.c:1576 data/ui/remmina_main.glade:178
 msgid "Copy"
-msgstr "Kopírovat"
+msgstr "Zkopírovat"
 
 #: src/remmina_ssh_plugin.c:1576
 msgid "_Copy"
-msgstr "_Kopírovat"
+msgstr "_Zkopírovat"
 
 #: src/remmina_ssh_plugin.c:1577
 msgid "Paste"
@@ -504,7 +504,7 @@ msgstr "Složka pro záznam z SSH relace"
 
 #: src/remmina_ssh_plugin.c:1648
 msgid "Full path of an existing folder"
-msgstr "Úplná cesta k existujícímu adresáři"
+msgstr "Úplný popis umístění existující složky"
 
 #: src/remmina_ssh_plugin.c:1649
 msgid "Filename for SSH session log"
@@ -516,11 +516,11 @@ msgstr "Při ukončování Remmina uložit záznam SSH relace"
 
 #: src/remmina_ssh_plugin.c:1651
 msgid "Log SSH session asynchronously"
-msgstr "Asynchronní protokolování relace SSH"
+msgstr "Pořizovat záznam z SSH relace asynchronně"
 
 #: src/remmina_ssh_plugin.c:1651
 msgid "Saving the session asynchronously may have a notable performance impact"
-msgstr "Asynchronní ukládání relace může mít znatelný dopad na výkon"
+msgstr "Asynchronní ukládání relace může mít znatelný přínos pro výkon"
 
 #: src/remmina_ssh_plugin.c:1652
 msgid "Audible terminal bell"
@@ -565,7 +565,7 @@ msgid ""
 "Using the «resolution» parameter in the Remmina preferences file is "
 "deprecated.\n"
 msgstr ""
-"Použití parametru \"resolution\" v souboru předvoleb Remmina je zastaralé.\n"
+"Použití parametru „resolution“ v souboru předvoleb Remmina je zastaralé.\n"
 
 #: src/remmina_ssh.c:751
 #, c-format
@@ -580,8 +580,7 @@ msgstr "Nepodařilo se ověřit pomocí SSH hesla: %s"
 #: src/remmina_ssh.c:837 src/remmina_ssh.c:910
 msgid "No saved SSH password supplied. Asking user to enter it."
 msgstr ""
-"Nebylo poskytnuto žádné uložené heslo pro SSH. Vyzývám uživatele k jeho "
-"zadání."
+"Nedodáno žádné uložené heslo pro SSH. Uživatel proto vyzván k jeho zadání."
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:842 src/remmina_ssh.c:883 src/remmina_ssh.c:915
@@ -594,13 +593,13 @@ msgstr "Nedaří se ověřit pomocí veřejné části SSH klíče: %s"
 #: src/remmina_ssh.c:851
 #, c-format
 msgid "SSH certificate cannot be imported. %s"
-msgstr "Certifikát SSH nelze importovat. %s"
+msgstr "Certifikát pro SSH nebylo možné naimportovat. %s"
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:860
 #, c-format
 msgid "SSH certificate cannot be copied into the private SSH key. %s"
-msgstr "Certifikát SSH nelze zkopírovat do soukromého klíče SSH. %s"
+msgstr "Certifikát SSH nebylo možné zkopírovat do soukromého klíče SSH. %s"
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:870
@@ -898,7 +897,7 @@ msgstr "Přejít na nadřazenou složku"
 #: src/remmina_ftp_client.c:781 plugins/rdp/rdp_plugin.c:3343
 #: plugins/vnc/vnc_plugin.c:2206
 msgid "Refresh"
-msgstr "Obnovit"
+msgstr "Načíst znovu"
 
 #: src/remmina_ftp_client.c:782
 msgid "Refresh current folder"
@@ -4921,15 +4920,15 @@ msgstr "Střední (+64 MiB RAM)"
 
 #: data/ui/remmina_preferences.glade:2060
 msgid "Strong (+256 MiB, ~2009 CPU)"
-msgstr "Silné (+256 MiB, ~2009 CPU)"
+msgstr "Silné (+256 MiB, procesor z ~2009)"
 
 #: data/ui/remmina_preferences.glade:2061
 msgid "Sensitive (+1 GiB, ~2014 CPU)"
-msgstr "Citlivé (+1 GiB, ~2014 CPU)"
+msgstr "Citlivé (+1 GiB, procesor z ~2014)"
 
 #: data/ui/remmina_preferences.glade:2077
 msgid "Auditing log"
-msgstr "Auditní protokol"
+msgstr "Záznam auditních událostí"
 
 #: data/ui/remmina_preferences.glade:2102
 msgid "Automatically accept all fingerprints and certificates"
@@ -4982,7 +4981,7 @@ msgstr ""
 
 #: data/ui/remmina_preferences.glade:2336
 msgid "Show bold text in bright colors"
-msgstr "Tučný text ukazovat jasnými barvami"
+msgstr "Tučný text ukazovat zářivými barvami"
 
 #: data/ui/remmina_preferences.glade:2350
 msgid "Colour theme"
@@ -5010,7 +5009,7 @@ msgstr "Odstranit"
 
 #: data/ui/remmina_preferences.glade:2411
 msgid "Bright colours"
-msgstr "Jasné barvy"
+msgstr "Zářivé barvy"
 
 #: data/ui/remmina_preferences.glade:2425
 msgid "Pick a light black colour"
@@ -5022,15 +5021,15 @@ msgstr "Vyberte barvu pro světle červenou"
 
 #: data/ui/remmina_preferences.glade:2453
 msgid "Pick a bright green colour"
-msgstr "Vyberte barvu pro světle zelenou"
+msgstr "Vyberte barvu pro zářivě zelenou"
 
 #: data/ui/remmina_preferences.glade:2467
 msgid "Pick a bright yellow colour"
-msgstr "Vyberte barvu pro světle žlutou"
+msgstr "Vyberte barvu pro zářivě žlutou"
 
 #: data/ui/remmina_preferences.glade:2481
 msgid "Pick a bright blue colour"
-msgstr "Vyberte barvu pro světle modrou"
+msgstr "Vyberte barvu pro zářivě modrou"
 
 #: data/ui/remmina_preferences.glade:2495
 msgid "Pick a light magenta colour"
@@ -5168,12 +5167,13 @@ msgid ""
 "Clicking \"Submit\" will send this to Remmina's GitLab page and "
 "automatically create a new issue on the issue tracker."
 msgstr ""
-"Kliknutím na „Odeslat“ se toto hlášení odešle na GitLab stránku Remminy a "
-"automaticky se založí nový záznam ve sledování chyb."
+"Kliknutím na „Odeslat“ bude toto hlášení odesláno na GitLab stránku projektu "
+"Remmina a tam automaticky založen nový záznam v systému evidence hlášení "
+"chyb."
 
 #: data/ui/remmina_bug_report.glade:296
 msgid "Remmina Report Bug"
-msgstr "Hlášení chyby v Remmině"
+msgstr "Hlášení chyby v Remmina"
 
 #: data/ui/remmina_unlock.glade:30
 msgid "Unlock Remmina"
@@ -5189,7 +5189,7 @@ msgstr "Hlavní heslo"
 
 #: data/ui/remmina_main.glade:36
 msgid "Hide or show the search bar"
-msgstr "Skrýt nebo zobrazit vyhledávací panel"
+msgstr "Skrýt nebo zobrazit panel hledání"
 
 #: data/ui/remmina_main.glade:42
 msgid "Add a new connection profile"
@@ -5206,7 +5206,7 @@ msgstr "Vyberte protokol který použít na liště rychlého připojení."
 #: data/ui/remmina_main.glade:98
 msgid "Search string or server name/IP address for “Quick Connect”"
 msgstr ""
-"Vyhledávací řetězec nebo název / ip adresa serveru pro „Rychlé připojení“"
+"Vyhledávací řetězec nebo název / IP adresa serveru pro „Rychlé připojení“"
 
 #: data/ui/remmina_main.glade:102 data/ui/remmina_main.glade:104
 msgid "Server name or IP address"
@@ -5249,9 +5249,8 @@ msgid "Homepage"
 msgstr "Domovská stránka"
 
 #: data/ui/remmina_main.glade:392
-#, fuzzy
 msgid "Donations"
-msgstr "Finanční příspěvky"
+msgstr "Podpoření vývoje darem"
 
 #: data/ui/remmina_main.glade:402
 msgid "Wiki"
@@ -5326,11 +5325,11 @@ msgid ""
 "the appropriate permissions to Remmina. As an alternative you can enter the "
 "following commands in a terminal window:"
 msgstr ""
-"Zdá se, že Remmina je ve vašem systému spouštěná ze SNAP balíčku. Pro "
-"povolení přístupu k některým důležitým funkcím, jako je například ukládání "
-"hesel do vaší klíčenky a RDP sdílení tiskáren, otevřete centrum softwaru a "
-"udělte aplikaci Remmina odpovídající oprávnění. Alternativně je možné použít "
-"terminál a do jeho okna zadat následující příkazy:"
+"Pro povolení přístupu k některým důležitým funkcím, jako je například "
+"ukládání hesel do vaší klíčenky a RDP sdílení tiskáren, otevřete vámi "
+"využívané centrum softwaru a udělte aplikaci Remmina odpovídající oprávnění. "
+"Alternativně je možné použít terminál a do jeho okna zadat následující "
+"příkazy:"
 
 #: data/ui/remmina_snap_info_dialog.glade:157
 msgid "<big>Permissions</big>"
@@ -5342,17 +5341,17 @@ msgid ""
 "profiles are saved inside the Snap file system by default. You can change "
 "the location in the Remmina preferences."
 msgstr ""
-"Protože Snap balíčky běží odděleně od zbytku systému, jsou profily Remmina "
+"Protože Snap balíčky běží odděleně od zbytku systému, jsou Remmina profily "
 "ve výchozím nastavení ukládány v souborovém systému Snap. Umístění můžete "
 "změnit v předvolbách aplikace Remmina."
 
 #: data/ui/remmina_snap_info_dialog.glade:213
 msgid "Change where Remmina profiles are stored"
-msgstr "Změnit kam jsou ukládány profily Remmina"
+msgstr "Změnit kam jsou ukládány Remmina profily"
 
 #: data/ui/remmina_snap_info_dialog.glade:252
 msgid "<big>Snap settings</big>"
-msgstr "<big>Zapojit se</big>"
+msgstr "<big>Nastavení v rámci Snap</big>"
 
 #: data/ui/remmina_snap_info_dialog.glade:265
 msgid "Do not show this message again"
@@ -5368,7 +5367,7 @@ msgstr "Kritéria výběru"
 
 #: data/ui/remmina_mpc.glade:244
 msgid "Confirm password"
-msgstr "Potvrďte heslo"
+msgstr "Potvrzení hesla"
 
 #: data/ui/remmina_mpc.glade:320
 msgid "Gateway Username"
