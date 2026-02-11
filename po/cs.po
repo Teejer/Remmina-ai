@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-02-11 10:09+0000\n"
+"PO-Revision-Date: 2026-02-11 13:09+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/remmina/remmina/"
 "cs/>\n"
@@ -310,7 +310,7 @@ msgstr "Vybrat vše (host+A)"
 
 #: src/remmina_ssh_plugin.c:847
 msgid "Copy (host+C)"
-msgstr "Kopírovat (host+C)"
+msgstr "Zkopírovat (host+C)"
 
 #: src/remmina_ssh_plugin.c:848
 msgid "Paste (host+V)"
@@ -356,7 +356,7 @@ msgstr "Heslo"
 #: src/remmina_sftp_plugin.c:310 src/remmina_sftp_plugin.c:355
 #: src/remmina_file_editor.c:939 plugins/x2go/x2go_plugin.c:3347
 msgid "SSH identity file"
-msgstr "soubor s SSH identitou"
+msgstr "Soubor s SSH identitou"
 
 #: src/remmina_ssh_plugin.c:1498 src/remmina_sftp_plugin.c:311
 #: src/remmina_file_editor.c:940
@@ -375,7 +375,7 @@ msgstr "Kerberos (GSSAPI)"
 
 #: src/remmina_ssh_plugin.c:1501
 msgid "Keyboard Interactive"
-msgstr "Interaktivní klávesnicí"
+msgstr "Interaktivně klávesnicí"
 
 #: src/remmina_ssh_plugin.c:1576 data/ui/remmina_main.glade:178
 msgid "Copy"
@@ -442,7 +442,7 @@ msgstr "Soubor s SSH certifikátem"
 #: src/remmina_ssh_plugin.c:1613 src/remmina_sftp_plugin.c:356
 #: src/remmina_file_editor.c:1606
 msgid "Password to unlock private key"
-msgstr "Heslo pro odemčení soukromé části klíče"
+msgstr "Heslo pro odemčení soukromého klíče"
 
 #: src/remmina_ssh_plugin.c:1614
 msgid "Opening command"
@@ -450,7 +450,7 @@ msgstr "Otevírání příkazu"
 
 #: src/remmina_ssh_plugin.c:1615
 msgid "Start-up background program"
-msgstr "Program na pozadí při startu"
+msgstr "Program na pozadí při startu systému"
 
 #: src/remmina_ssh_plugin.c:1620
 msgid ""
@@ -484,7 +484,7 @@ msgstr "Znaková sada"
 
 #: src/remmina_ssh_plugin.c:1644 src/remmina_sftp_plugin.c:357
 msgid "SSH Proxy Command"
-msgstr "Příkaz pro SSH proxy"
+msgstr "Příkaz přes SSH proxy"
 
 #: src/remmina_ssh_plugin.c:1645
 msgid "KEX (Key Exchange) algorithms"
@@ -512,7 +512,7 @@ msgstr "Soubor pro záznam z SSH relace"
 
 #: src/remmina_ssh_plugin.c:1650
 msgid "Log SSH session when exiting Remmina"
-msgstr "Při ukončování Remmina uložit záznam SSH relace"
+msgstr "Při ukončování Remmina uložit záznam z SSH relace"
 
 #: src/remmina_ssh_plugin.c:1651
 msgid "Log SSH session asynchronously"
@@ -544,7 +544,7 @@ msgstr "Striktně ověřovat klíče hostitele"
 
 #: src/remmina_ssh_plugin.c:1657
 msgid "Copy text on selection"
-msgstr "Zkopírovat text na výběru"
+msgstr "Zkopírovat text při výběru"
 
 #: src/remmina_ssh_plugin.c:1658
 msgid "Allow keys using ssh-rsa (insecure)"
@@ -565,12 +565,13 @@ msgid ""
 "Using the «resolution» parameter in the Remmina preferences file is "
 "deprecated.\n"
 msgstr ""
-"Použití parametru „resolution“ v souboru předvoleb Remmina je zastaralé.\n"
+"Použití parametru „resolution“ v souboru s předvolbami pro Remmina je "
+"zastaralé.\n"
 
 #: src/remmina_ssh.c:751
 #, c-format
 msgid "Could not authenticate with TOTP/OTP/2FA. %s"
-msgstr "Nepodařilo se ověřit pomocí SSH hesla: %s"
+msgstr "Nepodařilo se ověřit pomocí TOTP/OTP/2FA. %s"
 
 #: src/remmina_ssh.c:810 src/remmina_ssh.c:1197
 #, c-format
@@ -587,7 +588,7 @@ msgstr ""
 #: src/remmina_ssh.c:954 src/remmina_ssh.c:1267
 #, c-format
 msgid "Could not authenticate with public SSH key. %s"
-msgstr "Nedaří se ověřit pomocí veřejné části SSH klíče: %s"
+msgstr "Nedaří se ověřit pomocí veřejného SSH klíče: %s"
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:851
@@ -609,12 +610,11 @@ msgstr "Nepodařilo se ověřit pomocí certifikátu SSH. %s"
 
 #: src/remmina_ssh.c:884
 msgid "SSH identity file not selected."
-msgstr "Soubor s SSH klíčem doposud nebyl nastaven."
+msgstr "Nevybrán soubor s SSH klíčem."
 
 #: src/remmina_ssh.c:890
 msgid "No username found. Asking user to enter it."
-msgstr ""
-"Nebylo nalezeno žádné uživatelské jméno. Vyzývám uživatele k jeho zadání."
+msgstr "Nenalezeno žádné uživatelské jméno. Uživatel proto vzván k jeho zadání."
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:901
@@ -625,12 +625,12 @@ msgstr "Veřejný klíč SSH se nepodařilo naimportovat: %s"
 #: src/remmina_ssh.c:999
 #, c-format
 msgid "Could not authenticate automatically with public SSH key. %s"
-msgstr "Nedaří se automaticky ověřit pomocí veřejné části SSH klíče: %s"
+msgstr "Nedaří se automaticky ověřit pomocí veřejného SSH klíče: %s"
 
 #: src/remmina_ssh.c:1044
 #, c-format
 msgid "Could not authenticate automatically with SSH agent. %s"
-msgstr "Nedaří se automaticky ověřit pomocí veřejné části SSH klíče: %s"
+msgstr "Nedaří se automaticky ověřit pomocí SSH agenta: %s"
 
 #: src/remmina_ssh.c:1090 src/remmina_ssh.c:1377
 #, c-format
@@ -644,31 +644,30 @@ msgstr "Veřejný SSH klíč byl změněn!"
 #: src/remmina_ssh.c:1232
 #, c-format
 msgid "Could not authenticate with keyboard-interactive. %s"
-msgstr "Nedaří se ověřit pomocí veřejné části SSH klíče: %s"
+msgstr "Nedaří se ověřit interaktivně pomocí klávesnice: %s"
 
 #: src/remmina_ssh.c:1334
 #, c-format
 msgid "Could not authenticate with automatic public SSH key. %s"
-msgstr "Nedaří se ověřit pomocí veřejné části SSH klíče: %s"
+msgstr "Nedaří se ověřit pomocí automatického veřejného SSH klíče: %s"
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:1441
 #, c-format
 msgid "Could not fetch the server's public SSH key. %s"
-msgstr "Nedaří se získat veřejnou část SSH klíče serveru: %s"
+msgstr "Nedaří se získat veřejný SSH klíč serveru: %s"
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:1448
 #, c-format
 msgid "Could not fetch public SSH key. %s"
-msgstr "Nepodařilo se stáhnout si veřejnou část SSH klíče: %s"
+msgstr "Nepodařilo se získat veřejný SSH klíč: %s"
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:1456
 #, c-format
 msgid "Could not fetch checksum of the public SSH key. %s"
-msgstr ""
-"Nepodařilo se stáhnout si kontrolní součet pro veřejnou část SSH klíče: %s"
+msgstr "Nepodařilo se získat kontrolní součet pro veřejný SSH klíč: %s"
 
 #: src/remmina_ssh.c:1469
 msgid "The server is unknown. The public key fingerprint is:"
@@ -709,19 +708,19 @@ msgstr "SSH Kerberos/GSSAPI"
 
 #: src/remmina_ssh.c:1557
 msgid "SSH tunnel private key credentials"
-msgstr "pověřovací údaje privátního klíče k SSH tunelu"
+msgstr "Přihlašovací údaje soukromého klíče k SSH tunelu"
 
 #: src/remmina_ssh.c:1557
 msgid "SSH private key credentials"
-msgstr "SSH pověřovací údaje privátního klíče"
+msgstr "Přihlašovací údaje soukromého SSH"
 
 #: src/remmina_ssh.c:1591 src/remmina_ssh.c:1617
 msgid "SSH tunnel credentials"
-msgstr "přihlašovací údaje pro SSH tunel"
+msgstr "Přihlašovací údaje pro SSH tunel"
 
 #: src/remmina_ssh.c:1591 src/remmina_ssh.c:1617
 msgid "SSH credentials"
-msgstr "přihlašovací údaje pro SSH"
+msgstr "Přihlašovací údaje pro SSH"
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:2368
@@ -4908,8 +4907,8 @@ msgid ""
 msgstr ""
 "Toto jsou šifrovací metody používané Remminou pro ukládání hesel.\n"
 "\n"
-"S výjimkou metody „Slabé“ jsou všechny ostatní doporučené. Výchozí je "
-"„klíčenka“, integruje se na KDE/Plasma a GNOME.\n"
+"S výjimkou metody „Slabé“ jsou všechny ostatní doporučené. Výchozí je „"
+"klíčenka“, protože se napojuje na KDE/Plasma a GNOME.\n"
 "\n"
 "„Střední“ nepoužívá tolik paměti či výpočetního výkonu, „Citlivé“ je "
 "bezpečnější, ale používá +1 GiB RAM a mnoho cyklů procesoru. "
