@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-02-12 09:09+0000\n"
+"PO-Revision-Date: 2026-02-12 20:09+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/remmina/remmina/"
 "cs/>\n"
@@ -1519,8 +1519,8 @@ msgid ""
 "(%s: %i): Can't validate user input since 'setting_name_to_validate', "
 "'value' or 'gfe' are NULL!"
 msgstr ""
-"(%s: %i): Nelze ověřit uživatelský vstup, protože "
-"'setting_name_to_validate', 'value' nebo 'gfe' jsou NULL!"
+"(%s: %i): Nelze ověřit uživatelský vstup, protože „setting_name_to_validate"
+"“, „value“ nebo „gfe“ jsou NULL!"
 
 #. TRANSLATORS: Meta-error. Shouldn't be visible.
 #: src/remmina_file_editor.c:1791 plugins/x2go/x2go_plugin.c:2501
@@ -1532,11 +1532,11 @@ msgstr "Vnitřní chyba."
 #: src/remmina_file_editor.c:2086 src/remmina_file_editor.c:2109
 #, c-format
 msgid "Couldn't validate user input. %s"
-msgstr "Nepodařilo se ověřit zadání od uživatele. %s"
+msgstr "Nepodařilo se ověřit platnost zadání od uživatele. %s"
 
 #: src/remmina_file_editor.c:2053
 msgid "Default settings saved."
-msgstr "Výchozí nastavení uloženo."
+msgstr "Výchozí nastavení uložena."
 
 #: src/remmina_file_editor.c:2143
 msgid "Remote Connection Profile"
@@ -1589,18 +1589,14 @@ msgstr "Zobrazit dialog s informacemi o aplikaci"
 
 #. TRANSLATORS: Shown in terminal. Do not use characters that may be not supported on a terminal
 #: src/remmina.c:104
-#, fuzzy
-#| msgid ""
-#| "Connect either to a desktop described in a file (.remmina or a filetype "
-#| "supported by a plugin) or a supported URI (RDP, VNC, SSH or SPICE)"
 msgid ""
 "Connect either to a desktop described in a file (.remmina or a filetype "
 "supported by a plugin) or a supported URI (RDP, VNC, SSH, HTTP, HTTPS or "
 "SPICE)"
 msgstr ""
 "Připojit se buď k ploše popsané v souboru (.remmina nebo typu souboru "
-"podporovanému zásuvným modulem) nebo podporované URI (RDP, VNC, SSH nebo "
-"SPICE)"
+"podporovanému zásuvným modulem) nebo podporované URI (RDP, VNC, SSH, HTTP, "
+"HTTPS nebo SPICE)"
 
 #: src/remmina.c:104 src/remmina.c:106 src/remmina.c:108
 msgid "FILE"
@@ -1717,8 +1713,8 @@ msgid ""
 "Enable extra hardening (disable closing confirmation, disable unsafe "
 "shortcut keys, hide tabs, hide search bar)"
 msgstr ""
-"Povolit dodatečné potvrzení (zakázat potvrzení zavření, zakázat nebezpečné "
-"klávesové zkratky, skrýt karty, skrýt vyhledávací panel)"
+"Zapnout dodatečné zodolnění (zakázat potvrzovní zavření, zakázat nebezpečné "
+"klávesové zkratky, skrýt karty, skrýt panel vyhledávání)"
 
 #: src/remmina.c:143
 msgid "Disable tray icon"
@@ -1735,51 +1731,19 @@ msgid ""
 "More info available on the Remmina wiki at:\n"
 "https://gitlab.com/Remmina/Remmina/-/wikis/Usage/Remmina-debugging"
 msgstr ""
-"Remmina nezaznamenává všechny výstupní příkazy. Chcete-li povolit "
-"podrobnější výstup, použijte jako proměnnou prostředí "
-"\"G_MESSAGES_DEBUG=remmina\"\n"
-"Více informací je k dispozici na Reminna wiki na:\n"
+"Remmina nezaznamenává všechny výstupní příkazy. Pokud chcete povolit "
+"podrobnější výstup, použijte jako proměnnou prostředí „"
+"G_MESSAGES_DEBUG=remmina“\n"
+"Další informace jsou k dispozici na Reminna wiki na:\n"
 "https://gitlab.com/Remmina/Remmina/-/wikis/Usage/Remmina-debugging"
 
 #. TRANSLATORS: Shown in terminal. Do not use characters that may be not supported on a terminal
 #: src/remmina.c:445
 msgid "- or protocol://username:encryptedpassword@host:port"
-msgstr "- nebo protocol://username:encryptedpassword@host:port"
+msgstr "- nebo protocol://uzivatelske_jmeno:sifrovane_heslo@hostitel:port"
 
 #: src/remmina.c:448
-#, fuzzy, c-format
-#| msgid ""
-#| "Examples:\n"
-#| "To connect using an existing connection profile, use:\n"
-#| "\n"
-#| "\tremmina -c FILE.remmina\n"
-#| "\n"
-#| "To quick connect using a URI:\n"
-#| "\n"
-#| "\tremmina -c rdp://username@server\n"
-#| "\tremmina -c rdp://domain\\\\username@server\n"
-#| "\tremmina -c vnc://username@server\n"
-#| "\tremmina -c vnc://server?VncUsername=username\n"
-#| "\tremmina -c ssh://user@server\n"
-#| "\tremmina -c spice://server\n"
-#| "\n"
-#| "To quick connect using a URI along with an encrypted password:\n"
-#| "\n"
-#| "\tremmina -c rdp://username:encrypted-password@server\n"
-#| "\tremmina -c vnc://username:encrypted-password@server\n"
-#| "\tremmina -c vnc://server?VncUsername=username\\&VncPassword=encrypted-"
-#| "password\n"
-#| "\n"
-#| "To encrypt a password for use with a URI:\n"
-#| "\n"
-#| "\tremmina --encrypt-password\n"
-#| "\n"
-#| "To update username and password and set a different resolution mode of a "
-#| "Remmina connection profile, use:\n"
-#| "\n"
-#| "\techo \"username\\napassword\" | remmina --update-profile /PATH/TO/"
-#| "FOO.remmina --set-option username --set-option resolution_mode=2 --set-"
-#| "option password\n"
+#, c-format
 msgid ""
 "Examples:\n"
 "To connect using an existing connection profile, use:\n"
@@ -1822,7 +1786,7 @@ msgstr ""
 "Příklady:\n"
 "Pro připojení pomocí existujícího profilu připojení použijte:\n"
 "\n"
-"\tremmina -c FILE.remmina\n"
+"\tremmina -c SOUBOR.remmina\n"
 "\n"
 "Pro rychlé připojení pomocí URI:\n"
 "\n"
@@ -1832,13 +1796,19 @@ msgstr ""
 "\tremmina -c vnc://server?VncUsername=uživatelské-jméno\n"
 "\tremmina -c ssh://uživatelské-jméno@server\n"
 "\tremmina -c spice://server\n"
+"\tremmina -c https://example.com\n"
+"\n"
+"Pro rychlé připojení a jeho opatření názvem\n"
+"\n"
+"\tremmina -c ssh://uzivatel@server%cnazev_pripojeni\n"
 "\n"
 "Rychlé připojení pomocí URI spolu se zašifrovaným heslem:\n"
 "\n"
 "\tremmina -c rdp://uživatelské-jméno:zašifrované-heslo@server\n"
+"\n"
 "\tremmina -c vnc://uživatelské-jméno:zašifrované-heslo@server\n"
-"\tremmina -c vnc://server?VncUsername=uživatelské-"
-"jméno\\&VncPassword=zašifrované-heslo\n"
+"\tremmina -c vnc://server?VncUsername=uživatelské-jméno\\"
+"&VncPassword=zašifrované-heslo\n"
 "\n"
 "Šifrování hesla pro použití s URI:\n"
 "\n"
@@ -1847,9 +1817,9 @@ msgstr ""
 "Pro aktualizaci uživatelského jména a hesla a nastavení jiného režimu "
 "rozlišení profilu připojení Remmina použijte:\n"
 "\n"
-"\techo \"uživatelské-jméno\\nheslo\" | remmina --update-profile /CESTA/K/"
-"NĚCO.remmina --set-option username --set-option resolution_mode=2 --set-"
-"option password\n"
+"\techo \"uživatelské-jméno\\n"
+"heslo\" | remmina --update-profile /CESTA/K/NĚCO.remmina --set-option "
+"username --set-option resolution_mode=2 --set-option password\n"
 
 #. TRANSLATORS: The placeholder %s is a directory path
 #: src/remmina_sftp_client.c:176
@@ -2164,7 +2134,7 @@ msgstr ""
 
 #: plugins/spice/spice_plugin_usb.c:51 plugins/spice/spice_plugin.c:767
 msgid "Select USB devices for redirection"
-msgstr "Vyberte USB zařízení, které přesměrovat"
+msgstr "Vyberte USB zařízení, která přesměrovat"
 
 #: plugins/spice/spice_plugin_usb.c:54
 msgid "_Close"
@@ -2326,7 +2296,7 @@ msgid ""
 "The command-line feature '%s' is not available! Attempting to start PyHoca-"
 "CLI without using this feature…"
 msgstr ""
-"Funkce příkazového řádku '%s' není k dispozici! Pokus o spuštění PyHoca-CLI "
+"Funkce příkazového řádku „%s“ není k dispozici! Pokus o spuštění PyHoca-CLI "
 "bez použití této funkce…"
 
 #: plugins/x2go/x2go_plugin.c:296 plugins/x2go/x2go_plugin.c:428
@@ -2347,12 +2317,12 @@ msgstr ""
 #: plugins/x2go/x2go_plugin.c:3261
 #, c-format
 msgid "Internal error: %s"
-msgstr "Interní chyba: %s"
+msgstr "Vnitřní chyba: %s"
 
 #: plugins/x2go/x2go_plugin.c:297 plugins/x2go/x2go_plugin.c:429
 #: plugins/x2go/x2go_plugin.c:516 plugins/x2go/x2go_plugin.c:1290
 msgid "Parameter 'custom_data' is not initialized!"
-msgstr "Parametr 'custom_data' není inicializován!"
+msgstr "Parametr „custom_data“ není inicializován!"
 
 #: plugins/x2go/x2go_plugin.c:310
 msgid "Broken `DialogData`! Aborting…"
@@ -2360,7 +2330,7 @@ msgstr "Rozbitý `DialogData`! Přerušuje se…"
 
 #: plugins/x2go/x2go_plugin.c:314
 msgid "Can't retrieve `DialogData`! Aborting…"
-msgstr "Nelze načíst `DialogData`! Přerušení…"
+msgstr "Nelze načíst `DialogData`! Přerušuje se…"
 
 #: plugins/x2go/x2go_plugin.c:474
 msgid "X Display"
@@ -2384,7 +2354,7 @@ msgstr "Pozastaveno od"
 
 #: plugins/x2go/x2go_plugin.c:479
 msgid "Agent PID"
-msgstr "Agent PID"
+msgstr "Identif. procesu agenta"
 
 #: plugins/x2go/x2go_plugin.c:481
 msgid "Hostname"
@@ -2400,7 +2370,7 @@ msgstr "Grafický port"
 
 #: plugins/x2go/x2go_plugin.c:484
 msgid "SND port"
-msgstr "Port SND"
+msgstr "ZVUK port"
 
 #: plugins/x2go/x2go_plugin.c:485
 msgid "SSHFS port"
@@ -2413,7 +2383,7 @@ msgstr "Viditelné"
 #: plugins/x2go/x2go_plugin.c:525
 msgid "Could not retrieve valid `DialogData` or `sessions_list`! Aborting…"
 msgstr ""
-"Nepodařilo se načíst platné `DialogData` nebo `sessions_list`! Přerušení…"
+"Nepodařilo se načíst platné `DialogData` nebo `sessions_list`! Přerušuje se…"
 
 #. TRANSLATORS: Stick to x2goclient's translation for terminate.
 #: plugins/x2go/x2go_plugin.c:534
@@ -2449,8 +2419,8 @@ msgid ""
 "Neither the 'dialog' nor 'treeview' parameters are initialized! At least one "
 "of them must be given."
 msgstr ""
-"Nebyl inicializován ani jeden z parametrů „dialog“ a „treeview“! Musí být "
-"zadán alespoň jeden z nich."
+"Nebyl inicializován ani jeden z parametrů „dialog“ a „treeview“! Je třeba, "
+"aby byl zadán alespoň jeden z nich."
 
 #: plugins/x2go/x2go_plugin.c:732
 msgid ""
@@ -2474,19 +2444,19 @@ msgstr ""
 
 #: plugins/x2go/x2go_plugin.c:835
 msgid "Failed to fill 'GtkTreeIter'."
-msgstr "Nepodařilo se vyplnit 'GtkTreeIter'."
+msgstr "Nepodařilo se vyplnit „GtkTreeIter“."
 
 #: plugins/x2go/x2go_plugin.c:868
 msgid "parameter 'argv' is 'NULL'."
-msgstr "parametr 'argv' je 'NULL'."
+msgstr "parametr „argv“ je „NULL“."
 
 #: plugins/x2go/x2go_plugin.c:879
 msgid "parameter 'error' is 'NULL'."
-msgstr "parametr 'error' je 'NULL'."
+msgstr "parametr „error“ je „NULL“."
 
 #: plugins/x2go/x2go_plugin.c:887
 msgid "parameter 'env' is either invalid or uninitialized."
-msgstr "parametr 'env' je buď neplatný, nebo neinicializovaný."
+msgstr "parametr „env“ je buď neplatný, nebo neinicializovaný."
 
 #: plugins/x2go/x2go_plugin.c:903 plugins/x2go/x2go_plugin.c:2480
 msgid "Started PyHoca-CLI with the following arguments:"
@@ -2525,20 +2495,20 @@ msgstr ""
 
 #: plugins/x2go/x2go_plugin.c:999
 msgid "Neither the 'path' nor 'dialog' parameters are initialized."
-msgstr "Není inicializován parametr 'env' ani 'dialog'."
+msgstr "Není inicializován parametr „env“ ani „dialog“."
 
 #: plugins/x2go/x2go_plugin.c:1015
 msgid "GtkTreePath 'path' describes a non-existing row!"
-msgstr "GtkTreePath 'path' označuje neexistující řádek!"
+msgstr "GtkTreePath „path“ popisuje neexistující řádek!"
 
 #: plugins/x2go/x2go_plugin.c:1060 plugins/x2go/x2go_plugin.c:1070
 #: plugins/x2go/x2go_plugin.c:2150
 msgid "'Invalid connection data.'"
-msgstr "'Neplatná data připojení.'"
+msgstr "„Neplatná data připojení.“"
 
 #: plugins/x2go/x2go_plugin.c:1102
 msgid "Parameter 'custom_data' is not fully initialized!"
-msgstr "Parametr 'custom_data' není inicializován!"
+msgstr "Parametr „custom_data“ není plně inicializován!"
 
 #: plugins/x2go/x2go_plugin.c:1223
 #, c-format
@@ -2555,7 +2525,7 @@ msgstr "Došlo k chybě."
 
 #: plugins/x2go/x2go_plugin.c:1330 plugins/x2go/x2go_plugin.c:1345
 msgid "Could not get session ID from session chooser dialog."
-msgstr "Nelze získat ID relace z dialogu pro výběr relace."
+msgstr "Nelze získat identif. relace z dialogu pro výběr relace."
 
 #: plugins/x2go/x2go_plugin.c:1337
 #, c-format
@@ -2587,9 +2557,10 @@ msgid ""
 "errors. Also ensure the remote server is reachable and you're using the "
 "right credentials."
 msgstr ""
-"Nezbytný podřízený proces 'pyhoca-cli' se neočekávaně zastavil.\n"
+"Nezbytný podřízený proces „pyhoca-cli“ se neočekávaně zastavil.\n"
 "Zkontrolujte prosím nastavení svého profilu a výstup PyHoca-CLI, zda nedošlo "
-"k chybě. Zkontrolujte také, zda je vzdálený server dosažitelný."
+"k chybě. Zkontrolujte také, zda je vzdálený server dosažitelný a používáte "
+"správné přihlašovací údaje."
 
 #: plugins/x2go/x2go_plugin.c:1650
 msgid "Can't save empty username!"
@@ -2604,12 +2575,12 @@ msgid ""
 "Could not save new credentials: 's_password' or 's_username' strings were "
 "not set."
 msgstr ""
-"Při pokusu o uložení nových pověření došlo k chybě: řetězce 's_password' "
-"nebo 's_username' nebyly nastaveny."
+"Při pokusu o uložení nových pověření došlo k chybě: řetězce „s_password“ "
+"nebo „s_username“ nebyly nastaveny."
 
 #: plugins/x2go/x2go_plugin.c:1699
 msgid "Enter password to unlock the SSH key:"
-msgstr "Zadejte heslo pro odemčení soukromé části SSH klíče:"
+msgstr "Zadejte heslo pro odemčení soukromého SSH klíče:"
 
 #: plugins/x2go/x2go_plugin.c:1710
 msgid "Password input cancelled. Aborting…"
@@ -2620,9 +2591,9 @@ msgid ""
 "Tip: Check the 'Save password' checkbox or manually input your X2Go username "
 "and password in the profile settings to store them for faster logins."
 msgstr ""
-"Tip: Pro rychlejší přihlašování zaškrtněte políčko „Uložit heslo“ nebo ručně "
-"zadejte své uživatelské jméno a heslo X2Go v nastavení profilu, aby se "
-"uložily."
+"Tip: Pro rychlejší přihlašování zaškrtněte kolonku „Uložit heslo“ nebo ručně "
+"zadejte své uživatelské jméno a heslo X2Go v nastavení profilu, aby byly "
+"uloženy."
 
 #: plugins/x2go/x2go_plugin.c:1772
 msgid "Enter X2Go credentials"
@@ -2638,7 +2609,7 @@ msgid ""
 "a new session now."
 msgstr ""
 "Nepodařilo se analyzovat výstup volby --list-sessions nástroje PyHoca-CLI. "
-"Nyní vytváříme novou relaci."
+"Nyní je vytvářena nová relace."
 
 #: plugins/x2go/x2go_plugin.c:2025
 msgid "Could not allocate enough memory!"
@@ -2766,7 +2737,7 @@ msgstr "Neobjevilo se žádné okno relace X2Go. Něco se pokazilo…"
 
 #: plugins/x2go/x2go_plugin.c:3004
 msgid "RemminaProtocolWidget* gp is 'NULL'!"
-msgstr "RemminaProtocolWidget* gp je 'NULL'!"
+msgstr "RemminaProtocolWidget* gp je „NULL“!"
 
 #: plugins/x2go/x2go_plugin.c:3025
 #, c-format
@@ -2799,17 +2770,17 @@ msgstr "%sa „%s“"
 #. (Except your listing-grammar differs from english.)
 #. 'value1' and 'value2'
 #: plugins/x2go/x2go_plugin.c:3082 plugins/x2go/x2go_plugin.c:3100
-#, fuzzy, c-format
+#, c-format
 msgid "%s'%s' "
-msgstr "%s'%s' "
+msgstr "%s„%s“ "
 
 #. TRANSLATORS: Presumably you just want to leave it english.
 #. (Except your listing-grammar differs from english.)
 #. 'value1', 'value2', 'valueN-1' and 'valueN'
 #: plugins/x2go/x2go_plugin.c:3087
-#, fuzzy, c-format
+#, c-format
 msgid "%s'%s', "
-msgstr "%s'%s', "
+msgstr "%s„%s“, "
 
 #: plugins/x2go/x2go_plugin.c:3126
 msgid "Invalid validation data in ProtocolSettings array!"
@@ -2821,7 +2792,7 @@ msgstr "Ověřovací údaje v poli ProtocolSettings jsou neplatné!"
 
 #: plugins/x2go/x2go_plugin.c:3150
 msgid "Parameters 'key' or 'value' are 'NULL'!"
-msgstr "Parametry 'key' nebo 'value' jsou 'NULL'!"
+msgstr "Parametry „key“ nebo „value“ jsou „NULL“!"
 
 #: plugins/x2go/x2go_plugin.c:3168
 #, c-format
@@ -2897,7 +2868,7 @@ msgstr "Podpora zvuku"
 
 #: plugins/x2go/x2go_plugin.c:3333
 msgid "The sound system of the X2Go server (default: 'pulse')."
-msgstr "Zvukový systém serveru X2Go (výchozí: 'pulse')."
+msgstr "Zvukový systém serveru X2Go (výchozí: „pulse“)."
 
 #: plugins/x2go/x2go_plugin.c:3336
 msgid "Clipboard direction"
@@ -3166,7 +3137,7 @@ msgstr "Nejlepší (nejpomalejší)"
 
 #: plugins/rdp/rdp_plugin.c:3069 data/ui/remmina_preferences.glade:724
 msgid "None"
-msgstr "Žádné"
+msgstr "Žádný"
 
 #: plugins/rdp/rdp_plugin.c:3070
 msgid "Auto-detect"
@@ -3282,13 +3253,13 @@ msgid ""
 "  • >= 7065: Windows 8 and newer: SCardGetReaderIcon(),\n"
 "    SCardGetDeviceTypeId()"
 msgstr ""
-"Použito např. terminálovými službami v SmartCard kanálu pro rozlišení "
+"Použito např. terminálovými službami v kanálu čipové karty pro rozlišení "
 "schopností klienta:\n"
 "  • < 4034: Windows XP základní smartcard funkce\n"
 "  • 4034-7064: Windows Vista/7: SCardReadCache(), SCardWriteCache(), "
 "SCardGetTransmitCount()\n"
-"  • >= 7065: Windows 8 a novější: SCardGetReaderIcon(), "
-"SCardGetDeviceTypeId()"
+"  • >= 7065: Windows 8 a novější: SCardGetReaderIcon(), SCardGetDeviceTypeId"
+"()"
 
 #: plugins/rdp/rdp_plugin.c:3161
 msgid ""
@@ -3301,22 +3272,14 @@ msgid ""
 "  • sys:alsa"
 msgstr ""
 "Volby pro přesměrování zvukového výstupu:\n"
-"  • [sys:<sys>,][dev:<dev>,][format:<formát>,][rate:<bit_rychlost>,]\n"
+"  • [sys:<sys>,][dev:<zaříz>,][format:<formát>,][rate:<bit_rychlost>,]\n"
 "    [channel:<kanál>] Audio input (microphone)\n"
+"  • sys:pulse\n"
 "  • format:1\n"
 "  • sys:oss,dev:1,format:1\n"
 "  • sys:alsa"
 
 #: plugins/rdp/rdp_plugin.c:3170
-#, fuzzy
-#| msgid ""
-#| "Options for redirection of audio ouput:\n"
-#| "  • [sys:<sys>,][dev:<dev>,][format:<format>,][rate:<rate>,]\n"
-#| "    [channel:<channel>] Audio output\n"
-#| "  • sys:pulse\n"
-#| "  • format:1\n"
-#| "  • sys:oss,dev:1,format:1\n"
-#| "  • sys:alsa"
 msgid ""
 "Options for redirection of audio output:\n"
 "  • [sys:<sys>,][dev:<dev>,][format:<format>,][rate:<rate>,]\n"
@@ -3327,14 +3290,14 @@ msgid ""
 "  • sys:alsa"
 msgstr ""
 "Volby pro přesměrování zvukového výstupu:\n"
-"  • [sys:<sys>,][dev:<dev>,][format:<formát>,][rate:<bit_rychlost>,]\n"
-"    [channel:<kanál>] Audio input (microphone)\n"
+"  • [sys:<sys>,][dev:<zaříz>,][format:<formát>,][rate:<bit_rychlost>,]\n"
+"    [channel:<kanál>] Audio output\n"
+"  • sys:pulse\n"
 "  • format:1\n"
 "  • sys:oss,dev:1,format:1\n"
 "  • sys:alsa"
 
 #: plugins/rdp/rdp_plugin.c:3180
-#, fuzzy
 msgid ""
 "Options for redirection of USB device:\n"
 "  • [dbg,][id:<vid>:<pid>#…,][addr:<bus>:<addr>#…,][auto]\n"
@@ -3358,7 +3321,6 @@ msgstr ""
 "Nejvyšší možná hodnota je 600000 ms (10 minut)\n"
 
 #: plugins/rdp/rdp_plugin.c:3191
-#, fuzzy
 msgid ""
 "Performance optimisations based on the network connection type:\n"
 "Using auto-detection is advised.\n"
@@ -3366,10 +3328,9 @@ msgid ""
 msgstr ""
 "Optimalizace výkonu na základě typu síťového připojení:\n"
 "Doporučujeme používat automatickou detekci.\n"
-"Pokud \"Auto-detect\" selže, vyberte nejvhodnější možnost ze seznamu.\n"
+"Pokud se „Auto-detect“ nezdaří, vyberte nejvhodnější možnost ze seznamu.\n"
 
 #: plugins/rdp/rdp_plugin.c:3196
-#, fuzzy
 msgid ""
 "Comma-separated list of monitor IDs and desktop orientations:\n"
 "  • [<id>:<orientation-in-degrees>,]\n"
@@ -3382,19 +3343,19 @@ msgid ""
 "  • 270 (portrait flipped)\n"
 "\n"
 msgstr ""
-"Seznam ID monitorů a orientací pracovní plochy oddělený čárkami:\n"
+"Čárkou oddělovaný seznam identifikátorů monitorů a orientací pracovní "
+"plochy:\n"
 "  - [<id>:<orientace ve stupních>,]\n"
 "  - 0,1,2,3\n"
 "  - 0:270,1:90\n"
 "Orientace se udává ve stupních, platné hodnoty jsou:\n"
 "  - 0 (na šířku)\n"
 "  - 90 (na výšku)\n"
-"  - 180 (na šířku převrácené)\n"
-"  - 270 (obrácená na výšku)\n"
+"  - 180 (převrácené na šířku)\n"
+"  - 270 (převrácené na výšku)\n"
 "\n"
 
 #: plugins/rdp/rdp_plugin.c:3208
-#, fuzzy
 msgid ""
 "Redirect directory <path> as named share <name>.\n"
 "  • <name>,<fullpath>[;<name>,<fullpath>[;…]]\n"
@@ -3405,13 +3366,15 @@ msgid ""
 "  • hotplug,*\n"
 "\n"
 msgstr ""
-"Přesměrování adresáře <cesta> jako pojmenované sdílené složky <název>.\n"
-"  - <název>,<plnácesta>[;<název>,<plnácesta>[;...]]\n"
-"  - MyHome,/home/remminer\n"
-"  - /home/remminer\n"
-"  - MyHome,/home/remminer;SomePath,/path/to/somepath\n"
+"Přesměrovat složku <popis-umisteni> jako pojmenované sdílené složky <název>"
+".  • \n"
+"  •  <název>,<uplny-popis-umisteni>[;<název>,<uplny-popis-umisteni>[;…]]\n"
+"  •  MojeDomovskaSlozka,/home/remminer\n"
+"  •  /home/remminer\n"
+"  •  MojeDomovskaSlozka,/home/remminer;NejakoUmisteni,/popis/nejakeho/"
+"umisteni\n"
 "Podpora Hotplug je povolena pomocí:\n"
-"  - hotplug,*\n"
+"  •  hotplug,*\n"
 "\n"
 
 #: plugins/rdp/rdp_plugin.c:3241
@@ -3498,9 +3461,8 @@ msgid "FreeRDP log filters"
 msgstr "Filtry záznamu událostí ve FreeRDP"
 
 #: plugins/rdp/rdp_plugin.c:3274
-#, fuzzy
 msgid "tag:level[,tag:level[,…]]"
-msgstr "tag:level[,tag:level[,...]]"
+msgstr "tag:level[,tag:level[,…]]"
 
 #: plugins/rdp/rdp_plugin.c:3275
 msgid "Audio output mode"
@@ -3556,13 +3518,12 @@ msgid "Override printer drivers"
 msgstr "Přebít tiskové ovladače"
 
 #: plugins/rdp/rdp_plugin.c:3289
-#, fuzzy
 msgid ""
 "\"Samsung_CLX-3300_Series\":\"Samsung CLX-3300 Series PS\";\"Canon MF410\":"
 "\"Canon MF410 Series UFR II\""
 msgstr ""
-"\"Samsung_CLX-3300_Series\":\"Samsung CLX-3300 Series PS\";\"Canon MF410\":"
-"\"Canon MF410 Series UFR II\""
+"\"Samsung_CLX-3300_Series\":\"Samsung CLX-3300 Series PS\";\"Canon "
+"MF410\":\"Canon MF410 Series UFR II\""
 
 #: plugins/rdp/rdp_plugin.c:3291
 msgid "Local serial name"
@@ -3736,7 +3697,7 @@ msgstr "Zapnout podporu webových soketů brány"
 
 #: plugins/rdp/rdp_plugin.c:3333
 msgid "Update framebuffer even when not visible"
-msgstr "Aktualizovat framebuffer i když není viditelný"
+msgstr "Aktualizovat vyrovnávací paměť snímků i když není viditelné"
 
 #: plugins/rdp/rdp_plugin.c:3334
 msgid "Allow sending empty password"
