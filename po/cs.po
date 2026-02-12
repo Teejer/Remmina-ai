@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-02-12 20:09+0000\n"
+"PO-Revision-Date: 2026-02-12 22:09+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/remmina/remmina/"
 "cs/>\n"
@@ -3877,7 +3877,7 @@ msgstr "Asynchronní vykonání"
 
 #: plugins/exec/exec_plugin.c:309
 msgid "Kill process on disconnect"
-msgstr "Při odpojení zabít proces"
+msgstr "Při odpojení vynutit ukončení procesu"
 
 #: plugins/gvnc/gvnc_plugin_config.h:40
 msgid "Remmina VNC plugin for GNOME and KVM"
@@ -3946,7 +3946,8 @@ msgid ""
 "If the server should try to share the desktop by leaving other clients "
 "connected"
 msgstr ""
-"Pokud se server pokusí sdílet plochu tím, že nechá připojené další klienty"
+"Zda se server má pokusit nasdílet plochu tím, že nechá připojené další "
+"klienty"
 
 #: plugins/gvnc/gvnc_plugin.c:858
 msgid "Send Ctrl+Alt+_Del"
@@ -3958,51 +3959,51 @@ msgstr "Odeslat Ctrl+Alt+_Backspace"
 
 #: plugins/gvnc/gvnc_plugin.c:860
 msgid "Send Ctrl+Alt+_F1"
-msgstr "Poslat Ctrl+Alt+_F1"
+msgstr "Odeslat Ctrl+Alt+_F1"
 
 #: plugins/gvnc/gvnc_plugin.c:861
 msgid "Send Ctrl+Alt+_F2"
-msgstr "Poslat Ctrl+Alt+_F2"
+msgstr "Odeslat Ctrl+Alt+_F2"
 
 #: plugins/gvnc/gvnc_plugin.c:862
 msgid "Send Ctrl+Alt+_F3"
-msgstr "Poslat Ctrl+Alt+_F3"
+msgstr "Odeslat Ctrl+Alt+_F3"
 
 #: plugins/gvnc/gvnc_plugin.c:863
 msgid "Send Ctrl+Alt+_F4"
-msgstr "Poslat Ctrl+Alt+_F4"
+msgstr "Odeslat Ctrl+Alt+_F4"
 
 #: plugins/gvnc/gvnc_plugin.c:864
 msgid "Send Ctrl+Alt+_F5"
-msgstr "Poslat Ctrl+Alt+_F5"
+msgstr "Odeslat Ctrl+Alt+_F5"
 
 #: plugins/gvnc/gvnc_plugin.c:865
 msgid "Send Ctrl+Alt+_F6"
-msgstr "Poslat Ctrl+Alt+_F6"
+msgstr "Odeslat Ctrl+Alt+_F6"
 
 #: plugins/gvnc/gvnc_plugin.c:866
 msgid "Send Ctrl+Alt+_F7"
-msgstr "Poslat Ctrl+Alt+_F7"
+msgstr "Odeslat Ctrl+Alt+_F7"
 
 #: plugins/gvnc/gvnc_plugin.c:867
 msgid "Send Ctrl+Alt+_F8"
-msgstr "Poslat Ctrl+Alt+_F8"
+msgstr "Odeslat Ctrl+Alt+_F8"
 
 #: plugins/gvnc/gvnc_plugin.c:868
 msgid "Send Ctrl+Alt+_F9"
-msgstr "Poslat Ctrl+Alt+_F9"
+msgstr "Odeslat Ctrl+Alt+_F9"
 
 #: plugins/gvnc/gvnc_plugin.c:869
 msgid "Send Ctrl+Alt+_F10"
-msgstr "Poslat Ctrl+Alt+_F10"
+msgstr "Odeslat Ctrl+Alt+_F10"
 
 #: plugins/gvnc/gvnc_plugin.c:870
 msgid "Send Ctrl+Alt+_F11"
-msgstr "Poslat Ctrl+Alt+_F11"
+msgstr "Odeslat Ctrl+Alt+_F11"
 
 #: plugins/gvnc/gvnc_plugin.c:871
 msgid "Send Ctrl+Alt+_F12"
-msgstr "Poslat Ctrl+Alt+_F12"
+msgstr "Odeslat Ctrl+Alt+_F12"
 
 #: plugins/gvnc/gvnc_plugin.c:873
 msgid "Reboot remote host"
@@ -4135,7 +4136,6 @@ msgid "Disconnected from %s:%d via VNC"
 msgstr "Odpojeno od %s:%d prostřednictvím VNC"
 
 #: plugins/vnc/vnc_plugin.c:2092
-#, fuzzy
 msgid ""
 "Connect to VNC using a repeater:\n"
 "  • The server field must contain the repeater ID, e.g. ID:123456789\n"
@@ -4146,15 +4146,16 @@ msgid ""
 "    x11vnc -connect repeater=ID:123456789+10.10.10.12:5500"
 msgstr ""
 "Připojte se k VNC pomocí opakovače:\n"
-"  - ID:123456789.\n"
-"  - V poli repeater musí být nastavena IP adresa a port repeateru, např:\n"
+"  • Je třeba, aby kolonka obsahovala identifikátor opakovače, např. "
+"ID:123456789.\n"
+"  • Je třeba, aby v kolonce opakovač byla nastavena jeho IP adresa a port, "
+"např:\n"
 "    10.10.10.12:5901\n"
-"  - Ze vzdáleného VNC serveru se připojíte k\n"
-"    opakovače, např. pomocí x11vnc:\n"
+"  • Ze vzdáleného VNC serveru se připojíte k\n"
+"    opakovači, např. pomocí x11vnc:\n"
 "    x11vnc -connect repeater=ID:123456789+10.10.10.12:5500"
 
 #: plugins/vnc/vnc_plugin.c:2101
-#, fuzzy
 msgid ""
 "Listening for remote VNC connection:\n"
 "  • The “Listen on port” field is the port Remmina will listen to,\n"
@@ -4163,11 +4164,11 @@ msgid ""
 "    Remmina, e.g. with x11vnc:\n"
 "    x11vnc -display :0 -connect 192.168.1.36:8888"
 msgstr ""
-"Naslouchání vzdálenému připojení VNC:\n"
-"  - V poli \"Listen on port\" je uveden port, na kterém bude Remmina "
-"naslouchat,\n"
+"Očekávání vzdáleného VNC spojení:\n"
+"  • V kolonce „Očekávat na spojení na portu“ je uveden port, na kterém bude "
+"Remmina očekávat spojení,\n"
 "    např. 8888\n"
-"  - Ze vzdáleného serveru VNC se připojíte k serveru\n"
+"  • Ze vzdáleného serveru VNC se připojíte k serveru\n"
 "    Remmina, např. pomocí x11vnc:\n"
 "    x11vnc -display :0 -connect 192.168.1.36:8888"
 
@@ -4240,7 +4241,7 @@ msgstr "délka TCP_USER_TIMEOUT (sekundy)"
 
 #: plugins/vnc/vnc_plugin.c:2186
 msgid "Force tight encoding"
-msgstr "Vynutit přísnější enkódování"
+msgstr "Vynutit těsnější enkódování"
 
 #: plugins/vnc/vnc_plugin.c:2186
 msgid "Enabling this may help when the remote desktop looks scrambled"
@@ -4285,7 +4286,7 @@ msgstr "Počkejte prosím…"
 #: data/ui/remmina_key_chooser.glade:14 data/ui/remmina_key_chooser.glade:15
 #: data/ui/remmina_string_list.glade:20 data/ui/remmina_string_list.glade:137
 msgid "_Remove"
-msgstr "_Odstranit"
+msgstr "Odst_ranit"
 
 #: data/ui/remmina_key_chooser.glade:23
 msgid "Choose a new key"
@@ -4318,20 +4319,16 @@ msgstr ""
 
 #: data/ui/remmina_about.glade:32 data/ui/remmina_main.glade:429
 msgid "About"
-msgstr "O programu"
+msgstr "O aplikaci"
 
 #: data/ui/remmina_about.glade:36
-#, fuzzy
-#| msgid ""
-#| "Copyright © 2014–2023 Antenore Gatta, Giovanni Panozzo.\n"
-#| "Copyright © 2009–2014 Vic Lee\n"
-#| "More details in COPYING"
 msgid ""
 "Copyright © 2023–2024 Hiroyuki Tanaka, Sunil Bhat\n"
 "Copyright © 2014–2023 Antenore Gatta, Giovanni Panozzo\n"
 "Copyright © 2009–2014 Vic Lee\n"
 "More details in COPYING"
 msgstr ""
+"Autorská práva © 2023–2024 Hiroyuki Tanaka, Sunil Bhat\n"
 "Autorská práva © 2014–2023 Antenore Gatta, Giovanni Panozzo.\n"
 "Autorská práva © 2009–2014 Vic Lee\n"
 "Podrobnosti viz soubor COPYING"
@@ -4362,7 +4359,7 @@ msgstr "_Shodná velikost"
 
 #: data/ui/remmina_search_popover.glade:203 data/ui/remmina_search.glade:208
 msgid "Match _entire word only"
-msgstr "Shoda pouze s _celým slovem"
+msgstr "Shoda pouze s c_elým slovem"
 
 #: data/ui/remmina_search_popover.glade:220 data/ui/remmina_search.glade:225
 msgid "Match as _regular expression"
@@ -4444,7 +4441,7 @@ msgid ""
 msgstr ""
 "%p Název profilu\n"
 "%h Název serveru/IP\n"
-"%Y rok, %m měsíc, %d den, %H hodina, %M minute, %S sekunda (UTC čas)"
+"%Y rok, %m měsíc, %d den, %H hodina, %M minuta, %S sekunda (UTC čas)"
 
 #: data/ui/remmina_preferences.glade:300
 msgid ""
@@ -4645,13 +4642,12 @@ msgid "“Grab all keyboard events” status colour"
 msgstr "Stavová barva „Zachytit všechny události klávesnice“"
 
 #: data/ui/remmina_preferences.glade:952
-#, fuzzy
 msgid ""
 "Hexadecimal- or colour names (red, #ff0000).\n"
 "It changes the background colour of connection names in the Remmina "
 "connection toolbar (when in fullscreen)."
 msgstr ""
-"Hexadecimální nebo barevné názvy (červená, #ff0000).\n"
+"Šestnáctkové vyjádření nebo názvy barev (červená, #ff0000).\n"
 "Mění barvu pozadí názvů připojení na panelu nástrojů připojení Remmina (při "
 "zobrazení na celou obrazovku)."
 
@@ -4756,7 +4752,7 @@ msgstr "Začátek a konec funkcí"
 
 #: data/ui/remmina_preferences.glade:1711
 msgid "SSH log level"
-msgstr "Úroveň záznamu událostí SSH"
+msgstr "Stupeň podrobnosti záznamu událostí v SSH"
 
 #. http://man7.org/linux/man-pages/man7/tcp.7.html
 #: data/ui/remmina_preferences.glade:1782
@@ -4835,7 +4831,7 @@ msgstr "Vyžadovat pro připojení"
 
 #: data/ui/remmina_preferences.glade:1964
 msgid "Creation, editing, copying, and deletions require the Remmina password"
-msgstr "Vytváření, úpravy, kopírování a mazání vyžadují heslo Remminy"
+msgstr "Vytváření, úpravy, kopírování a mazání vyžadují heslo do Remmina"
 
 #. Creation, editing, copying, and deletions require the primary password
 #: data/ui/remmina_preferences.glade:1968
