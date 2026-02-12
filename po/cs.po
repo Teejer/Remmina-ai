@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-02-11 13:09+0000\n"
+"PO-Revision-Date: 2026-02-12 09:09+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/remmina/remmina/"
 "cs/>\n"
@@ -900,7 +900,7 @@ msgstr "Načíst znovu"
 
 #: src/remmina_ftp_client.c:782
 msgid "Refresh current folder"
-msgstr "Načíst stávající složku znovu"
+msgstr "Znovu načíst stávající složku"
 
 #: src/remmina_ftp_client.c:787
 msgid "Download from server"
@@ -962,7 +962,7 @@ msgstr "Protokol"
 
 #: src/remmina_plugin_manager.c:88
 msgid "Entry"
-msgstr "Záznam"
+msgstr "Položka"
 
 #: src/remmina_plugin_manager.c:88
 msgid "File"
@@ -982,9 +982,7 @@ msgstr "Tajemství"
 
 #: src/remmina_plugin_manager.c:88
 msgid "Language Wrapper"
-msgstr ""
-"„Obalovací vrstva pro jazyk“ je obalovací vrstva pro zásuvné moduly napsané "
-"v jiných jazycích (v tomto kontextu Python)"
+msgstr "Mezivrstva mezi program. jazyky"
 
 #: src/remmina_plugin_manager.c:790
 msgid "Plugin Download"
@@ -1022,15 +1020,16 @@ msgstr "Verze"
 
 #: src/remmina_mpchange.c:263
 msgid "The passwords do not match"
-msgstr "Do každé z kolonek pro heslo jste napsali něco jiného"
+msgstr "Je třeba, aby se text v obou kolonkách pro heslo vzájemně nelišil"
 
 #: src/remmina_mpchange.c:276
 msgid "The Gateway passwords do not match"
-msgstr "Hesla pro bránu se neshodují"
+msgstr ""
+"Je třeba, aby se text v obou kolonkách pro heslo k bráně vzájemně nelišil"
 
 #: src/remmina_mpchange.c:290
 msgid "Resetting passwords, please wait…"
-msgstr "Resetují se hesla, čekejte prosím…"
+msgstr "Resetování hesel probíhá – čekejte prosím…"
 
 #: src/remmina_mpchange.c:381
 msgid "The multi password changer requires a secrecy plugin.\n"
@@ -1109,7 +1108,7 @@ msgstr "Zadejte uživatelské jméno a heslo pro SSH."
 
 #: src/remmina_protocol_widget.c:1865 src/remmina_protocol_widget.c:1897
 msgid "Fingerprint automatically accepted"
-msgstr "Automatické přijetí otisku"
+msgstr "Otisk automaticky přijat"
 
 #. TRANSLATORS: The user is asked to verify a new SSL certificate.
 #: src/remmina_protocol_widget.c:1873
@@ -1160,7 +1159,7 @@ msgstr "Přijmout změněný certifikát?"
 #: src/remmina_protocol_widget.c:2058
 #, c-format
 msgid "Listening on port %i for an incoming %s connection…"
-msgstr "Očekává se na portu %i příchozí spojení %s…"
+msgstr "Očekává se na portu %i příchozí %s spojení…"
 
 #: src/remmina_protocol_widget.c:2083
 msgid "Could not authenticate, attempting reconnection…"
@@ -1208,7 +1207,7 @@ msgstr "Soubory se nepodařilo načíst!"
 
 #: src/remmina_main.c:1159
 msgid "Are you sure you want to delete the selected files?"
-msgstr "Opravdu chcete smazat označené soubory?"
+msgstr "Opravdu chcete označené soubory smazat?"
 
 #: src/remmina_main.c:1170
 msgid "Failed to delete files!"
@@ -1225,7 +1224,7 @@ msgstr ""
 
 #: src/remmina_main.c:1381
 msgid "RDP Files"
-msgstr "RDP Soubory"
+msgstr "Soubory RDP"
 
 #: src/remmina_main.c:1390
 msgid "Virt-Viewer Files"
@@ -1246,7 +1245,7 @@ msgstr "Vybrat profil připojení."
 
 #: src/remmina_main.c:1448
 msgid "Remmina couldn't export."
-msgstr "Remmina nemohla exportovat."
+msgstr "Aplikaci Remmina se nepodařilo provést export."
 
 #: src/remmina_main.c:1457 src/remmina_file_editor.c:2153
 msgid "_Save"
@@ -1274,11 +1273,11 @@ msgid ""
 "• unix:///path/socket.sock</big>"
 msgstr ""
 "<big>Podporované formáty\n"
-"- server\n"
-"- server[:port]\n"
+"• server\n"
+"• server[:port]\n"
 "Další formáty VNC\n"
-"- ID:ID číslo opakovače\n"
-"- unix:///path/socket.sock</big>"
+"• ID:identif. číslo opakovače\n"
+"• unix:///popis/umisteni/socket.sock</big>"
 
 #: src/remmina_file_editor.c:70
 msgid ""
@@ -1316,9 +1315,9 @@ msgid ""
 "• username@server[:port] (SSH protocol only)</big>"
 msgstr ""
 "<big>Podporované formáty\n"
-"- server\n"
-"- server[:port]\n"
-"- username@server[:port] (pouze protokol SSH)</big>"
+"• server\n"
+"• server[:port]\n"
+"• uzivatelske_jmeno@server[:port] (pouze protokol SSH)</big>"
 
 #: src/remmina_file_editor.c:174
 msgid "Input is invalid."
@@ -1326,7 +1325,7 @@ msgstr "Zadání není platné."
 
 #: src/remmina_file_editor.c:252
 msgid "Choose a Remote Desktop Server"
-msgstr "Vybrat RDP server"
+msgstr "Vyberte RDP server"
 
 #: src/remmina_file_editor.c:497
 #, c-format
@@ -1339,7 +1338,7 @@ msgstr "Rozlišení"
 
 #: src/remmina_file_editor.c:569 src/remmina_pref_dialog.c:98
 msgid "Configure the available resolutions"
-msgstr "Nastavit dostupná rozlišení"
+msgstr "Nastavte rozlišení, která budou k dispozici"
 
 #: src/remmina_file_editor.c:605
 msgid "Resolution"
@@ -1375,7 +1374,7 @@ msgstr "Otevřít nastavení ssh tunelu"
 
 #: src/remmina_file_editor.c:970
 msgid "Remmina Files"
-msgstr "Remmina Soubory"
+msgstr "Soubory Remmina"
 
 #: src/remmina_file_editor.c:973
 msgid "ssh_export.remssh"
@@ -1431,7 +1430,7 @@ msgstr "Neočekávané odpojení"
 
 #: src/remmina_file_editor.c:1463
 msgid "Keep window from closing if not disconnected by Remmina"
-msgstr "Bránit v zavření okna, pokud se neodpojila Remmina"
+msgstr "Bránit v zavření okna, pokud se neodpojeno ze strany aplikace Remmina"
 
 #: src/remmina_file_editor.c:1484
 msgid "SSH Tunnel"
