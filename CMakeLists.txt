@@ -416,7 +416,9 @@ if(NOT GTK3_FOUND)
 endif()
 include_directories(SYSTEM ${GTK3_INCLUDE_DIRS})
 
-pkg_check_modules(wayland-client wayland-client)
+if(NOT APPLE)
+  pkg_check_modules(wayland-client wayland-client)
+endif()
 if(wayland-client_FOUND)
   set(GTK_LIBRARIES
       ${GTK3_LIBRARY}
@@ -568,8 +570,13 @@ else()
   message(STATUS "Icons cache won't be generated automatically")
 endif()
 
-option(WITH_UPDATE_DESKTOP_DB
-       "Generate desktop files MIME types cache database" ON)
+if(APPLE)
+  option(WITH_UPDATE_DESKTOP_DB
+         "Generate desktop files MIME types cache database" OFF)
+else()
+  option(WITH_UPDATE_DESKTOP_DB
+         "Generate desktop files MIME types cache database" ON)
+endif()
 if(WITH_UPDATE_DESKTOP_DB)
   message(STATUS "Desktop MIME types cache database enabled")
   add_definitions(-DWITH_UPDATE_DESKTOP_DB)

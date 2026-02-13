@@ -233,7 +233,12 @@ if(sodium_FOUND)
   target_link_libraries(remmina sodium)
 endif()
 
-option(HAVE_LIBAPPINDICATOR "Build with support for status icon. Appindicator is required" ON)
+# Default to OFF on macOS since we have native status item support
+if(APPLE)
+    option(HAVE_LIBAPPINDICATOR "Build with support for status icon. Appindicator is required" OFF)
+else()
+    option(HAVE_LIBAPPINDICATOR "Build with support for status icon. Appindicator is required" ON)
+endif()
 if(GTK3_FOUND)
     if(HAVE_LIBAPPINDICATOR)
         find_required_package(APPINDICATOR)
