@@ -1846,9 +1846,8 @@ msgstr ""
 "Чтобы обновить имя пользователя и пароль, а также установить другой режим "
 "разрешения профиля соединения Remmina, используйте:\n"
 "\n"
-"\techo \"имя\\n"
-"aпароль\" | remmina --update-profile /ПУТЬ/ДО/ФАЙЛА.remmina --set-option "
-"имя --set-option resolution_mode=2 --set-option пароль\n"
+"\techo \"имя\\naпароль\" | remmina --update-profile /ПУТЬ/ДО/ФАЙЛА.remmina --"
+"set-option имя --set-option resolution_mode=2 --set-option пароль\n"
 
 #. TRANSLATORS: The placeholder %s is a directory path
 #: src/remmina_sftp_client.c:176

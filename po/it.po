@@ -1822,9 +1822,9 @@ msgstr ""
 "Per aggiornare nome utente e password e impostare una diversa modalità di "
 "risoluzione di un profilo di connessione Remmina, utilizzare:\n"
 "\n"
-"\techo \"nomeutente\\n"
-"password\" | remmina --update-profile /PERCORSO/DEL/FILE/NOME.remmina --set-"
-"option username --set-option resolution_mode = 2 --set-option password\n"
+"\techo \"nomeutente\\npassword\" | remmina --update-profile /PERCORSO/DEL/"
+"FILE/NOME.remmina --set-option username --set-option resolution_mode = 2 --"
+"set-option password\n"
 
 #. TRANSLATORS: The placeholder %s is a directory path
 #: src/remmina_sftp_client.c:176
@@ -2301,7 +2301,8 @@ msgstr "File SPICE vv"
 
 #: plugins/spice/spice_plugin.c:895
 msgid "Export connection in virt-viewer .vv file format"
-msgstr "Esporta la connessione nel formato file .vv del visualizzatore virtuale"
+msgstr ""
+"Esporta la connessione nel formato file .vv del visualizzatore virtuale"
 
 #: plugins/x2go/x2go_plugin.c:71
 #, c-format

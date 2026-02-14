@@ -1821,9 +1821,9 @@ msgstr ""
 "Оновити користувача і пароль і встановити інших режим роздільної здатності "
 "профілю з'єднання Remmina:\n"
 "\n"
-"\techo \"користувач\\n"
-"пароль\" | remmina --update-profile /ШЛЯХ/ДО/ФАЙЛА.remmina --set-option "
-"username --set-option resolution_mode=2 --set-option password\n"
+"\techo \"користувач\\nпароль\" | remmina --update-profile /ШЛЯХ/ДО/"
+"ФАЙЛА.remmina --set-option username --set-option resolution_mode=2 --set-"
+"option password\n"
 
 #. TRANSLATORS: The placeholder %s is a directory path
 #: src/remmina_sftp_client.c:176

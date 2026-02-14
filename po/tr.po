@@ -1810,9 +1810,9 @@ msgstr ""
 "Remmina bağlantı profiline başka çözünürlük kipi belirlemek, kullanıcı adı "
 "ve parola güncellemek için:\n"
 "\n"
-"\techo \"kullaniciadi\\n"
-"parola\" | remmina --update-profile /KONUM/YOL/ornek.remmina --set-option "
-"username --set-option resolution_mode=2 --set-option password\n"
+"\techo \"kullaniciadi\\nparola\" | remmina --update-profile /KONUM/YOL/"
+"ornek.remmina --set-option username --set-option resolution_mode=2 --set-"
+"option password\n"
 
 #. TRANSLATORS: The placeholder %s is a directory path
 #: src/remmina_sftp_client.c:176

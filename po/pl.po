@@ -1827,9 +1827,9 @@ msgstr ""
 "Aby zaktualizować nazwę użytkownika i hasło oraz ustawić inny tryb "
 "rozdzielczości profilu połączenia Remmina, użyj:\n"
 "\n"
-"\techo \"username\\n"
-"apassword\" | remmina --update-profile /PATH/TO/FOO.remmina --set-option "
-"username --set-option resolution_mode=2 --set-option password\n"
+"\techo \"username\\napassword\" | remmina --update-profile /PATH/TO/"
+"FOO.remmina --set-option username --set-option resolution_mode=2 --set-"
+"option password\n"
 
 #. TRANSLATORS: The placeholder %s is a directory path
 #: src/remmina_sftp_client.c:176
@@ -4650,7 +4650,8 @@ msgstr "Wyświetlaj komunikaty po lewej stronie ekranu"
 
 #: data/ui/remmina_preferences.glade:883
 msgid "If supported, launch in fullscreen by default"
-msgstr "Jeśli jest to obsługiwane, uruchamiaj domyślnie w trybie pełnoekranowym"
+msgstr ""
+"Jeśli jest to obsługiwane, uruchamiaj domyślnie w trybie pełnoekranowym"
 
 #: data/ui/remmina_preferences.glade:900
 msgid "If supported, launch with dynamic resolution by default"

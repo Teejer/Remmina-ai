@@ -1896,9 +1896,9 @@ msgstr ""
 "Pour modifier le nom d’utilisateur, le mot de passe et le mode de résolution "
 "d’un profil de connexion Remmina :\n"
 "\n"
-"\techo \"autreUtilisateur\\n"
-"MotDePasse\" | remmina --update-profile /CHEMIN/VERS/NOMPROFIL.remmina --set-"
-"option username --set-option resolution_mode=2 --set-option password\n"
+"\techo \"autreUtilisateur\\nMotDePasse\" | remmina --update-profile /CHEMIN/"
+"VERS/NOMPROFIL.remmina --set-option username --set-option resolution_mode=2 "
+"--set-option password\n"
 
 #. TRANSLATORS: The placeholder %s is a directory path
 #: src/remmina_sftp_client.c:176

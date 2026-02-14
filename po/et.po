@@ -1804,9 +1804,9 @@ msgstr ""
 "Kasutajanime ja salasõna uuendamiseks ning Remmina ühendusprofiili erineva "
 "eraldusrežiimi seadmiseks kasuta:\n"
 "\n"
-"\techo \"username\\n"
-"apassword\" | remmina --update-profile /PATH/TO/FOO.remmina --set-option "
-"username --set-option resolution_mode=2 --set-option password\n"
+"\techo \"username\\napassword\" | remmina --update-profile /PATH/TO/"
+"FOO.remmina --set-option username --set-option resolution_mode=2 --set-"
+"option password\n"
 
 #. TRANSLATORS: The placeholder %s is a directory path
 #: src/remmina_sftp_client.c:176
@@ -4164,8 +4164,8 @@ msgid ""
 "  • 16:9 corresponds roughly to 1.7777, 4:3 corresponds roughly to 1.333\n"
 "  • The default value of 0 does not enforce any aspect ratio"
 msgstr ""
-"Kui dünaamiline resolutsioon on kasutusel, siis lukusta küljesuhe (kuvasuhe)"
-":\n"
+"Kui dünaamiline resolutsioon on kasutusel, siis lukusta küljesuhe "
+"(kuvasuhe):\n"
 "\n"
 "  • Palun sisesta küljesuhe kümnendarvuna, nt. 1.777\n"
 "  • 16:9 vaste on umbkaudu 1.7777, 4:3 vaste on umbkaudu 1.333\n"
@@ -4613,7 +4613,8 @@ msgstr "Kui see on toetatud, siis vaikimisi käivita täisekraanivaates"
 
 #: data/ui/remmina_preferences.glade:900
 msgid "If supported, launch with dynamic resolution by default"
-msgstr "Kui see on toetatud, siis vaikimisi käivita dünaamilise resolutsiooniga"
+msgstr ""
+"Kui see on toetatud, siis vaikimisi käivita dünaamilise resolutsiooniga"
 
 #: data/ui/remmina_preferences.glade:917
 msgid "Multimonitor: performs adjustments on the toolbar position"

@@ -1805,9 +1805,9 @@ msgstr ""
 "To update the username and password and set a different resolution mode of a "
 "Remmina connection profile, use:\n"
 "\n"
-"\techo \"username\\n"
-"apassword\" | remmina --update-profile /PATH/TO/FOO.remmina --set-option "
-"username --set-option resolution_mode=2 --set-option password\n"
+"\techo \"username\\napassword\" | remmina --update-profile /PATH/TO/"
+"FOO.remmina --set-option username --set-option resolution_mode=2 --set-"
+"option password\n"
 
 #. TRANSLATORS: The placeholder %s is a directory path
 #: src/remmina_sftp_client.c:176
@@ -3817,7 +3817,8 @@ msgstr "FreeRDP auth-pkg-list"
 
 #: plugins/rdp/rdp_settings.c:743
 msgid "Authentication package filter(comma-separated list, use '!' to exclude)"
-msgstr "Authentication package filter(comma-separated list, use '!' to exclude)"
+msgstr ""
+"Authentication package filter(comma-separated list, use '!' to exclude)"
 
 #: plugins/tool_hello_world/plugin_config.h:40
 msgid "Hello, World!"
