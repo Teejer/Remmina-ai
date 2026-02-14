@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-02-12 22:09+0000\n"
+"PO-Revision-Date: 2026-02-14 11:09+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/remmina/remmina/"
 "cs/>\n"
@@ -1237,11 +1237,11 @@ msgstr "Všechny Soubory"
 #: src/remmina_main.c:1405 src/remmina_main.c:1406
 #: src/remmina_file_editor.c:962 data/ui/remmina_main.glade:320
 msgid "Import"
-msgstr "Naimportovat"
+msgstr "Import"
 
 #: src/remmina_main.c:1439
 msgid "Select the connection profile."
-msgstr "Vybrat profil připojení."
+msgstr "Vyberte profil připojení."
 
 #: src/remmina_main.c:1448
 msgid "Remmina couldn't export."
@@ -3128,7 +3128,7 @@ msgstr "Střední"
 #: plugins/rdp/rdp_plugin.c:3061 plugins/rdp/rdp_settings.c:313
 #: plugins/vnc/vnc_plugin.c:2084
 msgid "Good"
-msgstr "Dobré"
+msgstr "Dobrá"
 
 #: plugins/rdp/rdp_plugin.c:3062 plugins/rdp/rdp_settings.c:315
 #: plugins/vnc/vnc_plugin.c:2085
@@ -3137,7 +3137,7 @@ msgstr "Nejlepší (nejpomalejší)"
 
 #: plugins/rdp/rdp_plugin.c:3069 data/ui/remmina_preferences.glade:724
 msgid "None"
-msgstr "Žádný"
+msgstr "Žádné"
 
 #: plugins/rdp/rdp_plugin.c:3070
 msgid "Auto-detect"
@@ -3778,7 +3778,7 @@ msgstr "Přetahování okna"
 
 #: plugins/rdp/rdp_settings.c:558
 msgid "Menu animation"
-msgstr "Animace nabídky"
+msgstr "Animace nabídek"
 
 #: plugins/rdp/rdp_settings.c:566
 msgid "Theme"
@@ -4286,7 +4286,7 @@ msgstr "Počkejte prosím…"
 #: data/ui/remmina_key_chooser.glade:14 data/ui/remmina_key_chooser.glade:15
 #: data/ui/remmina_string_list.glade:20 data/ui/remmina_string_list.glade:137
 msgid "_Remove"
-msgstr "Odst_ranit"
+msgstr "Odstranit"
 
 #: data/ui/remmina_key_chooser.glade:23
 msgid "Choose a new key"
@@ -4543,7 +4543,7 @@ msgstr "Výchozí režim zobrazení"
 
 #: data/ui/remmina_preferences.glade:690
 msgid "Automatic"
-msgstr "Automaticky"
+msgstr "Automatický"
 
 #: data/ui/remmina_preferences.glade:691
 msgid "Scrolled window"
@@ -4583,7 +4583,7 @@ msgstr "Špička"
 
 #: data/ui/remmina_preferences.glade:759
 msgid "Hidden"
-msgstr "Skryté"
+msgstr "Skrytá"
 
 #: data/ui/remmina_preferences.glade:761
 msgid "Minimal"
@@ -5189,7 +5189,7 @@ msgstr "Ladění"
 
 #: data/ui/remmina_main.glade:330
 msgid "Export"
-msgstr "Exportovat"
+msgstr "Export"
 
 #: data/ui/remmina_main.glade:349
 msgid "Report Bug"
