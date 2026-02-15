@@ -12,13 +12,14 @@
 # Aditya Rahman <adityarahman032@gmail.com>, 2021.
 # Muhammad Khuirul Huda <hudah2102@gmail.com>, 2023.
 # DzEN/DzEN <dandyoctavian@gmail.com>, 2024.
+# Arif Budiman <arifpedia@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2024-09-01 09:09+0000\n"
-"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"PO-Revision-Date: 2026-02-15 13:09+0000\n"
+"Last-Translator: Arif Budiman <arifpedia@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/remmina/"
 "remmina/id/>\n"
 "Language: id\n"
@@ -26,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.8-dev\n"
+"X-Generator: Weblate 5.16-dev\n"
 "X-Launchpad-Export-Date: 2014-04-10 15:03+0000\n"
 
 #: src/remmina_icon.c:143
@@ -225,7 +226,7 @@ msgstr "Tutup"
 
 #: src/remmina_message_panel.c:255
 msgid "Do you accept?"
-msgstr ""
+msgstr "Apakah Anda menerima?"
 
 #: src/remmina_message_panel.c:261 src/remmina_message_panel.c:270
 msgid "Yes"
@@ -376,10 +377,8 @@ msgid "Kerberos (GSSAPI)"
 msgstr "Kerberos (GSSAPI)"
 
 #: src/remmina_ssh_plugin.c:1501
-#, fuzzy
-#| msgid "Keyboard type (auto)"
 msgid "Keyboard Interactive"
-msgstr "Tipe papan tik (otomatis)"
+msgstr "Interaktif Keyboard"
 
 #: src/remmina_ssh_plugin.c:1576 data/ui/remmina_main.glade:178
 msgid "Copy"
@@ -549,21 +548,19 @@ msgstr "Pemeriksaan ketat kunci host"
 
 #: src/remmina_ssh_plugin.c:1657
 msgid "Copy text on selection"
-msgstr ""
+msgstr "Salin teks saat dipilih"
 
 #: src/remmina_ssh_plugin.c:1658
 msgid "Allow keys using ssh-rsa (insecure)"
-msgstr ""
+msgstr "Izinkan kunci menggunakan ssh-rsa (tidak aman)"
 
 #: src/remmina_ssh_plugin.c:1678
 msgid "SSH - Secure Shell"
 msgstr "SSH - Secure Shell"
 
 #: src/remmina_ssh_plugin.c:1708
-#, fuzzy
-#| msgid "Terminal"
 msgid "Local Terminal"
-msgstr "Terminal"
+msgstr "Terminal Lokal"
 
 #. TRANSLATORS: This is a message that pops up when an external Remmina plugin tries to set the window resolution using a legacy parameter.
 #. TRANSLATORS: This is a message that pop-up when an external Remmina plugin tries to set the windows resolution using a legacy parameter.
@@ -1206,10 +1203,8 @@ msgid "Are you sure you want to delete “%s”?"
 msgstr "Apakah Anda yakin ingin menghapus \"%s\"?"
 
 #: src/remmina_main.c:1088
-#, fuzzy
-#| msgid "Failed to delete files!"
 msgid "Failed to load files!"
-msgstr "Gagal menghapus berkas!"
+msgstr "Gagal memuat file!"
 
 #: src/remmina_main.c:1159
 msgid "Are you sure you want to delete the selected files?"
@@ -1234,7 +1229,7 @@ msgstr "Berkas RDP"
 
 #: src/remmina_main.c:1390
 msgid "Virt-Viewer Files"
-msgstr ""
+msgstr "File Virt-Viewer"
 
 #: src/remmina_main.c:1395
 msgid "All Files"
@@ -1368,27 +1363,23 @@ msgstr "Mode Bantuan"
 
 #: src/remmina_file_editor.c:957
 msgid "Save to..."
-msgstr ""
+msgstr "Simpan ke..."
 
 #: src/remmina_file_editor.c:958
-#, fuzzy
-#| msgid "_Save"
 msgid "Save"
-msgstr "_Simpan"
+msgstr "Simpan"
 
 #: src/remmina_file_editor.c:961
 msgid "Open ssh tunnel config"
-msgstr ""
+msgstr "Buka konfigurasi tunnel ssh"
 
 #: src/remmina_file_editor.c:970
-#, fuzzy
-#| msgid "Remmina Kiosk"
 msgid "Remmina Files"
-msgstr "Kios Remmina"
+msgstr "File Remmina"
 
 #: src/remmina_file_editor.c:973
 msgid "ssh_export.remssh"
-msgstr ""
+msgstr "ssh_export.remssh"
 
 #: src/remmina_file_editor.c:1288
 msgid "Keyboard mapping"
@@ -1461,7 +1452,7 @@ msgstr "Server yang sama di port %i"
 
 #: src/remmina_file_editor.c:1527
 msgid "Command arguments"
-msgstr ""
+msgstr "Argumen perintah"
 
 #: src/remmina_file_editor.c:1528
 msgid ""
@@ -1471,6 +1462,11 @@ msgid ""
 "Example: <-l username -p port>\n"
 "<-l user localhost> would not set localhost as there is no flag"
 msgstr ""
+"Mengesampingkan semua opsi lainnya\n"
+"Semua opsi mungkin tidak didukung\n"
+"Hanya menerima pasangan flag-argumen\n"
+"Contoh: <-l username -p port>\n"
+"<-l user localhost> tidak akan mengatur localhost karena tidak ada flag"
 
 #: src/remmina_file_editor.c:1559 plugins/rdp/rdp_plugin.c:3286
 msgid "Start-up path"
@@ -1485,24 +1481,20 @@ msgid "SSH private key file"
 msgstr "Berkas kunci privat SSH"
 
 #: src/remmina_file_editor.c:1640
-#, fuzzy
-#| msgid "SSH Proxy Command"
 msgid "SSH Command"
-msgstr "Perintah Proksi SSH"
+msgstr "Perintah SSH"
 
 #: src/remmina_file_editor.c:1644
-#, fuzzy
-#| msgid "Startup program"
 msgid "Startup command"
-msgstr "Program pembuka"
+msgstr "Perintah awal"
 
 #: src/remmina_file_editor.c:1651
 msgid "Export ssh tunnel settings"
-msgstr ""
+msgstr "Ekspor pengaturan tunnel ssh"
 
 #: src/remmina_file_editor.c:1657
 msgid "Import ssh tunnel settings"
-msgstr ""
+msgstr "Impor pengaturan tunnel ssh"
 
 #: src/remmina_file_editor.c:1692
 msgid "Basic"
@@ -1599,18 +1591,14 @@ msgstr "Tampilkan 'Tentang'"
 
 #. TRANSLATORS: Shown in terminal. Do not use characters that may be not supported on a terminal
 #: src/remmina.c:104
-#, fuzzy
-#| msgid ""
-#| "Connect either to a desktop described in a file (.remmina or a filetype "
-#| "supported by a plugin) or a supported URI (RDP, VNC, SSH or SPICE)"
 msgid ""
 "Connect either to a desktop described in a file (.remmina or a filetype "
 "supported by a plugin) or a supported URI (RDP, VNC, SSH, HTTP, HTTPS or "
 "SPICE)"
 msgstr ""
-"Menyambung ke desktop yang dijelaskan dalam berkas (.remmina atau tipe yang "
-"didukung oleh pengaya) atau suatu URI yang didukung (RDP, VNC, SSH, atau "
-"SPICE)"
+"Hubungkan baik ke desktop yang dijelaskan dalam file (.remmina atau jenis "
+"file yang didukung oleh plugin) atau URI yang didukung (RDP, VNC, SSH, HTTP, "
+"HTTPS atau SPICE)"
 
 #: src/remmina.c:104 src/remmina.c:106 src/remmina.c:108
 msgid "FILE"
@@ -1758,39 +1746,7 @@ msgid "- or protocol://username:encryptedpassword@host:port"
 msgstr "- atau protocol://username:encryptedpassword@host:port"
 
 #: src/remmina.c:448
-#, fuzzy, c-format
-#| msgid ""
-#| "Examples:\n"
-#| "To connect using an existing connection profile, use:\n"
-#| "\n"
-#| "\tremmina -c FILE.remmina\n"
-#| "\n"
-#| "To quick connect using a URI:\n"
-#| "\n"
-#| "\tremmina -c rdp://username@server\n"
-#| "\tremmina -c rdp://domain\\\\username@server\n"
-#| "\tremmina -c vnc://username@server\n"
-#| "\tremmina -c vnc://server?VncUsername=username\n"
-#| "\tremmina -c ssh://user@server\n"
-#| "\tremmina -c spice://server\n"
-#| "\n"
-#| "To quick connect using a URI along with an encrypted password:\n"
-#| "\n"
-#| "\tremmina -c rdp://username:encrypted-password@server\n"
-#| "\tremmina -c vnc://username:encrypted-password@server\n"
-#| "\tremmina -c vnc://server?VncUsername=username\\&VncPassword=encrypted-"
-#| "password\n"
-#| "\n"
-#| "To encrypt a password for use with a URI:\n"
-#| "\n"
-#| "\tremmina --encrypt-password\n"
-#| "\n"
-#| "To update username and password and set a different resolution mode of a "
-#| "Remmina connection profile, use:\n"
-#| "\n"
-#| "\techo \"username\\napassword\" | remmina --update-profile /PATH/TO/"
-#| "FOO.remmina --set-option username --set-option resolution_mode=2 --set-"
-#| "option password\n"
+#, c-format
 msgid ""
 "Examples:\n"
 "To connect using an existing connection profile, use:\n"
@@ -1831,11 +1787,11 @@ msgid ""
 "option password\n"
 msgstr ""
 "Contoh:\n"
-"Untuk terhubung menggunakan salah satu profil koneksi yang ada, gunakan:\n"
+"Untuk terhubung menggunakan profil koneksi yang ada, gunakan:\n"
 "\n"
 "\tremmina -c FILE.remmina\n"
 "\n"
-"Untuk terhubung secara cepat menggunakan sebuah URI:\n"
+"Untuk terhubung cepat menggunakan URI:\n"
 "\n"
 "\tremmina -c rdp://username@server\n"
 "\tremmina -c rdp://domain\\\\username@server\n"
@@ -1843,25 +1799,30 @@ msgstr ""
 "\tremmina -c vnc://server?VncUsername=username\n"
 "\tremmina -c ssh://user@server\n"
 "\tremmina -c spice://server\n"
+"\tremmina -c [https://example.com](https://example.com)\n"
 "\n"
-"Untuk terhubung secara cepat menggunakan URI dengan kata sandi yang "
-"dienskripsi:\n"
+"Untuk terhubung cepat dan memberi nama koneksi\n"
+"\n"
+"\tremmina -c ssh://user@server%connection_name\n"
+"\n"
+"Untuk terhubung cepat menggunakan URI beserta kata sandi terenkripsi:\n"
 "\n"
 "\tremmina -c rdp://username:encrypted-password@server\n"
+"\n"
 "\tremmina -c vnc://username:encrypted-password@server\n"
-"\tremmina -c vnc://server?VncUsername=username\\&VncPassword=encrypted-"
+"\tremmina -c vnc://server?VncUsername=username&VncPassword=encrypted-"
 "password\n"
 "\n"
-"Untuk mengenkripsi kata sandi yang akan digunakan pada URI:\n"
+"Untuk mengenkripsi kata sandi untuk digunakan dengan URI:\n"
 "\n"
 "\tremmina --encrypt-password\n"
 "\n"
-"Untuk memperbarui nama pengguna, kata sandi dan mode resolusi yang berbeda "
-"dengan koneksi profile Remmina, gunakan:\n"
+"Untuk memperbarui nama pengguna dan kata sandi serta mengatur mode resolusi "
+"berbeda dari profil koneksi Remmina, gunakan:\n"
 "\n"
-"\techo \"username\\napassword\" | remmina --update-profile /PATH/TO/"
-"FOO.remmina --set-option username --set-option resolution_mode=2 --set-"
-"option password\n"
+"\techo \"username\\n"
+"apassword\" | remmina --update-profile /PATH/TO/FOO.remmina --set-option "
+"username --set-option resolution_mode=2 --set-option password\n"
 
 #. TRANSLATORS: The placeholder %s is a directory path
 #: src/remmina_sftp_client.c:176
@@ -2052,10 +2013,8 @@ msgid "Toggle scaled mode"
 msgstr "Menjungkitkan mode skala"
 
 #: src/rcw.c:2586
-#, fuzzy
-#| msgid "View-only mode"
 msgid "View only mode"
-msgstr "Mode hanya lihat"
+msgstr "Mode hanya tampilan"
 
 #: src/rcw.c:2627 data/ui/remmina_preferences.glade:1271
 msgid "Switch tab pages"
@@ -2087,10 +2046,8 @@ msgid "Minimize window"
 msgstr "Minimalkan ukuran jendela"
 
 #: src/rcw.c:2701
-#, fuzzy
-#| msgid "Connect"
 msgid "Reconnect"
-msgstr "Menyambung"
+msgstr "Hubungkan kembali"
 
 #: src/rcw.c:2709 data/ui/remmina_preferences.glade:1410
 msgid "Disconnect"
@@ -2278,10 +2235,8 @@ msgid "Share folder"
 msgstr "Bagikan folder"
 
 #: plugins/spice/spice_plugin.c:727
-#, fuzzy
-#| msgid "Proxy URL"
 msgid "Proxy"
-msgstr "URL Proksi"
+msgstr "Proksi"
 
 #: plugins/spice/spice_plugin.c:728 plugins/rdp/rdp_plugin.c:3290
 msgid "USB device redirection"
@@ -2336,13 +2291,11 @@ msgstr "SPICE - Protokol Sederhana untuk Lingkungan Komputasi Independen"
 
 #: plugins/spice/spice_plugin.c:803
 msgid "SPICE vv file"
-msgstr ""
+msgstr "File vv SPICE"
 
 #: plugins/spice/spice_plugin.c:895
-#, fuzzy
-#| msgid "Export connection in Windows .rdp file format"
 msgid "Export connection in virt-viewer .vv file format"
-msgstr "Ekspor sambungan dalam format berkas .rdp Windows"
+msgstr "Ekspor koneksi dalam format file .vv virt-viewer"
 
 #: plugins/x2go/x2go_plugin.c:71
 #, c-format
@@ -2534,26 +2487,21 @@ msgstr ""
 "%s"
 
 #: plugins/x2go/x2go_plugin.c:948
-#, fuzzy, c-format
-#| msgid ""
-#| "An unknown error occured while trying to start PyHoca-CLI. Exit code: %i"
+#, c-format
 msgid ""
 "An unknown error occurred while trying to start PyHoca-CLI. Exit code: %i"
 msgstr ""
-"Terjadi kesalahan tak dikenal saat mencoba memulai PyHoca-CLI. Kode keluar: "
-"%i"
+"Kesalahan tidak diketahui terjadi saat mencoba memulai PyHoca-CLI. Kode "
+"keluar: %i"
 
 #: plugins/x2go/x2go_plugin.c:955
-#, fuzzy, c-format
-#| msgid ""
-#| "An unknown error occured while trying to start PyHoca-CLI. Exit code: %i. "
-#| "Error: '%s'"
+#, c-format
 msgid ""
 "An unknown error occurred while trying to start PyHoca-CLI. Exit code: %i. "
 "Error: '%s'"
 msgstr ""
-"Terjadi kesalahan yang tak dikenal saat mencoba memulai PyHoca-CLI. Kode "
-"keluar: %i. Galat: '%s'"
+"Kesalahan tidak diketahui terjadi saat mencoba memulai PyHoca-CLI. Kode "
+"keluar: %i. Kesalahan: '%s'"
 
 #: plugins/x2go/x2go_plugin.c:999
 msgid "Neither the 'path' nor 'dialog' parameters are initialized."
@@ -2582,10 +2530,8 @@ msgstr ""
 "%s"
 
 #: plugins/x2go/x2go_plugin.c:1235
-#, fuzzy
-#| msgid "An error occured."
 msgid "An error occurred."
-msgstr "Timbul galat."
+msgstr "Terjadi kesalahan."
 
 #: plugins/x2go/x2go_plugin.c:1330 plugins/x2go/x2go_plugin.c:1345
 msgid "Could not get session ID from session chooser dialog."
@@ -3004,10 +2950,8 @@ msgid "Disconnected from %s via RDP"
 msgstr "Terputus dari %s melalui RDP"
 
 #: plugins/rdp/rdp_plugin.c:2556
-#, fuzzy
-#| msgid "Could not authenticate using SSH certificate. %s"
 msgid "Could not authenticate using smartcard."
-msgstr "Tidak dapat mengautentikasi dengan sertifikat SSH. %s"
+msgstr "Tidak dapat mengautentikasi menggunakan smartcard."
 
 #: plugins/rdp/rdp_plugin.c:2566
 #, c-format
@@ -3073,10 +3017,9 @@ msgstr ""
 "Ubah kata sandi pengguna sebelum menyambungkan."
 
 #: plugins/rdp/rdp_plugin.c:2614
-#, fuzzy, c-format
-#| msgid "Cannot connect to the RDP server “%s”."
+#, c-format
 msgid "Failed to connect to the RDP server “%s”."
-msgstr "Tidak bisa menyambung ke server RDP \"%s\"."
+msgstr "Gagal terhubung ke server RDP \"%s\"."
 
 #: plugins/rdp/rdp_plugin.c:2617
 #, c-format
@@ -3272,18 +3215,16 @@ msgid "Every 10 min"
 msgstr "Setiap 10 menit"
 
 #: plugins/rdp/rdp_plugin.c:3114
-#, fuzzy
-#| msgid "Every 3 min"
 msgid "Every 30 sec"
-msgstr "Setiap 3 menit"
+msgstr "Setiap 30 detik"
 
 #: plugins/rdp/rdp_plugin.c:3124
 msgid "ALT_L + Tab"
-msgstr ""
+msgstr "ALT_L + Tab"
 
 #: plugins/rdp/rdp_plugin.c:3125
 msgid "Win + Tab"
-msgstr ""
+msgstr "Win + Tab"
 
 #: plugins/rdp/rdp_plugin.c:3140
 msgid "0 — Windows 7 compatible"
@@ -3459,16 +3400,12 @@ msgid "Restricted admin mode password hash"
 msgstr "Hash kata sandi mode admin terbatas"
 
 #: plugins/rdp/rdp_plugin.c:3243
-#, fuzzy
-#| msgid "Share a smart card"
 msgid "Use a smartcard for logon"
-msgstr "Berbagi pakai smart card"
+msgstr "Gunakan smartcard untuk login"
 
 #: plugins/rdp/rdp_plugin.c:3244
-#, fuzzy
-#| msgid "Enter RDP SmartCard PIN"
 msgid "Smartcard PIN"
-msgstr "Masukkan PIN SmartCard RDP"
+msgstr "PIN Smartcard"
 
 #: plugins/rdp/rdp_plugin.c:3245
 msgid "Left-handed mouse support"
@@ -3489,7 +3426,7 @@ msgstr "Fungsikan multi monitor"
 
 #: plugins/rdp/rdp_plugin.c:3248
 msgid "Force multi monitor when toggled"
-msgstr ""
+msgstr "Paksa multi monitor saat diaktifkan"
 
 #: plugins/rdp/rdp_plugin.c:3249
 msgid "Span screen over multiple monitors"
@@ -3670,16 +3607,12 @@ msgid "Move mouse when connection is idle"
 msgstr "Goyangkan tetikus saat koneksi idle"
 
 #: plugins/rdp/rdp_plugin.c:3302
-#, fuzzy
-#| msgid "Move mouse when connection is idle"
 msgid "Press keys when connection is idle"
-msgstr "Goyangkan tetikus saat koneksi idle"
+msgstr "Tekan tombol saat koneksi idle"
 
 #: plugins/rdp/rdp_plugin.c:3303
-#, fuzzy
-#| msgid "Desktop orientation"
 msgid "Keys combination"
-msgstr "Orientasi desktop"
+msgstr "Kombinasi tombol"
 
 #: plugins/rdp/rdp_plugin.c:3305
 msgid "Attempt to connect in assistance mode"
@@ -3690,10 +3623,8 @@ msgid "Prefer IPv6 AAAA record over IPv4 A record"
 msgstr "Lebih suka record AAAA IPv6 daripada record A IPv4"
 
 #: plugins/rdp/rdp_plugin.c:3308
-#, fuzzy
-#| msgid "Prefer IPv6 AAAA record over IPv4 A record"
 msgid "Force preferred IPv4 A record or IPv6 AAAA record"
-msgstr "Lebih suka record AAAA IPv6 daripada record A IPv4"
+msgstr "Paksa record A IPv4 atau record AAAA IPv6 yang disukai"
 
 #: plugins/rdp/rdp_plugin.c:3310
 msgid "Share printers"
@@ -3781,7 +3712,7 @@ msgstr "Perbarui framebuffer bahkan saat tidak terlihat"
 
 #: plugins/rdp/rdp_plugin.c:3334
 msgid "Allow sending empty password"
-msgstr ""
+msgstr "Izinkan mengirim kata sandi kosong"
 
 #: plugins/rdp/rdp_plugin.c:3360
 msgid "RDP - Remote Desktop Protocol"
@@ -3905,18 +3836,18 @@ msgid "General settings"
 msgstr "Pengaturan umum"
 
 #: plugins/rdp/rdp_settings.c:723
-#, fuzzy
-#| msgid "Edit settings"
 msgid "Auth settings"
-msgstr "Sunting pengaturan"
+msgstr "Pengaturan autentikasi"
 
 #: plugins/rdp/rdp_settings.c:730
 msgid "FreeRDP auth-pkg-list"
-msgstr ""
+msgstr "FreeRDP auth-pkg-list"
 
 #: plugins/rdp/rdp_settings.c:743
 msgid "Authentication package filter(comma-separated list, use '!' to exclude)"
 msgstr ""
+"Filter paket autentikasi (daftar dipisahkan koma, gunakan '!' untuk "
+"mengecualikan)"
 
 #: plugins/tool_hello_world/plugin_config.h:40
 msgid "Hello, World!"
@@ -4293,6 +4224,9 @@ msgid ""
 "  • This timeout controls how long the client will try to contact the server "
 "before dropping the connection"
 msgstr ""
+"Panjang waktu tunggu VNC dalam detik\n"
+"  -  Waktu tunggu ini mengontrol berapa lama klien akan mencoba menghubungi "
+"server sebelum memutuskan koneksi"
 
 #: plugins/vnc/vnc_plugin.c:2149
 msgid "Repeater"
@@ -4307,14 +4241,12 @@ msgid "Override pre-set VNC encodings"
 msgstr "Menimpan pengodean VNC pratata"
 
 #: plugins/vnc/vnc_plugin.c:2182
-#, fuzzy
-#| msgid "Dynamic resolution enforced aspec ratio"
 msgid "Dynamic resolution enforced aspect ratio"
-msgstr "Rasio aspec yang diberlakukan resolusi dinamis"
+msgstr "Rasio aspek yang diterapkan resolusi dinamis"
 
 #: plugins/vnc/vnc_plugin.c:2184
 msgid "TCP_USER_TIMEOUT length (seconds)"
-msgstr ""
+msgstr "Panjang TCP_USER_TIMEOUT (detik)"
 
 #: plugins/vnc/vnc_plugin.c:2186
 msgid "Force tight encoding"
@@ -4338,10 +4270,8 @@ msgid "Turn off encryption"
 msgstr "Gunakan enkripsi TLS"
 
 #: plugins/vnc/vnc_plugin.c:2195
-#, fuzzy
-#| msgid "Create new connection profile"
 msgid "Close on connection failure"
-msgstr "Membuat profil koneksi baru"
+msgstr "Tutup saat koneksi gagal"
 
 #: plugins/vnc/vnc_plugin.c:2207
 msgid "Open Chat…"
@@ -4513,11 +4443,6 @@ msgid "Screenshot filenames"
 msgstr "Nama berkas cuplikan layar"
 
 #: data/ui/remmina_preferences.glade:282
-#, fuzzy
-#| msgid ""
-#| "%p Profile name\n"
-#| "%h Server name/IP\n"
-#| "%Y Year, %m Month, %d Day, %H Hour, %M Minute, %S Seconds (UTC time)\n"
 msgid ""
 "%p Profile name\n"
 "%h Server name/IP\n"
@@ -4525,7 +4450,7 @@ msgid ""
 msgstr ""
 "%p Nama profil\n"
 "%h Nama server/IP\n"
-"%Y Tahun, %m Bulan, %d Tanggal, %H Jam, %M Menit, %s Detik (waktu UTC)\n"
+"%Y Tahun, %m Bulan, %d Hari, %H Jam, %M Menit, %S Detik (waktu UTC)"
 
 #: data/ui/remmina_preferences.glade:300
 msgid ""
@@ -4564,26 +4489,16 @@ msgstr "Templat untuk nama berkas profil"
 
 #. Placeholders used to name a Remmina connection profile
 #: data/ui/remmina_preferences.glade:381
-#, fuzzy
-#| msgid ""
-#| "%G Name of group (slashes \\/ are converted to dashes -)\n"
-#| "%P Protocol name\n"
-#| "%N Connection name\n"
-#| "%h Hostname/IP\n"
-#| "\n"
-#| "\n"
 msgid ""
 "%G Name of group (slashes \\/ are converted to dashes -)\n"
 "%P Protocol name\n"
 "%N Connection name\n"
 "%h Hostname/IP "
 msgstr ""
-"%G Nama grup (garis miring \\/ akan dikonversi ke tanda sambung -)\n"
+"%G Nama grup (garis miring \\/ diubah menjadi tanda hubung -)\n"
 "%P Nama protokol\n"
 "%N Nama koneksi\n"
-"%h Nama host/IP\n"
-"\n"
-"\n"
+"%h Hostname/IP "
 
 #: data/ui/remmina_preferences.glade:400
 msgid "Only save generated screenshots, don't copy them to clipboard."
@@ -4680,17 +4595,15 @@ msgstr "Tersembunyi"
 
 #: data/ui/remmina_preferences.glade:761
 msgid "Minimal"
-msgstr ""
+msgstr "Minimal"
 
 #: data/ui/remmina_preferences.glade:777
 msgid "Fullscreen toolbar visibility"
 msgstr "Kenampakan bilah alat layar penuh"
 
 #: data/ui/remmina_preferences.glade:792
-#, fuzzy
-#| msgid "Fullscreen toolbar visibility"
 msgid "Fullscreen toolbar delay (in seconds)"
-msgstr "Kenampakan bilah alat layar penuh"
+msgstr "Penundaan toolbar layar penuh (dalam detik)"
 
 #: data/ui/remmina_preferences.glade:816
 msgid "Hide the search bar shown in the main window"
@@ -4720,19 +4633,19 @@ msgstr ""
 
 #: data/ui/remmina_preferences.glade:866
 msgid "Display message prompts on the left side of the screen"
-msgstr ""
+msgstr "Tampilkan prompt pesan di sisi kiri layar"
 
 #: data/ui/remmina_preferences.glade:883
 msgid "If supported, launch in fullscreen by default"
-msgstr ""
+msgstr "Jika didukung, luncurkan dalam layar penuh secara bawaan"
 
 #: data/ui/remmina_preferences.glade:900
 msgid "If supported, launch with dynamic resolution by default"
-msgstr ""
+msgstr "Jika didukung, luncurkan dengan resolusi dinamis secara bawaan"
 
 #: data/ui/remmina_preferences.glade:917
 msgid "Multimonitor: performs adjustments on the toolbar position"
-msgstr ""
+msgstr "Multimonitor: melakukan penyesuaian pada posisi toolbar"
 
 #: data/ui/remmina_preferences.glade:941
 msgid "“Grab all keyboard events” status colour"
@@ -5053,16 +4966,12 @@ msgid "Pick a terminal colouring file"
 msgstr "Pilih suatu berkas pewarnaan terminal"
 
 #: data/ui/remmina_preferences.glade:2382
-#, fuzzy
-#| msgid "Colour theme"
 msgid "Remove colour theme"
-msgstr "Tema warna"
+msgstr "Hapus tema warna"
 
 #: data/ui/remmina_preferences.glade:2396
-#, fuzzy
-#| msgid "_Remove"
 msgid "Remove"
-msgstr "_Hapus"
+msgstr "Hapus"
 
 #: data/ui/remmina_preferences.glade:2411
 msgid "Bright colours"
