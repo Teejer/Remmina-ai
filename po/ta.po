@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Remmina v1.4.39\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-02-16 15:09+0000\n"
+"PO-Revision-Date: 2026-02-16 20:09+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/remmina/remmina/"
 "ta/>\n"
@@ -2431,7 +2431,7 @@ msgstr "_ நியூ"
 #. TRANSLATORS: Please stick to X2GoClient's way of translating.
 #: plugins/x2go/x2go_plugin.c:548
 msgid "Terminating X2Go sessions can take a moment."
-msgstr "X2Go அமர்வுகளை நிறுத்துவதற்கு ஒரு கணம் ஆகலாம்."
+msgstr "X2GO அமர்வுகளை நிறுத்துவதற்கு ஒரு கணம் ஆகலாம்."
 
 #: plugins/x2go/x2go_plugin.c:622 plugins/x2go/x2go_plugin.c:624
 #, c-format
@@ -2551,7 +2551,7 @@ msgid ""
 "Could not terminate X2Go session '%s':\n"
 "%s"
 msgstr ""
-"X2Go அமர்வை '%s' ஐ நிறுத்த முடியவில்லை:\n"
+"X2GO அமர்வை '%s' ஐ நிறுத்த முடியவில்லை:\n"
 " %s"
 
 #: plugins/x2go/x2go_plugin.c:1235
@@ -2577,7 +2577,7 @@ msgstr "அமர்வு நிறுத்துதல்: '%s'"
 #: plugins/x2go/x2go_plugin.c:1526
 #, c-format
 msgid "Disconnected from %s:%d via X2Go"
-msgstr "X2Go வழியாக %s: %d இலிருந்து துண்டிக்கப்பட்டது"
+msgstr "X2GO வழியாக %s: %d இலிருந்து துண்டிக்கப்பட்டது"
 
 #: plugins/x2go/x2go_plugin.c:1598
 msgid "PyHoca-CLI exited unexpectedly. This connection will now be closed."
@@ -2634,7 +2634,7 @@ msgstr ""
 
 #: plugins/x2go/x2go_plugin.c:1772
 msgid "Enter X2Go credentials"
-msgstr "X2Go நற்சான்றிதழ்களை உள்ளிடவும்"
+msgstr "X2GO நற்சான்றிதழ்களை உள்ளிடவும்"
 
 #: plugins/x2go/x2go_plugin.c:1801
 msgid "Authentication cancelled. Aborting…"
@@ -2713,11 +2713,11 @@ msgstr "டிபிஐ அமைப்பு எல்லைக்கு அப
 
 #: plugins/x2go/x2go_plugin.c:2503
 msgid "Could not start X2Go session…"
-msgstr "X2Go அமர்வைத் தொடங்க முடியவில்லை…"
+msgstr "X2GO அமர்வைத் தொடங்க முடியவில்லை…"
 
 #: plugins/x2go/x2go_plugin.c:2510
 msgid "Could not start X2Go session."
-msgstr "X2Go அமர்வைத் தொடங்க முடியவில்லை."
+msgstr "X2GO அமர்வைத் தொடங்க முடியவில்லை."
 
 #: plugins/x2go/x2go_plugin.c:2511
 #, c-format
@@ -2904,7 +2904,7 @@ msgstr "ஆடியோ உதவி"
 
 #: plugins/x2go/x2go_plugin.c:3333
 msgid "The sound system of the X2Go server (default: 'pulse')."
-msgstr "X2GO சேவையகத்தின் ஒலி அமைப்பு (இயல்புநிலை: 'துடிப்பு')."
+msgstr "X2GO சேவையகத்தின் ஒலி அமைப்பு (இயல்புநிலை: 'pulse')."
 
 #: plugins/x2go/x2go_plugin.c:3336
 msgid "Clipboard direction"
@@ -3314,12 +3314,12 @@ msgid ""
 "  • sys:alsa"
 msgstr ""
 "ஆடியோ உள்ளீட்டை திருப்பிவிடுவதற்கான விருப்பங்கள்:\n"
-" • [sys: <sys>,] [dev: <vev>,] [வடிவம்: <format>,] [வீதம்: <rate>,]\n"
-" [சேனல்: <anunall>] ஆடியோ உள்ளீடு (மைக்ரோஃபோன்)\n"
-" • SYS: துடிப்பு\n"
-" • வடிவம்: 1\n"
-" • SYS: OSS, DEV: 1, வடிவம்: 1\n"
-" • SYS: ALSA"
+" • [sys:<sys>,] [dev: <vev>,] [format:<வடிவம்>,] [rate:<வீதம்>,]\n"
+" [channel:<சேனல்>] ஆடியோ உள்ளீடு (மைக்ரோஃபோன்)\n"
+" • sys:pulse\n"
+" • format:1\n"
+" • sys:oss, dev:1,format:1\n"
+" • sys:alsa"
 
 #: plugins/rdp/rdp_plugin.c:3170
 msgid ""
@@ -4477,19 +4477,14 @@ msgid "Screenshot filenames"
 msgstr "திரைக்காட்சி கோப்பு பெயர்கள்"
 
 #: data/ui/remmina_preferences.glade:282
-#, fuzzy
-#| msgid ""
-#| "%p Profile name\n"
-#| "%h Server name/IP\n"
-#| "%Y Year, %m Month, %d Day, %H Hour, %M Minute, %S Seconds (UTC time)\n"
 msgid ""
 "%p Profile name\n"
 "%h Server name/IP\n"
 "%Y Year, %m Month, %d Day, %H Hour, %M Minute, %S Seconds (UTC time)"
 msgstr ""
 "%p சுயவிவர பெயர்\n"
-" %H சேவையக பெயர்/ஐபி\n"
-" %Y ஆண்டு, %m மாதம், %d நாள், %h மணிநேரம், %m மணித்துளி, %s வினாடிகள் (UTC நேரம்)\n"
+" %h சேவையக பெயர்/ஐபி\n"
+" %Y ஆண்டு, %m மாதம், %d நாள், %H மணிநேரம், %M மணித்துளி, %S வினாடிகள் (UTC நேரம்)"
 
 #: data/ui/remmina_preferences.glade:300
 msgid ""
@@ -4707,7 +4702,7 @@ msgid ""
 "It changes the background colour of connection names in the Remmina "
 "connection toolbar (when in fullscreen)."
 msgstr ""
-"எக்சாடெசிமல்- அல்லது வண்ண பெயர்கள் (சிவப்பு, #FF0000).\n"
+"எக்சாடெசிமல்- அல்லது வண்ண பெயர்கள் (சிவப்பு, #ff0000).\n"
 " இது ரெம்மினா இணைப்பு கருவிப்பட்டியில் இணைப்பு பெயர்களின் பின்னணி நிறத்தை மாற்றுகிறது "
 "(முழுத் திரையில் இருக்கும்போது)."
 
