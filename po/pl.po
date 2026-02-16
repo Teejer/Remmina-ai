@@ -11,13 +11,14 @@
 # Szylu <chipolade@gmail.com>, 2020, 2021.
 # WaldiS <sto@tutanota.de>, 2020, 2021.
 # Antenore Gatta <antenore@simbiosi.org>, 2021.
-# Matthaiks <kitynska@gmail.com>, 2021, 2022, 2023, 2024, 2025.
+# Matthaiks <kitynska@gmail.com>, 2021, 2022, 2023, 2024, 2025, 2026.
+# Pavel Borecki <pavel.borecki@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2025-12-11 15:00+0000\n"
+"PO-Revision-Date: 2026-02-16 14:10+0000\n"
 "Last-Translator: Matthaiks <kitynska@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/remmina/remmina/"
 "pl/>\n"
@@ -27,7 +28,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.15-dev\n"
+"X-Generator: Weblate 5.16\n"
 "X-Launchpad-Export-Date: 2014-04-10 15:03+0000\n"
 
 #: src/remmina_icon.c:143
@@ -2132,7 +2133,7 @@ msgstr "Wymagane libsodium >= 1.9.0 do użycia hasła głównego"
 
 #: src/remmina_pref_dialog.c:915
 msgid "Picking a terminal colouring file replaces the file: "
-msgstr "Wybierz plik z kolorami do terminala"
+msgstr "Wybranie pliku kolorowania terminala powoduje zastąpienie pliku: "
 
 #: src/remmina_pref_dialog.c:919
 msgid ""
@@ -2626,8 +2627,8 @@ msgid ""
 "Could not parse the output of PyHoca-CLI's --list-sessions option. Creating "
 "a new session now."
 msgstr ""
-"Nie można przetworzyć danych wyjściowych opcji --list-sessions PyHoca-CLI. "
-"Tworzę teraz nową sesję."
+"Nie można przeanalizować danych wyjściowych opcji --list-sessions PyHoca-"
+"CLI. Tworzę teraz nową sesję."
 
 #: plugins/x2go/x2go_plugin.c:2025
 msgid "Could not allocate enough memory!"
@@ -4279,7 +4280,7 @@ msgstr "Pokaż zdalny kursor"
 
 #: plugins/vnc/vnc_plugin.c:2193
 msgid "Turn off encryption"
-msgstr "Użyj szyfrowania TLS"
+msgstr "Wyłącz szyfrowanie"
 
 #: plugins/vnc/vnc_plugin.c:2195
 msgid "Close on connection failure"
@@ -4753,7 +4754,7 @@ msgstr "Lokalny port SSH"
 
 #: data/ui/remmina_preferences.glade:1666
 msgid "Parse ~/.ssh/config"
-msgstr "Parsuj ~/.SSH/config"
+msgstr "Przeanalizuj ~/.ssh/config"
 
 #: data/ui/remmina_preferences.glade:1690
 msgid "No logging at all"
@@ -5089,7 +5090,7 @@ msgstr "Skrót klawiszowy wyszukiwania tekstu"
 #: data/ui/remmina_preferences.glade:2809
 #: data/ui/remmina_preferences.glade:2824
 msgid "Bold colour"
-msgstr "Podstawowe kolory"
+msgstr "Kolor wyrazisty"
 
 #: data/ui/remmina_preferences.glade:2838
 #: data/ui/remmina_preferences.glade:2879

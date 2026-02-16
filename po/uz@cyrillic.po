@@ -5,13 +5,14 @@
 # Allan Nordhøy <epost@anotheragency.no>, 2019, 2020, 2021, 2023.
 # Muxammed Qudaybazarov <m.qudaynazarov@gmail.com>, 2020, 2021.
 # Antenore Gatta <antenore@simbiosi.org>, 2020, 2021.
+# Pavel Borecki <pavel.borecki@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2025-02-10 16:02+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2026-02-16 14:10+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Uzbek <https://hosted.weblate.org/projects/remmina/remmina/"
 "uz@cyrillic/>\n"
 "Language: uz@cyrillic\n"
@@ -19,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.16\n"
 "X-Launchpad-Export-Date: 2015-02-23 11:52+0000\n"
 
 #: src/remmina_icon.c:143
@@ -4973,6 +4974,7 @@ msgstr "Барчасини белгилаш"
 
 #: data/ui/remmina_preferences.glade:2809
 #: data/ui/remmina_preferences.glade:2824
+#, fuzzy
 msgid "Bold colour"
 msgstr "Курсор сояси"
 

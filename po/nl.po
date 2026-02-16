@@ -16,21 +16,22 @@
 # Matrix <matrix.5vi5w@slmails.com>, 2023.
 # Frank de Vries <vries.de.frank@gmail.com>, 2023.
 # Remy van Elst <github@relst.nl>, 2025.
+# Pavel Borecki <pavel.borecki@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2025-07-15 09:01+0000\n"
-"Last-Translator: Remy van Elst <github@relst.nl>\n"
-"Language-Team: Dutch <https://hosted.weblate.org/projects/remmina/remmina/nl/"
-">\n"
+"PO-Revision-Date: 2026-02-16 14:09+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
+"Language-Team: Dutch <https://hosted.weblate.org/projects/remmina/remmina/"
+"nl/>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13-dev\n"
+"X-Generator: Weblate 5.16\n"
 "X-Launchpad-Export-Date: 2014-04-10 15:03+0000\n"
 
 #: src/remmina_icon.c:143
@@ -5503,6 +5504,7 @@ msgstr "Zoek tekst snelkoppeling"
 
 #: data/ui/remmina_preferences.glade:2809
 #: data/ui/remmina_preferences.glade:2824
+#, fuzzy
 msgid "Bold colour"
 msgstr "Schaduw van cursor"
 

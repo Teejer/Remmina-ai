@@ -9,13 +9,14 @@
 # Peter Dave Hello <hsu@peterdavehello.org>, 2024, 2026.
 # neko0xff <neko_0xff@protonmail.com>, 2025.
 # Hiroyuki Tanaka <myheroyuki@outlook.com>, 2026.
+# Pavel Borecki <pavel.borecki@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-01-07 14:01+0000\n"
-"Last-Translator: Hiroyuki Tanaka <myheroyuki@outlook.com>\n"
+"PO-Revision-Date: 2026-02-16 14:10+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/remmina/remmina/zh_Hant/>\n"
 "Language: zh_TW\n"
@@ -23,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.16\n"
 "X-Launchpad-Export-Date: 2014-09-20 14:25+0000\n"
 
 #: src/remmina_icon.c:143
@@ -4422,11 +4423,6 @@ msgid "Screenshot filenames"
 msgstr "螢幕截圖檔名"
 
 #: data/ui/remmina_preferences.glade:282
-#, fuzzy
-#| msgid ""
-#| "%p Profile name\n"
-#| "%h Server name/IP\n"
-#| "%Y Year, %m Month, %d Day, %H Hour, %M Minute, %S Seconds (UTC time)\n"
 msgid ""
 "%p Profile name\n"
 "%h Server name/IP\n"
@@ -4434,7 +4430,7 @@ msgid ""
 msgstr ""
 "%p 設定檔名稱\n"
 "%h 伺服器名稱/IP\n"
-"%Y 年、%m 月、%d 日、%H 時、%M 分、%S 秒（UTC 時間）\n"
+"%Y 年、%m 月、%d 日、%H 時、%M 分、%S 秒（UTC 時間）"
 
 #: data/ui/remmina_preferences.glade:300
 msgid ""

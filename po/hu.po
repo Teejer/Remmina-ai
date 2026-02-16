@@ -8,14 +8,14 @@
 # Viktor Varga <viktor.varga@gmail.com>, 2020, 2021.
 # Marczis István <marczisi@yahoo.com>, 2020, 2021, 2023.
 # Péter Gyetvai <gyetpet@mailbox.org>, 2022, 2023.
-# Balázs Meskó <meskobalazs@mailbox.org>, 2023, 2025.
+# Balázs Meskó <meskobalazs@mailbox.org>, 2023, 2025, 2026.
 # Béla Bajza <bajzabela@gmail.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2025-04-26 17:01+0000\n"
+"PO-Revision-Date: 2026-02-16 14:09+0000\n"
 "Last-Translator: Balázs Meskó <meskobalazs@mailbox.org>\n"
 "Language-Team: Hungarian <https://hosted.weblate.org/projects/remmina/"
 "remmina/hu/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12-dev\n"
+"X-Generator: Weblate 5.16\n"
 "X-Launchpad-Export-Date: 2014-04-10 15:03+0000\n"
 
 #: src/remmina_icon.c:143
@@ -2169,7 +2169,7 @@ msgstr "libsodium >= 1.9.0 szükséges mester jelszó használathoz"
 
 #: src/remmina_pref_dialog.c:915
 msgid "Picking a terminal colouring file replaces the file: "
-msgstr "Válasszon egy terminál színező fájlt"
+msgstr "Egy terminál-színezőfájl kiválasztása lecseréli a következő fájlt: "
 
 #: src/remmina_pref_dialog.c:919
 msgid ""
@@ -3123,8 +3123,9 @@ msgid ""
 "You requested a H.264 GFX mode for the server “%s”, but your libfreerdp does "
 "not support H.264. Please use a non-AVC colour depth setting."
 msgstr ""
-"H.264 grafikus módot kért a \"%s\" szervertől, de a libfreerdp-je nem "
-"támogatja a H.264-et. Kérjük használjon egy nem-AVC szín mélységet."
+"H.264 grafikus módot kért a(z) „%s” kiszolgálótól, de a libfreerdp "
+"programkönyvtára nem támogatja a H.264-et. Használjon egy nem-AVC "
+"színmélységi beállítást."
 
 #: plugins/rdp/rdp_plugin.c:2646
 #, c-format
@@ -5180,7 +5181,7 @@ msgstr "Szövegkeresés gyorsbillentyűje"
 #: data/ui/remmina_preferences.glade:2809
 #: data/ui/remmina_preferences.glade:2824
 msgid "Bold colour"
-msgstr "Normál színek"
+msgstr "Félkövér szöveg színe"
 
 #: data/ui/remmina_preferences.glade:2838
 #: data/ui/remmina_preferences.glade:2879

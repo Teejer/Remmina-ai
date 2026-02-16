@@ -5,24 +5,23 @@
 # Allan Nordhøy <epost@anotheragency.no>, 2020, 2021, 2022, 2023.
 # Antenore Gatta <antenore@simbiosi.org>, 2020, 2021.
 # Kornelijus Tvarijanavičius <kornelitvari@protonmail.com>, 2020, 2021.
-# Aurimas Fišeras <aurimas@members.fsf.org>, 2021.
+# Aurimas Fišeras <aurimas@members.fsf.org>, 2021, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2023-05-01 12:49+0000\n"
-"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"PO-Revision-Date: 2026-02-16 14:11+0000\n"
+"Last-Translator: Aurimas Fišeras <aurimas@members.fsf.org>\n"
 "Language-Team: Lithuanian <https://hosted.weblate.org/projects/remmina/"
 "remmina/lt/>\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n % 10 == 1 && (n % 100 < 11 || n % 100 > "
-"19)) ? 0 : ((n % 10 >= 2 && n % 10 <= 9 && (n % 100 < 11 || n % 100 > 19)) ? "
-"1 : 2);\n"
-"X-Generator: Weblate 4.18-dev\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"(n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Weblate 5.16\n"
 "X-Launchpad-Export-Date: 2014-04-10 15:03+0000\n"
 
 #: src/remmina_icon.c:143
@@ -5771,7 +5770,7 @@ msgstr "Paieškos teksto spartusis klavišas"
 #: data/ui/remmina_preferences.glade:2809
 #: data/ui/remmina_preferences.glade:2824
 msgid "Bold colour"
-msgstr "Žymeklio šešėlis"
+msgstr "Pusjuodžio teksto spalva"
 
 #: data/ui/remmina_preferences.glade:2838
 #: data/ui/remmina_preferences.glade:2879

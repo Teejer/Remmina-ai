@@ -8,14 +8,15 @@
 # Antenore Gatta <antenore@simbiosi.org>, 2021.
 # shoothub <reloadshoot@gmail.com>, 2021.
 # menom <menom1@protonmail.com>, 2022, 2023, 2024.
-# Milan Šalka <salka.milan@googlemail.com>, 2023.
+# Milan Šalka <salka.milan@googlemail.com>, 2023, 2026.
+# Pavel Borecki <pavel.borecki@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2024-10-31 15:00+0000\n"
-"Last-Translator: Jose Riha <jose1711@gmail.com>\n"
+"PO-Revision-Date: 2026-02-16 14:11+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Slovak <https://hosted.weblate.org/projects/remmina/remmina/"
 "sk/>\n"
 "Language: sk\n"
@@ -23,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
-"X-Generator: Weblate 5.8.2-dev\n"
+"X-Generator: Weblate 5.16\n"
 "X-Launchpad-Export-Date: 2014-04-10 15:03+0000\n"
 
 #: src/remmina_icon.c:143
@@ -2170,7 +2171,7 @@ msgstr ""
 
 #: src/remmina_pref_dialog.c:915
 msgid "Picking a terminal colouring file replaces the file: "
-msgstr "Výber súboru s farbami terminálu"
+msgstr "Výber súboru s farbami terminálu (nahrádza súbor): "
 
 #: src/remmina_pref_dialog.c:919
 msgid ""
@@ -5161,6 +5162,7 @@ msgstr "Skratka pre vyhľadanie textu"
 
 #: data/ui/remmina_preferences.glade:2809
 #: data/ui/remmina_preferences.glade:2824
+#, fuzzy
 msgid "Bold colour"
 msgstr "Normálne farby"
 

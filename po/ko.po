@@ -6,17 +6,18 @@
 # Allan Nordhøy <epost@anotheragency.no>, 2020, 2021, 2023.
 # Justin Song <mcsong@gmail.com>, 2020, 2021, 2023.
 # Antenore Gatta <antenore@simbiosi.org>, 2021.
-# 이정희 <daemul72@gmail.com>, 2022, 2023.
+# 이정희 <daemul72@gmail.com>, 2022, 2023, 2026.
 # WonYong Jung <hirameki@gmail.com>, 2022.
 # "Ko D." <zdmk23@gmail.com>, 2024.
 # Jung Hoe Hyeong <commaniakr@gmail.com>, 2025.
+# Pavel Borecki <pavel.borecki@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2025-10-30 16:02+0000\n"
-"Last-Translator: Jung Hoe Hyeong <commaniakr@gmail.com>\n"
+"PO-Revision-Date: 2026-02-16 14:10+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Korean <https://hosted.weblate.org/projects/remmina/remmina/"
 "ko/>\n"
 "Language: ko\n"
@@ -24,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.1-dev\n"
+"X-Generator: Weblate 5.16\n"
 "X-Launchpad-Export-Date: 2014-09-20 14:24+0000\n"
 
 #: src/remmina_icon.c:143
@@ -2146,7 +2147,7 @@ msgstr "기본 비밀번호를 사용하려면 libsodium >= 1.9.0이 필요합�
 
 #: src/remmina_pref_dialog.c:915
 msgid "Picking a terminal colouring file replaces the file: "
-msgstr "터미널 색 파일 선택"
+msgstr "터미널 색상 파일을 선택하면 파일이 대체됩니다: "
 
 #: src/remmina_pref_dialog.c:919
 msgid ""
@@ -4466,11 +4467,6 @@ msgid "Screenshot filenames"
 msgstr "스크린샷 파일 이름"
 
 #: data/ui/remmina_preferences.glade:282
-#, fuzzy
-#| msgid ""
-#| "%p Profile name\n"
-#| "%h Server name/IP\n"
-#| "%Y Year, %m Month, %d Day, %H Hour, %M Minute, %S Seconds (UTC time)\n"
 msgid ""
 "%p Profile name\n"
 "%h Server name/IP\n"
@@ -4478,7 +4474,7 @@ msgid ""
 msgstr ""
 "%p 프로필 이름\n"
 "%h 서버 이름/IP\n"
-"%Y 년, %m 월, %d 일, %H 시, %M 분, %S 초 (UTC 시간)\n"
+"%Y 년, %m 월, %d 일, %H 시, %M 분, %S 초 (UTC 시간)"
 
 #: data/ui/remmina_preferences.glade:300
 msgid ""
@@ -5100,6 +5096,7 @@ msgstr "텍스트 검색 바로가기"
 
 #: data/ui/remmina_preferences.glade:2809
 #: data/ui/remmina_preferences.glade:2824
+#, fuzzy
 msgid "Bold colour"
 msgstr "일반 색"
 

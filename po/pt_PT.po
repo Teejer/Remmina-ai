@@ -8,13 +8,14 @@
 # Allan Nordhøy <epost@anotheragency.no>, 2020, 2021, 2023, 2024.
 # ssantos <ssantos@web.de>, 2020, 2021, 2022, 2023.
 # Sérgio Lopes <knitter.is@gmail.com>, 2023.
+# Pavel Borecki <pavel.borecki@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2025-02-10 16:02+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2026-02-16 14:10+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) <https://hosted.weblate.org/projects/"
 "remmina/remmina/pt_PT/>\n"
 "Language: pt_PT\n"
@@ -22,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.16\n"
 "X-Launchpad-Export-Date: 2014-04-10 15:03+0000\n"
 
 #: src/remmina_icon.c:143
@@ -2193,8 +2194,9 @@ msgid "libsodium >= 1.9.0 is required to use Primary Password"
 msgstr "libsodium >= 1.9.0 é necessário para usar a palavra-passe mestra"
 
 #: src/remmina_pref_dialog.c:915
+#, fuzzy
 msgid "Picking a terminal colouring file replaces the file: "
-msgstr "Escolher um ficheiro de cores de terminal"
+msgstr "Escolher um ficheiro de cores de terminal "
 
 #: src/remmina_pref_dialog.c:919
 msgid ""
@@ -5260,6 +5262,7 @@ msgstr "Pesquisar atalho de texto"
 
 #: data/ui/remmina_preferences.glade:2809
 #: data/ui/remmina_preferences.glade:2824
+#, fuzzy
 msgid "Bold colour"
 msgstr "Cores normais"
 

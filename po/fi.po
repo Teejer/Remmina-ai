@@ -4,19 +4,20 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
 # Tuomas Lähteenmäki <lahtis@gmail.com>, 2019, 2020, 2021, 2022.
 # Jeannette L <j.lavoie@net-c.ca>, 2020.
-# Jiri Grönroos <jiri.gronroos@iki.fi>, 2020, 2021, 2022, 2023, 2024, 2025.
+# Jiri Grönroos <jiri.gronroos@iki.fi>, 2020, 2021, 2022, 2023, 2024, 2025, 2026.
 # Allan Nordhøy <epost@anotheragency.no>, 2020, 2021, 2023, 2024.
 # Antenore Gatta <antenore@simbiosi.org>, 2021.
 # Ricky Tigg <ricky.tigg@gmail.com>, 2021, 2024.
 # J. Lavoie <j.lavoie@net-c.ca>, 2021.
 # LINUX-SAUNA <linuxsauna@protonmail.com>, 2022.
+# Pavel Borecki <pavel.borecki@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2025-04-21 20:05+0000\n"
-"Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
+"PO-Revision-Date: 2026-02-16 14:11+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/remmina/remmina/"
 "fi/>\n"
 "Language: fi\n"
@@ -24,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.1-dev\n"
+"X-Generator: Weblate 5.16\n"
 "X-Launchpad-Export-Date: 2014-09-20 14:24+0000\n"
 
 #: src/remmina_icon.c:143
@@ -2162,7 +2163,7 @@ msgstr "libsodium >= 1.9.0 vaaditaan ensisijaisen salasanan käyttämiseen"
 
 #: src/remmina_pref_dialog.c:915
 msgid "Picking a terminal colouring file replaces the file: "
-msgstr "Valitse päätteen väritystiedosto"
+msgstr "Pääteväritystiedoston valitseminen korvaa tiedoston: "
 
 #: src/remmina_pref_dialog.c:919
 msgid ""
@@ -4501,11 +4502,6 @@ msgid "Screenshot filenames"
 msgstr "Kuvakaappauksen tiedostonimet"
 
 #: data/ui/remmina_preferences.glade:282
-#, fuzzy
-#| msgid ""
-#| "%p Profile name\n"
-#| "%h Server name/IP\n"
-#| "%Y Year, %m Month, %d Day, %H Hour, %M Minute, %S Seconds (UTC time)\n"
 msgid ""
 "%p Profile name\n"
 "%h Server name/IP\n"
@@ -4513,8 +4509,7 @@ msgid ""
 msgstr ""
 "%p Profiilin nimi\n"
 "%h Palvelimen nimi/IP\n"
-"%Y vuosi, %m kuukausi, %d päivä, %H tunti, %M minuutti, %S sekunti (UTC-"
-"aika)\n"
+"%Y vuosi, %m kuukausi, %d päivä, %H tunti, %M minuutti, %S sekunti (UTC-aika)"
 
 #: data/ui/remmina_preferences.glade:300
 msgid ""
@@ -5152,7 +5147,7 @@ msgstr "Etsi tekstiä -pikanäppäin"
 #: data/ui/remmina_preferences.glade:2809
 #: data/ui/remmina_preferences.glade:2824
 msgid "Bold colour"
-msgstr "Normaalit värit"
+msgstr "Lihavoinnin väri"
 
 #: data/ui/remmina_preferences.glade:2838
 #: data/ui/remmina_preferences.glade:2879

@@ -6,13 +6,14 @@
 # Allan Nordhøy <epost@anotheragency.no>, 2020, 2022, 2023.
 # Antenore Gatta <antenore@simbiosi.org>, 2020, 2021.
 # Arnold Marko <arnold.marko@gmail.com>, 2025.
+# Pavel Borecki <pavel.borecki@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2025-03-07 13:30+0000\n"
-"Last-Translator: Arnold Marko <arnold.marko@gmail.com>\n"
+"PO-Revision-Date: 2026-02-16 14:11+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/remmina/"
 "remmina/sl/>\n"
 "Language: sl\n"
@@ -21,7 +22,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
 "n%100==4 ? 3 : 0);\n"
-"X-Generator: Weblate 5.10.3-dev\n"
+"X-Generator: Weblate 5.16\n"
 "X-Launchpad-Export-Date: 2014-09-20 14:25+0000\n"
 
 #: src/remmina_icon.c:143
@@ -5585,6 +5586,7 @@ msgstr "Bližnjica za iskanje besedila"
 
 #: data/ui/remmina_preferences.glade:2809
 #: data/ui/remmina_preferences.glade:2824
+#, fuzzy
 msgid "Bold colour"
 msgstr "Senca kazalke"
 
