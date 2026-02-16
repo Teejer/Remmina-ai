@@ -13,13 +13,14 @@
 # Muhammad Khuirul Huda <hudah2102@gmail.com>, 2023.
 # DzEN/DzEN <dandyoctavian@gmail.com>, 2024.
 # Arif Budiman <arifpedia@gmail.com>, 2026.
+# Pavel Borecki <pavel.borecki@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-02-15 13:09+0000\n"
-"Last-Translator: Arif Budiman <arifpedia@gmail.com>\n"
+"PO-Revision-Date: 2026-02-16 15:09+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/remmina/"
 "remmina/id/>\n"
 "Language: id\n"
@@ -27,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.16-dev\n"
+"X-Generator: Weblate 5.16\n"
 "X-Launchpad-Export-Date: 2014-04-10 15:03+0000\n"
 
 #: src/remmina_icon.c:143
@@ -1242,11 +1243,11 @@ msgstr "Impor"
 
 #: src/remmina_main.c:1439
 msgid "Select the connection profile."
-msgstr "Pilih profil koneksi"
+msgstr "Pilih profil koneksi."
 
 #: src/remmina_main.c:1448
 msgid "Remmina couldn't export."
-msgstr "Tidak dapat mengekspor"
+msgstr "Tidak dapat mengekspor."
 
 #: src/remmina_main.c:1457 src/remmina_file_editor.c:2153
 msgid "_Save"
@@ -2411,7 +2412,7 @@ msgstr "_Baru"
 #. TRANSLATORS: Please stick to X2GoClient's way of translating.
 #: plugins/x2go/x2go_plugin.c:548
 msgid "Terminating X2Go sessions can take a moment."
-msgstr "Mengakhiri sesi X2GO bisa makan waktu."
+msgstr "Mengakhiri sesi X2Go bisa makan waktu."
 
 #: plugins/x2go/x2go_plugin.c:622 plugins/x2go/x2go_plugin.c:624
 #, c-format

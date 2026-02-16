@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-02-16 14:10+0000\n"
+"PO-Revision-Date: 2026-02-16 15:09+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/remmina/"
 "remmina/pt/>\n"
@@ -4471,18 +4471,14 @@ msgid "About"
 msgstr "Sobre"
 
 #: data/ui/remmina_about.glade:36
-#, fuzzy
-#| msgid ""
-#| "Copyright © 2014–2023 Antenore Gatta, Giovanni Panozzo.\n"
-#| "Copyright © 2009–2014 Vic Lee\n"
-#| "More details in COPYING"
 msgid ""
 "Copyright © 2023–2024 Hiroyuki Tanaka, Sunil Bhat\n"
 "Copyright © 2014–2023 Antenore Gatta, Giovanni Panozzo\n"
 "Copyright © 2009–2014 Vic Lee\n"
 "More details in COPYING"
 msgstr ""
-"Copyright © 2014–2023 Antenore Gatta, Giovanni Panozzo.\n"
+"Copyright © 2023–2024 Hiroyuki Tanaka, Sunil Bhat\n"
+"Copyright © 2014–2023 Antenore Gatta, Giovanni Panozzo\n"
 "Copyright © 2009–2014 Vic Lee\n"
 "Mais detalhes em COPYING"
 
@@ -4587,11 +4583,6 @@ msgid "Screenshot filenames"
 msgstr "Nomes de ficheiros das capturas do ecrã"
 
 #: data/ui/remmina_preferences.glade:282
-#, fuzzy
-#| msgid ""
-#| "%p Profile name\n"
-#| "%h Server name/IP\n"
-#| "%Y Year, %m Month, %d Day, %H Hour, %M Minute, %S Seconds (UTC time)\n"
 msgid ""
 "%p Profile name\n"
 "%h Server name/IP\n"
@@ -4599,7 +4590,7 @@ msgid ""
 msgstr ""
 "%p Nome do perfil\n"
 "%h Nome/IP do servidor\n"
-"%Y Ano, %m Mês, %d Dia, %H Hora, %M Minuto, %S Segundos (horário UTC)\n"
+"%Y Ano, %m Mês, %d Dia, %H Hora, %M Minuto, %S Segundos (horário UTC)"
 
 #: data/ui/remmina_preferences.glade:300
 msgid ""
@@ -5281,10 +5272,8 @@ msgid "Submit"
 msgstr ""
 
 #: data/ui/remmina_bug_report.glade:114
-#, fuzzy
-#| msgid "Username"
 msgid "Name/Username:"
-msgstr "Nome de utilizador"
+msgstr "Nome/Nome de utilizador:"
 
 #: data/ui/remmina_bug_report.glade:141
 msgid "E-mail:"

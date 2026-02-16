@@ -19,13 +19,14 @@
 # Dario David <xyzdario@yahoo.com.ar>, 2022.
 # Eduardo Malaspina <vaio0@swismail.com>, 2022.
 # gallegonovato <fran-carro@hotmail.es>, 2022, 2023, 2024.
+# Pavel Borecki <pavel.borecki@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2024-02-08 23:01+0000\n"
-"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
+"PO-Revision-Date: 2026-02-16 15:10+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/remmina/remmina/"
 "es/>\n"
 "Language: es\n"
@@ -33,7 +34,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.4-dev\n"
+"X-Generator: Weblate 5.16\n"
 "X-Launchpad-Export-Date: 2014-04-10 15:03+0000\n"
 
 #: src/remmina_icon.c:143
@@ -4560,11 +4561,6 @@ msgid "Screenshot filenames"
 msgstr "Nombres de archivo de capturas de pantalla"
 
 #: data/ui/remmina_preferences.glade:282
-#, fuzzy
-#| msgid ""
-#| "%p Profile name\n"
-#| "%h Server name/IP\n"
-#| "%Y Year, %m Month, %d Day, %H Hour, %M Minute, %S Seconds (UTC time)\n"
 msgid ""
 "%p Profile name\n"
 "%h Server name/IP\n"
@@ -4572,7 +4568,7 @@ msgid ""
 msgstr ""
 "%p Nombre de perfil\n"
 "%h Nombre/IP de servidor\n"
-"%Y Año, %m Mes, %d Día, %H Hora, %M Minuto, %S Segundos (hora UTC)\n"
+"%Y Año, %m Mes, %d Día, %H Hora, %M Minuto, %S Segundos (hora UTC)"
 
 #: data/ui/remmina_preferences.glade:300
 msgid ""

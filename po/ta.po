@@ -2,21 +2,22 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Remmina package.
 # தமிழ்நேரம் <anishprabu.t@gmail.com>, 2025.
+# Pavel Borecki <pavel.borecki@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Remmina v1.4.39\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2025-07-04 21:01+0000\n"
-"Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
-"Language-Team: Tamil <https://hosted.weblate.org/projects/remmina/remmina/ta/"
-">\n"
+"PO-Revision-Date: 2026-02-16 15:09+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
+"Language-Team: Tamil <https://hosted.weblate.org/projects/remmina/remmina/"
+"ta/>\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13-dev\n"
+"X-Generator: Weblate 5.16\n"
 
 #: src/remmina_icon.c:143
 msgid "Enable Service Discovery"
@@ -2430,7 +2431,7 @@ msgstr "_ நியூ"
 #. TRANSLATORS: Please stick to X2GoClient's way of translating.
 #: plugins/x2go/x2go_plugin.c:548
 msgid "Terminating X2Go sessions can take a moment."
-msgstr "X2GO அமர்வுகளை நிறுத்துவதற்கு ஒரு கணம் ஆகலாம்."
+msgstr "X2Go அமர்வுகளை நிறுத்துவதற்கு ஒரு கணம் ஆகலாம்."
 
 #: plugins/x2go/x2go_plugin.c:622 plugins/x2go/x2go_plugin.c:624
 #, c-format
@@ -2550,7 +2551,7 @@ msgid ""
 "Could not terminate X2Go session '%s':\n"
 "%s"
 msgstr ""
-"X2GO அமர்வை '%s' ஐ நிறுத்த முடியவில்லை:\n"
+"X2Go அமர்வை '%s' ஐ நிறுத்த முடியவில்லை:\n"
 " %s"
 
 #: plugins/x2go/x2go_plugin.c:1235
@@ -2576,7 +2577,7 @@ msgstr "அமர்வு நிறுத்துதல்: '%s'"
 #: plugins/x2go/x2go_plugin.c:1526
 #, c-format
 msgid "Disconnected from %s:%d via X2Go"
-msgstr "X2GO வழியாக %s: %d இலிருந்து துண்டிக்கப்பட்டது"
+msgstr "X2Go வழியாக %s: %d இலிருந்து துண்டிக்கப்பட்டது"
 
 #: plugins/x2go/x2go_plugin.c:1598
 msgid "PyHoca-CLI exited unexpectedly. This connection will now be closed."
@@ -2633,7 +2634,7 @@ msgstr ""
 
 #: plugins/x2go/x2go_plugin.c:1772
 msgid "Enter X2Go credentials"
-msgstr "X2GO நற்சான்றிதழ்களை உள்ளிடவும்"
+msgstr "X2Go நற்சான்றிதழ்களை உள்ளிடவும்"
 
 #: plugins/x2go/x2go_plugin.c:1801
 msgid "Authentication cancelled. Aborting…"
@@ -2712,11 +2713,11 @@ msgstr "டிபிஐ அமைப்பு எல்லைக்கு அப
 
 #: plugins/x2go/x2go_plugin.c:2503
 msgid "Could not start X2Go session…"
-msgstr "X2GO அமர்வைத் தொடங்க முடியவில்லை…"
+msgstr "X2Go அமர்வைத் தொடங்க முடியவில்லை…"
 
 #: plugins/x2go/x2go_plugin.c:2510
 msgid "Could not start X2Go session."
-msgstr "X2GO அமர்வைத் தொடங்க முடியவில்லை."
+msgstr "X2Go அமர்வைத் தொடங்க முடியவில்லை."
 
 #: plugins/x2go/x2go_plugin.c:2511
 #, c-format
