@@ -475,9 +475,11 @@ static void remmina_pref_dialog_init(gboolean load_plugins)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(remmina_pref_dialog->checkbutton_appearance_start_dynres), remmina_pref.start_dynres);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(remmina_pref_dialog->checkbutton_move_toolbar_multimon), remmina_pref.toolbar_fix_position_multimon);
 	// This option has no effect in Wayland, so we don't need to show it
+#ifdef GDK_WINDOWING_WAYLAND
 	if (GDK_IS_WAYLAND_DISPLAY(gtk_widget_get_display(GTK_WIDGET(remmina_pref_dialog->checkbutton_move_toolbar_multimon)))) {
 		gtk_widget_hide(GTK_WIDGET(remmina_pref_dialog->checkbutton_move_toolbar_multimon));
 	}
+#endif
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(remmina_pref_dialog->checkbutton_appearance_hide_toolbar), remmina_pref.hide_connection_toolbar);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(remmina_pref_dialog->checkbutton_appearance_hide_searchbar), remmina_pref.hide_searchbar);
 

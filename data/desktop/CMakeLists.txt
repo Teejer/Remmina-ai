@@ -100,102 +100,104 @@ install(FILES ${ICONSVG_RM_DATA} DESTINATION ${ICONAPPS_DIR})
 install(FILES ${ICONSVG_ORG_DATA} DESTINATION ${ICONAPPS_DIR})
 install(FILES ${ICONSVG_ORG_DATA} DESTINATION ${ICONSVG_DIR})
 
-set(REMMINA_BINARY_PATH ${CMAKE_INSTALL_FULL_BINDIR}/remmina)
+if(NOT APPLE)
+  set(REMMINA_BINARY_PATH ${CMAKE_INSTALL_FULL_BINDIR}/remmina)
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/${REMMINA_APP_ID}.desktop.in
-    ${CMAKE_CURRENT_BINARY_DIR}/${REMMINA_APP_ID}.desktop @ONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/org.remmina.Remmina-file.desktop.in
-    ${CMAKE_CURRENT_BINARY_DIR}/org.remmina.Remmina-file.desktop @ONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/remmina-file-wrapper.in
-    ${CMAKE_CURRENT_BINARY_DIR}/remmina-file-wrapper @ONLY)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${REMMINA_APP_ID}.desktop
-    DESTINATION "${REMMINA_DATADIR}/applications")
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.remmina.Remmina-file.desktop
-    DESTINATION "${REMMINA_DATADIR}/applications")
-install(FILES ${REMMINA_APP_ID}.appdata.xml
-    DESTINATION "${REMMINA_DATADIR}/metainfo")
-install(
-    FILES ${CMAKE_CURRENT_BINARY_DIR}/remmina-file-wrapper
-    DESTINATION "${CMAKE_INSTALL_FULL_BINDIR}"
-    PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ WORLD_READ WORLD_EXECUTE
-    )
-if(WITH_MANPAGES)
-    install(
-        FILES remmina-file-wrapper.1
-        DESTINATION ${CMAKE_INSTALL_FULL_MANDIR}/man1
-        )
-endif()
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/${REMMINA_APP_ID}.desktop.in
+      ${CMAKE_CURRENT_BINARY_DIR}/${REMMINA_APP_ID}.desktop @ONLY)
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/org.remmina.Remmina-file.desktop.in
+      ${CMAKE_CURRENT_BINARY_DIR}/org.remmina.Remmina-file.desktop @ONLY)
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/remmina-file-wrapper.in
+      ${CMAKE_CURRENT_BINARY_DIR}/remmina-file-wrapper @ONLY)
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${REMMINA_APP_ID}.desktop
+      DESTINATION "${REMMINA_DATADIR}/applications")
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.remmina.Remmina-file.desktop
+      DESTINATION "${REMMINA_DATADIR}/applications")
+  install(FILES ${REMMINA_APP_ID}.appdata.xml
+      DESTINATION "${REMMINA_DATADIR}/metainfo")
+  install(
+      FILES ${CMAKE_CURRENT_BINARY_DIR}/remmina-file-wrapper
+      DESTINATION "${CMAKE_INSTALL_FULL_BINDIR}"
+      PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ WORLD_READ WORLD_EXECUTE
+      )
+  if(WITH_MANPAGES)
+      install(
+          FILES remmina-file-wrapper.1
+          DESTINATION ${CMAKE_INSTALL_FULL_MANDIR}/man1
+          )
+  endif()
 
-# Kiosk Session Files
-option(WITH_KIOSK_SESSION "Enable Kiosk desktop session files" OFF)
-if(WITH_KIOSK_SESSION)
-    message(STATUS "Kiosk desktop session files will be installed")
-    install(
-        FILES remmina-gnome-xsession.desktop
-        DESTINATION ${REMMINA_DATADIR}/xsessions
-        RENAME remmina-gnome.desktop
-        PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ
-        )
-    install(
-        FILES remmina-gnome.desktop
-        DESTINATION ${REMMINA_DATADIR}/applications
-        RENAME remmina-gnome.desktop
-        PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ
-        )
-    install(
-        FILES remmina-gnome.session
-        DESTINATION ${REMMINA_DATADIR}/gnome-session/sessions
-        RENAME remmina-gnome.session
-        PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ
-        )
-    install(
-        FILES remmina-gnome
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
-        RENAME remmina-gnome
-        PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ
-        WORLD_EXECUTE WORLD_READ
-        )
-    install(
-        FILES gnome-session-remmina
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
-        RENAME gnome-session-remmina
-        PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ
-        WORLD_EXECUTE WORLD_READ
-        )
-    if(WITH_MANPAGES)
-        install(
-            FILES remmina-gnome.1
-            DESTINATION ${CMAKE_INSTALL_FULL_MANDIR}/man1
-            )
-        install(
-            FILES gnome-session-remmina.1
-            DESTINATION ${CMAKE_INSTALL_FULL_MANDIR}/man1
-            )
-    endif()
-else()
-    message(STATUS "Kiosk desktop session files won't be installed")
-endif()
+  # Kiosk Session Files
+  option(WITH_KIOSK_SESSION "Enable Kiosk desktop session files" OFF)
+  if(WITH_KIOSK_SESSION)
+      message(STATUS "Kiosk desktop session files will be installed")
+      install(
+          FILES remmina-gnome-xsession.desktop
+          DESTINATION ${REMMINA_DATADIR}/xsessions
+          RENAME remmina-gnome.desktop
+          PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ
+          )
+      install(
+          FILES remmina-gnome.desktop
+          DESTINATION ${REMMINA_DATADIR}/applications
+          RENAME remmina-gnome.desktop
+          PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ
+          )
+      install(
+          FILES remmina-gnome.session
+          DESTINATION ${REMMINA_DATADIR}/gnome-session/sessions
+          RENAME remmina-gnome.session
+          PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ
+          )
+      install(
+          FILES remmina-gnome
+          DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+          RENAME remmina-gnome
+          PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ
+          WORLD_EXECUTE WORLD_READ
+          )
+      install(
+          FILES gnome-session-remmina
+          DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+          RENAME gnome-session-remmina
+          PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ
+          WORLD_EXECUTE WORLD_READ
+          )
+      if(WITH_MANPAGES)
+          install(
+              FILES remmina-gnome.1
+              DESTINATION ${CMAKE_INSTALL_FULL_MANDIR}/man1
+              )
+          install(
+              FILES gnome-session-remmina.1
+              DESTINATION ${CMAKE_INSTALL_FULL_MANDIR}/man1
+              )
+      endif()
+  else()
+      message(STATUS "Kiosk desktop session files won't be installed")
+  endif()
 
-# XML mime types
-set( SHARED_MIME_INFO_MINIMUM_VERSION "0.30" )
-set( XDG_MIME_INSTALL_DIR "${REMMINA_DATADIR}/mime/packages" )
-find_package( SharedMimeInfo )
-if( SHARED_MIME_INFO_FOUND )
-    install( FILES org.remmina.Remmina-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR} )
-    update_xdg_mimetypes( ${XDG_MIME_INSTALL_DIR} )
-endif()
-if(WITH_ICON_CACHE)
-    gtk_update_icon_cache("${REMMINA_DATADIR}/icons/hicolor")
-endif()
-if(WITH_UPDATE_DESKTOP_DB)
-    find_program(PROG_UPDATE_DESKTOP_DATABASE update-desktop-database)
-    if( PROG_UPDATE_DESKTOP_DATABASE )
-        install(
-            CODE
-            "message(STATUS \"Updating desktop file database\")"
-            CODE
-            "execute_process(COMMAND ${PROG_UPDATE_DESKTOP_DATABASE}
-            -q ${CMAKE_INSTALL_PREFIX}/share/applications)"
-            )
-    endif()
+  # XML mime types
+  set( SHARED_MIME_INFO_MINIMUM_VERSION "0.30" )
+  set( XDG_MIME_INSTALL_DIR "${REMMINA_DATADIR}/mime/packages" )
+  find_package( SharedMimeInfo )
+  if( SHARED_MIME_INFO_FOUND )
+      install( FILES org.remmina.Remmina-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR} )
+      update_xdg_mimetypes( ${XDG_MIME_INSTALL_DIR} )
+  endif()
+  if(WITH_ICON_CACHE)
+      gtk_update_icon_cache("${REMMINA_DATADIR}/icons/hicolor")
+  endif()
+  if(WITH_UPDATE_DESKTOP_DB)
+      find_program(PROG_UPDATE_DESKTOP_DATABASE update-desktop-database)
+      if( PROG_UPDATE_DESKTOP_DATABASE )
+          install(
+              CODE
+              "message(STATUS \"Updating desktop file database\")"
+              CODE
+              "execute_process(COMMAND ${PROG_UPDATE_DESKTOP_DATABASE}
+              -q ${CMAKE_INSTALL_PREFIX}/share/applications)"
+              )
+      endif()
+  endif()
 endif()

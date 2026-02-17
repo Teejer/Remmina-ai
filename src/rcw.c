@@ -3989,10 +3989,12 @@ static void rcw_ftb_multimon_move_toolbar(RemminaConnectionWindowPriv *priv) {
 		return;
 	}
 
+#ifdef GDK_WINDOWING_WAYLAND
 	if (GDK_IS_WAYLAND_DISPLAY(d)) {
 		REMMINA_DEBUG("Multimonitor not effective in Wayland mode");
 		return;
 	}
+#endif
 
 
 	for (int i = 0 ; i < gdk_display_get_n_monitors(d) ; i++) {
