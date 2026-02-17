@@ -6,15 +6,15 @@
 # Allan Nordhøy <epost@anotheragency.no>, 2020, 2021, 2022, 2023.
 # Antenore Gatta <antenore@simbiosi.org>, 2020, 2021.
 # dewakucing <basrimazrishawal@gmail.com>, 2021.
-# Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>, 2025.
+# Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>, 2025, 2026.
 # Pavel Borecki <pavel.borecki@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-02-16 14:10+0000\n"
-"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
+"PO-Revision-Date: 2026-02-17 09:09+0000\n"
+"Last-Translator: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>\n"
 "Language-Team: Romanian <https://hosted.weblate.org/projects/remmina/remmina/"
 "ro/>\n"
 "Language: ro\n"
@@ -1065,7 +1065,7 @@ msgstr ""
 "  Marian Vasile https://launchpad.net/~marianvasile-ubuntu\n"
 "  Meriuță Cornel https://launchpad.net/~meriutacornel-c\n"
 "-----------------------------*******--------------------------------\n"
-"Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>, 2025"
+"Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>, 2025, 2026"
 
 #: src/remmina_protocol_widget.c:329
 msgid "Executing external commands…"
@@ -5116,9 +5116,8 @@ msgstr "Scurtătură de text pentru căutare"
 
 #: data/ui/remmina_preferences.glade:2809
 #: data/ui/remmina_preferences.glade:2824
-#, fuzzy
 msgid "Bold colour"
-msgstr "Umbră cursor"
+msgstr "Culoarea textului în aldin"
 
 #: data/ui/remmina_preferences.glade:2838
 #: data/ui/remmina_preferences.glade:2879
