@@ -208,6 +208,8 @@ void remmina_rdp_monitor_get (rfContext *rfi, gchar **monitorids, guint32 *maxwi
 	 * So, we make sure to translate our primary monitor's upper-left corner to 0,0 on the
 	 * server.
 	 */
+#if FREERDP_CHECK_VERSION(3, 11, 0)
+#else
 	for (gint i = 0; i < freerdp_settings_get_uint32(settings, FreeRDP_MonitorCount); i++)
 	{
 		rdpMonitor* current = &srdp_monitors[i];
@@ -218,6 +220,7 @@ void remmina_rdp_monitor_get (rfContext *rfi, gchar **monitorids, guint32 *maxwi
 			current->y - freerdp_settings_get_int32(settings, FreeRDP_MonitorLocalShiftY);
 		REMMINA_PLUGIN_DEBUG("Monitor n %d calculated y: %d", i, current->y);
 	}
+#endif
 
 	REMMINA_PLUGIN_DEBUG("%d monitors on %d have been configured", freerdp_settings_get_uint32(settings, FreeRDP_MonitorCount), count);
 	*maxwidth = destgeom.width;
