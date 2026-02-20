@@ -131,14 +131,14 @@ void remmina_pref_on_button_keystrokes_clicked(GtkWidget *widget, gpointer user_
 	gtk_widget_destroy(GTK_WIDGET(dialog));
 }
 
-static void remmina_prefdiag_on_grab_color_activated(GtkSwitch *widget, gpointer user_data)
+void remmina_prefdiag_on_grab_color_activated(GtkSwitch *widget, gpointer user_data)
 {
 	TRACE_CALL(__func__);
 	gtk_widget_set_sensitive(GTK_WIDGET(remmina_pref_dialog->entry_grab_color), gtk_switch_get_active(widget));
 }
 
 /* connect to notify::active or toggled (in this case ::toggled */
-static void remmina_prefdiag_on_use_password_activated(GtkSwitch *sw, gpointer user_data)
+void remmina_prefdiag_on_use_password_activated(GtkSwitch *sw, gpointer user_data)
 {
 	TRACE_CALL(__func__);
 	if (gtk_switch_get_active(sw)) {
