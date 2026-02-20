@@ -1821,9 +1821,9 @@ msgstr ""
 "Untuk memperbarui nama pengguna dan kata sandi serta mengatur mode resolusi "
 "berbeda dari profil koneksi Remmina, gunakan:\n"
 "\n"
-"\techo \"username\\n"
-"apassword\" | remmina --update-profile /PATH/TO/FOO.remmina --set-option "
-"username --set-option resolution_mode=2 --set-option password\n"
+"\techo \"username\\napassword\" | remmina --update-profile /PATH/TO/"
+"FOO.remmina --set-option username --set-option resolution_mode=2 --set-"
+"option password\n"
 
 #. TRANSLATORS: The placeholder %s is a directory path
 #: src/remmina_sftp_client.c:176
