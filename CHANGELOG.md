@@ -1,3 +1,12 @@
+## v1.4.43
+[full changelog](https://gitlab.com/Remmina/Remmina/compare/v1.4.42...v1.4.43)
+
+* Add minimal macOS build support [!2727](https://gitlab.com/Remmina/Remmina/-/merge_requests/2727) *@jayvdlaan*
+* Revert "Added kerberos-config plug" [!2728](https://gitlab.com/Remmina/Remmina/-/merge_requests/2728) *@craig.rylance*
+* [REM-3489] Fix issue preventing SPICE plugin from being loaded [!2729](https://gitlab.com/Remmina/Remmina/-/merge_requests/2729) *@myheroyuki*
+* [REM-3490] Do not calculate monitor shift if using freerdp_settings_set_monitor_def_array_sorted [!2730](https://gitlab.com/Remmina/Remmina/-/merge_requests/2730) *@myheroyuki*
+
+
 ## v1.4.42
 [full changelog](https://gitlab.com/Remmina/Remmina/compare/v1.4.41...v1.4.42)
 
