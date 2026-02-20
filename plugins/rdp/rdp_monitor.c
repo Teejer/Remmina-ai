@@ -192,14 +192,19 @@ void remmina_rdp_monitor_get (rfContext *rfi, gchar **monitorids, guint32 *maxwi
 		index++;
 
 	}
+
+rdpMonitor* srdp_monitors;
 #if FREERDP_CHECK_VERSION(3, 11, 0)
 	freerdp_settings_set_monitor_def_array_sorted(settings, rdp_monitors, index);
 	free(rdp_monitors);
-#else
-    freerdp_settings_set_pointer(settings, FreeRDP_MonitorDefArray, rdp_monitors);
-#endif
 	freerdp_settings_set_uint32(settings, FreeRDP_MonitorCount, index);
-	rdpMonitor* srdp_monitors = freerdp_settings_get_pointer_writable(settings, FreeRDP_MonitorDefArray);
+	srdp_monitors = freerdp_settings_get_pointer_writable(settings, FreeRDP_MonitorDefArray);
+
+#else
+	freerdp_settings_set_uint32(settings, FreeRDP_MonitorCount, index);
+	srdp_monitors= rdp_monitors;
+#endif
+	
 	
 	/* Subtract monitor shift from monitor variables for server-side use.
 	 * We maintain monitor shift value as Window requires the primary monitor to have a
@@ -208,6 +213,8 @@ void remmina_rdp_monitor_get (rfContext *rfi, gchar **monitorids, guint32 *maxwi
 	 * So, we make sure to translate our primary monitor's upper-left corner to 0,0 on the
 	 * server.
 	 */
+#if FREERDP_CHECK_VERSION(3, 11, 0)
+#else
 	for (gint i = 0; i < freerdp_settings_get_uint32(settings, FreeRDP_MonitorCount); i++)
 	{
 		rdpMonitor* current = &srdp_monitors[i];
@@ -218,6 +225,7 @@ void remmina_rdp_monitor_get (rfContext *rfi, gchar **monitorids, guint32 *maxwi
 			current->y - freerdp_settings_get_int32(settings, FreeRDP_MonitorLocalShiftY);
 		REMMINA_PLUGIN_DEBUG("Monitor n %d calculated y: %d", i, current->y);
 	}
+#endif
 
 	REMMINA_PLUGIN_DEBUG("%d monitors on %d have been configured", freerdp_settings_get_uint32(settings, FreeRDP_MonitorCount), count);
 	*maxwidth = destgeom.width;
