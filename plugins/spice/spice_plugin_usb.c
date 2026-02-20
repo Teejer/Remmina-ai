@@ -36,7 +36,7 @@
 
 static void remmina_plugin_spice_usb_connect_failed_cb(GObject *, SpiceUsbDevice *, GError *, RemminaProtocolWidget *);
 
-static void remmina_plugin_spice_select_usb_devices(RemminaProtocolWidget *gp)
+void remmina_plugin_spice_select_usb_devices(RemminaProtocolWidget *gp)
 {
 	TRACE_CALL(__func__);
 

@@ -50,7 +50,7 @@
 	(!(ptr) || !*(ptr))
 
 /* Used to send desktop notifications */
-static void www_utils_send_notification(const gchar *notification_id,
+void www_utils_send_notification(const gchar *notification_id,
 				 const gchar *notification_title, const gchar *notification_message)
 {
 	TRACE_CALL(__func__);
@@ -114,7 +114,7 @@ static gint www_utils_string_find(GString *haystack, gint start, gint end, const
  * len can be -1 to replace the remainder of @a str.
  * returns: pos + strlen(replace).
  * (C) Taken from geany */
-static gint www_utils_string_replace(GString *str, gint pos, gint len, const gchar *replace)
+gint www_utils_string_replace(GString *str, gint pos, gint len, const gchar *replace)
 {
 	TRACE_CALL(__func__);
 	g_string_erase(str, pos, len);
@@ -134,7 +134,7 @@ static gint www_utils_string_replace(GString *str, gint pos, gint len, const gch
  *
  * @return Number of replacements made.
  **/
-static guint www_utils_string_replace_all(GString *haystack, const gchar *needle, const gchar *replace)
+guint www_utils_string_replace_all(GString *haystack, const gchar *needle, const gchar *replace)
 {
 	TRACE_CALL(__func__);
 	guint count = 0;
