@@ -47,6 +47,7 @@
 #include "rdp_cliprdr.h"
 #include "rdp_monitor.h"
 #include "rdp_channels.h"
+#include "rdp_web_auth.h"
 
 #include <errno.h>
 #include <pthread.h>
@@ -270,7 +271,7 @@ static BOOL rf_process_event_queue(RemminaProtocolWidget *gp)
 		time(&(rfi->last_time_idle_keypress));
 		switch (event->type) {
 		case REMMINA_RDP_EVENT_TYPE_SCANCODE:
-			
+
 			if (event->key_event.extended1){
 				flags = KBD_FLAGS_EXTENDED1;
 			}
@@ -302,7 +303,7 @@ static BOOL rf_process_event_queue(RemminaProtocolWidget *gp)
 			if(rfi->clipboard.context != NULL){
 				rfi->clipboard.context->ClientFormatList(rfi->clipboard.context, event->clipboard_formatlist.pFormatList);
 			}
-			
+
 			free(event->clipboard_formatlist.pFormatList);
 			break;
 
@@ -333,7 +334,7 @@ static BOOL rf_process_event_queue(RemminaProtocolWidget *gp)
 				freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_UseMultimon, TRUE);
 				if (remmina_plugin_service->file_get_int(remminafile, "force_multimon", FALSE)) {
 					freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_ForceMultimon, TRUE);
-				}	
+				}
 				freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_Fullscreen, TRUE);
 				/* got some crashes with g_malloc0, to be investigated */
 				dcml = calloc(freerdp_settings_get_uint32(rfi->clientContext.context.settings, FreeRDP_MonitorCount), sizeof(DISPLAY_CONTROL_MONITOR_LAYOUT));
@@ -1117,13 +1118,6 @@ static BOOL remmina_rdp_choose_smartcard(freerdp* instance, SmartcardCertInfo** 
 	return client_cli_choose_smartcard(instance, cert_list, count, choice, gateway);
 }
 
-static BOOL remmina_rdp_get_access_token(freerdp* instance, AccessTokenType tokenType, char** token,
-                                    size_t count, ...)
-{
-	// TODO: Open a (currently hard coded) URL, authenticate in a webview/browser, return the access token.
-	// See client_cli_get_access_token or sdl_webview_get_access_token for implementations
-	return client_cli_get_access_token(instance, tokenType, token, count);
-}
 
 static BOOL remmina_rdp_present_gateway_message(freerdp* instance, UINT32 type, BOOL isDisplayMandatory,
                                            BOOL isConsentMandatory, size_t length,
@@ -1281,7 +1275,7 @@ static void remmina_rdp_main_loop(RemminaProtocolWidget *gp)
 		}
 		// press key(s) if we've been idle and option is selected
 		time(&cur_time);
-		time_diff_keypress = cur_time - rfi->last_time_idle_keypress;		
+		time_diff_keypress = cur_time - rfi->last_time_idle_keypress;
 		if (keypress_time > 0 && time_diff_keypress > keypress_time){
 			rfi->last_time_idle_keypress = cur_time;
 			remmina_rdp_idle_keypress(gp, &keypress_opts);
@@ -1681,28 +1675,28 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 			REMMINA_PLUGIN_DEBUG("Could not allocate assistance file structure");
 			return FALSE;
 		}
-		
-		if (remmina_plugin_service->file_get_string(remminafile, "assistance_file") == NULL || 
+
+		if (remmina_plugin_service->file_get_string(remminafile, "assistance_file") == NULL ||
 				remmina_plugin_service->file_get_string(remminafile, "assistance_pass") == NULL ){
 
 			REMMINA_PLUGIN_DEBUG("Assistance file and password are not set while assistance mode is on");
 			return FALSE;
 		}
 
-		status = freerdp_assistance_parse_file(file, 
-			remmina_plugin_service->file_get_string(remminafile, "assistance_file"), 
+		status = freerdp_assistance_parse_file(file,
+			remmina_plugin_service->file_get_string(remminafile, "assistance_file"),
 			remmina_plugin_service->file_get_string(remminafile, "assistance_pass"));
 
 		if (status < 0){
 			REMMINA_PLUGIN_DEBUG("Could not parse assistance file");
 			return FALSE;
 		}
-			
+
 
 		if (!freerdp_assistance_populate_settings_from_assistance_file(file, rfi->clientContext.context.settings)){
 			REMMINA_PLUGIN_DEBUG("Could not populate settings from assistance file");
 			return FALSE;
-		}		
+		}
 	}
 
 
@@ -1829,7 +1823,7 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 	s = remmina_plugin_service->file_get_string(remminafile, "password");
 	if (s){
 		freerdp_settings_set_string(rfi->clientContext.context.settings, FreeRDP_Password, s);
-	} 
+	}
 	else {
 		i = remmina_plugin_service->file_get_int(remminafile, "allow_empty_pass", 0);
 		if (i){
@@ -1838,7 +1832,7 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 		else{
 			freerdp_settings_set_string(rfi->clientContext.context.settings, FreeRDP_Password, s);
 		}
-		
+
 	}
 
 	freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_AutoLogonEnabled, TRUE);
@@ -2083,21 +2077,39 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_NlaSecurity, FALSE);
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_ExtSecurity, FALSE);
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_UseRdpSecurityLayer, TRUE);
+#ifdef WITH_RDP_AUTH_AAD
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_AadSecurity, FALSE);
+#endif
 	} else if (g_strcmp0(cs, "tls") == 0) {
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_RdpSecurity, FALSE);
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_TlsSecurity, TRUE);
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_NlaSecurity, FALSE);
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_ExtSecurity, FALSE);
+#ifdef WITH_RDP_AUTH_AAD
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_AadSecurity, FALSE);
+#endif
 	} else if (g_strcmp0(cs, "nla") == 0) {
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_RdpSecurity, FALSE);
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_TlsSecurity, FALSE);
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_NlaSecurity, TRUE);
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_ExtSecurity, FALSE);
+#ifdef WITH_RDP_AUTH_AAD
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_AadSecurity, FALSE);
+#endif
 	} else if (g_strcmp0(cs, "ext") == 0) {
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_RdpSecurity, FALSE);
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_TlsSecurity, FALSE);
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_NlaSecurity, FALSE);
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_ExtSecurity, TRUE);
+#ifdef WITH_RDP_AUTH_AAD
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_AadSecurity, FALSE);
+	} else if (g_strcmp0(cs, "aad") == 0) {
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_RdpSecurity, FALSE);
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_TlsSecurity, FALSE);
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_NlaSecurity, FALSE);
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_ExtSecurity, FALSE);
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_AadSecurity, TRUE);
+#endif
 	} else {
 		/* This is "-nego" switch of xfreerdp */
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_NegotiateSecurityLayer, TRUE);
@@ -2350,7 +2362,7 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_UseMultimon, TRUE);
 		if (remmina_plugin_service->file_get_int(remminafile, "force_multimon", FALSE)) {
 			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_ForceMultimon, TRUE);
-		}	
+		}
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_Fullscreen, TRUE);
 
 		gchar *monitorids_string = g_strdup(remmina_plugin_service->file_get_string(remminafile, "monitorids"));
@@ -2809,7 +2821,7 @@ static void remmina_rdp_init(RemminaProtocolWidget *gp)
 		freerdp_settings_set_string(rfi->clientContext.context.settings, FreeRDP_AuthenticationPackageList, auth_list);
 	}
 	g_free(auth_list);
-	
+
 #endif
 	remmina_rdp_event_init(gp);
 }
@@ -2939,7 +2951,7 @@ static void remmina_rdp_call_feature(RemminaProtocolWidget *gp, const RemminaPro
 			}
 			if (remmina_plugin_service->file_get_int(remminafile, "force_multimon", FALSE)) {
 				freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_ForceMultimon, TRUE);
-			}				
+			}
 		} else {
 			REMMINA_PLUGIN_DEBUG("Remmina RDP plugin warning: Null value for rfi by REMMINA_RDP_FEATURE_MULTIMON");
 		}
@@ -3094,6 +3106,9 @@ static gpointer security_list[] =
 	"tls", N_("TLS protocol security"),
 	"rdp", N_("RDP protocol security"),
 	"ext", N_("NLA extended protocol security"),
+#ifdef WITH_RDP_AUTH_AAD
+	"aad", N_("AAD protocol security"),
+#endif
 	NULL
 };
 
@@ -3459,6 +3474,13 @@ G_MODULE_EXPORT gboolean remmina_plugin_entry(RemminaPluginService *service)
 
 	if (!service->register_plugin((RemminaPlugin *)&remmina_rdps))
 		return FALSE;
+
+#ifdef WITH_RDP_AUTH_AAD
+	if (!buildconfig_strstr(freerdp_get_build_config(), "WITH_AAD=ON")) {
+		REMMINA_PLUGIN_ERROR("FreeRDP is compiled without AAD authentication support");
+		return FALSE;
+	}
+#endif
 
 	if (buildconfig_strstr(freerdp_get_build_config(), "WITH_GFX_H264=ON")) {
 		gfx_h264_available = TRUE;

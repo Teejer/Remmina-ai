@@ -55,6 +55,8 @@ set(REMMINA_PLUGIN_RDP_SRCS
     rdp_monitor.h
     rdp_channels.c
     rdp_channels.h
+    rdp_web_auth.c
+    rdp_web_auth.h
     )
 
 add_definitions(-DFREERDP_REQUIRED_MAJOR=${FREERDP_REQUIRED_MAJOR})
@@ -65,9 +67,54 @@ add_library(remmina-plugin-rdp MODULE ${REMMINA_PLUGIN_RDP_SRCS})
 set_target_properties(remmina-plugin-rdp PROPERTIES PREFIX "")
 set_target_properties(remmina-plugin-rdp PROPERTIES NO_SONAME 1)
 
-include_directories(${REMMINA_COMMON_INCLUDE_DIRS} ${FreeRDP-Client_INCLUDE_DIR} ${FreeRDP_INCLUDE_DIR} ${WinPR_INCLUDE_DIR})
+include_directories(
+    ${REMMINA_COMMON_INCLUDE_DIRS}
+    ${FreeRDP-Client_INCLUDE_DIR}
+    ${FreeRDP_INCLUDE_DIR}
+    ${WinPR_INCLUDE_DIR})
 target_link_libraries(remmina-plugin-rdp
-    ${REMMINA_COMMON_LIBRARIES} freerdp-client)
+    ${REMMINA_COMMON_LIBRARIES}
+    freerdp-client)
+
+option(WITH_RDP_AUTH_AAD "Enable AAD authentication support" OFF)
+if(WITH_RDP_AUTH_AAD)
+    if(WITH_FREERDP3)
+        file(READ ${FreeRDP_INCLUDE_DIR}/freerdp/config.h FREERDP_CONFIG_CONTENT)
+        if("${FREERDP_CONFIG_CONTENT}" MATCHES "#define WITH_AAD")
+            set(FREERDP_HAS_AUTH_AAD TRUE)
+        else()
+            message(WARNING "FreeRDP is built without AAD authentication support")
+        endif()
+    else()
+        message(WARNING "FreeRDP 2 does not support AAD authentication")
+    endif()
+
+    find_required_package(WEBKIT2GTK)
+    if(NOT WEBKIT2GTK_FOUND)
+        message(WARNING "WebKit-GTK not found")
+    endif()
+
+    find_required_package(LIBSOUP)
+    if(NOT WEBKIT2GTK_FOUND)
+        message(WARNING "libsoup not found")
+    endif()
+
+    if(FREERDP_HAS_AUTH_AAD AND WEBKIT2GTK_FOUND AND LIBSOUP_FOUND)
+        message(STATUS "Enabling RDP AAD authentication.")
+        # we cannot undefine WITH_AAD defined in FreeRDP so we use our own macro
+        add_definitions(-DWITH_RDP_AUTH_AAD)
+        include_directories(
+            ${WEBKIT2GTK_INCLUDE_DIRS}
+            ${LIBSOUP_INCLUDE_DIRS})
+        target_link_libraries(remmina-plugin-rdp
+            ${LIBSOUP_LIBRARIES}
+            ${WEBKIT2GTK_LIBRARIES})
+    else()
+        message(WARNING "Disabling RDP AAD authentication.")
+    endif()
+else()
+    message(STATUS "Skipping RDP AAD authentication.")
+endif()
 
 if(CUPS_FOUND)
     add_definitions(-DHAVE_CUPS)
