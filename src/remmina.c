@@ -320,8 +320,7 @@ static void remmina_on_startup(GApplication *app)
 	}
 
 	/* Check for secret plugin and service initialization and show console warnings if
-	 * something is missing */
-	remmina_plugin_manager_get_available_plugins();
+	 * something is missing */	
 	secret_plugin = remmina_plugin_manager_get_secret_plugin();
 	if (!secret_plugin)
 		g_print("Warning: Remmina is running without a secret plugin. Passwords will be saved in a less secure way.\n");

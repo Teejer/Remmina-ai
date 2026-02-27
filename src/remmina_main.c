@@ -914,7 +914,6 @@ void remmina_main_on_action_connection_new(GSimpleAction *action, GVariant *para
 		return;
 	GtkWidget *widget;
 
-	remmina_plugin_manager_get_available_plugins();
 	if (remmina_pref_get_boolean("use_primary_password")
 			&& remmina_pref_get_boolean("lock_edit")
 			&& remmina_unlock_new(remminamain->window) == 0)
@@ -1477,7 +1476,6 @@ void remmina_main_on_action_tools_export(GSimpleAction *action, GVariant *param,
 void remmina_main_on_action_application_plugins(GSimpleAction *action, GVariant *param, gpointer data)
 {
 	TRACE_CALL(__func__);
-	remmina_plugin_manager_get_available_plugins();
 	remmina_plugin_manager_show(remminamain->window);
 }
 

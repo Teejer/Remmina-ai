@@ -81,6 +81,7 @@ static GHashTable *encrypted_settings_cache = NULL;
 /* There can be only one secret plugin loaded */
 static RemminaSecretPlugin *remmina_secret_plugin = NULL;
 
+extern gboolean info_disable_stats;
 
 
 // TRANSLATORS: "Language Wrapper" is a wrapper for plugins written in other programmin languages (Python in this context)
@@ -604,9 +605,11 @@ JsonNode *remmina_plugin_manager_plugin_stats_get_all(void)
 		json_builder_begin_object(b_inner);
 
 		//get architecture and python version to determine what plugins are compatible 
-		n = remmina_info_stats_get_os_info();
-		json_builder_set_member_name(b_inner, "OS_INFO");
-		json_builder_add_value(b_inner, n);
+		if (!info_disable_stats) {
+			n = remmina_info_stats_get_os_info();
+			json_builder_set_member_name(b_inner, "OS_INFO");
+			json_builder_add_value(b_inner, n);
+		}
 
 		n = remmina_info_stats_get_python();
 		json_builder_set_member_name(b_inner, "PYTHON");
@@ -782,7 +785,7 @@ static void result_dialog_cleanup(GtkDialog * dialog, gint response_id, gpointer
 	gtk_widget_set_visible(remmina_plugin_signal_data->spinner, FALSE);
 }
 
-static void remmina_plugin_manager_download_result_dialog(GtkDialog * dialog, gchar * message)
+static void remmina_plugin_manager_download_result_dialog(GtkDialog * dialog, const gchar * message)
 {
 	TRACE_CALL(__func__);
 	GtkWidget *child_dialog, *content_area, *label;
@@ -1119,7 +1122,13 @@ gboolean remmina_plugin_manager_parse_plugin_list(gpointer user_data)
 			json_reader_end_element(reader);
 
 			index = index + 1;
+		}
+		if (remmina_plugin_signal_data != NULL) {
+			gtk_widget_set_visible(remmina_plugin_signal_data->spinner, FALSE);
+			gtk_widget_set_visible(remmina_plugin_signal_data->label, FALSE);
 
+			gtk_list_store_clear(remmina_plugin_signal_data->store);
+			g_ptr_array_foreach(remmina_available_plugin_table, (GFunc)remmina_plugin_manager_show_for_each_available, remmina_plugin_signal_data->store);
 		}
 	}
 	json_reader_end_member(reader);
@@ -1128,7 +1137,12 @@ gboolean remmina_plugin_manager_parse_plugin_list(gpointer user_data)
 	return FALSE;
 }
 
-
+void remmina_plugin_manager_plugin_list_error() {
+	if (remmina_plugin_signal_data == NULL)
+		return;
+	gtk_widget_set_visible(remmina_plugin_signal_data->spinner, FALSE);
+	gtk_widget_set_visible(remmina_plugin_signal_data->label, FALSE);
+}
 
 gboolean remmina_plugin_manager_download_plugins(gpointer user_data)
 {
@@ -1290,7 +1304,6 @@ void* remmina_plugin_manager_get_available_plugins(void)
 
 	gchar *formdata;
 	JsonGenerator *g;
-
 	JsonNode *n = remmina_plugin_manager_plugin_stats_get_all();
 
 	if (n == NULL)
@@ -1378,7 +1391,7 @@ void remmina_plugin_manager_show(GtkWindow *parent)
 	GtkWidget *dialog;
 	GtkWidget *scrolledwindow;
 	GtkWidget *tree, *available_tree;
-	GtkWidget *label = gtk_label_new("Downloading...");
+	GtkWidget *label = gtk_label_new(_("Downloading..."));
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
 	GtkListStore *store, *available_store;
@@ -1483,6 +1496,9 @@ void remmina_plugin_manager_show(GtkWindow *parent)
 		gtk_tree_view_column_set_sort_column_id(column, 4);
 		gtk_tree_view_append_column(GTK_TREE_VIEW(available_tree), column);
 
+		gtk_widget_set_visible(spinner, TRUE);
+		gtk_widget_set_visible(label, TRUE);
+
 		data->store = available_store;
 		data->label = label;
 		data->spinner = spinner;
@@ -1499,6 +1515,8 @@ void remmina_plugin_manager_show(GtkWindow *parent)
 	}
 	remmina_plugin_window = (GtkDialog*)dialog;
 	remmina_plugin_signal_data = data;
+
+	remmina_plugin_manager_get_available_plugins();
 
 	gtk_widget_show(GTK_WIDGET(dialog));
 }

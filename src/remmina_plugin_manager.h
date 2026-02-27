@@ -64,9 +64,9 @@ void remmina_plugin_manager_for_each_plugin(RemminaPluginType type, RemminaPlugi
 void remmina_plugin_manager_show(GtkWindow *parent);
 void remmina_plugin_manager_for_each_plugin_stdout(RemminaPluginType type, RemminaPluginFunc func, gpointer data);
 void remmina_plugin_manager_show_stdout(void);
-void* remmina_plugin_manager_get_available_plugins(void);
 gboolean remmina_plugin_manager_parse_plugin_list(gpointer user_data);
 gboolean remmina_plugin_manager_download_plugins(gpointer user_data);
+void remmina_plugin_manager_plugin_list_error(void);
 RemminaFilePlugin *remmina_plugin_manager_get_import_file_handler(const gchar *file);
 RemminaFilePlugin *remmina_plugin_manager_get_export_file_handler(RemminaFile *remminafile);
 RemminaSecretPlugin *remmina_plugin_manager_get_secret_plugin(void);
