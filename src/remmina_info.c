@@ -1070,6 +1070,11 @@ JsonNode *remmina_info_stats_get_all(void)
 	json_builder_set_member_name(b, "ACTIVESECRETPLUGIN");
 	json_builder_add_value(b, n);
 
+	n = remmina_plugin_manager_get_installed_plugins();
+	json_builder_set_member_name(b, "PLUGINS");
+	json_builder_add_value(b, n);
+
+
 	n = remmina_info_stats_get_primary_password_status();
 	json_builder_set_member_name(b, "HASPRIMARYPASSWORD");
 	json_builder_add_value(b, n);
@@ -1294,6 +1299,9 @@ static void remmina_info_request(gpointer data)
 	gchar *enc_s;
 	JsonBuilder *b;
 	const gchar *uid = "000000";
+
+	if (info_disable_stats)
+		return;
 
 	n = remmina_info_stats_get_uid();
 	if (n != NULL){

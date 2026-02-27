@@ -68,6 +68,11 @@ struct curl_msg {
 
 enum ShowValue {ShowNews, ShowTip, ShowNone};
 
+void handle_error(struct curl_msg * message){
+	if (strcmp(message->url, LIST_URL)==0) {
+		remmina_plugin_manager_plugin_list_error();
+	}
+}
 
 // If we receive a response from the server parse out the message
 // and call the appropiate functions to handle the message.
@@ -231,9 +236,10 @@ static void remmina_curl_send_message(gpointer data)
 		curl_easy_setopt(curl, CURLOPT_TIMEOUT, 60);
 		res = curl_easy_perform(curl);
 		if(res != CURLE_OK){
-            curl_easy_strerror(res);
+			curl_easy_strerror(res);
 			result_message = "Failure: Transport error occurred - see debug or logs for more information";
 			marked_up_message = RED_TEXT(result_message);
+			handle_error(message);
 		}
 		else{
 			handle_resp(message);
