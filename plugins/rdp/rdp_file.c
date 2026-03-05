@@ -56,6 +56,12 @@ gboolean remmina_rdp_file_import_test(RemminaFilePlugin *plugin, const gchar *fr
 	if (g_strcmp0(ext, "rdp") == 0)
 		return TRUE;
 
+	if (g_strcmp0(ext, "RDPW") == 0)
+		return TRUE;
+
+	if (g_strcmp0(ext, "rdpw") == 0)
+		return TRUE;
+
 	return FALSE;
 }
 
