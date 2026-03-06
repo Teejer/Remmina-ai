@@ -1894,12 +1894,27 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 		if (g_strcmp0(cs, "http") == 0) {
 			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayRpcTransport, FALSE);
 			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayHttpTransport, TRUE);
+#ifdef WITH_RDP_AUTH_AAD
+			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayArmTransport, FALSE);
+#endif
 		} else if (g_strcmp0(cs, "rpc") == 0) {
 			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayRpcTransport, TRUE);
 			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayHttpTransport, FALSE);
+#ifdef WITH_RDP_AUTH_AAD
+			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayHttpUseWebsockets, FALSE);
+			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayArmTransport, FALSE);
+#endif
 		} else if (g_strcmp0(cs, "auto") == 0) {
 			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayRpcTransport, TRUE);
 			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayHttpTransport, TRUE);
+			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayArmTransport, FALSE);
+#ifdef WITH_RDP_AUTH_AAD
+		} else if (g_strcmp0(cs, "arm") == 0) {
+			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayRpcTransport, FALSE);
+			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayHttpTransport, FALSE);
+			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayHttpUseWebsockets, FALSE);
+			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayArmTransport, TRUE);
+#endif
 		}
 		remmina_plugin_service->get_server_port(s, 443, &gateway_host, &gateway_port);
 		freerdp_settings_set_string(rfi->clientContext.context.settings, FreeRDP_GatewayHostname, gateway_host);
@@ -1964,6 +1979,10 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 	if (remmina_plugin_service->file_get_string(remminafile, "loadbalanceinfo")) {
 		const gchar *tmp = strdup(remmina_plugin_service->file_get_string(remminafile, "loadbalanceinfo"));
 		freerdp_settings_set_pointer_len(rfi->clientContext.context.settings, FreeRDP_LoadBalanceInfo, tmp, strlen(tmp));
+	}
+
+	if (remmina_plugin_service->file_get_string(remminafile, "remoteapplicationprogram")) {
+		freerdp_settings_set_string(rfi->clientContext.context.settings, FreeRDP_RemoteApplicationProgram, remmina_plugin_service->file_get_string(remminafile, "remoteapplicationprogram"));
 	}
 
 	if (remmina_plugin_service->file_get_string(remminafile, "exec"))
@@ -3145,6 +3164,9 @@ static gpointer gwtransp_list[] =
 {
 	"http", "HTTP",
 	"rpc",	"RPC",
+#ifdef WITH_RDP_AUTH_AAD
+	"arm", "ARM",
+#endif
 	"auto", "Auto",
 	NULL
 };
@@ -3300,6 +3322,7 @@ static const RemminaProtocolSetting remmina_rdp_advanced_settings[] =
 	{ REMMINA_PROTOCOL_SETTING_TYPE_TEXT,	  "exec",		    N_("Start-up program"),				 FALSE, NULL,		  NULL														 },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_TEXT,	  "execpath",		    N_("Start-up path"),				 FALSE, NULL,		  NULL														 },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_TEXT,	  "loadbalanceinfo",	    N_("Load balance info"),				 FALSE, NULL,		  NULL														 },
+	{ REMMINA_PROTOCOL_SETTING_TYPE_TEXT,	  "remoteapplicationprogram", N_("Remote Application Program"), 		 FALSE, NULL,		  NULL														 },
 	// TRANSLATORS: Do not use typographic quotation marks, these must stay as "double quote", also know as “Typewriter ("programmer's") quote, ambidextrous.”
 	{ REMMINA_PROTOCOL_SETTING_TYPE_TEXT,	  "printer_overrides",	    N_("Override printer drivers"),			 FALSE, NULL,		  N_("\"Samsung_CLX-3300_Series\":\"Samsung CLX-3300 Series PS\";\"Canon MF410\":\"Canon MF410 Series UFR II\"") },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_TEXT,	  "usb",		    N_("USB device redirection"),			 TRUE,	NULL,		  usb_tooltip													 },

@@ -216,6 +216,104 @@ cleanup:
 	return rc && (*token != NULL);
 }
 
+static BOOL remmina_rdp_get_avd_access_token(freerdp* instance, char** token) {
+	assert(instance);
+	assert(instance->context);
+
+	rfContext *rfi;
+	RemminaProtocolWidget *gp;
+
+	rfi = (rfContext *)instance->context;
+	gp = rfi->protocol_widget;
+
+	char* token_request = NULL;
+	size_t token_request_len = 0;
+	char* redirect_uri = NULL;
+	size_t redirect_uri_len = 0;
+	char* auth_uri = NULL;
+	size_t auth_uri_len = 0;
+	const char* scope = "https%3A%2F%2Fwww.wvd.microsoft.com%2F.default";
+
+	assert(token);
+
+	BOOL rc = FALSE;
+	*token = NULL;
+
+	const char* client_id =
+	    freerdp_settings_get_string(instance->context->settings, FreeRDP_GatewayAvdClientID);
+	const char* base = freerdp_settings_get_string(instance->context->settings,
+	                                               FreeRDP_GatewayAzureActiveDirectory);
+	const BOOL useTenant =
+	    freerdp_settings_get_bool(instance->context->settings, FreeRDP_GatewayAvdUseTenantid);
+	const char* tenantid = "common";
+	if (useTenant) {
+		tenantid =
+		    freerdp_settings_get_string(instance->context->settings, FreeRDP_GatewayAvdAadtenantid);
+	}
+	if (!base || !tenantid || !client_id) {
+		goto cleanup;
+	}
+
+	winpr_asprintf(&redirect_uri, &redirect_uri_len,
+	               "https%%3A%%2F%%2F%s%%2F%s%%2Foauth2%%2Fnativeclient", base, tenantid);
+	if (!redirect_uri) {
+		goto cleanup;
+	}
+
+	const char* ep = freerdp_utils_aad_get_wellknown_string(instance->context,
+	                                                        AAD_WELLKNOWN_authorization_endpoint);
+
+	winpr_asprintf(&auth_uri, &auth_uri_len, "%s?client_id=%s&response_type="
+	       "code&scope=%s&redirect_uri=%s",
+	       ep, client_id, scope, redirect_uri);
+	if (!auth_uri) {
+		goto cleanup;
+	}
+
+	SET_AUTH_URI(gp, auth_uri);
+	IDLE_ADD((GSourceFunc)remmina_rdp_webview_show, gp);
+
+	char* token_uri;
+	while(true) {
+		usleep(500 * 1000);
+		token_uri = GET_TOKEN_URI(gp);
+		if (token_uri == NULL)
+		{
+			continue;
+		}
+
+		if (g_str_equal(token_uri, AUTH_CANCELLED))
+		{
+			rc = FALSE;
+			goto cleanup;
+		}
+
+		char* code = extract_authorization_code(token_uri);
+		if (!code) {
+			goto cleanup;
+		}
+
+		if (winpr_asprintf(
+				&token_request, &token_request_len,
+				"grant_type=authorization_code&code=%s&client_id=%s&scope=%s&redirect_uri=%s", code,
+				client_id, scope, redirect_uri) <= 0)
+		{
+			goto cleanup;
+		}
+
+		rc = client_common_get_access_token(instance, token_request, token);
+		break;
+	}
+
+cleanup:
+	free(auth_uri);
+	free(redirect_uri);
+	free(token_request);
+	SET_AUTH_URI(gp, NULL);
+	SET_TOKEN_URI(gp, NULL);
+	return rc && (*token != NULL);
+}
+
 BOOL remmina_rdp_get_access_token(freerdp* instance, AccessTokenType tokenType, char** token,
 									size_t count, ...)
 {
@@ -230,10 +328,11 @@ BOOL remmina_rdp_get_access_token(freerdp* instance, AccessTokenType tokenType, 
 				         count);
 				return FALSE;
 			}
-			else if (count > 2)
+			else if (count > 2) {
 				REMMINA_PLUGIN_WARNING(
 				          "ACCESS_TOKEN_TYPE_AAD expected 2 additional arguments, but got %zu, ignoring",
 				          count);
+			}
 			va_list ap = { 0 };
 			va_start(ap, count);
 			const char* scope = va_arg(ap, const char*);
@@ -242,7 +341,15 @@ BOOL remmina_rdp_get_access_token(freerdp* instance, AccessTokenType tokenType, 
 			va_end(ap);
 			return rc;
 		}
-		// TODO: case ACCESS_TOKEN_TYPE_AVD:
+		case ACCESS_TOKEN_TYPE_AVD:
+		{
+			if (count != 0) {
+				REMMINA_PLUGIN_WARNING(
+				          "ACCESS_TOKEN_TYPE_AVD expected 0 additional arguments, but got %zu, ignoring",
+				          count);
+			}
+			return remmina_rdp_get_avd_access_token(instance, token);
+		}
 		default:
 			REMMINA_PLUGIN_ERROR("Unexpected value for AccessTokenType [%" PRIuz "], aborting", tokenType);
 			return FALSE;
