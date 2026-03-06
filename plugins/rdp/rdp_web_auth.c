@@ -46,13 +46,13 @@
 #define AUTH_CANCELLED "__AUTH_CANCELLED__"
 
 #define SET_AUTH_URI(gp, auth_uri) \
-	g_object_set_data_full(G_OBJECT(gp), "auth-uri", auth_uri, g_free)
+	g_object_set_data(G_OBJECT(gp), "auth-uri", auth_uri)
 
 #define GET_AUTH_URI(gp) \
 	(gchar*) g_object_get_data(G_OBJECT(gp), "auth-uri")
 
 #define SET_TOKEN_URI(gp, token_uri) \
-	g_object_set_data_full(G_OBJECT(gp), "token-uri", token_uri, g_free)
+	g_object_set_data(G_OBJECT(gp), "token-uri", token_uri)
 
 #define GET_TOKEN_URI(gp) \
 	(gchar*) g_object_get_data(G_OBJECT(gp), "token-uri")
@@ -211,6 +211,8 @@ cleanup:
 	free(auth_uri);
 	free(redirect_uri);
 	free(token_request);
+	SET_AUTH_URI(gp, NULL);
+	SET_TOKEN_URI(gp, NULL);
 	return rc && (*token != NULL);
 }
 
