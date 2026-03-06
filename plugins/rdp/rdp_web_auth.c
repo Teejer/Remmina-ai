@@ -141,7 +141,6 @@ static BOOL remmina_rdp_get_rdsaad_access_token(freerdp* instance, const char* s
 	gp = rfi->protocol_widget;
 
 	size_t size = 0;
-	char* response_uri = NULL;
 	char* token_request = NULL;
 	char* redirect_uri = NULL;
 	size_t redirect_uri_len = 0;
@@ -171,10 +170,10 @@ static BOOL remmina_rdp_get_rdsaad_access_token(freerdp* instance, const char* s
 	winpr_asprintf(&auth_uri, &auth_uri_len, "%s?client_id=%s&response_type="
 	       "code&scope=%s&redirect_uri=%s",
 	       ep, client_id, scope, redirect_uri);
-	if (!auth_uri)
-	{
+	if (!auth_uri) {
 		goto cleanup;
 	}
+
 	SET_AUTH_URI(gp, auth_uri);
 	IDLE_ADD((GSourceFunc)remmina_rdp_webview_show, gp);
 
@@ -182,13 +181,11 @@ static BOOL remmina_rdp_get_rdsaad_access_token(freerdp* instance, const char* s
 	while(true) {
 		usleep(500 * 1000);
 		token_uri = GET_TOKEN_URI(gp);
-		if (token_uri == NULL)
-		{
+		if (token_uri == NULL) {
 			continue;
 		}
 
-		if (g_str_equal(token_uri, AUTH_CANCELLED))
-		{
+		if (g_str_equal(token_uri, AUTH_CANCELLED)) {
 			rc = FALSE;
 			goto cleanup;
 		}
@@ -214,7 +211,6 @@ cleanup:
 	free(auth_uri);
 	free(redirect_uri);
 	free(token_request);
-	free(response_uri);
 	return rc && (*token != NULL);
 }
 
