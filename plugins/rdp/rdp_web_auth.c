@@ -140,8 +140,8 @@ static BOOL remmina_rdp_get_rdsaad_access_token(freerdp* instance, const char* s
 	rfi = (rfContext *)instance->context;
 	gp = rfi->protocol_widget;
 
-	size_t size = 0;
 	char* token_request = NULL;
+	size_t token_request_len = 0;
 	char* redirect_uri = NULL;
 	size_t redirect_uri_len = 0;
 	char* auth_uri = NULL;
@@ -195,7 +195,7 @@ static BOOL remmina_rdp_get_rdsaad_access_token(freerdp* instance, const char* s
 			goto cleanup;
 		}
 
-		if (winpr_asprintf(&token_request, &size,
+		if (winpr_asprintf(&token_request, &token_request_len,
 						"grant_type=authorization_code&code=%s&client_id=%s&scope=%s&redirect_uri=%"
 						"s&req_cnf=%s",
 						code, client_id, scope, redirect_uri, req_cnf) <= 0)
