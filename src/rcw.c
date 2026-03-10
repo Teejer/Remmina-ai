@@ -77,6 +77,7 @@
 
 gchar *remmina_pref_file;
 RemminaPref remmina_pref;
+static gboolean should_display = FALSE;
 
 G_DEFINE_TYPE(RemminaConnectionWindow, rcw, GTK_TYPE_WINDOW)
 
@@ -2920,6 +2921,15 @@ static void print_crossing_event(GdkEventCrossing *event) {
 }
 #endif
 
+static gboolean toolbar_display(gpointer user_data){
+	RemminaConnectionWindow *cnnwin = (RemminaConnectionWindow*) user_data;
+	if (should_display){
+		rcw_floating_toolbar_show(cnnwin, should_display);
+	}
+	return G_SOURCE_REMOVE;
+	
+}
+
 static gboolean rcw_floating_toolbar_on_enter(GtkWidget *widget, GdkEventCrossing *event,
 					      RemminaConnectionWindow *cnnwin)
 {
@@ -2931,8 +2941,16 @@ static gboolean rcw_floating_toolbar_on_enter(GtkWidget *widget, GdkEventCrossin
 		// the toolbar must not pop (the mouse pointer is not over the visible area, but on the left)
 		return TRUE;
 	}
-	rcw_floating_toolbar_show(cnnwin, TRUE);
-	sleep(remmina_pref.fullscreen_toolbar_delay);
+	if (remmina_pref.fullscreen_toolbar_delay > 0){
+		should_display = TRUE;
+		g_timeout_add(remmina_pref.fullscreen_toolbar_delay * 1000, G_SOURCE_FUNC(toolbar_display), cnnwin);
+	}
+	else{
+		rcw_floating_toolbar_show(cnnwin, TRUE);
+	}
+
+	
+	
 	return TRUE;
 }
 
@@ -2940,8 +2958,11 @@ static gboolean rcw_floating_toolbar_on_leave(GtkWidget *widget, GdkEventCrossin
 					      RemminaConnectionWindow *cnnwin)
 {
 	TRACE_CALL(__func__);
-	if (event->detail != GDK_NOTIFY_INFERIOR)
+	if (event->detail != GDK_NOTIFY_INFERIOR){
 		rcw_floating_toolbar_show(cnnwin, FALSE);
+		should_display = FALSE;
+	}
+		
 	return TRUE;
 }
 
@@ -3596,7 +3617,7 @@ static void rco_closewin(RemminaProtocolWidget *gp)
 	TRACE_CALL(__func__);
 	RemminaConnectionObject *cnnobj = gp->cnnobj;
 	GtkWidget *page_to_remove;
-
+	should_display = FALSE;
 
 	if (cnnobj && cnnobj->scrolled_container && REMMINA_IS_SCROLLED_VIEWPORT(cnnobj->scrolled_container)) {
 		REMMINA_DEBUG("deleting motion");
