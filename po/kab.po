@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Remmina v1.4.7\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-01-29 11:01+0000\n"
+"PO-Revision-Date: 2026-03-20 18:09+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Kabyle <https://hosted.weblate.org/projects/remmina/remmina/"
 "kab/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.16-dev\n"
+"X-Generator: Weblate 5.17-dev\n"
 
 #: src/remmina_icon.c:143
 msgid "Enable Service Discovery"
@@ -2980,7 +2980,7 @@ msgstr ""
 
 #: plugins/rdp/rdp_plugin.c:3071
 msgid "Modem"
-msgstr "Amodem"
+msgstr "Anajkas"
 
 #: plugins/rdp/rdp_plugin.c:3072
 msgid "Low performance broadband"
