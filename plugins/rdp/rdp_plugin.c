@@ -48,6 +48,9 @@
 #include "rdp_monitor.h"
 #include "rdp_channels.h"
 #include "rdp_web_auth.h"
+#ifdef WITH_SSO_MIB
+#include "rdp_sso_mib.h"
+#endif
 
 #include <errno.h>
 #include <pthread.h>
@@ -1205,6 +1208,13 @@ static SSIZE_T remmina_rdp_retry_dialog(freerdp* instance, const char* what, siz
 static void remmina_rdp_post_final_disconnect(freerdp* instance)
 {
 	// Clean up resources allocated in PreConnect
+#ifdef WITH_SSO_MIB
+	rfContext *rfi = (rfContext *)instance->context;
+	if (rfi) {
+		remmina_sso_mib_free(rfi->sso_mib);
+		rfi->sso_mib = NULL;
+	}
+#endif
 }
 #endif
 
