@@ -11,13 +11,14 @@
 # Balázs Meskó <meskobalazs@mailbox.org>, 2023, 2025, 2026.
 # Béla Bajza <bajzabela@gmail.com>, 2023.
 # Pavel Borecki <pavel.borecki@gmail.com>, 2026.
+# KAMI <kami911@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-02-16 15:09+0000\n"
-"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
+"PO-Revision-Date: 2026-04-15 07:43+0000\n"
+"Last-Translator: KAMI <kami911@gmail.com>\n"
 "Language-Team: Hungarian <https://hosted.weblate.org/projects/remmina/"
 "remmina/hu/>\n"
 "Language: hu\n"
@@ -25,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16\n"
+"X-Generator: Weblate 5.17.1-dev\n"
 "X-Launchpad-Export-Date: 2014-04-10 15:03+0000\n"
 
 #: src/remmina_icon.c:143
@@ -225,7 +226,7 @@ msgstr "Bezárás"
 
 #: src/remmina_message_panel.c:255
 msgid "Do you accept?"
-msgstr ""
+msgstr "Elfogadja ezt?"
 
 #: src/remmina_message_panel.c:261 src/remmina_message_panel.c:270
 msgid "Yes"
@@ -549,11 +550,11 @@ msgstr "Szigorú kiszolgáló kulcs ellenőrzés"
 
 #: src/remmina_ssh_plugin.c:1657
 msgid "Copy text on selection"
-msgstr ""
+msgstr "Kiválasztott szöveg másolása"
 
 #: src/remmina_ssh_plugin.c:1658
 msgid "Allow keys using ssh-rsa (insecure)"
-msgstr ""
+msgstr "Az ssh-rsa kulcsok engedélyezése (nem biztonságos)"
 
 #: src/remmina_ssh_plugin.c:1678
 msgid "SSH - Secure Shell"
@@ -1235,7 +1236,7 @@ msgstr "RDP-fájlok"
 
 #: src/remmina_main.c:1390
 msgid "Virt-Viewer Files"
-msgstr ""
+msgstr "Virt-Viewer fájlok"
 
 #: src/remmina_main.c:1395
 msgid "All Files"
@@ -1369,27 +1370,24 @@ msgstr "Asszisztencia mód"
 
 #: src/remmina_file_editor.c:957
 msgid "Save to..."
-msgstr ""
+msgstr "Mentés ide…"
 
 #: src/remmina_file_editor.c:958
-#, fuzzy
-#| msgid "_Save"
 msgid "Save"
-msgstr "Menté_s"
+msgstr "Mentés"
 
 #: src/remmina_file_editor.c:961
 msgid "Open ssh tunnel config"
-msgstr ""
+msgstr "SSH-alagút beállítások megnyitása"
 
 #: src/remmina_file_editor.c:970
-#, fuzzy
-#| msgid "Remmina Kiosk"
 msgid "Remmina Files"
-msgstr "Remmina kioszk"
+msgstr "Remmina fájlok"
 
 #: src/remmina_file_editor.c:973
+#, fuzzy
 msgid "ssh_export.remssh"
-msgstr ""
+msgstr "ssh_export.remssh"
 
 #: src/remmina_file_editor.c:1288
 msgid "Keyboard mapping"
@@ -3539,7 +3537,7 @@ msgstr "FreeRDP naplózási szint"
 
 #: plugins/rdp/rdp_plugin.c:3274
 msgid "FreeRDP log filters"
-msgstr "FreeRDP naplózási szint"
+msgstr "FreeRDP napló szűrők"
 
 #: plugins/rdp/rdp_plugin.c:3274
 msgid "tag:level[,tag:level[,…]]"
