@@ -729,6 +729,24 @@ static BOOL rf_keyboard_set_ime_status(rdpContext *context, UINT16 imeId, UINT32
 	return TRUE;
 }
 
+#if FREERDP_CHECK_VERSION(3, 24, 3)
+static void remmina_rdp_OnUserNotificationEventHandler(void *context,
+                                                        const UserNotificationEventArgs *e)
+{
+	rfContext *rfi = (rfContext *)context;
+	RemminaProtocolWidget *gp;
+
+	if (!rfi || !e || !e->message)
+		return;
+
+	gp = rfi->protocol_widget;
+	if (!gp)
+		return;
+
+	remmina_plugin_service->protocol_widget_panel_accept(gp, e->message);
+}
+#endif
+
 static BOOL remmina_rdp_pre_connect(freerdp *instance)
 {
 	TRACE_CALL(__func__);
@@ -747,6 +765,10 @@ static BOOL remmina_rdp_pre_connect(freerdp *instance)
 					 remmina_rdp_OnChannelConnectedEventHandler);
 	PubSub_SubscribeChannelDisconnected(instance->context->pubSub,
 						remmina_rdp_OnChannelDisconnectedEventHandler);
+#if FREERDP_CHECK_VERSION(3, 24, 3)
+	PubSub_SubscribeUserNotification(instance->context->pubSub,
+					 remmina_rdp_OnUserNotificationEventHandler);
+#endif
 
 	if (!freerdp_client_load_addins(channels, settings))
 		return FALSE;
@@ -1039,6 +1061,16 @@ static BOOL remmina_rdp_authenticate_ex(freerdp* instance, char** username, char
 			cfg_key_password = FreeRDP_Password;
 			flags = 0;
 			break;
+#if FREERDP_CHECK_VERSION(3, 24, 3)
+		case AUTH_FIDO_PIN:
+			if ((*password))
+				return TRUE;
+			key_title = _("Enter FIDO2 authenticator PIN");
+			key_password = "password";
+			cfg_key_password = FreeRDP_Password;
+			flags = 0;
+			break;
+#endif
 		default:
 			// TODO: Display an error dialog informing the user that the remote requires some mechanism FreeRDP or Remmina currently do not support
 			g_fprintf(stderr, "[authentication] unsupported type %d, access denied", reason);
@@ -1071,7 +1103,10 @@ static BOOL remmina_rdp_authenticate_ex(freerdp* instance, char** username, char
 			if (s_username)
 				freerdp_settings_set_string(rfi->clientContext.context.settings, cfg_key_user, s_username);
 			remmina_plugin_service->file_set_string(remminafile, key_user, s_username);
-			g_free(s_username);
+			if (username)
+				*username = s_username;
+			else
+				g_free(s_username);
 		}
 
 		gchar* s_pwd_copy = NULL;
@@ -1090,19 +1125,28 @@ static BOOL remmina_rdp_authenticate_ex(freerdp* instance, char** username, char
 			if (s_domain)
 				freerdp_settings_set_string(rfi->clientContext.context.settings, cfg_key_domain, s_domain);
 			remmina_plugin_service->file_set_string(remminafile, key_domain, s_domain);
-			g_free(s_domain);
+			if (domain)
+				*domain = s_domain;
+			else
+				g_free(s_domain);
 		}
 
 		save = remmina_plugin_service->protocol_plugin_init_get_savepassword(gp);
-		if (save) {
-			// User has requested to save credentials. We put the password
-			// into remminafile->settings. It will be saved later, on successful connection, by
-			// rcw.c
-			remmina_plugin_service->file_set_string(remminafile, key_password, s_pwd_copy);
-		} else {
-			remmina_plugin_service->file_set_string(remminafile, key_password, NULL);
+		if (key_password) {
+			if (save) {
+				// User has requested to save credentials. We put the password
+				// into remminafile->settings. It will be saved later, on successful connection, by
+				// rcw.c
+				remmina_plugin_service->file_set_string(remminafile, key_password, s_pwd_copy);
+			} else {
+				remmina_plugin_service->file_set_string(remminafile, key_password, NULL);
+			}
 		}
-		g_free(s_pwd_copy);
+
+		if (password)
+			*password = s_pwd_copy;
+		else
+			g_free(s_pwd_copy);
 
 		rc = TRUE;
 	}
@@ -2457,6 +2501,11 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 		 * doesn’t know anything about info on smart card */
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_PasswordIsSmartcardPin, TRUE);
 
+#if FREERDP_CHECK_VERSION(3, 24, 3)
+	if (remmina_plugin_service->file_get_int(remminafile, "sharewebauthn", FALSE))
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_RedirectWebAuthN, TRUE);
+#endif
+
 	/* /serial[:<name>[,<path>[,<driver>[,permissive]]]] */
 	if (remmina_plugin_service->file_get_int(remminafile, "shareserial", FALSE)) {
 		RDPDR_SERIAL *serial;
@@ -3327,6 +3376,9 @@ static const RemminaProtocolSetting remmina_rdp_advanced_settings[] =
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK,	  "serialpermissive",	    N_("(SELinux) permissive mode for serial ports"),	 TRUE,	NULL,		  NULL														 },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK,	  "shareparallel",	    N_("Share parallel ports"),				 TRUE,	NULL,		  NULL														 },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK,	  "sharesmartcard",	    N_("Share a smart card"),				 TRUE,	NULL,		  NULL														 },
+#if FREERDP_CHECK_VERSION(3, 24, 3)
+	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK,	  "sharewebauthn",	    N_("Share WebAuthn (FIDO2) credentials"),		 TRUE,	NULL,		  NULL														 },
+#endif
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK,	  "disableclipboard",	    N_("Turn off clipboard sync"),			 TRUE,	NULL,		  NULL														 },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK,	  "cert_ignore",	    N_("Ignore certificate"),				 TRUE,	NULL,		  NULL														 },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK,	  "old-license",	    N_("Use the old license workflow"),			 TRUE,	NULL,		  N_("It disables CAL and hwId is set to 0")									 },
