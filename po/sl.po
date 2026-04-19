@@ -7,13 +7,14 @@
 # Antenore Gatta <antenore@simbiosi.org>, 2020, 2021.
 # Arnold Marko <arnold.marko@gmail.com>, 2025.
 # Pavel Borecki <pavel.borecki@gmail.com>, 2026.
+# Jernej Pangerc <jernejp21@tuta.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-02-16 14:11+0000\n"
-"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
+"PO-Revision-Date: 2026-04-19 21:09+0000\n"
+"Last-Translator: Jernej Pangerc <jernejp21@tuta.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/remmina/"
 "remmina/sl/>\n"
 "Language: sl\n"
@@ -22,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
 "n%100==4 ? 3 : 0);\n"
-"X-Generator: Weblate 5.16\n"
+"X-Generator: Weblate 5.17.1-dev\n"
 "X-Launchpad-Export-Date: 2014-09-20 14:25+0000\n"
 
 #: src/remmina_icon.c:143
@@ -30,14 +31,12 @@ msgid "Enable Service Discovery"
 msgstr "Omogoči odkrivanje storitev"
 
 #: src/remmina_icon.c:157 data/ui/remmina_main.glade:438
-#, fuzzy
 msgid "_Quit"
-msgstr "_Končaj"
+msgstr "_Izhod"
 
 #: src/remmina_icon.c:162
-#, fuzzy
 msgid "_About"
-msgstr "_O"
+msgstr "_O programu"
 
 #: src/remmina_icon.c:167 data/ui/remmina_main.glade:289
 #, fuzzy
@@ -230,7 +229,7 @@ msgstr "Zapri"
 
 #: src/remmina_message_panel.c:255
 msgid "Do you accept?"
-msgstr ""
+msgstr "Ali sprejmete?"
 
 #: src/remmina_message_panel.c:261 src/remmina_message_panel.c:270
 #, fuzzy
@@ -490,7 +489,7 @@ msgstr "Geslo za odklepanje zasebnega ključa"
 
 #: src/remmina_ssh_plugin.c:1614
 msgid "Opening command"
-msgstr ""
+msgstr "Odpiranje ukaza"
 
 #: src/remmina_ssh_plugin.c:1615
 #, fuzzy
@@ -555,7 +554,7 @@ msgstr "Zagon SSH seje ni uspel: %s"
 
 #: src/remmina_ssh_plugin.c:1648
 msgid "Full path of an existing folder"
-msgstr ""
+msgstr "Polna pot obstoječe mape"
 
 #: src/remmina_ssh_plugin.c:1649
 #, fuzzy
