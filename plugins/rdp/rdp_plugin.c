@@ -1033,6 +1033,9 @@ static BOOL remmina_rdp_authenticate_ex(freerdp* instance, char** username, char
 		case AUTH_NLA:
 		case AUTH_TLS:
 		case AUTH_RDP:
+#if FREERDP_CHECK_VERSION(3, 18, 0)
+		case AUTH_RDSTLS:
+#endif
 			if ((*username) && (*password)){
 				return true;
 			}
