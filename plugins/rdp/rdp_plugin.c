@@ -1972,6 +1972,7 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayHttpTransport, FALSE);
 			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayHttpUseWebsockets, FALSE);
 			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayArmTransport, TRUE);
+			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_AadSecurity, TRUE);
 #endif
 		}
 		remmina_plugin_service->get_server_port(s, 443, &gateway_host, &gateway_port);
