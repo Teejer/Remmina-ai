@@ -56,6 +56,12 @@ gboolean remmina_rdp_file_import_test(RemminaFilePlugin *plugin, const gchar *fr
 	if (g_strcmp0(ext, "rdp") == 0)
 		return TRUE;
 
+	if (g_strcmp0(ext, "RDPW") == 0)
+		return TRUE;
+
+	if (g_strcmp0(ext, "rdpw") == 0)
+		return TRUE;
+
 	return FALSE;
 }
 
@@ -101,6 +107,8 @@ static void remmina_rdp_file_import_field(RemminaFile *remminafile, const gchar 
 		remmina_plugin_service->file_set_string(remminafile, "gatewayaccesstoken", value);
 	} else if (g_strcmp0(key, "authentication level") == 0) {
 		remmina_plugin_service->file_set_int(remminafile, "authentication level", atoi(value));
+	} else if (g_strcmp0(key, "remoteapplicationprogram") == 0) {
+		remmina_plugin_service->file_set_string(remminafile, "remoteapplicationprogram", value);
 	}
 	/* tsclient fields, import only */
 	else if (g_strcmp0(key, "client hostname") == 0) {

@@ -1379,8 +1379,10 @@ static void remmina_set_file_chooser_filters(GtkFileChooser *chooser)
 	filter = gtk_file_filter_new();
 	gtk_file_filter_set_name(filter, _("RDP Files"));
 	gtk_file_filter_add_pattern(filter, "*.rdp");
+	gtk_file_filter_add_pattern(filter, "*.rdpw");
 	gtk_file_filter_add_pattern(filter, "*.rdpx");
 	gtk_file_filter_add_pattern(filter, "*.RDP");
+	gtk_file_filter_add_pattern(filter, "*.RDPW");
 	gtk_file_filter_add_pattern(filter, "*.RDPX");
 	gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(chooser), filter);
 	gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(chooser), filter);
