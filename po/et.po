@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-02-16 14:10+0000\n"
+"PO-Revision-Date: 2026-04-21 21:09+0000\n"
 "Last-Translator: Priit Jõerüüt <jrthwlate@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Estonian <https://hosted.weblate.org/projects/remmina/remmina/"
 "et/>\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16\n"
+"X-Generator: Weblate 5.17.1-dev\n"
 "X-Launchpad-Export-Date: 2014-09-20 14:24+0000\n"
 
 #: src/remmina_icon.c:143
@@ -2421,7 +2421,7 @@ msgstr ""
 
 #: plugins/x2go/x2go_plugin.c:767
 msgid "Could not get currently selected row (session)!"
-msgstr "Ei saanud valitud reast seansi ID-d kätte!"
+msgstr "Ei saanud valitud reast seansi tunnust kätte!"
 
 #: plugins/x2go/x2go_plugin.c:786
 #, c-format
