@@ -85,6 +85,8 @@ G_DEFINE_TYPE(RemminaConnectionWindow, rcw, GTK_TYPE_WINDOW)
 
 #define MOTION_TIME 100
 
+#define IS_WAYLAND(widget) (GDK_IS_WAYLAND_DISPLAY(gtk_widget_get_display(GTK_WIDGET(widget))))
+
 /* default timeout used to hide the floating toolbar when switching profile */
 #define TB_HIDE_TIME_TIME 1500
 
@@ -100,6 +102,9 @@ struct _RemminaConnectionWindowPriv {
 	gint						ftb_move_horiz;
 	gint						ftb_move_vert;
 
+	GPtrArray * 				multimon_areas;
+	gint					    multimon_main_monitor;
+
 	GtkWidget *					floating_toolbar_label;
 	gdouble						floating_toolbar_opacity;
 
@@ -108,6 +113,7 @@ struct _RemminaConnectionWindowPriv {
 	guint						spf_eventsourceid;              // idle
 	guint						grab_retry_eventsourceid;       // timeout
 	guint						delayed_grab_eventsourceid;
+	gboolean 					grab_pending_on_other_window;	// pending operations on other fullscreen window
 	guint						ftb_hide_eventsource;           // timeout
 	guint						tar_eventsource;                // timeout
 	guint						hidetb_eventsource;             // timeout
@@ -188,6 +194,8 @@ typedef struct _RemminaConnectionObject {
 	gulong				deferred_open_size_allocate_handler;
 } RemminaConnectionObject;
 
+G_DEFINE_TYPE(MultimonWindow, multimon_window, GTK_TYPE_WINDOW)
+
 enum {
 	TOOLBARPLACE_SIGNAL,
 	LAST_SIGNAL
@@ -196,8 +204,13 @@ enum {
 static guint rcw_signals[LAST_SIGNAL] =
 { 0 };
 
+typedef struct _grab_callback_data {
+	RemminaConnectionWindow *cnnwin;
+	GtkWindow* window;
+} grab_callback_data;
+
 static RemminaConnectionWindow *rcw_create_scrolled(gint width, gint height, gboolean maximize);
-static RemminaConnectionWindow *rcw_create_fullscreen(GtkWindow *old, gint view_mode, gboolean multi_mon);
+static RemminaConnectionWindow *rcw_create_fullscreen(GtkWindow *old, gint view_mode);
 static gboolean rcw_hostkey_func(RemminaProtocolWidget *gp, guint keyval, gboolean release);
 static GtkWidget *rco_create_tab_page(RemminaConnectionObject *cnnobj);
 static GtkWidget *rco_create_tab_label(RemminaConnectionObject *cnnobj);
@@ -207,11 +220,16 @@ void rcw_grab_focus(RemminaConnectionWindow *cnnwin);
 static GtkWidget *rcw_create_toolbar(RemminaConnectionWindow *cnnwin, gint mode, gboolean is_floating);
 static void rcw_place_toolbar(GtkToolbar *toolbar, GtkGrid *grid, GtkWidget *sibling, int toolbar_placement);
 static void rco_update_toolbar(RemminaConnectionObject *cnnobj);
-static void rcw_keyboard_grab(RemminaConnectionWindow *cnnwin);
+static void rcw_keyboard_grab(RemminaConnectionWindow *cnnwin, GtkWindow*window);
 static GtkWidget *rcw_append_new_page(RemminaConnectionWindow *cnnwin, RemminaConnectionObject *cnnobj);
-static void rcw_ftb_multimon_move_toolbar(RemminaConnectionWindowPriv *priv);
 
 static void rcw_ftb_drag_begin(GtkWidget *widget, GdkDragContext *context, gpointer user_data);
+
+static void rcw_create_widget_areas(RemminaConnectionObject*cnnobj);
+static void rcw_show_widget_areas(RemminaConnectionWindow*priv);
+static void rcw_iconify_widget_areas(RemminaConnectionWindow*priv);
+static void rcw_restore_widget_areas(RemminaConnectionWindow*priv);
+static void rcw_dispose_widget_areas(RemminaConnectionWindowPriv*priv);
 
 static const GtkTargetEntry dnd_targets_ftb[] =
 {
@@ -256,6 +274,7 @@ static void rcw_class_init(RemminaConnectionWindowClass *klass)
 					"}\n"
 					"#remmina-connection-window-fullscreen {\n"
 					"  border-color: black;\n"
+					"  background-color: black;\n"
 					"}\n"
 					"#remmina-small-button {\n"
 					"  outline-offset: 0;\n"
@@ -327,6 +346,7 @@ static void rcw_class_init(RemminaConnectionWindowClass *klass)
 					"}\n"
 					"#remmina-connection-window-fullscreen {\n"
 					"  border-color: black;\n"
+					"  background-color: black;\n"
 					"}\n"
 					"#remmina-small-button {\n"
 					"  -GtkWidget-focus-padding: 0;\n"
@@ -424,7 +444,7 @@ static RemminaScaleMode get_current_allowed_scale_mode(RemminaConnectionObject *
 	/* Forbid scalemode REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED when not possible */
 	if (!plugin_can_scale && scalemode == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED)
 		scalemode = REMMINA_PROTOCOL_WIDGET_SCALE_MODE_NONE;
-	
+
 	if (scale_avail)
 		*scale_avail = plugin_can_scale;
 	if (dynres_avail)
@@ -452,6 +472,7 @@ static void rcw_kp_ungrab(RemminaConnectionWindow *cnnwin)
 	GdkDeviceManager *manager;
 	GdkDevice *keyboard = NULL;
 #endif
+
 
 	if (cnnwin->priv->grab_retry_eventsourceid) {
 		g_source_remove(cnnwin->priv->grab_retry_eventsourceid);
@@ -495,16 +516,15 @@ static void rcw_kp_ungrab(RemminaConnectionWindow *cnnwin)
 	cnnwin->priv->pointer_captured = FALSE;
 }
 
-static gboolean rcw_keyboard_grab_retry(gpointer user_data)
+static gboolean rcw_keyboard_grab_retry(grab_callback_data*grab_cb_info)
 {
 	TRACE_CALL(__func__);
-	RemminaConnectionWindow *cnnwin = (RemminaConnectionWindow *)user_data;
-
 #if DEBUG_KB_GRABBING
 	printf("%s retry grab\n", __func__);
 #endif
-	rcw_keyboard_grab(cnnwin);
-	cnnwin->priv->grab_retry_eventsourceid = 0;
+	rcw_keyboard_grab(grab_cb_info->cnnwin, grab_cb_info->window);
+	grab_cb_info->cnnwin->priv->grab_retry_eventsourceid = 0;
+	g_free(grab_cb_info);
 	return G_SOURCE_REMOVE;
 }
 
@@ -556,7 +576,7 @@ static void rcw_pointer_grab(RemminaConnectionWindow *cnnwin)
 #endif
 }
 
-static void rcw_keyboard_grab(RemminaConnectionWindow *cnnwin)
+static void rcw_keyboard_grab(RemminaConnectionWindow *cnnwin, GtkWindow* window)
 {
 	TRACE_CALL(__func__);
 	GdkDisplay *display;
@@ -568,6 +588,9 @@ static void rcw_keyboard_grab(RemminaConnectionWindow *cnnwin)
 #endif
 	GdkGrabStatus ggs;
 	GdkDevice *keyboard = NULL;
+
+	if (window == NULL)
+		window = GTK_WINDOW(cnnwin);
 
 	if (cnnwin->priv->kbcaptured) {
 #if DEBUG_KB_GRABBING
@@ -612,10 +635,10 @@ static void rcw_keyboard_grab(RemminaConnectionWindow *cnnwin)
 		 * by unsetting GDK_CORE_DEVICE_EVENTS
 		 */
 #if GTK_CHECK_VERSION(3, 20, 0)
-		ggs = gdk_seat_grab(seat, gtk_widget_get_window(GTK_WIDGET(cnnwin)),
+		ggs = gdk_seat_grab(seat, gtk_widget_get_window(GTK_WIDGET(window)),
 				    GDK_SEAT_CAPABILITY_KEYBOARD, TRUE, NULL, NULL, NULL, NULL);
 #else
-		ggs = gdk_device_grab(keyboard, gtk_widget_get_window(GTK_WIDGET(cnnwin)), GDK_OWNERSHIP_WINDOW,
+		ggs = gdk_device_grab(keyboard, gtk_widget_get_window(GTK_WIDGET(window)), GDK_OWNERSHIP_WINDOW,
 				      TRUE, GDK_KEY_PRESS | GDK_KEY_RELEASE, NULL, GDK_CURRENT_TIME);
 #endif
 		if (ggs != GDK_GRAB_SUCCESS) {
@@ -623,8 +646,12 @@ static void rcw_keyboard_grab(RemminaConnectionWindow *cnnwin)
 			printf("GRAB of keyboard failed.\n");
 #endif
 			/* Reschedule grabbing in half a second if not already done */
-			if (cnnwin->priv->grab_retry_eventsourceid == 0)
-				cnnwin->priv->grab_retry_eventsourceid = g_timeout_add(500, (GSourceFunc)rcw_keyboard_grab_retry, cnnwin);
+			if (cnnwin->priv->grab_retry_eventsourceid == 0) {
+				grab_callback_data*grab_cb_info = g_malloc(sizeof(grab_callback_data));
+				grab_cb_info->cnnwin = cnnwin;
+				grab_cb_info->window = window;
+				cnnwin->priv->grab_retry_eventsourceid = g_timeout_add(500, (GSourceFunc)rcw_keyboard_grab_retry, grab_cb_info);
+			}
 		} else {
 #if DEBUG_KB_GRABBING
 			printf("Keyboard grabbed\n");
@@ -771,6 +798,7 @@ static void rcw_destroy(GtkWidget *widget, gpointer data)
 		g_source_remove(priv->dwp_eventsourceid);
 		priv->dwp_eventsourceid = 0;
 	}
+	rcw_dispose_widget_areas(priv);
 
 	/* There is no need to destroy priv->floating_toolbar_widget,
 	 * because it’s our child and will be destroyed automatically */
@@ -1352,7 +1380,7 @@ static void rcw_switch_viewmode(RemminaConnectionWindow *cnnwin, int newmode)
 			gtk_window_get_size(GTK_WINDOW(cnnwin), &old_width, &old_height);
 			s = gdk_window_get_state(gtk_widget_get_window(GTK_WIDGET(cnnwin)));
 		}
-		newwin = rcw_create_fullscreen(GTK_WINDOW(cnnwin), cnnwin->priv->fss_view_mode, cnnwin->priv->multi_mon);
+		newwin = rcw_create_fullscreen(GTK_WINDOW(cnnwin), cnnwin->priv->fss_view_mode);
 		rcw_migrate(cnnwin, newwin);
 		if (old_mode == SCROLLED_WINDOW_MODE) {
 			newwin->priv->ss_maximized = (s & GDK_WINDOW_STATE_MAXIMIZED) ? TRUE : FALSE;
@@ -1389,7 +1417,6 @@ static void rcw_toolbar_fullscreen(GtkToolItem *toggle, RemminaConnectionWindow 
 
 	if (remmina_protocol_widget_get_multimon(gp) >= 1) {
 		REMMINA_DEBUG("Fullscreen on all monitor");
-		gdk_window_set_fullscreen_mode(gtk_widget_get_window(GTK_WIDGET(toggle)), GDK_FULLSCREEN_ON_ALL_MONITORS);
 	} else {
 		REMMINA_DEBUG("Fullscreen on one monitor");
 	}
@@ -1420,8 +1447,9 @@ static void rco_viewport_fullscreen_mode(GtkWidget *widget, RemminaConnectionObj
 	if (!gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)))
 		return;
 	cnnobj->cnnwin->priv->fss_view_mode = VIEWPORT_FULLSCREEN_MODE;
-	newwin = rcw_create_fullscreen(GTK_WINDOW(cnnobj->cnnwin), VIEWPORT_FULLSCREEN_MODE, cnnobj->cnnwin->priv->multi_mon);
+	newwin = rcw_create_fullscreen(GTK_WINDOW(cnnobj->cnnwin), VIEWPORT_FULLSCREEN_MODE);
 	rcw_migrate(cnnobj->cnnwin, newwin);
+	rcw_create_widget_areas(cnnobj);
 }
 
 static void rco_scrolled_fullscreen_mode(GtkWidget *widget, RemminaConnectionObject *cnnobj)
@@ -1432,7 +1460,7 @@ static void rco_scrolled_fullscreen_mode(GtkWidget *widget, RemminaConnectionObj
 	if (!gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(widget)))
 		return;
 	cnnobj->cnnwin->priv->fss_view_mode = SCROLLED_FULLSCREEN_MODE;
-	newwin = rcw_create_fullscreen(GTK_WINDOW(cnnobj->cnnwin), SCROLLED_FULLSCREEN_MODE, cnnobj->cnnwin->priv->multi_mon);
+	newwin = rcw_create_fullscreen(GTK_WINDOW(cnnobj->cnnwin), SCROLLED_FULLSCREEN_MODE);
 	rcw_migrate(cnnobj->cnnwin, newwin);
 }
 
@@ -1674,7 +1702,6 @@ static void rco_update_toolbar_autofit_button(RemminaConnectionObject *cnnobj)
 			gtk_widget_set_sensitive(GTK_WIDGET(toolitem), sc == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_NONE);
 		}
 	}
-	rcw_ftb_multimon_move_toolbar(cnnobj->cnnwin->priv);
 }
 
 static void rco_change_scalemode(RemminaConnectionObject *cnnobj, gboolean bdyn, gboolean bscale)
@@ -1812,16 +1839,19 @@ static void rcw_toolbar_multi_monitor_mode(GtkToolItem *toggle, RemminaConnectio
 		REMMINA_DEBUG("Saving multimon as 1");
 		remmina_file_set_int(cnnobj->remmina_file, "multimon", 1);
 		remmina_file_save(cnnobj->remmina_file);
-		remmina_protocol_widget_call_feature_by_type(REMMINA_PROTOCOL_WIDGET(cnnobj->proto),
-							     REMMINA_PROTOCOL_FEATURE_TYPE_MULTIMON, 0);
 		if (!gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(cnnwin->priv->toolitem_fullscreen))) {
 			cnnwin->priv->multi_mon = TRUE;
  			gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(cnnwin->priv->toolitem_fullscreen), TRUE);
 		}
+		remmina_protocol_widget_call_feature_by_type(REMMINA_PROTOCOL_WIDGET(cnnobj->proto),
+				REMMINA_PROTOCOL_FEATURE_TYPE_MULTIMON, 0);
+		rcw_create_widget_areas(cnnobj);
 	} else {
 		REMMINA_DEBUG("Saving multimon as 0");
 		remmina_file_set_int(cnnobj->remmina_file, "multimon", 0);
 		remmina_file_save(cnnobj->remmina_file);
+		remmina_protocol_widget_call_feature_by_type(REMMINA_PROTOCOL_WIDGET(cnnobj->proto),
+				REMMINA_PROTOCOL_FEATURE_TYPE_MULTIMON, 0);
 		rcw_toolbar_fullscreen(NULL, cnnwin);
 	}
 }
@@ -2215,7 +2245,7 @@ static void rcw_toolbar_tools(GtkToolItem *toggle, RemminaConnectionWindow *cnnw
 	if (remmina_protocol_widget_plugin_receives_keystrokes(REMMINA_PROTOCOL_WIDGET(cnnobj->proto))) {
 		/* Get the registered keystrokes list */
 		keystrokes = g_strsplit(remmina_pref.keystrokes, STRING_DELIMITOR, -1);
-		
+
 		/* Add a keystrokes submenu */
 		menuitem = gtk_menu_item_new_with_label(_("Keystrokes"));
 		submenu_keystrokes = GTK_MENU(gtk_menu_new());
@@ -2256,7 +2286,7 @@ static void rcw_toolbar_tools(GtkToolItem *toggle, RemminaConnectionWindow *cnnw
 						G_CALLBACK(remmina_protocol_widget_send_clipboard),
 						REMMINA_PROTOCOL_WIDGET(cnnobj->proto));
 		gtk_widget_show(menuitem);
-		
+
 		g_strfreev(keystrokes);
 	}
 
@@ -2447,6 +2477,7 @@ static void rcw_toolbar_minimize(GtkToolItem *toggle, RemminaConnectionWindow *c
 
 	rcw_floating_toolbar_show(cnnwin, FALSE);
 	gtk_window_iconify(GTK_WINDOW(cnnwin));
+	rcw_iconify_widget_areas(cnnwin);
 }
 
 static void rcw_toolbar_disconnect(GtkToolItem *toggle, RemminaConnectionWindow *cnnwin)
@@ -2486,17 +2517,17 @@ static void rcw_toolbar_grab(GtkToolItem *toggle, RemminaConnectionWindow *cnnwi
 	if (!(cnnobj = rcw_get_visible_cnnobj(cnnwin))) return;
 
 	capture = gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(toggle));
-	
+
 	if (cnnobj->connected){
 		remmina_file_set_int(cnnobj->remmina_file, "keyboard_grab", capture);
 	}
 
 	if (capture && cnnobj->connected) {
-		
+
 #if DEBUG_KB_GRABBING
 		printf("DEBUG_KB_GRABBING: Grabbing for button\n");
 #endif
-		rcw_keyboard_grab(cnnobj->cnnwin);
+		rcw_keyboard_grab(cnnobj->cnnwin, NULL);
 		if (cnnobj->cnnwin->priv->pointer_entered)
 			rcw_pointer_grab(cnnobj->cnnwin);
 	} else {
@@ -3038,6 +3069,9 @@ static void rco_update_toolbar(RemminaConnectionObject *cnnobj)
 			REMMINA_DEBUG("Using %s as background color", bg);
 		}
 
+// gtk_widget_override_background_color is deprecated, and this will be handled with GTK4 migration
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 		if (remmina_file_get_int(cnnobj->remmina_file, "keyboard_grab", FALSE)) {
 			if (remmina_pref_get_boolean("grab_color_switch")) {
 				gtk_widget_override_background_color(priv->overlay_ftb_fr, GTK_STATE_FLAG_NORMAL, &rgba);
@@ -3051,6 +3085,7 @@ static void rco_update_toolbar(RemminaConnectionObject *cnnobj)
 			format = "<big><b>(G:OFF) - \%s</b></big>";
 		}
 		gchar *markup;
+#pragma clang diagnostic pop
 
 		markup = g_markup_printf_escaped(format, str);
 		gtk_label_set_markup(GTK_LABEL(priv->floating_toolbar_label), markup);
@@ -3110,7 +3145,7 @@ static gboolean toolbar_display(gpointer user_data){
 		rcw_floating_toolbar_show(cnnwin, should_display);
 	}
 	return G_SOURCE_REMOVE;
-	
+
 }
 
 static gboolean rcw_floating_toolbar_on_enter(GtkWidget *widget, GdkEventCrossing *event,
@@ -3132,8 +3167,8 @@ static gboolean rcw_floating_toolbar_on_enter(GtkWidget *widget, GdkEventCrossin
 		rcw_floating_toolbar_show(cnnwin, TRUE);
 	}
 
-	
-	
+
+
 	return TRUE;
 }
 
@@ -3145,7 +3180,7 @@ static gboolean rcw_floating_toolbar_on_leave(GtkWidget *widget, GdkEventCrossin
 		rcw_floating_toolbar_show(cnnwin, FALSE);
 		should_display = FALSE;
 	}
-		
+
 	return TRUE;
 }
 
@@ -3258,7 +3293,7 @@ static gboolean rco_enter_protocol_widget(GtkWidget *widget, GdkEventCrossing *e
 	/* Check if we need grabbing */
 	active = gtk_window_is_active(GTK_WINDOW(cnnobj->cnnwin));
 	if (remmina_file_get_int(cnnobj->remmina_file, "keyboard_grab", FALSE) && active) {
-		rcw_keyboard_grab(cnnobj->cnnwin);
+		rcw_keyboard_grab(cnnobj->cnnwin, NULL);
 		rcw_pointer_grab(cnnobj->cnnwin);
 	}
 
@@ -3276,7 +3311,7 @@ static gboolean focus_in_delayed_grab(RemminaConnectionWindow *cnnwin)
 #if DEBUG_KB_GRABBING
 		printf("DEBUG_KB_GRABBING:   delayed requesting kb and pointer grab, because of pointer inside\n");
 #endif
-		rcw_keyboard_grab(cnnwin);
+		rcw_keyboard_grab(cnnwin, NULL);
 		rcw_pointer_grab(cnnwin);
 	}
 #if DEBUG_KB_GRABBING
@@ -3549,6 +3584,9 @@ static void rcw_init(RemminaConnectionWindow *cnnwin)
 	if (kioskmode && kioskmode == TRUE)
 		priv->view_mode = VIEWPORT_FULLSCREEN_MODE;
 
+	priv->multimon_areas = NULL;
+	priv->multimon_main_monitor = -1;
+
 	priv->floating_toolbar_opacity = 1.0;
 	priv->kbcaptured = FALSE;
 	priv->pointer_captured = FALSE;
@@ -3584,10 +3622,11 @@ static gboolean rcw_focus_out_event(GtkWidget *widget, GdkEventWindowState *even
 	return FALSE;
 }
 
-
 static gboolean rcw_state_event(GtkWidget *widget, GdkEventWindowState *event, gpointer user_data)
 {
 	TRACE_CALL(__func__);
+
+	RemminaConnectionWindow *cnnwin = (RemminaConnectionWindow *)widget;
 
 	if (!REMMINA_IS_CONNECTION_WINDOW(widget))
 		return FALSE;
@@ -3596,6 +3635,20 @@ static gboolean rcw_state_event(GtkWidget *widget, GdkEventWindowState *event, g
 	printf("DEBUG_KB_GRABBING: window-state-event received\n");
 #endif
 
+	// This will trigger iconify/deiconify on other multimonitor windows
+	if (event->changed_mask & GDK_WINDOW_STATE_ICONIFIED &&
+		event->new_window_state & GDK_WINDOW_STATE_FULLSCREEN &&
+		event->new_window_state & GDK_WINDOW_STATE_ICONIFIED) {
+		rcw_iconify_widget_areas(cnnwin);
+	} else if (event->changed_mask & GDK_WINDOW_STATE_FOCUSED &&
+		       event->new_window_state & GDK_WINDOW_STATE_FULLSCREEN &&
+			   event->new_window_state & GDK_WINDOW_STATE_FOCUSED) {
+ 		// This is an ugly trick to keep the main window above even after lose focus every time (otherwise this works only one)
+		gtk_window_set_keep_above(GTK_WINDOW(cnnwin), FALSE);
+	    gtk_window_set_keep_above(GTK_WINDOW(cnnwin), TRUE);
+		// restore other multimonitor windows if any
+		rcw_restore_widget_areas(cnnwin);
+	}
 	if (event->changed_mask & GDK_WINDOW_STATE_FOCUSED) {
 		if (event->new_window_state & GDK_WINDOW_STATE_FOCUSED)
 			rcw_focus_in((RemminaConnectionWindow *)widget);
@@ -3669,31 +3722,30 @@ static gboolean rcw_map_event_fullscreen(GtkWidget *widget, GdkEvent *event, gpo
 		REMMINA_DEBUG("Remmina Protocol Widget undefined, cannot go fullscreen");
 
 	if (remmina_protocol_widget_get_multimon(gp) >= 1) {
-		REMMINA_DEBUG("Fullscreen on all monitor");
-		gdk_window_set_fullscreen_mode(gtk_widget_get_window(widget), GDK_FULLSCREEN_ON_ALL_MONITORS);
-		gdk_window_fullscreen(gtk_widget_get_window(widget));
-		return TRUE;
+		REMMINA_DEBUG("Fullscreen on main monitor");
+		gtk_window_fullscreen_on_monitor(GTK_WINDOW(widget), gtk_window_get_screen(GTK_WINDOW(widget)), cnnobj->cnnwin->priv->multimon_main_monitor);
+		rcw_show_widget_areas(cnnobj->cnnwin);
 	} else {
 		REMMINA_DEBUG("Fullscreen on one monitor");
-	}
 
-	target_monitor = GPOINTER_TO_INT(data);
+		target_monitor = GPOINTER_TO_INT(data);
 
 #if GTK_CHECK_VERSION(3, 18, 0)
-	if (remmina_pref.fullscreen_on_auto) {
-		if (target_monitor == FULL_SCREEN_TARGET_MONITOR_UNDEFINED)
+		if (remmina_pref.fullscreen_on_auto) {
+			if (target_monitor == FULL_SCREEN_TARGET_MONITOR_UNDEFINED)
+				gtk_window_fullscreen(GTK_WINDOW(widget));
+			else
+				gtk_window_fullscreen_on_monitor(GTK_WINDOW(widget), gtk_window_get_screen(GTK_WINDOW(widget)),
+								target_monitor);
+		} else {
+			REMMINA_DEBUG("Fullscreen managed by WM or by the user, as per settings");
 			gtk_window_fullscreen(GTK_WINDOW(widget));
-		else
-			gtk_window_fullscreen_on_monitor(GTK_WINDOW(widget), gtk_window_get_screen(GTK_WINDOW(widget)),
-							 target_monitor);
-	} else {
-		REMMINA_DEBUG("Fullscreen managed by WM or by the user, as per settings");
-		gtk_window_fullscreen(GTK_WINDOW(widget));
-	}
+		}
 #else
-	REMMINA_DEBUG("Cannot fullscreen on a specific monitor, feature available from GTK 3.18");
-	gtk_window_fullscreen(GTK_WINDOW(widget));
+		REMMINA_DEBUG("Cannot fullscreen on a specific monitor, feature available from GTK 3.18");
+		gtk_window_fullscreen(GTK_WINDOW(widget));
 #endif
+	}
 
 	if (remmina_protocol_widget_map_event(gp))
 		REMMINA_DEBUG("Called plugin mapping function");
@@ -3709,6 +3761,7 @@ rcw_new(gboolean fullscreen, int full_screen_target_monitor)
 
 	cnnwin = RCW(g_object_new(REMMINA_TYPE_CONNECTION_WINDOW, NULL));
 	cnnwin->priv->on_delete_confirm_mode = RCW_ONDELETE_CONFIRM_IF_2_OR_MORE;
+	cnnwin->priv->multimon_main_monitor = full_screen_target_monitor;
 
 	if (fullscreen)
 		/* Put the window in fullscreen after it is mapped to have it appear on the same monitor */
@@ -3801,6 +3854,11 @@ static void rco_closewin(RemminaProtocolWidget *gp)
 	RemminaConnectionObject *cnnobj = gp->cnnobj;
 	GtkWidget *page_to_remove;
 	should_display = FALSE;
+
+	if (!cnnobj || !cnnobj->cnnwin || !G_IS_OBJECT(cnnobj->cnnwin)) {
+	    REMMINA_WARNING("Invalid cnnobj or cnnwin in rco_closewin");
+	    return;
+	}
 
 	if (cnnobj && cnnobj->scrolled_container && REMMINA_IS_SCROLLED_VIEWPORT(cnnobj->scrolled_container)) {
 		REMMINA_DEBUG("deleting motion");
@@ -4006,9 +4064,10 @@ static void rcw_on_page_removed(GtkNotebook *notebook, GtkWidget *child, guint p
 {
 	TRACE_CALL(__func__);
 
-	if (gtk_notebook_get_n_pages(GTK_NOTEBOOK(cnnwin->priv->notebook)) <= 0)
+	if (gtk_notebook_get_n_pages(GTK_NOTEBOOK(cnnwin->priv->notebook)) <= 0)  {
+		rcw_dispose_widget_areas(cnnwin->priv);
 		gtk_widget_destroy(GTK_WIDGET(cnnwin));
-
+	}
 }
 
 static GtkNotebook *
@@ -4176,87 +4235,6 @@ static gint find_monitor_at_point  (GtkWidget *widget, gint x, gint y) {
 	return remmina_get_monitor_num(d, m);
 }
 
-// Fix toolbar position in case of multiple monitors
-static void rcw_ftb_multimon_move_toolbar(RemminaConnectionWindowPriv *priv) {
-	GdkRectangle rec_monref;
-	int area_width = 0, area_height = 0;
-
-	if (!priv->multi_mon) {
-		return;
-	}
-
-	if (remmina_pref.toolbar_fix_position_multimon == FALSE) {
-		REMMINA_DEBUG("Toolbar position adjustment not active");
-		return;
-	}
-
-	// overlay_ftb_fr only exists in fullscreen windows dont activate
-	// from single-mon
-	GtkWidget* tboverlay = priv->overlay_ftb_fr;
-	if (tboverlay == NULL || !GTK_IS_WIDGET(tboverlay))
-		return;
-
-	GdkDisplay* d = gtk_widget_get_display(tboverlay);
-
-#ifdef GDK_WINDOWING_WAYLAND
-	if (GDK_IS_WAYLAND_DISPLAY(d)) {
-		REMMINA_DEBUG("Multimonitor not effective in Wayland mode");
-		return;
-	}
-#endif
-
-
-	for (int i = 0 ; i < gdk_display_get_n_monitors(d) ; i++) {
-		GdkRectangle display_placement;
-		gdk_monitor_get_workarea(gdk_display_get_monitor(gtk_widget_get_display(tboverlay), i), &display_placement);
-		area_width = MAX(area_width, display_placement.x + display_placement.width);
-		area_height = MAX(area_height, display_placement.y + display_placement.height);
-	}
-	REMMINA_DEBUG("Total working area is %dx%d", area_width, area_height);
-	gdk_monitor_get_workarea(gdk_display_get_monitor(gtk_widget_get_display(tboverlay), remmina_pref.floating_toolbar_monitor), &rec_monref);
-	REMMINA_DEBUG("Toolbar monitor (%d) is at %d %d, size = %dx%d", remmina_pref.floating_toolbar_monitor,
-				 rec_monref.x, rec_monref.y, rec_monref.width, rec_monref.height);
-
-	int move_horiz = 0;		// move right if positive
-	int move_vert = 0;		// move up if positive
-
-	if (remmina_pref.floating_toolbar_placement == FLOATING_TOOLBAR_PLACEMENT_BOTTOM ||
-		remmina_pref.floating_toolbar_placement == FLOATING_TOOLBAR_PLACEMENT_BOTTOM_RIGHT ||
-		remmina_pref.floating_toolbar_placement == FLOATING_TOOLBAR_PLACEMENT_BOTTOM_LEFT) {
-			move_vert = area_height - rec_monref.height - rec_monref.y;
-	}
-	if (remmina_pref.floating_toolbar_placement == FLOATING_TOOLBAR_PLACEMENT_TOP ||
-		remmina_pref.floating_toolbar_placement == FLOATING_TOOLBAR_PLACEMENT_TOP_RIGHT ||
-		remmina_pref.floating_toolbar_placement == FLOATING_TOOLBAR_PLACEMENT_TOP_LEFT) {
-			move_vert = - rec_monref.y;
-	}
-	if (remmina_pref.floating_toolbar_placement == FLOATING_TOOLBAR_PLACEMENT_BOTTOM ||
-		remmina_pref.floating_toolbar_placement == FLOATING_TOOLBAR_PLACEMENT_TOP) {
-			move_horiz = rec_monref.x + rec_monref.width / 2 - priv->ss_width / 2;		// Calculate from left (widget is GTK_ALIGN_START)
-	}
-	if (remmina_pref.floating_toolbar_placement == FLOATING_TOOLBAR_PLACEMENT_TOP_LEFT ||
-		remmina_pref.floating_toolbar_placement == FLOATING_TOOLBAR_PLACEMENT_BOTTOM_LEFT) {
-			move_horiz = rec_monref.x;
-	}
-	if (remmina_pref.floating_toolbar_placement == FLOATING_TOOLBAR_PLACEMENT_TOP_RIGHT ||
-		remmina_pref.floating_toolbar_placement == FLOATING_TOOLBAR_PLACEMENT_BOTTOM_RIGHT) {
-			move_horiz = - (area_width - rec_monref.width - rec_monref.x);
-	}
-
-	REMMINA_DEBUG("Toolbar adjustment for placement %d on monitor %d move h:%d, move v:%d", remmina_pref.floating_toolbar_placement, remmina_pref.floating_toolbar_monitor, move_horiz, move_vert);
-
-	if (move_vert > 0)
-		gtk_widget_set_margin_bottom(tboverlay, move_vert);
-	else if (move_vert < 0)
-		gtk_widget_set_margin_top(tboverlay, -move_vert);
-	if (move_horiz > 0)
-		gtk_widget_set_margin_start(tboverlay, move_horiz);
-	else if (move_horiz < 0)
-		gtk_widget_set_margin_end(tboverlay, -move_horiz);
-	priv->ftb_move_horiz = move_horiz;
-	priv->ftb_move_vert = move_vert;
-}
-
 static void rcw_create_overlay_ftb_overlay(RemminaConnectionWindow *cnnwin)
 {
 	TRACE_CALL(__func__);
@@ -4276,7 +4254,7 @@ static void rcw_create_overlay_ftb_overlay(RemminaConnectionWindow *cnnwin)
 		priv->overlay_ftb_overlay = NULL;
 		priv->revealer = NULL;
 	}
-	
+
 
 	rcw_create_floating_toolbar(cnnwin, priv->fss_view_mode);
 
@@ -4400,7 +4378,7 @@ static gboolean rcw_ftb_drag_drop(GtkWidget *widget, GdkDragContext *context,
 		new_floating_toolbar_placement = FLOATING_TOOLBAR_PLACEMENT_TOP_LEFT;
 	else if (y >= wa.height /2)
 		new_floating_toolbar_placement = FLOATING_TOOLBAR_PLACEMENT_BOTTOM;
-	else 
+	else
 		new_floating_toolbar_placement = FLOATING_TOOLBAR_PLACEMENT_TOP;
 
 	gtk_drag_finish(context, TRUE, TRUE, time);
@@ -4415,7 +4393,6 @@ static gboolean rcw_ftb_drag_drop(GtkWidget *widget, GdkDragContext *context,
 		cnnobj = rcw_get_visible_cnnobj(cnnwin);
 		if (cnnobj) {
 			rco_update_toolbar(cnnobj);
-			rcw_ftb_multimon_move_toolbar(cnnwin->priv);
 		}
 	}
 
@@ -4449,7 +4426,7 @@ static void rcw_ftb_drag_begin(GtkWidget *widget, GdkDragContext *context, gpoin
 	gtk_drag_set_icon_surface(context, surface);
 }
 
-RemminaConnectionWindow *rcw_create_fullscreen(GtkWindow *old, gint view_mode, gboolean multi_mon)
+RemminaConnectionWindow *rcw_create_fullscreen(GtkWindow *old, gint view_mode)
 {
 	TRACE_CALL(__func__);
 	RemminaConnectionWindow *cnnwin;
@@ -4485,12 +4462,12 @@ RemminaConnectionWindow *rcw_create_fullscreen(GtkWindow *old, gint view_mode, g
 	}
 
 	cnnwin = rcw_new(TRUE, full_screen_target_monitor);
+
 	gtk_widget_set_name(GTK_WIDGET(cnnwin), "remmina-connection-window-fullscreen");
 	gtk_widget_realize(GTK_WIDGET(cnnwin));
 
 	if (!view_mode)
 		view_mode = VIEWPORT_FULLSCREEN_MODE;
-	cnnwin->priv->multi_mon = multi_mon;
 
 	notebook = rcw_create_notebook(cnnwin);
 
@@ -4623,6 +4600,7 @@ static gboolean rcw_hostkey_func(RemminaProtocolWidget *gp, guint keyval, gboole
 		case SCROLLED_FULLSCREEN_MODE:
 		case VIEWPORT_FULLSCREEN_MODE:
 			rcw_switch_viewmode(cnnobj->cnnwin, SCROLLED_WINDOW_MODE);
+			rcw_create_widget_areas(cnnobj);
 			break;
 		default:
 			break;
@@ -4784,7 +4762,7 @@ static void rco_on_connect(RemminaProtocolWidget *gp, RemminaConnectionObject *c
 		/* Check if we need grabbing */
 		gboolean active = gtk_window_is_active(GTK_WINDOW(cnnobj->cnnwin));
 		if (remmina_file_get_int(cnnobj->remmina_file, "keyboard_grab", FALSE) && active) {
-			rcw_keyboard_grab(cnnobj->cnnwin);
+			rcw_keyboard_grab(cnnobj->cnnwin, NULL);
 			rcw_pointer_grab(cnnobj->cnnwin);
 		}
 	}
@@ -4792,6 +4770,7 @@ static void rco_on_connect(RemminaProtocolWidget *gp, RemminaConnectionObject *c
 	REMMINA_DEBUG("Trying to present the window");
 	/* Try to present window */
 	cnnobj->cnnwin->priv->dwp_eventsourceid = g_timeout_add(200, rcw_delayed_window_present, (gpointer)cnnobj->cnnwin);
+	rcw_show_widget_areas(cnnobj->cnnwin);
 }
 
 static void cb_lasterror_confirmed(void *cbdata, int btn)
@@ -5084,7 +5063,7 @@ GtkWidget *rcw_open_from_file_full(RemminaFile *remminafile, GCallback disconnec
 		switch (view_mode) {
 		case SCROLLED_FULLSCREEN_MODE:
 		case VIEWPORT_FULLSCREEN_MODE:
-			cnnobj->cnnwin = rcw_create_fullscreen(NULL, view_mode, ismultimon);
+			cnnobj->cnnwin = rcw_create_fullscreen(NULL, view_mode);
 			break;
 		case SCROLLED_WINDOW_MODE:
 		default:
@@ -5100,6 +5079,9 @@ GtkWidget *rcw_open_from_file_full(RemminaFile *remminafile, GCallback disconnec
 		newpage = rcw_append_new_page(cnnobj->cnnwin, cnnobj);
 		gtk_window_present(GTK_WINDOW(cnnobj->cnnwin));
 		nb_set_current_page(cnnobj->cnnwin->priv->notebook, newpage);
+	}
+	if (view_mode == VIEWPORT_FULLSCREEN_MODE ) {
+	        rcw_create_widget_areas(cnnobj);
 	}
 
 	// Do not call remmina_protocol_widget_update_alignment(cnnobj); here or cnnobj->proto will not fill its parent size
@@ -5276,7 +5258,7 @@ void rco_show_message_panel(RemminaConnectionObject *cnnobj, RemminaMessagePanel
 	if (remmina_pref.mp_left){
 		gtk_widget_set_halign(GTK_WIDGET(mp), GTK_ALIGN_START);
 	}
-	
+
 	/* Add the new message panel at the top of cnnobj->page */
 	gtk_box_pack_start(GTK_BOX(page), GTK_WIDGET(mp), FALSE, FALSE, 0);
 	gtk_box_reorder_child(GTK_BOX(page), GTK_WIDGET(mp), 0);
@@ -5286,4 +5268,547 @@ void rco_show_message_panel(RemminaConnectionObject *cnnobj, RemminaMessagePanel
 
 	/* Focus the correct field of the RemminaMessagePanel */
 	remmina_message_panel_focus_auth_entry(mp);
+}
+
+static gboolean rcw_map_event_fullscreen_monitor(GtkWidget *widget, GdkEvent *event,
+	                                     gpointer data) {
+	TRACE_CALL(__func__);
+	MultimonWindow* w = RCW_MULTIMON(widget);
+	GdkWindow*me = gtk_widget_get_window(GTK_WIDGET(widget));
+	if (me == NULL || w->priv == NULL)
+		return TRUE;
+	gdk_window_set_fullscreen_mode(me,
+									GDK_FULLSCREEN_ON_CURRENT_MONITOR);
+	gdk_window_fullscreen_on_monitor(me, w->priv->monitor);
+	gdk_window_set_keep_above(me, TRUE);
+	gdk_window_set_accept_focus(me, TRUE);
+
+	return TRUE;
+}
+
+
+static gboolean rcw_other_fs_delayed_grab(grab_callback_data*grab_cb_info) {
+	TRACE_CALL(__func__);
+	MultimonWindow*w = RCW_MULTIMON(grab_cb_info->window);
+	if (w->priv == NULL)
+	        return G_SOURCE_REMOVE;
+#if DEBUG_KB_GRABBING
+	printf("DEBUG_KB_GRABBING:   %s\n", __func__);
+#endif
+	if (w->priv->pointer_entered) {
+#if DEBUG_KB_GRABBING
+		printf("DEBUG_KB_GRABBING:   delayed requesting kb and pointer grab, because of pointer inside\n");
+#endif
+		rcw_keyboard_grab(grab_cb_info->cnnwin, grab_cb_info->window);
+	}
+#if DEBUG_KB_GRABBING
+	else {
+		printf("DEBUG_KB_GRABBING:   %s not grabbing because pointer_entered is false\n", __func__);
+	}
+#endif
+	w->priv->delayed_grab_eventsourceid = 0;
+	grab_cb_info->cnnwin->priv->grab_pending_on_other_window = FALSE;
+	g_free(grab_cb_info);
+	return G_SOURCE_REMOVE;
+}
+
+static void rcw_other_fs_initiate_grab(MultimonWindow*w, RemminaConnectionObject* cnnobj)
+{
+	TRACE_CALL(__func__);
+	if (cnnobj && cnnobj->connected && remmina_file_get_int(cnnobj->remmina_file, "keyboard_grab", FALSE)) {
+#if DEBUG_KB_GRABBING
+		printf("DEBUG_KB_GRABBING: Received focus in on rcw_other_fs, grabbing enabled: requesting kb grab, delayed\n");
+#endif
+		if (w->priv->delayed_grab_eventsourceid == 0) {
+			grab_callback_data*grab_cb_info = g_malloc(sizeof(grab_callback_data));
+			grab_cb_info->cnnwin = cnnobj->cnnwin;
+			grab_cb_info->window = GTK_WINDOW(w);
+			cnnobj->cnnwin->priv->grab_pending_on_other_window = TRUE;
+			w->priv->delayed_grab_eventsourceid = g_timeout_add(300, (GSourceFunc)rcw_other_fs_delayed_grab, grab_cb_info);
+		}
+	}
+#if DEBUG_KB_GRABBING
+	else {
+		printf("DEBUG_KB_GRABBING: Received focus in on rcw_other_fs, but a condition will prevent to grab\n");
+	}
+#endif
+}
+
+
+/*
+ *  Multimonitor extra windows management
+ */
+
+
+/* Focusing management */
+static gboolean rcw_other_fs_enter(MultimonWindow*w, GdkEventCrossing *event, RemminaConnectionObject* cnnobj) {
+	TRACE_CALL(__func__);
+	w->priv->pointer_entered = TRUE;
+	rcw_other_fs_initiate_grab(w, cnnobj);
+	return FALSE;
+}
+
+static gboolean rcw_other_fs_leave(MultimonWindow*w, GdkEventCrossing *event, RemminaConnectionObject* cnnobj) {
+	TRACE_CALL(__func__);
+	if (cnnobj->cnnwin->priv->grab_pending_on_other_window)
+	        return TRUE;
+	w->priv->pointer_entered = FALSE;
+	return FALSE;
+}
+
+static gboolean rcw_other_fs_focus_in(MultimonWindow*w, GdkEventWindowState *event, RemminaConnectionObject* cnnobj)
+{
+	TRACE_CALL(__func__);
+	rcw_other_fs_initiate_grab(w, cnnobj);
+        if (IS_WAYLAND(w)) {
+                rcw_restore_widget_areas(cnnobj->cnnwin);
+        }
+	return FALSE;
+}
+
+/* RCW_MULTIMON object */
+static void remmina_fullscreen_window_dispose(GObject *object) {
+	MultimonWindow *fswin = RCW_MULTIMON(object);
+
+	if (fswin->priv != NULL && fswin->priv->drawing_area != NULL) {
+	    gtk_widget_destroy(fswin->priv->drawing_area);
+	fswin->priv->drawing_area = NULL;
+	}
+	if (fswin->priv->delayed_grab_eventsourceid != 0) {
+	        g_source_remove(fswin->priv->delayed_grab_eventsourceid);
+	        fswin->priv->delayed_grab_eventsourceid = 0;
+	}
+	g_signal_handlers_disconnect_by_func(G_OBJECT(fswin), G_CALLBACK(rcw_map_event_fullscreen_monitor), NULL);
+	g_signal_handlers_disconnect_by_func(GTK_WINDOW(fswin), "focus-in-event", G_CALLBACK(rcw_other_fs_focus_in));
+	g_signal_handlers_disconnect_by_func(GTK_WINDOW(fswin), "enter-notify-event", G_CALLBACK(rcw_other_fs_enter));
+	g_signal_handlers_disconnect_by_func(GTK_WINDOW(fswin), "leave-notify-event", G_CALLBACK(rcw_other_fs_leave));
+
+	// Chaîner la méthode parent
+	G_OBJECT_CLASS(multimon_window_parent_class)->dispose(object);
+}
+
+static void remmina_fullscreen_window_finalize(GObject *object) {
+	MultimonWindow *fswin = RCW_MULTIMON(object);
+
+	if (fswin->priv != NULL) {
+	    g_free(fswin->priv);
+	    fswin->priv = NULL;
+	}
+	G_OBJECT_CLASS(multimon_window_parent_class)->finalize(object);
+}
+
+static void multimon_window_class_init(MultimonWindowClass *klass) {
+	TRACE_CALL(__func__);
+	G_OBJECT_CLASS(klass)->dispose = remmina_fullscreen_window_dispose;
+	G_OBJECT_CLASS(klass)->finalize = remmina_fullscreen_window_finalize;
+}
+
+static void multimon_window_init(MultimonWindow *fswin) {
+	TRACE_CALL(__func__);
+	fswin->priv = g_new0(MultimonWindowPriv, 1);
+	fswin->priv->drawing_area = NULL;
+
+	g_signal_connect(G_OBJECT(fswin), "map-event", G_CALLBACK(rcw_map_event_fullscreen_monitor), 0);
+}
+
+static gint rcw_normalize_monitors(RemminaConnectionWindowPriv*priv) {
+	// calculation to support translate monitors to 0,0. TODO: same thing for gaps between monitors?
+	gint min_x = INT_MAX, min_y = INT_MAX;
+	gint mostleft_monitor_y = 0, mosttop_monitor_x = 0;
+	gint origin_shift_x = 0;
+	gint origin_shift_y = 0;
+	for (gint i = 0; i < priv->multimon_areas->len; ++i) {
+		MultimonWindow* monwin = RCW_MULTIMON(g_ptr_array_index(priv->multimon_areas, i));		
+		if (monwin->priv->geometry.x < min_x) {
+			min_x = monwin->priv->geometry.x;
+			mostleft_monitor_y = monwin->priv->geometry.y;
+		}
+		if (monwin->priv->geometry.y < min_y) {
+			min_y = monwin->priv->geometry.y;
+			mosttop_monitor_x = monwin->priv->geometry.x;
+		}
+	}
+
+	if (abs(mostleft_monitor_y-min_x)<abs(mosttop_monitor_x-min_y)) {
+		origin_shift_x = min_x;
+		origin_shift_y = mostleft_monitor_y;
+	} else {
+		origin_shift_x = mosttop_monitor_x;
+		origin_shift_y = min_y;
+	}
+	for (gint i = 0; i < priv->multimon_areas->len; ++i) {
+		MultimonWindow* monwin = RCW_MULTIMON(g_ptr_array_index(priv->multimon_areas, i));		
+		monwin->priv->geometry.x -= origin_shift_x;
+		monwin->priv->geometry.y -= origin_shift_y;
+	}
+}
+
+static gint rcw_probe_monitors(RemminaConnectionObject *cnnobj, const gchar*monitorids_str) {
+	GdkDisplay *display = gdk_display_get_default();
+	RemminaConnectionWindowPriv*priv = cnnobj->cnnwin->priv;
+	gint multimon_main_monitor = -1;
+	gint n_monitors = gdk_display_get_n_monitors(display);
+	gint first_monitor = -1;
+	gint first_filtered_monitor = INT_MAX;
+	gchar **monitorids = NULL;
+
+	if (monitorids_str != NULL) {
+		monitorids = g_strsplit(monitorids_str, ",", -1);
+	}
+
+	if (priv->multimon_areas != NULL)
+		g_ptr_array_free(priv->multimon_areas, TRUE);
+	
+	priv->multimon_areas = g_ptr_array_new();
+	REMMINA_DEBUG("number of monitors: %d", n_monitors);
+	for (gint i = 0; i < n_monitors; ++i) {
+		GdkMonitor *monitor = gdk_display_get_monitor(display, i);
+	    if (monitor == NULL) {
+	        g_warning("monitor %d is not accessible", i);
+	        continue;
+		}
+
+		const gchar*model = gdk_monitor_get_model(monitor);
+		const gchar*manufacturer = gdk_monitor_get_manufacturer(monitor);
+
+		REMMINA_DEBUG("monitor#%d: model=%s manufacturer=%s", i, model, manufacturer);
+
+		if (monitorids != NULL) {
+			gboolean found = FALSE;
+			for (gint j = 0; monitorids[j] != NULL; j++) {
+				gint64 number;
+				gboolean is_number;
+				is_number = g_ascii_string_to_signed(monitorids[j], 10, G_MININT, G_MAXINT, &number, NULL);
+				if ( (is_number &&  number == i) ||
+						g_strcmp0(monitorids[j], manufacturer) == 0 ||
+						g_strcmp0(monitorids[j], model) == 0) {
+						found = TRUE;
+						if (j < first_filtered_monitor) {
+							first_filtered_monitor = j;
+							first_monitor = i;
+						}
+						break;
+				}
+			}
+			if (!found) {
+				REMMINA_DEBUG("monitor %d ignored (from configuration)", i);
+				continue;
+			}
+		}
+
+		if (first_monitor == -1) first_monitor = i;
+		MultimonWindow *fullscreenWindow = RCW_MULTIMON(g_object_new(REMMINA_TYPE_MULTIMON_WINDOW, NULL));
+		MultimonWindowPriv *wpriv = fullscreenWindow->priv;
+
+		g_signal_connect(GTK_WINDOW(fullscreenWindow), "focus-in-event", G_CALLBACK(rcw_other_fs_focus_in), cnnobj);
+		g_signal_connect(GTK_WINDOW(fullscreenWindow), "enter-notify-event", G_CALLBACK(rcw_other_fs_enter), cnnobj);
+		g_signal_connect(GTK_WINDOW(fullscreenWindow), "leave-notify-event", G_CALLBACK(rcw_other_fs_leave), cnnobj);
+
+		wpriv->scale = gdk_monitor_get_scale_factor(monitor);
+		gdk_monitor_get_geometry(monitor, &wpriv->geometry);
+		wpriv->physicalHeight = gdk_monitor_get_height_mm(monitor);
+		wpriv->physicalWidth = gdk_monitor_get_width_mm(monitor);
+		wpriv->isPrimary = gdk_monitor_is_primary(monitor);
+		wpriv->monitor = i;
+		// main monitor is either the primary, or first configured monitor
+		if (wpriv->isPrimary && multimon_main_monitor == -1 && monitorids == NULL)
+			multimon_main_monitor = i;
+		g_ptr_array_add(priv->multimon_areas, fullscreenWindow);
+	}
+
+	if (monitorids != NULL) {
+	    g_strfreev(monitorids);
+	}
+
+	if (multimon_main_monitor == -1) {
+		multimon_main_monitor = first_monitor;
+	}
+
+	rcw_normalize_monitors(priv);
+
+	return multimon_main_monitor;
+}
+
+static void rcw_create_widget_areas(RemminaConnectionObject *cnnobj) {
+	TRACE_CALL(__func__);
+	g_return_if_fail(cnnobj != NULL && cnnobj->cnnwin != NULL && cnnobj->cnnwin->priv != NULL);
+
+	RemminaConnectionWindow*cnnwin = cnnobj->cnnwin;
+	RemminaConnectionWindowPriv*priv = cnnwin->priv;
+	gint multimon_main_monitor = -1;
+	const gchar*monitorids_str = remmina_file_get_string(cnnobj->remmina_file, "monitorids");
+
+
+	if (priv->multimon_areas != NULL) {
+	    rcw_dispose_widget_areas(priv);
+	}
+	
+	multimon_main_monitor = rcw_probe_monitors(cnnobj, monitorids_str);
+	if (multimon_main_monitor ==-1 && monitorids_str!=NULL && strlen(monitorids_str)>0) {
+		REMMINA_DEBUG("Multimonitor filtered all monitors, now using all available monitors");
+		multimon_main_monitor = rcw_probe_monitors(cnnobj, NULL);
+	}
+
+	if (multimon_main_monitor == -1) {
+		REMMINA_DEBUG("No monitors where found!");
+		return;
+	}
+
+	REMMINA_DEBUG("total number of active monitors %d", priv->multimon_areas->len);
+	const gchar*title = remmina_file_get_string(cnnobj->remmina_file, "name");
+	for (gint i = 0; i < priv->multimon_areas->len; ++i) {
+		MultimonWindow* fullscreenWindow = RCW_MULTIMON(g_ptr_array_index(priv->multimon_areas, i));
+		MultimonWindowPriv *wpriv = fullscreenWindow->priv;
+		if (wpriv->monitor != multimon_main_monitor) {	// main monitor is handled by the legacy code
+	        gtk_window_set_skip_taskbar_hint(GTK_WINDOW(fullscreenWindow), TRUE);
+			gtk_widget_set_name(GTK_WIDGET(fullscreenWindow), "remmina-connection-window-fullscreen");
+			if (title != NULL) {
+				gchar*childTitle = g_malloc(strlen(title)+20);
+				sprintf(childTitle, "%s#%d", title, wpriv->monitor);
+				gtk_window_set_title(GTK_WINDOW(fullscreenWindow), childTitle);
+				g_free(childTitle);
+			}
+		}
+		REMMINA_DEBUG("monitor#%d (%s) primary=%d position=%dx%d size=%dx%d scale=%d",
+			wpriv->monitor, wpriv->monitor == multimon_main_monitor?"main":"extra",
+			wpriv->isPrimary, wpriv->geometry.x,wpriv->geometry.y,wpriv->geometry.width,wpriv->geometry.height,wpriv->scale);
+	}
+	priv->multimon_main_monitor = multimon_main_monitor;
+}
+
+static void*widget_area_last_restored_cnnwin = NULL;
+
+static void rcw_iconify_widget_areas(RemminaConnectionWindow*cnnwin) {
+	TRACE_CALL(__func__);
+	g_return_if_fail(cnnwin != NULL && cnnwin->priv != NULL);
+	if (cnnwin->priv->multimon_areas == NULL)
+		return;
+
+	widget_area_last_restored_cnnwin = NULL;
+	for (guint i = 0; i < cnnwin->priv->multimon_areas->len; i++) {
+		MultimonWindow *fswin = g_ptr_array_index(cnnwin->priv->multimon_areas, i);
+		if (fswin != NULL && G_IS_OBJECT(fswin) && fswin->priv != NULL && fswin->priv->monitor != cnnwin->priv->multimon_main_monitor) {
+			if (!fswin->priv->iconified) {
+				gtk_window_iconify(GTK_WINDOW(fswin));
+				if (IS_WAYLAND(fswin)) {
+					gtk_widget_hide(GTK_WIDGET(fswin));
+				}
+				fswin->priv->iconified = TRUE;
+			}
+		}
+	}
+}
+
+
+// Windowing actions in multi monitor when a multimonitor connection gained the focus:
+// 	in X11: unraise all other connection fullscreen windows
+//  in Wayland: hide all other connection fullscreen windows that are not in common
+static gboolean rcw_active_connection_changed(GtkWidget *widget, gpointer data)
+{
+	TRACE_CALL(__func__);
+	if (REMMINA_IS_CONNECTION_WINDOW(widget) && REMMINA_IS_CONNECTION_WINDOW(data)) {
+		RemminaConnectionWindow*receiver = RCW(widget);
+		RemminaConnectionWindow*sender = RCW(data);
+		if (sender != receiver && receiver->priv != NULL && receiver->priv->multimon_areas != NULL) {
+			if (IS_WAYLAND(widget)) {
+				GHashTable *sender_monitors = g_hash_table_new(g_direct_hash, g_direct_equal);
+				if (sender->priv->multimon_areas != NULL) {
+					for (guint i = 0; i < sender->priv->multimon_areas->len; i++) {
+						MultimonWindow *fswin = g_ptr_array_index(sender->priv->multimon_areas, i);
+						g_hash_table_insert(sender_monitors, GINT_TO_POINTER(fswin->priv->monitor), NULL);
+					}
+				}
+				g_hash_table_insert(sender_monitors, GINT_TO_POINTER(sender->priv->multimon_main_monitor), NULL);
+				for (guint i = 0; i < receiver->priv->multimon_areas->len; i++) {
+					MultimonWindow *fswin = g_ptr_array_index(receiver->priv->multimon_areas, i);
+					if (fswin != NULL && g_hash_table_contains(sender_monitors, GINT_TO_POINTER(fswin->priv->monitor))) {
+						if (!fswin->priv->iconified) {
+							gtk_widget_hide(GTK_WIDGET(fswin));
+							fswin->priv->iconified = TRUE;
+						}
+					}
+				}
+				g_hash_table_destroy(sender_monitors);
+			} else {
+				RemminaConnectionWindowPriv*priv = receiver->priv;
+				for (guint i = 0; i < priv->multimon_areas->len; i++) {
+					MultimonWindow *fswin = g_ptr_array_index(priv->multimon_areas, i);
+					if (fswin != NULL && G_IS_OBJECT(fswin) && fswin->priv != NULL && fswin->priv->monitor != priv->multimon_main_monitor) {
+						gtk_window_set_keep_above(GTK_WINDOW(fswin), FALSE);
+					}
+				}
+				gtk_window_set_keep_above(GTK_WINDOW(receiver), FALSE);
+			}
+		}
+		return TRUE;
+	}
+	return FALSE;
+}
+
+
+static void rcw_show_widget_areas(RemminaConnectionWindow*cnnwin) {
+	TRACE_CALL(__func__);
+	g_return_if_fail(cnnwin != NULL && cnnwin->priv != NULL);
+	if (cnnwin->priv->multimon_areas == NULL)
+	        return;
+
+	REMMINA_DEBUG("rcw_show_widget_areas");
+	for (guint i = 0; i < cnnwin->priv->multimon_areas->len; i++) {
+		MultimonWindow *fswin = g_ptr_array_index(cnnwin->priv->multimon_areas, i);
+		if (fswin != NULL && G_IS_OBJECT(fswin) && fswin->priv != NULL && fswin->priv->monitor != cnnwin->priv->multimon_main_monitor && fswin->priv->drawing_area != NULL) {
+			gtk_widget_show(GTK_WIDGET(fswin));
+		}
+	}
+}
+
+static void rcw_restore_widget_areas(RemminaConnectionWindow*cnnwin) {
+	TRACE_CALL(__func__);
+	g_return_if_fail(cnnwin != NULL && cnnwin->priv != NULL);
+	if (cnnwin->priv->multimon_areas == NULL)
+		return;
+	if (widget_area_last_restored_cnnwin == cnnwin) {
+		return;
+	}
+	widget_area_last_restored_cnnwin = cnnwin;
+
+
+	REMMINA_DEBUG("rcw_restore_widget_areas");
+	/* Signal all windows that which connection is active */	
+	remmina_widget_pool_foreach(rcw_active_connection_changed, cnnwin);
+
+	for (guint i = 0; i < cnnwin->priv->multimon_areas->len; i++) {
+		MultimonWindow *fswin = g_ptr_array_index(cnnwin->priv->multimon_areas, i);
+		if (fswin != NULL && G_IS_OBJECT(fswin) && fswin->priv != NULL && fswin->priv->monitor != cnnwin->priv->multimon_main_monitor && fswin->priv->drawing_area != NULL) {
+			if (fswin->priv->iconified) {
+				REMMINA_DEBUG("deiconify");
+				fswin->priv->iconified = FALSE;
+				gtk_window_deiconify(GTK_WINDOW(fswin));
+				if (IS_WAYLAND(fswin)) {
+					gtk_widget_show(GTK_WIDGET(fswin));
+				}
+			}
+			// needed to raise again in case other connection is using fullscreen on same monitor(s)
+			gtk_window_set_keep_above(GTK_WINDOW(fswin), FALSE);
+			gtk_window_set_keep_above(GTK_WINDOW(fswin), TRUE);
+		}
+	}	
+	if (IS_WAYLAND(cnnwin)) {
+		gtk_widget_show(GTK_WIDGET(cnnwin));
+	}
+}
+
+static void rcw_dispose_widget_areas(RemminaConnectionWindowPriv*priv) {
+	g_return_if_fail(priv != NULL);
+	if (priv->multimon_areas == NULL)
+		return;
+
+	for (guint i = 0; i < priv->multimon_areas->len; i++) {
+		MultimonWindow *fswin = g_ptr_array_index(priv->multimon_areas, i);
+		if (fswin != NULL && G_IS_OBJECT(fswin)) {
+			if (GTK_IS_WINDOW(fswin)) {
+	            gtk_widget_destroy(GTK_WIDGET(fswin));
+	        }
+		}
+	}
+	g_ptr_array_free(priv->multimon_areas, TRUE);
+	priv->multimon_areas = NULL;
+}
+
+gint rcw_get_monitor_count(RemminaConnectionWindow *cnnwin) {
+	TRACE_CALL(__func__);
+	g_return_val_if_fail(cnnwin != NULL && cnnwin->priv != NULL, 0);
+
+	if (cnnwin->priv->multimon_areas == NULL)
+		return 0;
+
+	return cnnwin->priv->multimon_areas->len;
+}
+
+gboolean rcw_get_monitor_info(RemminaConnectionWindow *cnnwin, gint index, gboolean*is_primary, gint*x, gint*y, gint*width, gint*height, gint*phys_width_mm, gint* phys_height_mm) {
+	TRACE_CALL(__func__);
+	g_return_val_if_fail(cnnwin != NULL && cnnwin->priv != NULL, FALSE);
+
+	if (cnnwin->priv->multimon_areas == NULL || index >= cnnwin->priv->multimon_areas->len)
+		return FALSE;
+
+	MultimonWindow* monwin = RCW_MULTIMON(g_ptr_array_index(cnnwin->priv->multimon_areas, index));
+	g_return_val_if_fail(monwin != NULL && monwin->priv != NULL, FALSE);
+
+	if (is_primary != NULL) *is_primary = (monwin->priv->isPrimary == 1);
+	if (x != NULL) *x = cnnwin->priv->multimon_areas->len != 1 ? monwin->priv->geometry.x : 0;
+	if (y != NULL) *y = cnnwin->priv->multimon_areas->len != 1 ? monwin->priv->geometry.y : 0;
+	if (width != NULL) *width = monwin->priv->geometry.width;
+	if (height != NULL) *height = monwin->priv->geometry.height;
+	if (phys_width_mm != NULL) *phys_width_mm = monwin->priv->physicalWidth;
+	if (phys_height_mm != NULL) *phys_height_mm = monwin->priv->physicalHeight;
+
+	return TRUE;
+}
+
+gint multimon_get_monitor_count(RemminaProtocolWidget *proto) {
+	TRACE_CALL(__func__);
+	g_return_val_if_fail(proto != NULL && proto->cnnobj != NULL && proto->cnnobj->cnnwin != NULL, 0);
+	return rcw_get_monitor_count(proto->cnnobj->cnnwin);
+}
+
+gboolean multimon_get_monitor_info(RemminaProtocolWidget *proto, gint index, gboolean*is_primary, gint*x, gint*y, gint*width, gint*height, gint*phys_width_mm, gint* phys_height_mm) {
+	TRACE_CALL(__func__);
+	g_return_val_if_fail(proto != NULL && proto->cnnobj != NULL && proto->cnnobj->cnnwin != NULL, FALSE);
+	return rcw_get_monitor_info(proto->cnnobj->cnnwin, index, is_primary, x, y, width, height, phys_width_mm, phys_height_mm);
+}
+
+int multimon_get_main_monitor_index(RemminaProtocolWidget *proto) {
+	TRACE_CALL(__func__);
+	g_return_val_if_fail(proto != NULL && proto->cnnobj != NULL && proto->cnnobj->cnnwin != NULL
+					&& proto->cnnobj->cnnwin->priv != NULL, -1);
+	if (proto->cnnobj->cnnwin->priv->multimon_areas == NULL)
+					return -1;
+
+	RemminaConnectionWindowPriv *priv = proto->cnnobj->cnnwin->priv;
+	for (gint i = 0 ; i<priv->multimon_areas->len ; i++) {
+		MultimonWindow* win = RCW_MULTIMON(g_ptr_array_index(priv->multimon_areas, i));
+		if (win->priv->monitor == priv->multimon_main_monitor)
+			return i;
+	}
+	return -1;
+}
+
+void multimon_set_monitor_drawing_area(RemminaProtocolWidget *proto, gint index, GtkWidget*drawing_area) {
+	TRACE_CALL(__func__);
+	g_return_if_fail(proto != NULL && proto->cnnobj != NULL && proto->cnnobj->cnnwin != NULL
+					&& proto->cnnobj->cnnwin->priv != NULL);
+	if (proto->cnnobj->cnnwin->priv->multimon_areas == NULL || index >= proto->cnnobj->cnnwin->priv->multimon_areas->len)
+		return;
+	RemminaConnectionWindowPriv *priv = proto->cnnobj->cnnwin->priv;
+
+	MultimonWindow* monwin = RCW_MULTIMON(g_ptr_array_index(priv->multimon_areas, index));
+	if (monwin->priv->monitor == priv->multimon_main_monitor)
+		return;
+	if (monwin->priv->drawing_area != NULL) {
+		gtk_widget_destroy(monwin->priv->drawing_area);
+		monwin->priv->drawing_area = NULL;
+	}
+	monwin->priv->drawing_area = drawing_area;
+	if (drawing_area != NULL) {
+			gtk_container_add(GTK_CONTAINER(monwin), drawing_area);
+	}
+}
+
+GtkWidget* multimon_get_monitor_drawing_area(RemminaProtocolWidget *proto, gint index) {
+	TRACE_CALL(__func__);
+	g_return_val_if_fail(proto != NULL && proto->cnnobj != NULL && proto->cnnobj->cnnwin != NULL
+				     && proto->cnnobj->cnnwin->priv != NULL, NULL);
+	if (proto->cnnobj->cnnwin->priv->multimon_areas == NULL || index >= proto->cnnobj->cnnwin->priv->multimon_areas->len)
+		return NULL;
+	RemminaConnectionWindowPriv *priv = proto->cnnobj->cnnwin->priv;
+
+	MultimonWindow* monwin = RCW_MULTIMON(g_ptr_array_index(priv->multimon_areas, index));
+	if (monwin->priv->monitor == priv->multimon_main_monitor)
+		return NULL;
+	if (monwin->priv->drawing_area == NULL) {
+		monwin->priv->drawing_area = gtk_drawing_area_new();		
+		gtk_container_add(GTK_CONTAINER(monwin), monwin->priv->drawing_area);
+		gtk_widget_realize(monwin->priv->drawing_area);
+	}
+	return monwin->priv->drawing_area;
 }

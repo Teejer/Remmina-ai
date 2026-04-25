@@ -61,6 +61,34 @@ typedef struct _RemminaConnectionWindowClass {
 	void (*toolbar_place)(RemminaConnectionWindow *gp);
 } RemminaConnectionWindowClass;
 
+// Multimonitor extra windows management
+#define   REMMINA_TYPE_MULTIMON_WINDOW            (multimon_window_get_type())
+#define   RCW_MULTIMON(obj)                                (G_TYPE_CHECK_INSTANCE_CAST((obj), REMMINA_TYPE_MULTIMON_WINDOW, MultimonWindow))
+
+typedef struct _MultimonWindowPriv {
+	GtkWidget *drawing_area;
+
+	int monitor;
+	GdkRectangle geometry;
+	gint scale;
+	gboolean iconified;
+	int physicalHeight, physicalWidth;
+	int isPrimary;
+	guint delayed_grab_eventsourceid;
+	gboolean pointer_entered;
+} MultimonWindowPriv;
+
+typedef struct _MultimonWindow {
+	    GtkWindow			window;
+	    MultimonWindowPriv *	priv;
+} MultimonWindow;
+
+typedef struct _MultimonWindowClass {
+	    GtkWindowClass parent_class;
+	    void (*toolbar_place)(MultimonWindow *gp);
+} MultimonWindowClass;
+
+
 typedef struct _RemminaConnectionObject RemminaConnectionObject;
 
 typedef enum {
@@ -85,7 +113,11 @@ void rco_destroy_message_panel(RemminaConnectionObject *cnnobj, RemminaMessagePa
 void rco_show_message_panel(RemminaConnectionObject *cnnobj, RemminaMessagePanel *mp);
 void rco_get_monitor_geometry(RemminaConnectionObject *cnnobj, GdkRectangle *sz);
 
-
+gint multimon_get_monitor_count(RemminaProtocolWidget *cnnwin);
+gboolean multimon_get_monitor_info(RemminaProtocolWidget *cnnwin, gint index, gboolean*is_primary, gint*x, gint*y, gint*width, gint*height, gint*phys_width_mm, gint* phys_height_mm);
+void multimon_set_monitor_drawing_area(RemminaProtocolWidget *proto, gint index, GtkWidget*drawing_area);
+int multimon_get_main_monitor_index(RemminaProtocolWidget *proto);
+GtkWidget* multimon_get_monitor_drawing_area(RemminaProtocolWidget *proto, gint index);
 
 #define MESSAGE_PANEL_SPINNER 0x00000001
 #define MESSAGE_PANEL_OKBUTTON 0x00000002

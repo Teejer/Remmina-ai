@@ -309,7 +309,26 @@ void remmina_rdp_event_update_regions(RemminaProtocolWidget *gp, RemminaPluginRd
 		else
 			remmina_rdp_event_pad_redraw_area(gp, &x, &y, &w, &h);
 
-		gtk_widget_queue_draw_area(rfi->drawing_area, x, y, w, h);
+		gint n_monitors = remmina_plugin_service->plugin_multimon_monitor_count(gp);
+		if (n_monitors == 0) {
+			gtk_widget_queue_draw_area(rfi->drawing_area, x, y, w, h);
+		} else {
+			for (gint i = 0 ; i < n_monitors ; i++) {
+				GtkWidget*monitor_drawing_area = remmina_plugin_service->plugin_multimon_monitor_drawing_area(gp, i);
+				if (monitor_drawing_area == NULL)
+					monitor_drawing_area = rfi->drawing_area;
+
+				gint org_x, org_y, mon_w, mon_h;
+				remmina_plugin_service->plugin_multimon_monitor_info(gp, i, NULL, &org_x, &org_y, &mon_w, &mon_h, NULL, NULL);
+
+				GdkRectangle dest_draw = {x-org_x, y-org_y, w, h };
+				GdkRectangle dest_mon_position = {0, 0, mon_w, mon_h };
+
+				if (gdk_rectangle_intersect(&dest_draw, &dest_mon_position, NULL)) {
+					gtk_widget_queue_draw_area(monitor_drawing_area, dest_draw.x, dest_draw.y, w, h);
+				}
+			}
+		}
 	}
 	g_free(ui->reg.ureg);
 }
@@ -358,6 +377,51 @@ static void remmina_rdp_event_update_scale_factor(RemminaProtocolWidget *gp)
 	}
 }
 
+
+static gboolean remmina_rdp_event_on_draw_other_monitors(GtkWidget *widget, cairo_t *context, RemminaProtocolWidget *gp)
+{
+	TRACE_CALL(__func__);
+	rfContext *rfi = GET_PLUGIN_DATA(gp);
+
+	if (!rfi || !rfi->connected)
+		return FALSE;
+
+	if (rfi->is_reconnecting) {
+		return TRUE;
+	}
+
+	if (!rfi->surface)
+		return FALSE;
+
+	if (rfi->scale == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED)
+		cairo_scale(context, rfi->scale_x, rfi->scale_y);
+
+	gint n_monitors = remmina_plugin_service->plugin_multimon_monitor_count(gp);
+	gint monitor = -1;
+	for (gint i = 0 ; i < n_monitors ; i++) {
+		GtkWidget*drawing_area = remmina_plugin_service->plugin_multimon_monitor_drawing_area(gp, i);
+		if (drawing_area == widget) {
+			monitor = i;
+		}
+	}
+	if (monitor == -1) {
+		return FALSE;
+	}
+	gint x, y, width, height;
+	remmina_plugin_service->plugin_multimon_monitor_info(gp, monitor, NULL, &x, &y, &width, &height, NULL, NULL);
+
+	cairo_surface_flush(rfi->surface);
+	cairo_translate(context, -x, -y);
+	cairo_set_source_surface(context, rfi->surface, 0, 0);
+	cairo_surface_mark_dirty(rfi->surface);
+
+	cairo_set_operator(context, CAIRO_OPERATOR_SOURCE);     // Ignore alpha channel from FreeRDP
+	cairo_paint(context);
+
+	return TRUE;
+}
+
+
 static gboolean remmina_rdp_event_on_draw(GtkWidget *widget, cairo_t *context, RemminaProtocolWidget *gp)
 {
 	TRACE_CALL(__func__);
@@ -397,6 +461,8 @@ static gboolean remmina_rdp_event_on_draw(GtkWidget *widget, cairo_t *context, R
 			cairo_scale(context, rfi->scale_x, rfi->scale_y);
 
 		cairo_surface_flush(rfi->surface);
+
+		cairo_translate(context, -rfi->main_x, -rfi->main_y);
 		cairo_set_source_surface(context, rfi->surface, 0, 0);
 		cairo_surface_mark_dirty(rfi->surface);
 
@@ -429,11 +495,11 @@ static gboolean remmina_rdp_event_delayed_monitor_layout(RemminaProtocolWidget *
 	rfi->delayed_monitor_layout_handler = 0;
 	gint gpwidth, gpheight, prevwidth, prevheight;
 
-	gchar *monitorids = NULL;
 	guint32 maxwidth = 0;
 	guint32 maxheight = 0;
 
-	remmina_rdp_monitor_get(rfi, &monitorids, &maxwidth, &maxheight);
+	remmina_rdp_monitor_define(rfi, &maxwidth, &maxheight);
+	remmina_events_multimonitor(gp);
 
 	REMMINA_PLUGIN_DEBUG("Sending preconfigured monitor layout");
 	if (rfi->dispcontext && rfi->dispcontext->SendMonitorLayout) {
@@ -493,8 +559,6 @@ static gboolean remmina_rdp_event_delayed_monitor_layout(RemminaProtocolWidget *
 		}
 	}
 
-	g_free(monitorids);
-
 	return FALSE;
 }
 
@@ -528,11 +592,10 @@ static gboolean remmina_rdp_event_on_configure(GtkWidget *widget, GdkEventConfig
 	/* If the scaler is not active, schedule a delayed remote resolution change */
 	remmina_rdp_event_send_delayed_monitor_layout(gp);
 
-
 	return FALSE;
 }
 
-static void remmina_rdp_event_translate_pos(RemminaProtocolWidget *gp, int ix, int iy, UINT16 *ox, UINT16 *oy)
+static void remmina_rdp_event_translate_pos(RemminaProtocolWidget *gp, GtkWidget* w, int ix, int iy, UINT16 *ox, UINT16 *oy)
 {
 	TRACE_CALL(__func__);
 	rfContext *rfi = GET_PLUGIN_DATA(gp);
@@ -545,12 +608,24 @@ static void remmina_rdp_event_translate_pos(RemminaProtocolWidget *gp, int ix, i
 	if (!rfi || !rfi->connected || rfi->is_reconnecting)
 		return;
 
+	gint delta_x = rfi->main_x;
+	gint delta_y = rfi->main_y;
+
+	gint n_monitors = remmina_plugin_service->plugin_multimon_monitor_count(gp);
+	for (gint i = 0 ; i < n_monitors ; i++) {
+		GtkWidget*other_monitor_drawing_area = remmina_plugin_service->plugin_multimon_monitor_drawing_area(gp, i);
+		if (other_monitor_drawing_area == w) {
+			remmina_plugin_service->plugin_multimon_monitor_info(gp, i, NULL, &delta_x, &delta_y, NULL, NULL, NULL, NULL);
+		}
+	}
+	rfi->motion_drawing_area = w;
+
 	if ((rfi->scale == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED) && (rfi->scale_width >= 1) && (rfi->scale_height >= 1)) {
-		*ox = (UINT16)(ix * remmina_plugin_service->protocol_plugin_get_width(gp) / rfi->scale_width);
-		*oy = (UINT16)(iy * remmina_plugin_service->protocol_plugin_get_height(gp) / rfi->scale_height);
+		*ox = (UINT16)(ix * remmina_plugin_service->protocol_plugin_get_width(gp) / rfi->scale_width) + delta_x;
+		*oy = (UINT16)(iy * remmina_plugin_service->protocol_plugin_get_height(gp) / rfi->scale_height) + delta_y;
 	} else {
-		*ox = (UINT16)ix;
-		*oy = (UINT16)iy;
+		*ox = (UINT16)ix + delta_x;
+		*oy = (UINT16)iy + delta_y;
 	}
 }
 
@@ -600,11 +675,11 @@ void remmina_rdp_idle_keypress(RemminaProtocolWidget *gp, int *keypress_opts){
 	guint keys[2] = { 0, 0 };
 	RemminaFile *remminafile;
 	rfContext *rfi = GET_PLUGIN_DATA(gp);
-	
+
 	remminafile = remmina_plugin_service->protocol_plugin_get_file(gp);
 	if (remmina_plugin_service->file_get_int(remminafile, "viewonly", FALSE))
 		return;
-	
+
 	if (*keypress_opts == 0)
 		return;
 
@@ -613,7 +688,7 @@ void remmina_rdp_idle_keypress(RemminaProtocolWidget *gp, int *keypress_opts){
 			keys[0] = 0xffe9; // Alt_L 
 			keys[1] = 0xff09; // Tab
 			break;
-		
+
 		case 2:
 			keys[0] = 0xffeb; // Option key
 			keys[1] = 0xff09; // Tab
@@ -640,12 +715,12 @@ static gboolean remmina_rdp_event_on_motion(GtkWidget *widget, GdkEventMotion *e
 	rdp_event.mouse_event.flags = PTR_FLAGS_MOVE;
 	rdp_event.mouse_event.extended = FALSE;
 
-	remmina_rdp_event_translate_pos(gp, event->x, event->y, &rdp_event.mouse_event.x, &rdp_event.mouse_event.y);
+	remmina_rdp_event_translate_pos(gp, widget, event->x, event->y, &rdp_event.mouse_event.x, &rdp_event.mouse_event.y);
 	if (rfi != NULL){
 		rfi->last_x = rdp_event.mouse_event.x;
 		rfi->last_y = rdp_event.mouse_event.y;
 	}
-	
+
 	remmina_rdp_event_event_push(gp, &rdp_event);
 
 	return TRUE;
@@ -711,7 +786,8 @@ static gboolean remmina_rdp_event_on_button(GtkWidget *widget, GdkEventButton *e
 	}
 
 	rdp_event.type = REMMINA_RDP_EVENT_TYPE_MOUSE;
-	remmina_rdp_event_translate_pos(gp, event->x, event->y, &rdp_event.mouse_event.x, &rdp_event.mouse_event.y);
+
+	remmina_rdp_event_translate_pos(gp, widget, event->x, event->y, &rdp_event.mouse_event.x, &rdp_event.mouse_event.y);
 
 	if (flag != 0) {
 		rdp_event.mouse_event.flags = flag;
@@ -803,7 +879,7 @@ static gboolean remmina_rdp_event_on_scroll(GtkWidget *widget, GdkEventScroll *e
 
 	rdp_event.mouse_event.flags = flag;
 	rdp_event.mouse_event.extended = FALSE;
-	remmina_rdp_event_translate_pos(gp, event->x, event->y, &rdp_event.mouse_event.x, &rdp_event.mouse_event.y);
+	remmina_rdp_event_translate_pos(gp,widget, event->x, event->y, &rdp_event.mouse_event.x, &rdp_event.mouse_event.y);
 	remmina_rdp_event_event_push(gp, &rdp_event);
 
 	return TRUE;
@@ -923,7 +999,7 @@ static gboolean remmina_rdp_event_on_key(GtkWidget *widget, GdkEventKey *event, 
 			DWORD vc = GetVirtualKeyCodeFromKeycode(hardware_keycode, WINPR_KEYCODE_TYPE_EVDEV);
 #endif
 			const DWORD sc = GetVirtualScanCodeFromVirtualKeyCode(vc, keyboard_type); 
-			DWORD scancode = freerdp_keyboard_remap_key(rfi->remap_table, sc);
+			scancode = freerdp_keyboard_remap_key(rfi->remap_table, sc);
 #else
 			scancode = freerdp_keyboard_get_rdp_scancode_from_x11_keycode(hardware_keycode);
 #endif
@@ -1051,6 +1127,7 @@ void remmina_rdp_event_init(RemminaProtocolWidget *gp)
 	REMMINA_PLUGIN_DEBUG("Disable smooth scrolling is set to %d", disable_smooth_scrolling);
 
 	rfi->drawing_area = gtk_drawing_area_new();
+	rfi->motion_drawing_area = rfi->drawing_area;
 	gtk_widget_show(rfi->drawing_area);
 	gtk_container_add(GTK_CONTAINER(gp), rfi->drawing_area);
 
@@ -1141,6 +1218,44 @@ void remmina_rdp_event_init(RemminaProtocolWidget *gp)
 #else
 	rfi->bpp = gdk_visual_get_best_depth();
 #endif
+}
+
+void remmina_events_multimonitor(RemminaProtocolWidget* gp)
+{
+	TRACE_CALL(__func__);
+	rfContext *rfi = GET_PLUGIN_DATA(gp);
+
+	gint n_monitors = remmina_plugin_service->plugin_multimon_monitor_count(gp);
+	rfi->main_x = 0;
+	rfi->main_y = 0;
+	for (gint i = 0 ; i < n_monitors ; i++) {
+		GtkWidget*other_monitor_drawing_area = remmina_plugin_service->plugin_multimon_monitor_drawing_area(gp, i);
+		if (other_monitor_drawing_area != NULL) {
+			g_signal_connect(G_OBJECT(other_monitor_drawing_area), "motion-notify-event", G_CALLBACK(remmina_rdp_event_on_motion), gp);
+			g_signal_connect(G_OBJECT(other_monitor_drawing_area), "draw", G_CALLBACK(remmina_rdp_event_on_draw_other_monitors), gp);
+			g_signal_connect(G_OBJECT(other_monitor_drawing_area), "button-press-event", G_CALLBACK(remmina_rdp_event_on_button), gp);
+			g_signal_connect(G_OBJECT(other_monitor_drawing_area), "button-release-event", G_CALLBACK(remmina_rdp_event_on_button), gp);
+			g_signal_connect(G_OBJECT(other_monitor_drawing_area), "scroll-event", G_CALLBACK(remmina_rdp_event_on_scroll), gp);
+			g_signal_connect(G_OBJECT(other_monitor_drawing_area), "key-press-event", G_CALLBACK(remmina_rdp_event_on_key), gp);
+			g_signal_connect(G_OBJECT(other_monitor_drawing_area), "key-release-event", G_CALLBACK(remmina_rdp_event_on_key), gp);
+			g_signal_connect(G_OBJECT(other_monitor_drawing_area), "focus-in-event", G_CALLBACK(remmina_rdp_event_on_focus_in), gp);
+
+
+			gtk_widget_add_events(other_monitor_drawing_area, GDK_POINTER_MOTION_MASK
+			      | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
+			      | GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK
+			      | GDK_SCROLL_MASK | GDK_FOCUS_CHANGE_MASK);
+			gtk_widget_set_can_focus(other_monitor_drawing_area, TRUE);
+			gtk_widget_set_sensitive(other_monitor_drawing_area, TRUE);
+			gtk_widget_set_app_paintable(other_monitor_drawing_area, TRUE);
+			gtk_window_set_keep_above(GTK_WINDOW(gtk_widget_get_toplevel(other_monitor_drawing_area)), TRUE);
+			gtk_widget_grab_focus(other_monitor_drawing_area);
+			gtk_widget_show(other_monitor_drawing_area);
+		} else {
+			// this monitor is for main, so get it's origin
+			remmina_plugin_service->plugin_multimon_monitor_info(gp, i, NULL, &rfi->main_x, &rfi->main_y, NULL, NULL, NULL, NULL);
+		}
+	}
 }
 
 void remmina_rdp_event_free_event(RemminaPluginRdpUiObject *obj)
@@ -1243,7 +1358,7 @@ void remmina_rdp_event_update_scale(RemminaProtocolWidget *gp)
 	width = remmina_plugin_service->protocol_plugin_get_width(gp);
 	height = remmina_plugin_service->protocol_plugin_get_height(gp);
 
-	gdi = ((rdpContext *)rfi)->gdi;
+	gdi = rfi->clientContext.context.gdi;
 
 	rfi->scale = remmina_plugin_service->remmina_protocol_widget_get_current_scale_mode(gp);
 
@@ -1399,7 +1514,9 @@ static void remmina_rdp_event_cursor(RemminaProtocolWidget *gp, RemminaPluginRdp
 		break;
 
 	case REMMINA_RDP_POINTER_SET:
-		gdk_window_set_cursor(gtk_widget_get_window(rfi->drawing_area), ui->cursor.pointer->cursor);
+		if (rfi->motion_drawing_area != NULL) {
+			gdk_window_set_cursor(gtk_widget_get_window(rfi->motion_drawing_area), ui->cursor.pointer->cursor);
+		}
 		ui->retval = 1;
 		break;
 
@@ -1409,16 +1526,20 @@ static void remmina_rdp_event_cursor(RemminaProtocolWidget *gp, RemminaPluginRdp
 
 	case REMMINA_RDP_POINTER_NULL:
 	{
-		GdkWindow* da = gtk_widget_get_window(rfi->drawing_area);
-		GdkCursor* cursor = gdk_cursor_new_for_display(gdk_display_get_default(), GDK_BLANK_CURSOR);
-		gdk_window_set_cursor(da, cursor);
-		g_object_unref(cursor);
+		if (rfi->motion_drawing_area != NULL) {
+			GdkWindow* da = gtk_widget_get_window(rfi->motion_drawing_area);
+			GdkCursor* cursor = gdk_cursor_new_for_display(gdk_display_get_default(), GDK_BLANK_CURSOR);
+			gdk_window_set_cursor(da, cursor);
+			g_object_unref(cursor);
+		}
 		ui->retval = 1;
 	}
 		break;
 
 	case REMMINA_RDP_POINTER_DEFAULT:
-		gdk_window_set_cursor(gtk_widget_get_window(rfi->drawing_area), NULL);
+		if (rfi->motion_drawing_area != NULL) {
+			gdk_window_set_cursor(gtk_widget_get_window(rfi->motion_drawing_area), NULL);
+		}
 		ui->retval = 1;
 		break;
 	}

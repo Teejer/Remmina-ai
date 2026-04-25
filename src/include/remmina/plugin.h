@@ -317,6 +317,11 @@ typedef struct _RemminaPluginService {
 	void (*protocol_widget_panel_show_listen)(RemminaProtocolWidget *gp, gint port);
 	void (*widget_pool_register)(GtkWidget *widget);
 	GtkWidget *(*rcw_open_from_file_full)(RemminaFile *remminafile, GCallback disconnect_cb, gpointer data, guint *handler);
+	gint (*plugin_multimon_monitor_count)(RemminaProtocolWidget *widget);
+	gboolean (*plugin_multimon_monitor_info)(RemminaProtocolWidget *widget, gint index, gboolean*is_primary, gint*x, gint*y, gint*width, gint*height, gint*phys_width_mm, gint* phys_height_mm);
+	GtkWidget* (*plugin_multimon_monitor_drawing_area)(RemminaProtocolWidget *gp, gint index);
+	void (*plugin_multimon_monitor_set_drawing_area)(RemminaProtocolWidget *gp, gint index, GtkWidget*drawing_area);
+	int (*plugin_multimon_main_monitor_index)(RemminaProtocolWidget *gp);
 	void (*show_dialog)(GtkMessageType msg, GtkButtonsType buttons, const gchar* message);
 	GtkWindow *(*get_window)(void);
 	gint (*plugin_unlock_new)(GtkWindow* parent);

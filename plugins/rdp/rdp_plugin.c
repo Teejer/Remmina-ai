@@ -52,7 +52,6 @@
 #include "rdp_sso_mib.h"
 #endif
 
-#include <errno.h>
 #include <pthread.h>
 #include <time.h>
 #include <sys/time.h>
@@ -2474,73 +2473,17 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 #endif /* HAVE_CUPS */
 	}
 
-	if (remmina_plugin_service->file_get_int(remminafile, "span", FALSE)) {
-		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_SpanMonitors, TRUE);
-		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_UseMultimon, TRUE);
-		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_Fullscreen, TRUE);
-		remmina_plugin_service->file_set_int(remminafile, "multimon", 1);
-	}
-
 	if (remmina_plugin_service->file_get_int(remminafile, "multimon", FALSE)) {
 		guint32 maxwidth = 0;
 		guint32 maxheight = 0;
-		gchar *monitorids;
-		guint32 i;
-		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_UseMultimon, TRUE);
-		if (remmina_plugin_service->file_get_int(remminafile, "force_multimon", FALSE)) {
-			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_ForceMultimon, TRUE);
-		}
-		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_Fullscreen, TRUE);
 
-		gchar *monitorids_string = g_strdup(remmina_plugin_service->file_get_string(remminafile, "monitorids"));
-		/* Otherwise we get all the attached monitors
-		 * monitorids may contains desktop orientation values.
-		 * But before we check if there are orientation attributes
-		 */
-		if (monitorids_string != NULL && monitorids_string[0] != '\0') {
-			if (g_strstr_len(monitorids_string, -1, ",") != NULL) {
-				if (g_strstr_len(monitorids_string, -1, ":") != NULL) {
-					rdpMonitor *base = (rdpMonitor *)freerdp_settings_get_pointer(rfi->clientContext.context.settings, FreeRDP_MonitorDefArray);
-					/* We have an ID and an orientation degree */
-					gchar **temp_items;
-					gchar **rot_items;
-					temp_items = g_strsplit(monitorids_string, ",", -1);
-					for (i = 0; i < g_strv_length(temp_items); i++) {
-						rot_items = g_strsplit(temp_items[i], ":", -1);
-						rdpMonitor *current = &base[atoi(rot_items[0])];
-						if (i == 0)
-							monitorids = g_strdup(rot_items[0]);
-						else
-							monitorids = g_strdup_printf("%s,%s", monitorids, rot_items[0]);
-						current->attributes.orientation = atoi(rot_items[1]);
-						REMMINA_PLUGIN_DEBUG("Monitor n %d orientation: %d", i, current->attributes.orientation);
-					}
-				} else {
-					monitorids = g_strdup(monitorids_string);
-				}
-			} else {
-				monitorids = g_strdup(monitorids_string);
-			}
-		} else {
-			monitorids = g_strdup(monitorids_string);
-		}
-		remmina_rdp_monitor_get(rfi, &monitorids, &maxwidth, &maxheight);
-		if (monitorids != NULL && monitorids[0] != '\0') {
-			UINT32 *base = (UINT32 *)freerdp_settings_get_pointer(rfi->clientContext.context.settings, FreeRDP_MonitorIds);
-			gchar **items;
-			items = g_strsplit(monitorids, ",", -1);
-			freerdp_settings_set_uint32(rfi->clientContext.context.settings, FreeRDP_NumMonitorIds, g_strv_length(items));
-			REMMINA_PLUGIN_DEBUG("NumMonitorIds: %d", freerdp_settings_get_uint32(rfi->clientContext.context.settings, FreeRDP_NumMonitorIds));
-			for (i = 0; i < g_strv_length(items); i++) {
-				if (base != NULL){
-					UINT32 *current = &base[i];
-					*current = atoi(items[i]);
-					REMMINA_PLUGIN_DEBUG("Added monitor with ID %" PRIu32, *current);
-				}
-			}
-			g_free(monitorids);
-			g_strfreev(items);
-		}
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_SpanMonitors, FALSE);
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_UseMultimon, TRUE);
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_Fullscreen, TRUE);
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_ForceMultimon, TRUE);
+
+		remmina_rdp_monitor_define(rfi, &maxwidth, &maxheight);
+		remmina_events_multimonitor(gp);
 		if (maxwidth && maxheight && remmina_plugin_service->file_get_int(remminafile, "multimon", FALSE)) {
 			REMMINA_PLUGIN_DEBUG("Setting DesktopWidth and DesktopHeight to: %dx%d", maxwidth, maxheight);
 			freerdp_settings_set_uint32(rfi->clientContext.context.settings, FreeRDP_DesktopWidth, maxwidth);
@@ -3374,15 +3317,14 @@ static gchar network_tooltip[] =
 	   "If “Auto-detect” fails, choose the most appropriate option in the list.\n");
 
 static gchar monitorids_tooltip[] =
-	N_("Comma-separated list of monitor IDs and desktop orientations:\n"
-	   "  • [<id>:<orientation-in-degrees>,]\n"
-	   "  • 0,1,2,3\n"
-	   "  • 0:270,1:90\n"
-	   "Orientations are specified in degrees, valid values are:\n"
-	   "  •   0 (landscape)\n"
-	   "  •  90 (portrait)\n"
-	   "  • 180 (landscape flipped)\n"
-	   "  • 270 (portrait flipped)\n"
+	N_("Comma-separated list of monitors using index, model name, or manufacturer code:\n"
+	   "  • Index (0-based): 1,0,2\n"
+	   "  • Manufacturer: LEN,BOE,\n"
+	   "  • Model name: Model abc,BOE\n"
+	   "  • Mixed: 1,LEN,Model abc\n"
+	   "\n"
+	   "• First entry = main monitor (login box, toolbar)\n"
+	   "• Monitors must be contiguous - cannot skip monitors in the layout\n"
 	   "\n");
 
 static gchar drive_tooltip[] =
@@ -3427,7 +3369,6 @@ static const RemminaProtocolSetting remmina_rdp_basic_settings[] =
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK,	    "disable-smooth-scrolling", N_("Disable smooth scrolling"),		  TRUE,	 NULL,		  NULL,										NULL, NULL },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK,	    "multimon",			N_("Enable multi monitor"),		  TRUE,	 NULL,		  NULL,										NULL, NULL },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK,	    "force_multimon",			N_("Force multi monitor when toggled"),		  TRUE,	 NULL,		  NULL,										NULL, NULL },
-	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK,	    "span",			N_("Span screen over multiple monitors"), FALSE,	 NULL,		  NULL,										NULL, NULL },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_TEXT,	    "monitorids",		N_("List monitor IDs"),			  TRUE, NULL,		  monitorids_tooltip,								NULL, NULL },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_RESOLUTION, "resolution",		NULL,					  FALSE, NULL,		  NULL,										NULL, NULL },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_SELECT,	    "colordepth",		N_("Colour depth"),			  FALSE, colordepth_list, NULL,										NULL, NULL },

@@ -159,23 +159,6 @@ struct rf_pointer {
 };
 typedef struct rf_pointer rfPointer;
 
-#ifdef RF_BITMAP
-struct rf_bitmap {
-	rdpBitmap		bitmap;
-	Pixmap			pixmap;
-	cairo_surface_t *	surface;
-};
-typedef struct rf_bitmap rfBitmap;
-#endif
-
-#ifdef RF_GLYPH
-struct rf_glyph {
-	rdpGlyph	glyph;
-	Pixmap		pixmap;
-};
-typedef struct rf_glyph rfGlyph;
-#endif
-
 typedef enum {
 	REMMINA_RDP_EVENT_TYPE_SCANCODE,
 	REMMINA_RDP_EVENT_TYPE_SCANCODE_UNICODE,
@@ -351,6 +334,7 @@ struct rf_context {
 
 	gboolean		sw_gdi;
 	GtkWidget *		drawing_area;
+	GtkWidget *     motion_drawing_area;
 	gint			scale_width;
 	gint			scale_height;
 	gdouble			scale_x;
@@ -358,9 +342,11 @@ struct rf_context {
 	guint			delayed_monitor_layout_handler;
 	gboolean		use_client_keymap;
 
+	gint			main_x;		// main monitor (toolbar/drawing_area) origin
+	gint			main_y;
+
 	gint			srcBpp;
 	GdkDisplay *		display;
-	GdkVisual *		visual;
 	cairo_surface_t *	surface;
 	cairo_format_t		cairo_format;
 	gint			bpp;
@@ -386,7 +372,7 @@ struct rf_context {
 	GArray *		keymap; /* Array of RemminaPluginRdpKeymapEntry */
 
 	gboolean		attempt_interactive_authentication;
-	
+
 	// keep track of last interaction time for keep alive
 	time_t			last_time;
 	time_t			last_time_idle_keypress;

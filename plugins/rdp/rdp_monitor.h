@@ -40,6 +40,6 @@
 
 G_BEGIN_DECLS
 
-void remmina_rdp_monitor_get (rfContext *rfi, gchar **monitorids, guint32 *maxwidth, guint32 *maxheight);
+void remmina_rdp_monitor_define(rfContext *rfi, guint32 *maxwidth, guint32 *maxheight);
 
 G_END_DECLS

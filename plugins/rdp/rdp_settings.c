@@ -36,6 +36,10 @@
 
 #include "rdp_settings.h"
 #include <freerdp/locale/keyboard.h>
+#include <gdk/gdk.h>
+#if defined(GDK_WINDOWING_WAYLAND)
+#include <gdk/gdkwayland.h>
+#endif
 
 static guint keyboard_layout = 0;
 static guint rdp_keyboard_layout = 0;
@@ -44,6 +48,14 @@ static gchar *rdp_keyboard_remapping_list = NULL;
 static void remmina_rdp_settings_kbd_init(void)
 {
 	TRACE_CALL(__func__);
+#if defined(GDK_WINDOWING_WAYLAND)
+	GdkDisplay* disp = gdk_display_get_default();
+	if (GDK_IS_WAYLAND_DISPLAY(disp)) {
+		keyboard_layout = 0;
+		return;
+	}
+#endif
+
 #if FREERDP_CHECK_VERSION(3, 0, 0)
 #if !defined(WITHOUT_FREERDP_3x_DEPRECATED)
 	keyboard_layout = freerdp_keyboard_init(rdp_keyboard_layout);
@@ -70,13 +82,18 @@ void remmina_rdp_settings_init(void)
 
 	g_free(value);
 
-
+#if !defined(GDK_WINDOWING_WAYLAND)
 	remmina_rdp_settings_kbd_init();
+#endif
 }
 
 guint remmina_rdp_settings_get_keyboard_layout(void)
 {
 	TRACE_CALL(__func__);
+#if defined(GDK_WINDOWING_WAYLAND)
+	if (keyboard_layout == 0)
+		remmina_rdp_settings_kbd_init();
+#endif
 	return keyboard_layout;
 }
 

@@ -213,7 +213,6 @@ void remmina_pref_on_dialog_destroy(GtkWidget *widget, gpointer user_data)
 	remmina_pref.mp_left = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(remmina_pref_dialog->checkbutton_appearance_mp_left));
 	remmina_pref.start_fullscreen = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(remmina_pref_dialog->checkbutton_appearance_start_fullscreen));
 	remmina_pref.start_dynres = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(remmina_pref_dialog->checkbutton_appearance_start_dynres));
-	remmina_pref.toolbar_fix_position_multimon = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(remmina_pref_dialog->checkbutton_move_toolbar_multimon));
 	remmina_pref.hide_connection_toolbar = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(remmina_pref_dialog->checkbutton_appearance_hide_toolbar));
 	remmina_pref.hide_searchbar = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(remmina_pref_dialog->checkbutton_appearance_hide_searchbar));
 	remmina_pref.disable_news = gtk_switch_get_active(GTK_SWITCH(remmina_pref_dialog->switch_disable_news));
@@ -491,13 +490,6 @@ static void remmina_pref_dialog_init(gboolean load_plugins)
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(remmina_pref_dialog->checkbutton_appearance_mp_left), remmina_pref.mp_left);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(remmina_pref_dialog->checkbutton_appearance_start_fullscreen), remmina_pref.start_fullscreen);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(remmina_pref_dialog->checkbutton_appearance_start_dynres), remmina_pref.start_dynres);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(remmina_pref_dialog->checkbutton_move_toolbar_multimon), remmina_pref.toolbar_fix_position_multimon);
-	// This option has no effect in Wayland, so we don't need to show it
-#ifdef GDK_WINDOWING_WAYLAND
-	if (GDK_IS_WAYLAND_DISPLAY(gtk_widget_get_display(GTK_WIDGET(remmina_pref_dialog->checkbutton_move_toolbar_multimon)))) {
-		gtk_widget_hide(GTK_WIDGET(remmina_pref_dialog->checkbutton_move_toolbar_multimon));
-	}
-#endif
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(remmina_pref_dialog->checkbutton_appearance_hide_toolbar), remmina_pref.hide_connection_toolbar);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(remmina_pref_dialog->checkbutton_appearance_hide_searchbar), remmina_pref.hide_searchbar);
 
@@ -839,7 +831,6 @@ GtkWidget *remmina_pref_dialog_new(gint default_tab, GtkWindow *parent)
 	remmina_pref_dialog->checkbutton_appearance_mp_left = GTK_CHECK_BUTTON(GET_OBJECT("checkbutton_appearance_mp_left"));
 	remmina_pref_dialog->checkbutton_appearance_start_fullscreen = GTK_CHECK_BUTTON(GET_OBJECT("checkbutton_appearance_start_fullscreen"));
 	remmina_pref_dialog->checkbutton_appearance_start_dynres = GTK_CHECK_BUTTON(GET_OBJECT("checkbutton_appearance_start_dynres"));
-	remmina_pref_dialog->checkbutton_move_toolbar_multimon = GTK_CHECK_BUTTON(GET_OBJECT("checkbutton_move_toolbar_multimon"));
 	remmina_pref_dialog->checkbutton_appearance_hide_toolbar = GTK_CHECK_BUTTON(GET_OBJECT("checkbutton_appearance_hide_toolbar"));
 	remmina_pref_dialog->checkbutton_appearance_hide_searchbar = GTK_CHECK_BUTTON(GET_OBJECT("checkbutton_appearance_hide_searchbar"));
 

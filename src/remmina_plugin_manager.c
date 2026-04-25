@@ -322,6 +322,11 @@ RemminaPluginService remmina_plugin_manager_service =
 	remmina_protocol_widget_panel_show_listen,
 	remmina_widget_pool_register,
 	rcw_open_from_file_full,
+	multimon_get_monitor_count,
+	multimon_get_monitor_info,
+	multimon_get_monitor_drawing_area,
+	multimon_set_monitor_drawing_area,
+	multimon_get_main_monitor_index,
 	remmina_main_show_dialog,
 	remmina_main_get_window,
 	remmina_unlock_new,
@@ -416,7 +421,7 @@ static void remmina_plugin_manager_load_plugins(GPtrArray *plugin_dirs, int arra
 			g_dir_close(dir);
 		}
 	}
-	
+
 
 	while (alternative_language_plugins->len > 0) {
 		gboolean has_loaded = FALSE;
@@ -503,7 +508,7 @@ void remmina_plugin_manager_init(void)
 	remmina_available_plugin_table = g_ptr_array_new();
 	GPtrArray *plugin_dirs = g_ptr_array_new();
 	int array_size = 1;
-	
+
 	if (!g_module_supported()) {
 		g_print("Dynamic loading of plugins is not supported on this platform!\n");
 		return;
@@ -758,7 +763,7 @@ static gboolean remmina_plugin_manager_show_for_each(RemminaPlugin *plugin, GtkL
 	gtk_list_store_append(store, &iter);
 	gtk_list_store_set(store, &iter, 0, FALSE, 1, plugin->name, 2, _(remmina_plugin_type_name[plugin->type]), 3,
 		g_dgettext(plugin->domain, plugin->description), 4, "Installed", 5, plugin->version, -1);
-	
+
 	return FALSE;
 }
 
@@ -919,11 +924,11 @@ GFile* remmina_create_plugin_file(const gchar* plugin_name, const gchar* plugin_
 		snprintf(file_name, MAX_PLUGIN_NAME_SIZE, "%s/%s", plugin_dir, g_path_get_basename(plugin_name));
 	}
 	GFile* plugin_file = g_file_new_for_path(file_name);
-	
+
 	if (plugin_dir != NULL) {
 		g_free(plugin_dir);
 	}
-	
+
 	return plugin_file;
 }
 

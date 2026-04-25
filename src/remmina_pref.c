@@ -281,7 +281,7 @@ void remmina_pref_init(void)
 			remmina_dir = NULL;
 		}
 	}
-	
+
 	/* The last case we use  the home ~/.config/remmina */
 	if (remmina_dir != NULL)
 		g_free(remmina_dir), remmina_dir = NULL;
@@ -418,12 +418,6 @@ void remmina_pref_init(void)
 		remmina_pref.start_dynres = g_key_file_get_boolean(gkeyfile, "remmina_pref", "start_dynres", NULL);
 	else
 		remmina_pref.start_dynres = FALSE;
-
-	if (g_key_file_has_key(gkeyfile, "remmina_pref", "toolbar_fix_position_multimon", NULL))
-		remmina_pref.toolbar_fix_position_multimon = g_key_file_get_boolean(gkeyfile, "remmina_pref", "toolbar_fix_position_multimon", NULL);
-	else
-		remmina_pref.toolbar_fix_position_multimon = TRUE;
-		
 
 	if (g_key_file_has_key(gkeyfile, "remmina_pref", "hide_connection_toolbar", NULL))
 		remmina_pref.hide_connection_toolbar = g_key_file_get_boolean(gkeyfile, "remmina_pref",
@@ -980,7 +974,6 @@ gboolean remmina_pref_save(void)
 	g_key_file_set_boolean(gkeyfile, "remmina_pref", "mp_left", remmina_pref.mp_left);
 	g_key_file_set_boolean(gkeyfile, "remmina_pref", "start_fullscreen", remmina_pref.start_fullscreen);
 	g_key_file_set_boolean(gkeyfile, "remmina_pref", "start_dynres", remmina_pref.start_dynres);
-	g_key_file_set_boolean(gkeyfile, "remmina_pref", "toolbar_fix_position_multimon", remmina_pref.toolbar_fix_position_multimon);
 	g_key_file_set_boolean(gkeyfile, "remmina_pref", "hide_connection_toolbar", remmina_pref.hide_connection_toolbar);
 	g_key_file_set_boolean(gkeyfile, "remmina_pref", "hide_searchbar", remmina_pref.hide_searchbar);
 	g_key_file_set_integer(gkeyfile, "remmina_pref", "default_action", remmina_pref.default_action);
