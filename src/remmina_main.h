@@ -97,6 +97,7 @@ struct _RemminaMainPriv {
 
 	gchar *			selected_filename;
 	gchar *			selected_name;
+	gchar *			selected_group;
 	gboolean		override_view_file_mode_to_list;
 	RemminaStringArray *	expanded_group;
 };

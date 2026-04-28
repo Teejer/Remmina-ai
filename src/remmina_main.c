@@ -342,9 +342,9 @@ static gboolean remmina_main_selection_func(GtkTreeSelection *selection, GtkTree
 
 	gtk_tree_model_get(model, &iter,
 			   NAME_COLUMN, &remminamain->priv->selected_name,
+			   GROUP_COLUMN, &remminamain->priv->selected_group,
 			   FILENAME_COLUMN, &remminamain->priv->selected_filename,
 			   -1);
-
 	context_id = gtk_statusbar_get_context_id(remminamain->statusbar_main, "status");
 	gtk_statusbar_pop(remminamain->statusbar_main, context_id);
 	if (remminamain->priv->selected_filename) {
@@ -805,8 +805,11 @@ static void remmina_main_load_by_group_callback(RemminaFile *remminafile, gpoint
 {
 	
 	const gchar* group = remmina_file_get_string(remminafile, "group");
+	if (group == NULL){
+		return;
+	}
 
-	if (g_strcmp0(remminamain->priv->selected_name, group) == 0 ){
+	if (g_strcmp0(remminamain->priv->selected_group, group) == 0 || strncmp(remminamain->priv->selected_group, group, strlen(remminamain->priv->selected_group)) ==0 ){
 		if (remmina_pref_get_boolean("use_primary_password")
 			&& remmina_pref_get_boolean("lock_connect")
 			&& remmina_unlock_new(remminamain->window) == 0)
@@ -827,7 +830,7 @@ void remmina_main_on_action_connection_connect(GSimpleAction *action, GVariant *
 	RemminaFile *remminafile;
 
 	if (!remminamain->priv->selected_filename){
-		if (remminamain->priv->selected_name){
+		if (remminamain->priv->selected_group){
 			remmina_file_manager_iterate((GFunc)remmina_main_load_by_group_callback, NULL);
 		}
 		return;
