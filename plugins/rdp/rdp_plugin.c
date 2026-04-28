@@ -1951,8 +1951,9 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 		} else if (g_strcmp0(cs, "auto") == 0) {
 			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayRpcTransport, TRUE);
 			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayHttpTransport, TRUE);
-			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayArmTransport, FALSE);
 #ifdef WITH_RDP_AUTH_AAD
+			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayArmTransport, FALSE);
+
 		} else if (g_strcmp0(cs, "arm") == 0) {
 			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayRpcTransport, FALSE);
 			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayHttpTransport, FALSE);
