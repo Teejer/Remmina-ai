@@ -143,6 +143,7 @@ struct _RemminaFileEditorPriv {
 	GtkWidget *		ssh_tunnel_certfile_chooser;
 
 	GHashTable *		setting_widgets;
+	GtkBuilder * 	builder;
 };
 
 static void remmina_file_editor_class_init(RemminaFileEditorClass *klass)
@@ -297,6 +298,8 @@ static void remmina_file_editor_on_realize(GtkWidget *widget, gpointer user_data
 static void remmina_file_editor_destroy(GtkWidget *widget, gpointer data)
 {
 	TRACE_CALL(__func__);
+	if (REMMINA_FILE_EDITOR(widget)->priv->builder != NULL)
+		g_object_unref(REMMINA_FILE_EDITOR(widget)->priv->builder);
 	remmina_file_free(REMMINA_FILE_EDITOR(widget)->priv->remmina_file);
 	g_hash_table_destroy(REMMINA_FILE_EDITOR(widget)->priv->setting_widgets);
 	g_free(REMMINA_FILE_EDITOR(widget)->priv);
@@ -710,6 +713,193 @@ static void remmina_file_editor_create_assistance(RemminaFileEditor *gfe, const 
 
 static void file_entry_changed(GtkEntry *entry, void *gpointer) {
 	remmina_entry_live_strip_value_from_clipboard(entry);
+}
+
+static gint remmina_file_editor_monitors_list_open_dialog(RemminaFileEditorPriv* priv, GtkWidget *parent, gboolean return_model)
+{
+    TRACE_CALL(__func__);
+    GtkWidget *dialog;
+    GtkWidget *list;
+	GtkLabel *prompt;
+    GdkDisplay *display;
+    gint n_monitors, i;
+    gint result;
+    gint selected_index = -1;
+    gchar *display_text;
+
+	if (priv->builder == NULL)
+		return -1;
+
+    dialog = GTK_WIDGET(gtk_builder_get_object(priv->builder, "monitor-selection-dialog"));
+    list = GTK_WIDGET(gtk_builder_get_object(priv->builder, "monitor-selection-dialog-list"));
+	prompt = GTK_LABEL(gtk_builder_get_object(priv->builder, "monitor-selection-dialog-prompt"));
+    
+	gtk_label_set_text(prompt, return_model?N_("Select a monitor model :") : N_("Select a monitor manufacturer :"));
+    gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(gtk_widget_get_toplevel(parent)));
+    
+	gtk_combo_box_text_remove_all(GTK_COMBO_BOX_TEXT(list));
+    
+    display = gdk_display_get_default();
+    if (display) {
+        n_monitors = gdk_display_get_n_monitors(display);
+        
+        for (i = 0; i < n_monitors; i++) {
+            GdkMonitor *monitor;
+            const gchar *model, *manufacturer;
+            
+            monitor = gdk_display_get_monitor(display, i);
+            if (monitor == NULL) {
+                display_text =  g_strdup_printf("** Error monitor %d not accessible **", i);
+            } else {
+            	model = gdk_monitor_get_model(monitor);
+            	manufacturer = gdk_monitor_get_manufacturer(monitor);
+                display_text = g_strdup_printf("%s\t(%s)", return_model?model:manufacturer, !return_model?model:manufacturer);
+			}
+            gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(list), display_text);
+            
+            g_free(display_text);
+        }
+    }
+    
+    gtk_combo_box_set_active(GTK_COMBO_BOX(list), 0);
+    result = gtk_dialog_run(GTK_DIALOG(dialog));
+    
+    if (result == GTK_RESPONSE_OK) {
+        selected_index = gtk_combo_box_get_active(GTK_COMBO_BOX(list));
+    }
+    
+    gtk_widget_hide(dialog);
+	gtk_window_set_transient_for(GTK_WINDOW(dialog), NULL);
+
+	return selected_index;
+}
+
+static void remmina_file_editor_monitors_list_insert_value(GtkEntry *entry, const gchar *text)
+{
+	TRACE_CALL(__func__);
+	const gchar *current_text;
+	gchar *before;
+	gchar *new_text;
+	gint cursor_pos;
+
+	current_text = gtk_entry_get_text(GTK_ENTRY(entry));
+	const gchar*search = current_text;
+	gint textlen = strlen(text);
+	while ((search = g_strstr_len(search, -1, text))) {
+		if ((search[textlen] == '\0' ||  search[textlen] == ',')
+		  &&(search == current_text || search[-1] == ',')) {
+			return;
+		  }
+		search ++;
+	}
+
+	cursor_pos = gtk_editable_get_position(GTK_EDITABLE(entry));
+
+	if (cursor_pos >= strlen(current_text)) {
+		if (strlen(current_text) > 0)
+			new_text = g_strconcat(current_text, ",", text, NULL);
+		else
+			new_text = g_strdup(text);
+		cursor_pos = strlen(new_text);
+	} else {
+		if (cursor_pos > 0)
+			cursor_pos --;
+		gchar*sep_pos = strchr(&current_text[cursor_pos], ',');
+		if (sep_pos == NULL) {
+			new_text = g_strconcat(current_text, ",", text, NULL);
+			cursor_pos = strlen(new_text);
+		} else {
+			before = g_strndup(current_text, sep_pos-current_text);
+			new_text = g_strconcat(before, ",", text, sep_pos, NULL);
+			cursor_pos = strlen(before) + strlen(text) + 1;
+			g_free(before);
+		}
+	}
+
+	gtk_entry_set_text(GTK_ENTRY(entry), new_text);
+	gtk_editable_set_position(GTK_EDITABLE(entry), cursor_pos);
+	
+	g_free(new_text);
+}
+
+void remmina_file_editor_monitors_list_insert_new(GtkWidget *button, gpointer user_data)
+{
+	TRACE_CALL(__func__);
+	gboolean use_model;
+	gint monitor_index;
+	const gchar *mon_info;
+	GdkMonitor *monitor;
+	GtkEntry *text;
+
+	RemminaFileEditorPriv* priv = (RemminaFileEditorPriv*)(user_data);
+
+	// use model or manufacturer depending on the origin of the insert button
+	use_model = g_str_equal("btn-model",gtk_buildable_get_name(GTK_BUILDABLE(button)));
+	text = GTK_ENTRY(gtk_builder_get_object(priv->builder, "monitor-list-ids-entry"));
+
+	monitor_index = remmina_file_editor_monitors_list_open_dialog(priv, GTK_WIDGET(text), use_model);
+	if (monitor_index < 0) {
+		return;
+	}
+
+	monitor = gdk_display_get_monitor(gdk_display_get_default(), monitor_index);
+	if (!monitor) {
+		return;
+	}
+
+	// put information on model if origin of action was the model button
+	if (use_model) {
+		mon_info = gdk_monitor_get_model(monitor);
+	} else {
+		mon_info = gdk_monitor_get_manufacturer(monitor);
+	}
+
+	if (mon_info && strlen(mon_info) > 0) {
+		remmina_file_editor_monitors_list_insert_value(GTK_ENTRY(text), mon_info);
+	}
+}
+
+
+static GtkWidget *remmina_file_editor_create_monitors_list(RemminaFileEditor *gfe, GtkWidget *grid,
+							 gint row, gint col, const gchar *label,
+							 const gchar *value, gchar *tooltip)
+{
+	TRACE_CALL(__func__);
+	GtkWidget *widget;
+	GtkWidget *entry;
+	GtkWidget *box;
+	const gint left = 0;
+	const gint right = 40;
+
+	gfe->priv->builder = remmina_public_gtk_builder_new_from_resource("/org/remmina/Remmina/src/../data/ui/remmina_file_editor.glade");
+	gtk_builder_connect_signals(gfe->priv->builder, gfe->priv);
+
+
+	widget = gtk_label_new(label);
+	gtk_widget_show(widget);
+#if GTK_CHECK_VERSION(3, 12, 0)
+	gtk_widget_set_margin_start(widget, left);
+	gtk_widget_set_margin_end(widget, right);
+#else
+	gtk_widget_set_margin_left(widget, left);
+	gtk_widget_set_margin_right(widget, right);
+#endif
+	gtk_widget_set_valign(widget, GTK_ALIGN_START);
+	gtk_widget_set_halign(widget, GTK_ALIGN_START);
+	gtk_grid_attach(GTK_GRID(grid), widget, col, row, 1, 1);
+
+	box = GTK_WIDGET(gtk_builder_get_object(gfe->priv->builder, "monitor-list-ids"));
+	gtk_grid_attach(GTK_GRID(grid), box, col + 1, row, 1, 1);
+
+	entry = GTK_WIDGET(gtk_builder_get_object(gfe->priv->builder, "monitor-list-ids-entry"));
+
+	if (value)
+		gtk_entry_set_text(GTK_ENTRY(entry), value);
+
+	if (tooltip) {
+		gtk_widget_set_tooltip_text(entry, tooltip);
+	}
+	return entry;
 }
 
 static GtkWidget *remmina_file_editor_create_text2(RemminaFileEditor *gfe, GtkWidget *grid,
@@ -1306,7 +1496,14 @@ static void remmina_file_editor_create_settings(RemminaFileEditor *gfe, GtkWidge
 			g_strfreev(strarr);
 			grid_row++;
 			break;
-
+		
+		case REMMINA_PROTOCOL_SETTING_TYPE_MONITOR_LIST:
+			widget = remmina_file_editor_create_monitors_list(gfe, grid, grid_row, 0,
+								 g_dgettext(priv->plugin->domain, settings->label),
+								 remmina_file_get_string(priv->remmina_file, setting_name), settings->opt2);
+			g_hash_table_insert(priv->setting_widgets, setting_name, widget);
+			grid_row++;
+			break;
 		case REMMINA_PROTOCOL_SETTING_TYPE_TEXT:
 			widget = remmina_file_editor_create_text(gfe, grid, grid_row, 0,
 								 g_dgettext(priv->plugin->domain, settings->label),
@@ -1849,6 +2046,9 @@ static void remmina_file_editor_protocol_combo_on_changed(GtkComboBox *combo, Re
 		gtk_widget_destroy(priv->config_scrollable);
 		priv->config_scrollable = NULL;
 	}
+
+	if (priv->builder != NULL) g_object_unref(priv->builder);
+	priv->builder = NULL;
 
 	priv->server_combo = NULL;
 	priv->resolution_iws_radio = NULL;

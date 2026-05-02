@@ -134,6 +134,7 @@ list(
 set(RESOURCE_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/../data/ui/remmina_about.glade
     ${CMAKE_CURRENT_SOURCE_DIR}/../data/ui/remmina_bug_report.glade
+	${CMAKE_CURRENT_SOURCE_DIR}/../data/ui/remmina_file_editor.glade
     ${CMAKE_CURRENT_SOURCE_DIR}/../data/ui/remmina_key_chooser.glade
     ${CMAKE_CURRENT_SOURCE_DIR}/../data/ui/remmina_main.glade
     ${CMAKE_CURRENT_SOURCE_DIR}/../data/ui/remmina_mpc.glade
