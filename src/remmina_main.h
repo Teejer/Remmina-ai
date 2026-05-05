@@ -162,5 +162,6 @@ gboolean remmina_main_on_window_state_event(GtkWidget *widget, GdkEventWindowSta
 void remmina_main_on_show(GtkWidget *w, gpointer user_data);
 void remmina_main_on_drag_data_received(GtkWidget *widget, GdkDragContext *drag_context, gint x, gint y,
 					GtkSelectionData *data, guint info, guint time, gpointer user_data);
+void remmina_entry_live_strip_value_from_clipboard(GtkEntry*entry);
 
 G_END_DECLS
