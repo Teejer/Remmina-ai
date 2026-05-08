@@ -10,13 +10,14 @@
 # William Weber Berrutti <wwberrutti@protonmail.ch>, 2021.
 # Wellington Terumi Uemura <wellingtonuemura@gmail.com>, 2021, 2022, 2023, 2024.
 # Pavel Borecki <pavel.borecki@gmail.com>, 2026.
+# César Diez <cesar_diez@hotmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-02-16 14:09+0000\n"
-"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
+"PO-Revision-Date: 2026-05-08 22:11+0000\n"
+"Last-Translator: César Diez <cesar_diez@hotmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
 "remmina/remmina/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -24,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.16\n"
+"X-Generator: Weblate 2026.5-dev\n"
 "X-Launchpad-Export-Date: 2014-04-10 15:04+0000\n"
 
 #: src/remmina_icon.c:143
@@ -66,13 +67,13 @@ msgstr "Suporte a StatusNotifier/Appindicator em “"
 #: src/remmina_icon.c:402
 #, c-format
 msgid "%s your desktop does support it"
-msgstr "%s o seu ambiente de trabalho é compatível"
+msgstr "%s o seu ambiente é compatível"
 
 #. TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
 #: src/remmina_icon.c:404
 #, c-format
 msgid "%s and Remmina has built-in (compiled) support for libappindicator."
-msgstr "%s e Remmina tem suporte embutido (compilado) para o libappindicator."
+msgstr "%s e Remmina tem suporte integrado (compilado) para o libappindicator."
 
 #. TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
 #: src/remmina_icon.c:407
@@ -81,41 +82,42 @@ msgid ""
 "%s not supported natively by your Desktop Environment. libappindicator will "
 "try to fallback to GtkStatusIcon/xembed"
 msgstr ""
-"%s não possui compatibilidade nativa com o seu ambiente de trabalho. O "
-"libappindicator tentará retornar ao GtkStatusIcon/xembed"
+"%s não possui compatibilidade nativa com o seu ambiente. O libappindicator "
+"tentará retornar ao GtkStatusIcon/xembed"
 
 #. TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
 #: src/remmina_icon.c:411
 #, c-format
 msgid "%s You may need to install, and use XApp Status Applet"
-msgstr "%s Você pode precisar instalar e usar o XApp Status Applet"
+msgstr "%s Talvez seja necessário instalar e utilizar o XApp Status Applet"
 
 #. TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
 #: src/remmina_icon.c:414
 #, c-format
 msgid "%s You may need to install, and use KStatusNotifierItem"
-msgstr "%s Você pode precisar instalar e usar o KStatusNotifierItem"
+msgstr "%s Talvez seja necessário instalar e utilizar o KStatusNotifierItem"
 
 #. TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
 #: src/remmina_icon.c:417
 #, c-format
 msgid "%s You may need to install, and use XEmbed SNI Proxy"
-msgstr "%s Você pode precisar instalar e usar o XEmbed SNI Proxy"
+msgstr "%s Talvez seja necessário instalar e utilizar o XEmbed SNI Proxy"
 
 #. TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
 #: src/remmina_icon.c:420
 #, c-format
 msgid "%s You may need to install, and use Gnome Shell Extension Appindicator"
 msgstr ""
-"%s Você pode precisar instalar e usar o Gnome Shell Extension AppIndicator"
+"%s Talvez seja necessário instalar e utilizar o Gnome Shell Extension "
+"AppIndicator"
 
 #: src/remmina_log.c:131
 msgid "Remmina debugging window"
-msgstr "Abre a janela de depuração do Remmina"
+msgstr "Janela de depuração do Remmina"
 
 #: src/remmina_log.c:135
 msgid "Paste system info in the Remmina debugging window"
-msgstr "Cola a informação do sistema na janela de depuração do Remmina"
+msgstr "Cole as informações do sistema na janela de depuração do Remmina"
 
 #: src/remmina_log.c:156
 msgid ""
@@ -127,7 +129,7 @@ msgid ""
 "Remmina/-/wikis/Usage/Remmina-debugging\n"
 msgstr ""
 "Esta janela pode ajudar você a localizar problemas de conexão.\n"
-"Você pode parar e iniciar o registro a qualquer momento, usando o "
+"Você pode parar e iniciar o registro de Log a qualquer momento, usando o "
 "interruptor Liga/Desliga.\n"
 "O botão de estatísticas (Ctrl+T) pode ser útil para coletar informações do "
 "sistema, que você poderá compartilhar ao relatar um bug.\n"
@@ -160,7 +162,7 @@ msgstr "Meta+"
 
 #: src/remmina_key_chooser.h:46
 msgid "<None>"
-msgstr "<Nenhuma>"
+msgstr "<Nenhum>"
 
 #: src/remmina_exec.c:129
 msgid ""
@@ -186,7 +188,7 @@ msgstr "Nova conexão"
 #: src/remmina_public.c:343
 #, c-format
 msgid "Address is too long for UNIX socket_path: %s"
-msgstr "O endereço é muito longo para o caminho do UNIX socket_path: %s"
+msgstr "O endereço é muito longo para UNIX socket_path: %s"
 
 #: src/remmina_public.c:352
 #, c-format
@@ -204,7 +206,7 @@ msgstr "Por favor, digite no formato \"largura x altura\"."
 
 #: src/remmina_public.c:652
 msgid "Change security settings"
-msgstr "Alterar configurações de segurança"
+msgstr "Altere as configurações de segurança"
 
 #: src/remmina_message_panel.c:161 data/ui/remmina_passwd.glade:21
 #: data/ui/remmina_unlock.glade:44 data/ui/remmina_mpc.glade:33
@@ -221,7 +223,7 @@ msgstr "Fechar"
 
 #: src/remmina_message_panel.c:255
 msgid "Do you accept?"
-msgstr "Você deseja?"
+msgstr "Você aceita?"
 
 #: src/remmina_message_panel.c:261 src/remmina_message_panel.c:270
 msgid "Yes"
@@ -269,15 +271,15 @@ msgstr "Salvar senha"
 
 #: src/remmina_message_panel.c:613
 msgid "Enter certificate authentication files"
-msgstr "Insira arquivos de autenticação de certificado"
+msgstr "Insira os arquivos de autenticação do certificado"
 
 #: src/remmina_message_panel.c:625
 msgid "CA Certificate File"
-msgstr "Arquivo de certificado de AC"
+msgstr "Arquivo de certificado da CA"
 
 #: src/remmina_message_panel.c:646
 msgid "CA CRL File"
-msgstr "Arquivo de CRL de AC"
+msgstr "Arquivo de CRL da CA"
 
 #: src/remmina_message_panel.c:667
 msgid "Client Certificate File"
@@ -373,7 +375,7 @@ msgstr "Kerberos (GSSAPI)"
 
 #: src/remmina_ssh_plugin.c:1501
 msgid "Keyboard Interactive"
-msgstr "Teclado interativo"
+msgstr "Teclado Interativo"
 
 #: src/remmina_ssh_plugin.c:1576 data/ui/remmina_main.glade:178
 msgid "Copy"
@@ -417,7 +419,7 @@ msgstr "_Diminuir tamanho da fonte"
 
 #: src/remmina_ssh_plugin.c:1581
 msgid "Find text"
-msgstr "Localiza texto"
+msgstr "Localizar texto"
 
 #: src/remmina_ssh_plugin.c:1581
 msgid "_Find text"
@@ -448,7 +450,7 @@ msgstr "Comando de abertura"
 
 #: src/remmina_ssh_plugin.c:1615
 msgid "Start-up background program"
-msgstr "Inicialização do programa de segundo plano"
+msgstr "Inicialização do programa em segundo plano"
 
 #: src/remmina_ssh_plugin.c:1620
 msgid ""
@@ -482,7 +484,7 @@ msgstr "Conjunto de caracteres"
 
 #: src/remmina_ssh_plugin.c:1644 src/remmina_sftp_plugin.c:357
 msgid "SSH Proxy Command"
-msgstr "Comando de proxy SSH"
+msgstr "Comando de Proxy SSH"
 
 #: src/remmina_ssh_plugin.c:1645
 msgid "KEX (Key Exchange) algorithms"
@@ -490,7 +492,7 @@ msgstr "Algoritmos de KEX (Key Exchange)"
 
 #: src/remmina_ssh_plugin.c:1646
 msgid "Symmetric cipher client to server"
-msgstr "Cliente de cifra simétrica para servidor"
+msgstr "Criptografia simétrica cliente para servidor"
 
 #: src/remmina_ssh_plugin.c:1647
 msgid "Preferred server host key types"
@@ -510,11 +512,11 @@ msgstr "Nome de arquivo para o log da sessão SSH"
 
 #: src/remmina_ssh_plugin.c:1650
 msgid "Log SSH session when exiting Remmina"
-msgstr "Registrar a sessão SSH ao sair do Remmina"
+msgstr "Registrar Log da sessão SSH ao sair do Remmina"
 
 #: src/remmina_ssh_plugin.c:1651
 msgid "Log SSH session asynchronously"
-msgstr "Logar sessão SSH de forma assíncrona"
+msgstr "Registrar Log da sessão SSH de forma assíncrona"
 
 #: src/remmina_ssh_plugin.c:1651
 msgid "Saving the session asynchronously may have a notable performance impact"
@@ -523,7 +525,7 @@ msgstr ""
 
 #: src/remmina_ssh_plugin.c:1652
 msgid "Audible terminal bell"
-msgstr "Campainha audível de terminal"
+msgstr "Campainha audível do terminal"
 
 #: src/remmina_ssh_plugin.c:1653
 msgid "SSH X11 Forwarding"
@@ -539,7 +541,7 @@ msgstr "Não lembrar das senhas"
 
 #: src/remmina_ssh_plugin.c:1656
 msgid "Strict host key checking"
-msgstr "Verificação estrita da chave do host"
+msgstr "Verificação rigorosa da chave do host"
 
 #: src/remmina_ssh_plugin.c:1657
 msgid "Copy text on selection"
@@ -555,7 +557,7 @@ msgstr "SSH - Shell seguro"
 
 #: src/remmina_ssh_plugin.c:1708
 msgid "Local Terminal"
-msgstr "Terminal local"
+msgstr "Terminal Local"
 
 #. TRANSLATORS: This is a message that pops up when an external Remmina plugin tries to set the window resolution using a legacy parameter.
 #. TRANSLATORS: This is a message that pop-up when an external Remmina plugin tries to set the windows resolution using a legacy parameter.
