@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-04-19 21:09+0000\n"
-"Last-Translator: Jernej Pangerc <jernejp21@tuta.com>\n"
+"PO-Revision-Date: 2026-05-08 13:11+0000\n"
+"Last-Translator: jernejp21 <jernejp21@tuta.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/remmina/"
 "remmina/sl/>\n"
 "Language: sl\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
 "n%100==4 ? 3 : 0);\n"
-"X-Generator: Weblate 5.17.1-dev\n"
+"X-Generator: Weblate 2026.5-dev\n"
 "X-Launchpad-Export-Date: 2014-09-20 14:25+0000\n"
 
 #: src/remmina_icon.c:143
@@ -39,7 +39,6 @@ msgid "_About"
 msgstr "_O programu"
 
 #: src/remmina_icon.c:167 data/ui/remmina_main.glade:289
-#, fuzzy
 msgid "_Preferences"
 msgstr "_Možnosti"
 
@@ -108,11 +107,11 @@ msgstr ""
 
 #: src/remmina_log.c:131
 msgid "Remmina debugging window"
-msgstr "Odpri Remmina okno za razhroščevanje"
+msgstr "Okno za razhroščevanje Remmina"
 
 #: src/remmina_log.c:135
 msgid "Paste system info in the Remmina debugging window"
-msgstr "Vstavi sistemske podatke v Remmina okno za razhroščevanje"
+msgstr "Prilepi sistemske informacije v okno za razhroščevanje Remmina"
 
 #: src/remmina_log.c:156
 msgid ""
@@ -132,7 +131,6 @@ msgstr ""
 "Remmina/-/wikis/Usage/Remmina-debugging\n"
 
 #: src/remmina_key_chooser.h:40
-#, fuzzy
 msgid "Shift+"
 msgstr "Shift+"
 
@@ -141,12 +139,10 @@ msgid "Ctrl+"
 msgstr "Ctrl+"
 
 #: src/remmina_key_chooser.h:42
-#, fuzzy
 msgid "Alt+"
 msgstr "Alt+"
 
 #: src/remmina_key_chooser.h:43
-#, fuzzy
 msgid "Super+"
 msgstr "Super+"
 
@@ -165,19 +161,17 @@ msgid "<None>"
 msgstr "<brez>"
 
 #: src/remmina_exec.c:129
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to close %i active connections in the current "
-#| "window?"
 msgid ""
 "Are you sure you want to fully quit Remmina?\n"
 " This will close any active connections."
-msgstr "V oknu je %i aktivnih povezav. Ste prepričani, da želite zapreti okno?"
+msgstr ""
+"Ali res želite popolnoma zapreti Remmino ?\n"
+" To bo zaprlo vse aktivne povezave."
 
 #: src/remmina_exec.c:529
 #, c-format
 msgid "Plugin %s is not registered."
-msgstr "Vtičnik %s ni registriran"
+msgstr "Vtičnik %s ni registriran."
 
 #: src/remmina_applet_menu_item.c:125
 msgid "Discovered"
@@ -188,18 +182,17 @@ msgid "New Connection"
 msgstr "Nova povezava"
 
 #: src/remmina_public.c:343
-#, fuzzy, c-format
+#, c-format
 msgid "Address is too long for UNIX socket_path: %s"
 msgstr "Naslov je predolg za vtičnico UNIX socket_path: %s"
 
 #: src/remmina_public.c:352
-#, fuzzy, c-format
+#, c-format
 msgid "Creating UNIX socket failed: %s"
 msgstr "Ustvarjanje vtičnice UNIX ni uspelo: %s"
 
 #: src/remmina_public.c:357
-#, fuzzy, c-format
-#| msgid "VNC connection failed: %s"
+#, c-format
 msgid "Connecting to UNIX socket failed: %s"
 msgstr "Povezava z vtičnico UNIX ni uspela: %s"
 
@@ -208,7 +201,6 @@ msgid "Please enter format 'widthxheight'."
 msgstr "Prosim vnesite obliko 'širinaxvišina'."
 
 #: src/remmina_public.c:652
-#, fuzzy
 msgid "Change security settings"
 msgstr "Spreminjanje varnostnih nastavitev"
 
@@ -232,13 +224,11 @@ msgid "Do you accept?"
 msgstr "Ali sprejmete?"
 
 #: src/remmina_message_panel.c:261 src/remmina_message_panel.c:270
-#, fuzzy
 msgid "Yes"
 msgstr "Da"
 
 #: src/remmina_message_panel.c:278 plugins/rdp/rdp_plugin.c:3103
 #: plugins/rdp/rdp_plugin.c:3113
-#, fuzzy
 msgid "No"
 msgstr "Ne"
 
@@ -267,7 +257,6 @@ msgstr "_Prekliči"
 #: plugins/rdp/rdp_plugin.c:3237 plugins/www/www_plugin.c:899
 #: plugins/vnc/vnc_plugin.c:2150 plugins/vnc/vnc_plugin.c:2162
 #: data/ui/remmina_mpc.glade:122
-#, fuzzy
 msgid "Username"
 msgstr "Uporabniško ime"
 
@@ -289,25 +278,21 @@ msgid "CA Certificate File"
 msgstr "Datoteka s CA potrdilom"
 
 #: src/remmina_message_panel.c:646
-#, fuzzy
 msgid "CA CRL File"
 msgstr "Datoteka CA CRL"
 
 #: src/remmina_message_panel.c:667
-#, fuzzy
 msgid "Client Certificate File"
 msgstr "Datoteka s potrdilom odjemalca"
 
 #: src/remmina_message_panel.c:688
-#, fuzzy
 msgid "Client Certificate Key"
 msgstr "Ključ potrdila odjemalca"
 
 #: src/remmina_ssh_plugin.c:343
-#, fuzzy, c-format
-#| msgid "Connecting to %s via SSH…"
+#, c-format
 msgid "Connected to %s:%d via SSH"
-msgstr "Povezovanje z napravo '%s'…"
+msgstr "Povezovanje na %s:%d prek SSH"
 
 #. TRANSLATORS: %s is a placeholder for an error message
 #: src/remmina_ssh_plugin.c:551
@@ -316,44 +301,36 @@ msgid "Error: %s"
 msgstr "Napaka: %s"
 
 #: src/remmina_ssh_plugin.c:568
-#, fuzzy
 msgid "Terminal content saved in"
 msgstr "Vsebina terminala, shranjena v"
 
 #: src/remmina_ssh_plugin.c:846
-#, fuzzy
 msgid "Select All (host+A)"
 msgstr "Izberi vse (gostitelj+A)"
 
 #: src/remmina_ssh_plugin.c:847
-#, fuzzy
 msgid "Copy (host+C)"
-msgstr "Kopiranje (gostitelj+C)"
+msgstr "Kopiraj (gostitelj+C)"
 
 #: src/remmina_ssh_plugin.c:848
-#, fuzzy
 msgid "Paste (host+V)"
 msgstr "Prilepi (gostitelj+V)"
 
 #: src/remmina_ssh_plugin.c:849
-#, fuzzy
 msgid "Save session to file"
 msgstr "Shrani sejo v datoteko"
 
 #: src/remmina_ssh_plugin.c:850
-#, fuzzy
 msgid "Increase font size (host+Page Up)"
-msgstr "Povečanje velikosti pisave (gostitelj+Page Up)"
+msgstr "Povečaj velikost pisave (gostitelj+Page Up)"
 
 #: src/remmina_ssh_plugin.c:851
-#, fuzzy
 msgid "Decrease font size (host+Page Down)"
-msgstr "Zmanjšanje velikosti pisave (gostitelj+Page Down)"
+msgstr "Zmanjšaj velikost pisave (gostitelj+Page Down)"
 
 #: src/remmina_ssh_plugin.c:852
-#, fuzzy
 msgid "Find text (host+G)"
-msgstr "Iskanje besedila (gostitelj+G)"
+msgstr "Išči besedilo (gostitelj+G)"
 
 #: src/remmina_ssh_plugin.c:853 src/remmina_ssh_plugin.c:1582
 #: src/remmina_protocol_widget.c:297
@@ -361,10 +338,9 @@ msgid "Open SFTP transfer…"
 msgstr "Odpri varni prenos…"
 
 #: src/remmina_ssh_plugin.c:908
-#, fuzzy, c-format
-#| msgid "Connecting to %s via SSH…"
+#, c-format
 msgid "Disconnected from %s:%d via SSH"
-msgstr "Povezovanje z napravo '%s'…"
+msgstr "Prekinjena povezava na %s:%d prek SSH"
 
 #: src/remmina_ssh_plugin.c:1496 src/remmina_sftp_plugin.c:309
 #: src/remmina_sftp_plugin.c:353 src/remmina_protocol_widget.c:1792
@@ -379,7 +355,6 @@ msgstr "Geslo"
 #: src/remmina_ssh_plugin.c:1497 src/remmina_ssh_plugin.c:1609
 #: src/remmina_sftp_plugin.c:310 src/remmina_sftp_plugin.c:355
 #: src/remmina_file_editor.c:939 plugins/x2go/x2go_plugin.c:3347
-#, fuzzy
 msgid "SSH identity file"
 msgstr "Datoteka z identiteto SSH"
 
@@ -703,7 +678,7 @@ msgstr "Javni ključ SSH se je spremenil!"
 #: src/remmina_ssh.c:1232
 #, c-format
 msgid "Could not authenticate with keyboard-interactive. %s"
-msgstr "Zagon SSH seje ni uspel: %s"
+msgstr "Preverjanje pristnosti s tipkovnico ni mogoče: %s"
 
 #: src/remmina_ssh.c:1334
 #, c-format
@@ -742,8 +717,8 @@ msgid ""
 "under attack,\n"
 "or the administrator has changed the key. The new public key fingerprint is:"
 msgstr ""
-"OPOZORILO: Strežnik je spremenil svoj javni ključ. To pomeni, da ste \n"
-"vi napadeni ali da je skrbnik spremenil ključ. Prstni odtis novega javnega "
+"Opozorilo: Strežnik je spremenil svoj javni ključ. To pomeni, da ste \n"
+"napadeni, ali da je skrbnik spremenil ključ. Prstni odtis novega javnega "
 "ključa je:"
 
 #. TRANSLATORS: The placeholder %s is an error message
@@ -791,7 +766,7 @@ msgstr "Pooblastila SSH"
 #: src/remmina_ssh.c:2368
 #, c-format
 msgid "Could not create channel. %s"
-msgstr "Ustvarjanje SFTP seje ni bilo uspešno: %s"
+msgstr "Kanala ni bilo mogoče ustvariti. %s"
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:2379
@@ -825,7 +800,7 @@ msgstr "Ustvarjanje SFTP seje ni bilo uspešno: %s"
 #: src/remmina_ssh.c:2604
 #, c-format
 msgid "Could not read from tunnel listening socket. %s"
-msgstr "Ustvarjanje SFTP seje ni bilo uspešno: %s"
+msgstr "Branje z vtičnice za poslušanje v tunelu ni mogoče. %s"
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:2624
@@ -843,7 +818,7 @@ msgstr "Ustvarjanje SFTP seje ni bilo uspešno: %s"
 #: src/remmina_ssh.c:2650
 #, c-format
 msgid "Could not send data to tunnel listening socket. %s"
-msgstr "Povezava s ciljem SSH tunela ni uspela: %s"
+msgstr "Podatkov ni bilo mogoče poslati v vtičnico za poslušanje v tunelu. %s"
 
 #: src/remmina_ssh.c:2752
 #, fuzzy
@@ -887,13 +862,13 @@ msgstr "Zagon SSH seje ni uspel: %s"
 #: src/remmina_ssh.c:3009
 #, c-format
 msgid "Could not open channel. %s"
-msgstr "Ustvarjanje SFTP seje ni bilo uspešno: %s"
+msgstr "Kanala ni bilo mogoče odpreti. %s"
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:3055
 #, c-format
 msgid "Could not request shell. %s"
-msgstr "Ustvarjanje SFTP seje ni bilo uspešno: %s"
+msgstr "Lupine ni bilo mogoče zahtevati. %s"
 
 #: src/remmina_ssh.c:3185
 #, fuzzy
@@ -914,7 +889,7 @@ msgstr "Nadaljuj vse prenose datotek"
 
 #: src/remmina_sftp_plugin.c:327 src/remmina_protocol_widget.c:287
 msgid "Connect via SSH from a new terminal"
-msgstr "SSH povezovanje preko novega terminala"
+msgstr "Poveži se preko SSH iz novega terminala"
 
 #: src/remmina_sftp_plugin.c:366
 msgid "SFTP - Secure File Transfer"
@@ -1119,13 +1094,13 @@ msgid "The multi password changer requires a secrecy service.\n"
 msgstr "Večkratni menjalnik gesel zahteva storitev varovanja tajnosti.\n"
 
 #: src/remmina_mpchange.c:479
-#, fuzzy, c-format
+#, c-format
 msgid "%d password changed."
 msgid_plural "%d passwords changed."
-msgstr[0] "%d geslo je spremenjeno."
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%d gesel je spremenjenih."
+msgstr[1] "%d geslo je spremenjeno."
+msgstr[2] "%d gesli sta spremenjeni."
+msgstr[3] "%d gesla so spremenjena."
 
 #. TRANSLATORS: translator-credits should be replaced with a formatted list of translators in your own language
 #: src/remmina_about.c:53
@@ -1164,7 +1139,7 @@ msgstr "Čakam na vhodni SSH tunel pri vratih %i…"
 #: src/remmina_protocol_widget.c:1307
 #, c-format
 msgid "The “%s” command is not available on the SSH server."
-msgstr "Ukaz %s ni bil najden na strežniku SSH"
+msgstr "Ukaz »%s« ni bil najden na strežniku SSH."
 
 #: src/remmina_protocol_widget.c:1312
 #, c-format
@@ -1285,12 +1260,11 @@ msgstr ""
 #: src/remmina_main.c:1059
 #, c-format
 msgid "Are you sure you want to delete “%s”?"
-msgstr "Ste prepričani, da želite izbrisati '%s'"
+msgstr "Ste prepričani, da želite izbrisati »%s«?"
 
 #: src/remmina_main.c:1088
-#, fuzzy
 msgid "Failed to load files!"
-msgstr "Prenesena datoteka"
+msgstr "Datotek ni bilo mogoče naložiti!"
 
 #: src/remmina_main.c:1159
 #, fuzzy
@@ -1307,7 +1281,9 @@ msgstr ""
 msgid ""
 "Unable to import:\n"
 "%s"
-msgstr "'%s' ni bilo mogoče uvoziti."
+msgstr ""
+"Ni bilo mogoče uvoziti:\n"
+"%s"
 
 #: src/remmina_main.c:1381
 #, fuzzy
@@ -1437,7 +1413,7 @@ msgstr "Vnos je neveljaven."
 
 #: src/remmina_file_editor.c:252
 msgid "Choose a Remote Desktop Server"
-msgstr "Izberi strežnik oddaljenega namizja (RDP)"
+msgstr "Izberi strežnik oddaljenega namizja"
 
 #: src/remmina_file_editor.c:497
 #, c-format
@@ -1523,9 +1499,8 @@ msgid "After connecting"
 msgstr "Nova povezava"
 
 #: src/remmina_file_editor.c:1442
-#, fuzzy
 msgid "/path/to/command -opt1 arg %h %u %t -opt2 %U %p %g"
-msgstr "/path/to/command -opt1 arg %h %u %t -opt2 %U %p %g"
+msgstr "/pot/do/ukaza -opcija1 param %h %u %t -opcijat2 %U %p %g"
 
 #: src/remmina_file_editor.c:1446
 msgid "Start-up"
@@ -1667,7 +1642,7 @@ msgstr "Privzete nastavitve shranjene."
 
 #: src/remmina_file_editor.c:2143
 msgid "Remote Connection Profile"
-msgstr "Povezava VNC spodletela: %s"
+msgstr "Profil oddaljene povezave"
 
 #: src/remmina_file_editor.c:2149
 #, fuzzy
@@ -1711,7 +1686,7 @@ msgstr ""
 #: src/remmina_file_editor.c:2398 src/remmina_file_editor.c:2417
 #, c-format
 msgid "Could not find the file “%s”."
-msgstr "Ustvarjanje SFTP seje ni bilo uspešno: %s"
+msgstr "Datoteke »%s« ni bilo mogoče najti."
 
 #. TRANSLATORS: Shown in terminal. Do not use characters that may be not supported on a terminal
 #: src/remmina.c:102
@@ -1765,7 +1740,7 @@ msgstr "Začetek v načinu kioska"
 #. TRANSLATORS: Shown in terminal. Do not use characters that may be not supported on a terminal
 #: src/remmina.c:113
 msgid "Create new connection profile"
-msgstr "Povezava VNC spodletela: %s"
+msgstr "Ustvari nov profil povezave"
 
 #. TRANSLATORS: Shown in terminal. Do not use characters that may be not supported on a terminal
 #: src/remmina.c:115
@@ -1968,13 +1943,13 @@ msgstr ""
 #: src/remmina_sftp_client.c:176
 #, c-format
 msgid "Could not create the folder “%s”."
-msgstr "Ustvarjanje SFTP seje ni bilo uspešno: %s"
+msgstr "Mape »%s« ni bilo mogoče ustvariti."
 
 #. TRANSLATORS: The placeholder %s is a file path
 #: src/remmina_sftp_client.c:184 src/remmina_sftp_client.c:205
 #, c-format
 msgid "Could not create the file “%s”."
-msgstr "Ustvarjanje SFTP seje ni bilo uspešno: %s"
+msgstr "Datoteke »%s« ni bilo mogoče ustvariti."
 
 #. TRANSLATORS: The placeholders %s are a file path, and an error message.
 #: src/remmina_sftp_client.c:223
@@ -1985,7 +1960,7 @@ msgstr "Napaka pri odpiranju datoteke %s na strežniku. %s"
 #: src/remmina_sftp_client.c:245
 #, c-format
 msgid "Could not save the file “%s”."
-msgstr "Ustvarjanje SFTP seje ni bilo uspešno: %s"
+msgstr "Datoteke »%s« ni bilo mogoče shraniti."
 
 #: src/remmina_sftp_client.c:294 src/remmina_sftp_client.c:710
 #: src/remmina_sftp_client.c:785
@@ -2006,7 +1981,7 @@ msgstr "Napaka pri ustvarjanju datoteke %s na strežniku. %s"
 #: src/remmina_sftp_client.c:469
 #, c-format
 msgid "Could not open the file “%s”."
-msgstr "Ustvarjanje SFTP seje ni bilo uspešno: %s"
+msgstr "Datoteke »%s« ni bilo mogoče odpreti."
 
 #: src/remmina_sftp_client.c:489
 #, c-format
@@ -2016,11 +1991,11 @@ msgstr "Napaka pri pisanju datoteke %s na strežniku. %s"
 #: src/remmina_sftp_client.c:727
 #, c-format
 msgid "Could not read from the folder. %s"
-msgstr "Ustvarjanje SFTP seje ni bilo uspešno: %s"
+msgstr "Ni bilo mogoče brati iz mape. %s"
 
 #: src/remmina_sftp_client.c:848
 msgid "Are you sure you want to cancel the file transfer in progress?"
-msgstr "Ste prepričani, da želite izbrisati '%s'"
+msgstr "Ali ste prepričani, da želite prekiniti prenos datotek, ki je v teku?"
 
 #: src/remmina_sftp_client.c:882
 #, c-format
@@ -2339,10 +2314,9 @@ msgid "Disconnected from %s via SPICE"
 msgstr "Povezava s strežnikom RDP %s ni mogoča"
 
 #: plugins/spice/spice_plugin.c:408
-#, fuzzy, c-format
-#| msgid "Connecting to %s via SSH…"
+#, c-format
 msgid "Connected to %s via SPICE"
-msgstr "Povezovanje z napravo '%s'…"
+msgstr "Povezano na %s prek SPICE"
 
 #: plugins/spice/spice_plugin.c:419
 #, fuzzy
@@ -2351,7 +2325,7 @@ msgstr "Napaka povezave TLS."
 
 #: plugins/spice/spice_plugin.c:425
 msgid "Connection to the SPICE server dropped."
-msgstr "Povezava s strežnikom RDP %s ni mogoča"
+msgstr "Povezava s strežnikom SPICE je prekinjena."
 
 #: plugins/spice/spice_plugin.c:665 plugins/spice/spice_plugin.c:683
 #: plugins/rdp/rdp_plugin.c:3139
@@ -2364,9 +2338,8 @@ msgid "Off"
 msgstr "Izključeno"
 
 #: plugins/spice/spice_plugin.c:685
-#, fuzzy
 msgid "Auto GLZ"
-msgstr "Auto GLZ"
+msgstr "Samodejno GLZ"
 
 #: plugins/spice/spice_plugin.c:686
 #, fuzzy
@@ -2616,10 +2589,8 @@ msgid ""
 msgstr ""
 
 #: plugins/x2go/x2go_plugin.c:767
-#, fuzzy
-#| msgid "Could not start SSH session. %s"
 msgid "Could not get currently selected row (session)!"
-msgstr "Seje X2Go ni bilo mogoče zagnati."
+msgstr "Trenutno izbrane vrstice (seja) ni bilo mogoče pridobiti!"
 
 #: plugins/x2go/x2go_plugin.c:786
 #, c-format
@@ -2656,11 +2627,13 @@ msgid ""
 msgstr ""
 
 #: plugins/x2go/x2go_plugin.c:937
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Could not start PyHoca-CLI:\n"
 "%s"
-msgstr "Ni bilo mogoče zagnati PyHoca-CLI (%i): '%s'"
+msgstr ""
+"Ni bilo mogoče zagnati PyHoca-CLI:\n"
+"%s"
 
 #: plugins/x2go/x2go_plugin.c:948
 #, fuzzy, c-format
@@ -2695,12 +2668,13 @@ msgid "Parameter 'custom_data' is not fully initialized!"
 msgstr ""
 
 #: plugins/x2go/x2go_plugin.c:1223
-#, fuzzy, c-format
-#| msgid "Could not start SSH session. %s"
+#, c-format
 msgid ""
 "Could not terminate X2Go session '%s':\n"
 "%s"
-msgstr "Seje X2Go ni bilo mogoče zagnati."
+msgstr ""
+"Seje X2Go »%s« ni bilo mogoče zagnati:\n"
+"%s"
 
 #: plugins/x2go/x2go_plugin.c:1235
 #, fuzzy
@@ -2768,9 +2742,8 @@ msgstr ""
 "'s_password' ali 's_username' nista bila nastavljena."
 
 #: plugins/x2go/x2go_plugin.c:1699
-#, fuzzy
 msgid "Enter password to unlock the SSH key:"
-msgstr "Geslo za odklepanje zasebnega ključa"
+msgstr "Vnesite geslo za odklepanje ključa SSH:"
 
 #: plugins/x2go/x2go_plugin.c:1710
 #, fuzzy
@@ -2834,10 +2807,8 @@ msgid ""
 msgstr ""
 
 #: plugins/x2go/x2go_plugin.c:2170
-#, fuzzy
-#| msgid "Choose a file to upload"
 msgid "Choose a session to resume:"
-msgstr "Izberi datoteko za nalaganje"
+msgstr "Izberite sejo, ki jo želite nadaljevati:"
 
 #: plugins/x2go/x2go_plugin.c:2213
 #, fuzzy
@@ -3185,49 +3156,63 @@ msgstr "Ni bilo mogoče preveriti pristnosti s potrdilom SSH. %s"
 msgid ""
 "Could not access the RDP server “%s”.\n"
 "Account locked out."
-msgstr "Ukaz %s ni bil najden na strežniku SSH"
+msgstr ""
+"Dostop do strežnika RDP »%s« ni bil mogoč.\n"
+"Račun je zaklenjen."
 
 #: plugins/rdp/rdp_plugin.c:2573
 #, c-format
 msgid ""
 "Could not access the RDP server “%s”.\n"
 "Account expired."
-msgstr "Ukaz %s ni bil najden na strežniku SSH"
+msgstr ""
+"Dostop do strežnika RDP »%s« ni bil mogoč.\n"
+"Račun je potekel."
 
 #: plugins/rdp/rdp_plugin.c:2580
 #, c-format
 msgid ""
 "Could not access the RDP server “%s”.\n"
 "Password expired."
-msgstr "Ukaz %s ni bil najden na strežniku SSH"
+msgstr ""
+"Dostop do strežnika RDP »%s« ni bil mogoč.\n"
+"Geslo je poteklo."
 
 #: plugins/rdp/rdp_plugin.c:2587
 #, c-format
 msgid ""
 "Could not access the RDP server “%s”.\n"
 "Account disabled."
-msgstr "Ukaz %s ni bil najden na strežniku SSH"
+msgstr ""
+"Dostop do strežnika RDP »%s« ni bil mogoč.\n"
+"Račun je onemogočen."
 
 #: plugins/rdp/rdp_plugin.c:2593
 #, c-format
 msgid ""
 "Could not access the RDP server “%s”.\n"
 "Insufficient user privileges."
-msgstr "Ukaz %s ni bil najden na strežniku SSH"
+msgstr ""
+"Dostop do strežnika RDP »%s« ni bil mogoč.\n"
+"Premajhne uporabniške pravice."
 
 #: plugins/rdp/rdp_plugin.c:2601
 #, c-format
 msgid ""
 "Could not access the RDP server “%s”.\n"
 "Account restricted."
-msgstr "Ukaz %s ni bil najden na strežniku SSH"
+msgstr ""
+"Dostop do strežnika RDP »%s« ni bil mogoč.\n"
+"Račun je omejen."
 
 #: plugins/rdp/rdp_plugin.c:2609
 #, c-format
 msgid ""
 "Could not access the RDP server “%s”.\n"
 "Change user password before connecting."
-msgstr "Ukaz %s ni bil najden na strežniku SSH"
+msgstr ""
+"Dostop do strežnika RDP »%s« ni mogoč.\n"
+"Pred povezavo spremenite uporabniško geslo."
 
 #: plugins/rdp/rdp_plugin.c:2614
 #, fuzzy, c-format
@@ -3238,7 +3223,7 @@ msgstr "Povezava s strežnikom RDP %s ni mogoča"
 #: plugins/rdp/rdp_plugin.c:2617
 #, c-format
 msgid "Could not find the address for the RDP server “%s”."
-msgstr "Ukaz %s ni bil najden na strežniku SSH"
+msgstr "Naslova za strežnik RDP »%s«, ni bilo mogoče najti."
 
 #: plugins/rdp/rdp_plugin.c:2621
 #, fuzzy, c-format
@@ -3265,7 +3250,7 @@ msgstr ""
 #: plugins/rdp/rdp_plugin.c:2633
 #, c-format
 msgid "Cannot connect to the RDP server “%s”."
-msgstr "Povezava s strežnikom RDP %s ni mogoča"
+msgstr "Povezava s strežnikom RDP »%s«ni mogoča."
 
 #: plugins/rdp/rdp_plugin.c:2636
 #, fuzzy
@@ -3298,7 +3283,7 @@ msgstr ""
 #: plugins/rdp/rdp_plugin.c:2661
 #, c-format
 msgid "Cannot connect to the “%s” RDP server."
-msgstr "Povezava s strežnikom RDP %s ni mogoča"
+msgstr "Povezava z RDP strežnikom »%s« ni mogoča."
 
 #: plugins/rdp/rdp_plugin.c:3028
 #, fuzzy
@@ -3321,9 +3306,8 @@ msgid "GFX RFX (32 bpp)"
 msgstr "GFX RFX (32 bpp)"
 
 #: plugins/rdp/rdp_plugin.c:3032
-#, fuzzy
 msgid "GFX RFX Progressive (32 bpp)"
-msgstr "GFX RFX Progressive (32 bpp)"
+msgstr "GFX RFX Progresivno (32 bpp)"
 
 #: plugins/rdp/rdp_plugin.c:3033
 msgid "RemoteFX (32 bpp)"
@@ -3697,7 +3681,7 @@ msgstr "Barvna globina"
 
 #: plugins/rdp/rdp_plugin.c:3253
 msgid "Network connection type"
-msgstr "Povezava VNC spodletela: %s"
+msgstr "Vrsta omrežne povezave"
 
 #: plugins/rdp/rdp_plugin.c:3269 plugins/vnc/vnc_plugin.c:2153
 #: plugins/vnc/vnc_plugin.c:2165
@@ -3752,7 +3736,7 @@ msgstr "Preusmeritev lokalnega mikrofona"
 
 #: plugins/rdp/rdp_plugin.c:3278
 msgid "Connection timeout in ms"
-msgstr "Povezovanje z napravo '%s'…"
+msgstr "Časovna omejitev povezave v ms"
 
 #: plugins/rdp/rdp_plugin.c:3279
 msgid "Remote Desktop Gateway server"
@@ -4694,7 +4678,6 @@ msgid "Please press the new key…"
 msgstr "Pritisnite novo tipko…"
 
 #: data/ui/remmina_info.glade:90
-#, fuzzy
 msgid ""
 "<big><b>The news failed to load</b></big>\n"
 "\n"
@@ -4703,21 +4686,12 @@ msgid ""
 "release notes\"><i>Visit the website to read the release notes</i></a>.\n"
 "</span>"
 msgstr ""
-"<big><b>Novice so izklopljene</b></big>\n"
-"\n"
-"<span>\n"
-"Vklop novic pomeni, da se program poveže s strežnikom Remmina in prenese "
-"opombe o izdaji.\n"
-"</span>\n"
-"\n"
-"<span>\n"
-"Preverjanje različic je mogoče vklopiti samo v času sestavljanja.\n"
-"</span>\n"
+"<big><b>Novic ni bilo možno naložiti</b></big>\n"
 "\n"
 "<span>\n"
 "<a href=\"https://gitlab.com/Remmina/Remmina/-/tags/\" title=\"Remmina "
-"release notes\"><i>Obiščite spletno mesto in preberite opombe k izdaji </i></"
-"a>.\n"
+"release notes\"><i>Obiščite spletno stran, da preberete opombe ob izdaji</i>"
+"</a>.\n"
 "</span>"
 
 #: data/ui/remmina_about.glade:32 data/ui/remmina_main.glade:429
@@ -4726,20 +4700,16 @@ msgid "About"
 msgstr "O programu"
 
 #: data/ui/remmina_about.glade:36
-#, fuzzy
-#| msgid ""
-#| "Copyright © 2014–2023 Antenore Gatta, Giovanni Panozzo.\n"
-#| "Copyright © 2009–2014 Vic Lee\n"
-#| "More details in COPYING"
 msgid ""
 "Copyright © 2023–2024 Hiroyuki Tanaka, Sunil Bhat\n"
 "Copyright © 2014–2023 Antenore Gatta, Giovanni Panozzo\n"
 "Copyright © 2009–2014 Vic Lee\n"
 "More details in COPYING"
 msgstr ""
+"Avtorske pravice © 2023–2023 Hiroyuki Tanaka, Sunil Bhat\n"
 "Avtorske pravice © 2014–2023 Antenore Gatta, Giovanni Panozzo.\n"
 "Avtorske pravice © 2009–2014 Vic Lee\n"
-"Več podrobnosti v rubriki KOPIRANJE"
+"Več podrobnosti v datoteki COPYING"
 
 #: data/ui/remmina_about.glade:41
 msgid "https://www.remmina.org/"
@@ -4841,7 +4811,7 @@ msgstr "Ločljivosti zaslona"
 
 #: data/ui/remmina_preferences.glade:221
 msgid "Folder for screenshots"
-msgstr "Zagon SSH seje ni uspel: %s"
+msgstr "Mapa za posnetke zaslona"
 
 #: data/ui/remmina_preferences.glade:233
 #, fuzzy
@@ -4863,7 +4833,6 @@ msgid "Screenshot filenames"
 msgstr "Souporaba mape"
 
 #: data/ui/remmina_preferences.glade:282
-#, fuzzy
 msgid ""
 "%p Profile name\n"
 "%h Server name/IP\n"
@@ -4871,7 +4840,7 @@ msgid ""
 msgstr ""
 "%p Ime profila\n"
 "%h Ime strežnika/IP\n"
-"%Y Leto, %m Mesec, %d Dan, %H Ura, %M Minuta, %S Sekunde (čas UTC)\n"
+"%Y Leto, %m Mesec, %d Dan, %H Ura, %M Minuta, %S Sekunde (čas UTC)"
 
 #: data/ui/remmina_preferences.glade:300
 #, fuzzy
@@ -4918,19 +4887,16 @@ msgstr "Predloga za imena datotek profila"
 
 #. Placeholders used to name a Remmina connection profile
 #: data/ui/remmina_preferences.glade:381
-#, fuzzy
 msgid ""
 "%G Name of group (slashes \\/ are converted to dashes -)\n"
 "%P Protocol name\n"
 "%N Connection name\n"
 "%h Hostname/IP "
 msgstr ""
-"%G Ime skupine (poševnica se samodejno pretvori v -)\n"
+"%G Ime skupine (poševnice \\/ so pretvorjene v -)\n"
 "%P Ime protokola\n"
 "%N Ime povezave\n"
-"%h Ime gostitelja/IP\n"
-"\n"
-"\n"
+"%h Ime gostitelja/IP "
 
 #: data/ui/remmina_preferences.glade:400
 #, fuzzy
@@ -5292,7 +5258,7 @@ msgstr "uporabniško geslo"
 
 #: data/ui/remmina_preferences.glade:1901
 msgid "Use secret key authentication for some widgets"
-msgstr "SSH preverjanje pristnosti javnega ključa ni uspelo: %s"
+msgstr "Za nekatere dodatke uporabi preverjanje pristnosti s skrivnim ključem"
 
 #: data/ui/remmina_preferences.glade:1921
 msgid "Valid for"
@@ -5377,13 +5343,11 @@ msgstr "Spreminjanje nastavitev"
 
 #: data/ui/remmina_preferences.glade:2102
 msgid "Automatically accept all fingerprints and certificates"
-msgstr "Sprejmi potrdilo?"
+msgstr "Samodejno sprejmi vse prstne odtise in certifikate"
 
 #: data/ui/remmina_preferences.glade:2107
-#, fuzzy
-#| msgid "Trust all fingerprints and certificates"
 msgid "Trust all certificates"
-msgstr "Sprejmi potrdilo?"
+msgstr "Zaupaj vsem certifikatom"
 
 #: data/ui/remmina_preferences.glade:2142
 msgid "Security"
@@ -5632,9 +5596,8 @@ msgid "Submit"
 msgstr ""
 
 #: data/ui/remmina_bug_report.glade:114
-#, fuzzy
 msgid "Name/Username:"
-msgstr "Uporabniško ime"
+msgstr "Ime/Uporabniško ime:"
 
 #: data/ui/remmina_bug_report.glade:141
 msgid "E-mail:"
@@ -5687,7 +5650,7 @@ msgstr "Skrijte ali prikažite vrstico za iskanje"
 
 #: data/ui/remmina_main.glade:42
 msgid "Add a new connection profile"
-msgstr "Povezava VNC spodletela: %s"
+msgstr "Dodaj nov profil povezave"
 
 #: data/ui/remmina_main.glade:48
 #, fuzzy
@@ -5780,7 +5743,7 @@ msgstr "Nazadnje uporabljeno"
 
 #: data/ui/remmina_main.glade:627
 msgid "New connection profile"
-msgstr "Povezava VNC spodletela: %s"
+msgstr "Nov profil povezave"
 
 #: data/ui/remmina_main.glade:639
 #, fuzzy
@@ -5941,9 +5904,8 @@ msgid "Gateway Domain\\Username"
 msgstr "Domena\\Username"
 
 #: data/ui/remmina_mpc.glade:588
-#, fuzzy
 msgid "<span weight='bold' size='larger'>Multi Password Changer</span>"
-msgstr "<span weight='bold' size='larger'> Več menjalnikov gesel </span>"
+msgstr "<span weight='bold' size='larger'>Spreminjanje več gesel</span>"
 
 #, fuzzy
 #~ msgid "Enter TOTP/OTP/2FA code"
