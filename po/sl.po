@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-05-08 13:11+0000\n"
+"PO-Revision-Date: 2026-05-09 13:11+0000\n"
 "Last-Translator: jernejp21 <jernejp21@tuta.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/remmina/"
 "remmina/sl/>\n"
@@ -1069,14 +1069,12 @@ msgid "Version"
 msgstr "Različica"
 
 #: src/remmina_mpchange.c:263
-#, fuzzy
 msgid "The passwords do not match"
-msgstr "Polja z gesli se ne ujemata."
+msgstr "Gesla se ne ujemajo"
 
 #: src/remmina_mpchange.c:276
-#, fuzzy
 msgid "The Gateway passwords do not match"
-msgstr "Polja z gesli se ne ujemata."
+msgstr "Gesla vrat se ne ujemajo"
 
 #: src/remmina_mpchange.c:290
 #, fuzzy
@@ -1307,15 +1305,12 @@ msgid "Import"
 msgstr "Uvozi"
 
 #: src/remmina_main.c:1439
-#, fuzzy
-#| msgid "Create new connection profile"
 msgid "Select the connection profile."
-msgstr "Povezava VNC spodletela: %s"
+msgstr "Izberite profil povezave."
 
 #: src/remmina_main.c:1448
-#, fuzzy
 msgid "Remmina couldn't export."
-msgstr "Podatkovna mapa Remmina"
+msgstr "Remmina ni mogla izvoziti."
 
 #: src/remmina_main.c:1457 src/remmina_file_editor.c:2153
 #, fuzzy
@@ -1650,10 +1645,8 @@ msgid "Save as Default"
 msgstr "shrani kot privzeto"
 
 #: src/remmina_file_editor.c:2150
-#, fuzzy
 msgid "Use the current settings as the default for all new connection profiles"
-msgstr ""
-"Uporabite trenutne nastavitve kot privzete za vse nove profile povezav."
+msgstr "Uporabi trenutne nastavitve kot privzete za vse nove profile povezav"
 
 #: src/remmina_file_editor.c:2158 data/ui/remmina_main.glade:161
 #: data/ui/remmina_main.glade:262
@@ -1696,15 +1689,13 @@ msgstr "Prikaži \"O podjetju"
 
 #. TRANSLATORS: Shown in terminal. Do not use characters that may be not supported on a terminal
 #: src/remmina.c:104
-#, fuzzy
 msgid ""
 "Connect either to a desktop described in a file (.remmina or a filetype "
 "supported by a plugin) or a supported URI (RDP, VNC, SSH, HTTP, HTTPS or "
 "SPICE)"
 msgstr ""
-"Povežite se z namizjem, ki je opisano v datoteki (.remmina ali vrsti "
-"datoteke, ki jo podpira vtičnik), ali s podprtim URI (RDP, VNC, SSH ali "
-"SPICE)."
+"Poveži se z namizjem, ki je opisano v datoteki (.remmina ali vrsti datoteke, "
+"ki jo podpira vtičnik), ali s podprtim URI (RDP, VNC, SSH ali SPICE)"
 
 #: src/remmina.c:104 src/remmina.c:106 src/remmina.c:108
 #, fuzzy
@@ -2302,10 +2293,9 @@ msgid "Enter SPICE password"
 msgstr "SSH geslo"
 
 #: plugins/spice/spice_plugin.c:403
-#, fuzzy, c-format
-#| msgid "Disconnected from the SPICE server “%s”."
+#, c-format
 msgid "Disconnected from the SPICE %s."
-msgstr "Povezava s strežnikom RDP %s ni mogoča"
+msgstr "Prekinjena SPICE %s povezava."
 
 #: plugins/spice/spice_plugin.c:405
 #, fuzzy, c-format
@@ -2464,9 +2454,9 @@ msgstr ""
 #: plugins/x2go/x2go_plugin.c:3231 plugins/x2go/x2go_plugin.c:3246
 #: plugins/x2go/x2go_plugin.c:3251 plugins/x2go/x2go_plugin.c:3256
 #: plugins/x2go/x2go_plugin.c:3261
-#, fuzzy, c-format
+#, c-format
 msgid "Internal error: %s"
-msgstr "Notranja napaka."
+msgstr "Notranja napaka: %s"
 
 #: plugins/x2go/x2go_plugin.c:297 plugins/x2go/x2go_plugin.c:429
 #: plugins/x2go/x2go_plugin.c:516 plugins/x2go/x2go_plugin.c:1290
@@ -2636,17 +2626,20 @@ msgstr ""
 "%s"
 
 #: plugins/x2go/x2go_plugin.c:948
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "An unknown error occurred while trying to start PyHoca-CLI. Exit code: %i"
-msgstr "Pri zagonu seje X2Go je prišlo do napake…"
+msgstr ""
+"Pri poskusu zagona PyHoca-CLI je prišlo do neznane napake. Izhodna koda: %i"
 
 #: plugins/x2go/x2go_plugin.c:955
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "An unknown error occurred while trying to start PyHoca-CLI. Exit code: %i. "
 "Error: '%s'"
-msgstr "Pri zagonu seje X2Go je prišlo do napake…"
+msgstr ""
+"Pri poskusu zagona PyHoca-CLI je prišlo do neznane napake. Izhodna koda: %i. "
+"Napaka: »%s«"
 
 #: plugins/x2go/x2go_plugin.c:999
 msgid "Neither the 'path' nor 'dialog' parameters are initialized."
@@ -2677,9 +2670,8 @@ msgstr ""
 "%s"
 
 #: plugins/x2go/x2go_plugin.c:1235
-#, fuzzy
 msgid "An error occurred."
-msgstr "Napaka"
+msgstr "Prišlo je do napake."
 
 #: plugins/x2go/x2go_plugin.c:1330 plugins/x2go/x2go_plugin.c:1345
 msgid "Could not get session ID from session chooser dialog."
@@ -2706,9 +2698,8 @@ msgid "PyHoca-CLI exited unexpectedly. This connection will now be closed."
 msgstr "pyhoca-cli se je nepričakovano končal. Ta povezava bo zdaj zaprta."
 
 #: plugins/x2go/x2go_plugin.c:1606
-#, fuzzy
 msgid "An error occured."
-msgstr "Napaka"
+msgstr "Prišlo je do napake."
 
 #: plugins/x2go/x2go_plugin.c:1607
 #, fuzzy
@@ -2727,10 +2718,8 @@ msgid "Can't save empty username!"
 msgstr ""
 
 #: plugins/x2go/x2go_plugin.c:1664
-#, fuzzy
-#| msgid "Could not save the file “%s”."
 msgid "Could not save new credentials."
-msgstr "Ustvarjanje SFTP seje ni bilo uspešno: %s"
+msgstr "Novih poverilnic ni mogoče shraniti."
 
 #: plugins/x2go/x2go_plugin.c:1667
 #, fuzzy
@@ -2746,10 +2735,8 @@ msgid "Enter password to unlock the SSH key:"
 msgstr "Vnesite geslo za odklepanje ključa SSH:"
 
 #: plugins/x2go/x2go_plugin.c:1710
-#, fuzzy
-#| msgid "SSH Authentication"
 msgid "Password input cancelled. Aborting…"
-msgstr "Neuspešno preverjanje pristnosti: %s"
+msgstr "Vnos gesla je bil preklican. Prekinjam …"
 
 #: plugins/x2go/x2go_plugin.c:1741
 msgid ""
@@ -2763,10 +2750,8 @@ msgid "Enter X2Go credentials"
 msgstr "Vnesite poverilnice X2Go"
 
 #: plugins/x2go/x2go_plugin.c:1801
-#, fuzzy
-#| msgid "SSH Authentication"
 msgid "Authentication cancelled. Aborting…"
-msgstr "Neuspešno preverjanje pristnosti: %s"
+msgstr "Preverjanje pristnosti je bilo preklican. Prekinjam …"
 
 #: plugins/x2go/x2go_plugin.c:1988
 msgid ""
@@ -2811,9 +2796,8 @@ msgid "Choose a session to resume:"
 msgstr "Izberite sejo, ki jo želite nadaljevati:"
 
 #: plugins/x2go/x2go_plugin.c:2213
-#, fuzzy
 msgid "Waiting for user to select a session…"
-msgstr "Čakanje, da pyhoca-cli prikaže okno seje."
+msgstr "Čakam, da uporabnik izbere sejo …"
 
 #: plugins/x2go/x2go_plugin.c:2221
 msgid "No session was selected. Creating a new one."
@@ -2842,10 +2826,8 @@ msgstr ""
 "Nastavitev DPI je zunaj omejitev. Prilagodite jo v nastavitvah profila."
 
 #: plugins/x2go/x2go_plugin.c:2503
-#, fuzzy
-#| msgid "Could not start SSH session. %s"
 msgid "Could not start X2Go session…"
-msgstr "Seje X2Go ni bilo mogoče zagnati."
+msgstr "Seje X2Go ni bilo mogoče zagnati …"
 
 #: plugins/x2go/x2go_plugin.c:2510
 #, fuzzy
@@ -2889,10 +2871,9 @@ msgid "Available feature[%i]: '%s'"
 msgstr "Razpoložljiva funkcija[%i]: '%s'"
 
 #: plugins/x2go/x2go_plugin.c:2674
-#, fuzzy, c-format
-#| msgid "Connecting to %s via SSH…"
+#, c-format
 msgid "Connected to %s:%d via X2Go"
-msgstr "Povezovanje z napravo '%s'…"
+msgstr "Povezan na %s:%d prek X2Go"
 
 #: plugins/x2go/x2go_plugin.c:2768
 #, fuzzy
@@ -2901,14 +2882,12 @@ msgid "Could not open X11 DISPLAY."
 msgstr "Ni bilo mogoče odpreti prikazovalnika X11."
 
 #: plugins/x2go/x2go_plugin.c:2808
-#, fuzzy
 msgid "Waiting for window of X2Go Agent to appear…"
-msgstr "Čakajte, da se prikaže okno agenta X2Go."
+msgstr "Čakam, da X2Go agent prikaže okno seje …"
 
 #: plugins/x2go/x2go_plugin.c:2834
-#, fuzzy
 msgid "Waiting for PyHoca-CLI to show the session's window…"
-msgstr "Čakanje, da pyhoca-cli prikaže okno seje."
+msgstr "Čakam, da PyHoca-CLI prikaže okno seje …"
 
 #: plugins/x2go/x2go_plugin.c:2885
 #, fuzzy
@@ -3146,10 +3125,8 @@ msgid "Disconnected from %s via RDP"
 msgstr ""
 
 #: plugins/rdp/rdp_plugin.c:2556
-#, fuzzy
-#| msgid "Could not authenticate with SSH password. %s"
 msgid "Could not authenticate using smartcard."
-msgstr "Ni bilo mogoče preveriti pristnosti s potrdilom SSH. %s"
+msgstr "Preverjanje pristnosti s pametno kartico ni uspelo."
 
 #: plugins/rdp/rdp_plugin.c:2566
 #, c-format
@@ -3215,10 +3192,9 @@ msgstr ""
 "Pred povezavo spremenite uporabniško geslo."
 
 #: plugins/rdp/rdp_plugin.c:2614
-#, fuzzy, c-format
-#| msgid "Cannot connect to the RDP server “%s”."
+#, c-format
 msgid "Failed to connect to the RDP server “%s”."
-msgstr "Povezava s strežnikom RDP %s ni mogoča"
+msgstr "Povezava s strežnikom RDP »%s« ni mogoča."
 
 #: plugins/rdp/rdp_plugin.c:2617
 #, c-format
@@ -4031,10 +4007,9 @@ msgstr "Povezovanje z napravo '%s'…"
 
 #. TRANSLATORS: the placeholder may be either an IP/FQDN or a server hostname
 #: plugins/rdp/rdp_event.c:1265
-#, fuzzy, c-format
-#| msgid "Connecting to %s via SSH…"
+#, c-format
 msgid "Connected to %s via RDP"
-msgstr "Povezovanje z napravo '%s'…"
+msgstr "Povezan na %s prek RDP"
 
 #: plugins/rdp/rdp_settings.c:223
 msgid "<Auto-detect>"
@@ -4177,9 +4152,8 @@ msgid "Execute a command"
 msgstr "Izvedba ukaza"
 
 #: plugins/exec/exec_plugin.c:168
-#, fuzzy
 msgid "You did not set any command to be executed"
-msgstr "Niste nastavili nobenega ukaza, ki naj se izvede."
+msgstr "Niste nastavili nobenega ukaza, ki naj se izvede"
 
 #: plugins/exec/exec_plugin.c:223
 #, fuzzy
@@ -4505,16 +4479,14 @@ msgid "Please retry after turning on encryption for this profile."
 msgstr "Po vklopu šifriranja za ta profil poskusite znova."
 
 #: plugins/vnc/vnc_plugin.c:1765
-#, fuzzy, c-format
-#| msgid "Connecting to %s via SSH…"
+#, c-format
 msgid "Connected to %s via VNC"
-msgstr "Povezovanje z napravo '%s'…"
+msgstr "Povezan na %s prek VNC"
 
 #: plugins/vnc/vnc_plugin.c:1772
-#, fuzzy, c-format
-#| msgid "Connecting to %s via SSH…"
+#, c-format
 msgid "Connected to %s:%d via VNC"
-msgstr "Povezovanje z napravo '%s'…"
+msgstr "Povezan na %s:%d prek VNC"
 
 #: plugins/vnc/vnc_plugin.c:1795
 #, c-format
