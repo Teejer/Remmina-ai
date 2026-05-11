@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-05-09 13:11+0000\n"
+"PO-Revision-Date: 2026-05-11 11:12+0000\n"
 "Last-Translator: jernejp21 <jernejp21@tuta.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/remmina/"
 "remmina/sl/>\n"
@@ -360,7 +360,6 @@ msgstr "Datoteka z identiteto SSH"
 
 #: src/remmina_ssh_plugin.c:1498 src/remmina_sftp_plugin.c:311
 #: src/remmina_file_editor.c:940
-#, fuzzy
 msgid "SSH agent"
 msgstr "Agent SSH"
 
@@ -371,15 +370,12 @@ msgstr "Javni ključ"
 
 #: src/remmina_ssh_plugin.c:1500 src/remmina_sftp_plugin.c:313
 #: src/remmina_file_editor.c:942
-#, fuzzy
 msgid "Kerberos (GSSAPI)"
 msgstr "Kerberos (GSSAPI)"
 
 #: src/remmina_ssh_plugin.c:1501
-#, fuzzy
-#| msgid "Keyboard layout"
 msgid "Keyboard Interactive"
-msgstr "Vrsta tipkovnice (samodejno)"
+msgstr "Interaktivna tipkovnica"
 
 #: src/remmina_ssh_plugin.c:1576 data/ui/remmina_main.glade:178
 msgid "Copy"
@@ -410,34 +406,28 @@ msgid "_Select all"
 msgstr "_Izberite vse"
 
 #: src/remmina_ssh_plugin.c:1579
-#, fuzzy
 msgid "Increase font size"
-msgstr "Povečanje velikosti pisave"
+msgstr "Povečaj velikost pisave"
 
 #: src/remmina_ssh_plugin.c:1579
-#, fuzzy
 msgid "_Increase font size"
-msgstr "_Povečanje velikosti pisave"
+msgstr "_Povečaj velikost pisave"
 
 #: src/remmina_ssh_plugin.c:1580
-#, fuzzy
 msgid "Decrease font size"
-msgstr "Zmanjšanje velikosti pisave"
+msgstr "Zmanjšaj velikost pisave"
 
 #: src/remmina_ssh_plugin.c:1580
-#, fuzzy
 msgid "_Decrease font size"
-msgstr "_Zmanjšanje velikosti pisave"
+msgstr "_Zmanjšaj velikost pisave"
 
 #: src/remmina_ssh_plugin.c:1581
-#, fuzzy
 msgid "Find text"
 msgstr "Najdi besedilo"
 
 #: src/remmina_ssh_plugin.c:1581
-#, fuzzy
 msgid "_Find text"
-msgstr "_Poišči besedilo"
+msgstr "_Najdi besedilo"
 
 #: src/remmina_ssh_plugin.c:1606 src/remmina_sftp_plugin.c:354
 #: src/remmina_file_editor.c:1573
@@ -446,19 +436,15 @@ msgstr "Vrsta overjanja"
 
 #: src/remmina_ssh_plugin.c:1608 plugins/spice/spice_plugin.c:723
 #: plugins/vnc/vnc_plugin.c:2151 plugins/vnc/vnc_plugin.c:2163
-#, fuzzy
 msgid "User password"
-msgstr "uporabniško geslo"
+msgstr "Uporabniško geslo"
 
 #: src/remmina_ssh_plugin.c:1611 src/remmina_file_editor.c:1601
-#, fuzzy
-#| msgid "Accept certificate?"
 msgid "SSH certificate file"
 msgstr "Datoteka s potrdilom SSH"
 
 #: src/remmina_ssh_plugin.c:1613 src/remmina_sftp_plugin.c:356
 #: src/remmina_file_editor.c:1606
-#, fuzzy
 msgid "Password to unlock private key"
 msgstr "Geslo za odklepanje zasebnega ključa"
 
@@ -467,13 +453,10 @@ msgid "Opening command"
 msgstr "Odpiranje ukaza"
 
 #: src/remmina_ssh_plugin.c:1615
-#, fuzzy
-#| msgid "Start-up program"
 msgid "Start-up background program"
-msgstr "Zagonski program"
+msgstr "Zaženi program v ozadju"
 
 #: src/remmina_ssh_plugin.c:1620
-#, fuzzy
 msgid ""
 "The filename can use the following placeholders:\n"
 "\n"
@@ -496,7 +479,6 @@ msgstr ""
 "  - %d se nadomesti z lokalnim datumom in časom v formatu ISO 8601\n"
 
 #: src/remmina_ssh_plugin.c:1642 src/remmina_ssh_plugin.c:1664
-#, fuzzy
 msgid "Terminal colour scheme"
 msgstr "Barvna shema terminala"
 
@@ -509,17 +491,14 @@ msgid "SSH Proxy Command"
 msgstr "SSH Proxy ukaz"
 
 #: src/remmina_ssh_plugin.c:1645
-#, fuzzy
 msgid "KEX (Key Exchange) algorithms"
 msgstr "Algoritmi za izmenjavo ključev KEX (Key Exchange)"
 
 #: src/remmina_ssh_plugin.c:1646
-#, fuzzy
 msgid "Symmetric cipher client to server"
-msgstr "Simetrična šifra odjemalca do strežnika"
+msgstr "Simetrična šifra od odjemalca do strežnika"
 
 #: src/remmina_ssh_plugin.c:1647
-#, fuzzy
 msgid "Preferred server host key types"
 msgstr "Prednostne vrste ključev gostitelja strežnika"
 
@@ -532,36 +511,30 @@ msgid "Full path of an existing folder"
 msgstr "Polna pot obstoječe mape"
 
 #: src/remmina_ssh_plugin.c:1649
-#, fuzzy
 msgid "Filename for SSH session log"
 msgstr "Ime datoteke za dnevnik seje SSH"
 
 #: src/remmina_ssh_plugin.c:1650
-#, fuzzy
 msgid "Log SSH session when exiting Remmina"
-msgstr "Prijava seje SSH ob izhodu iz programa Remmina"
+msgstr "Beleži sejo SSH ob izhodu iz programa Remmina"
 
 #: src/remmina_ssh_plugin.c:1651
-#, fuzzy
 msgid "Log SSH session asynchronously"
-msgstr "Asinhrono beležite sejo SSH"
+msgstr "Asinhrono beleži sejo SSH"
 
 #: src/remmina_ssh_plugin.c:1651
-#, fuzzy
 msgid "Saving the session asynchronously may have a notable performance impact"
-msgstr "asinhrono shranjevanje seje lahko opazno vpliva na zmogljivost"
+msgstr "Asinhrono shranjevanje seje lahko opazno vpliva na zmogljivost"
 
 #: src/remmina_ssh_plugin.c:1652
-#, fuzzy
 msgid "Audible terminal bell"
-msgstr "Zvočni zvonec na terminalu"
+msgstr "Zvočni signal terminala"
 
 #: src/remmina_ssh_plugin.c:1653
 msgid "SSH X11 Forwarding"
-msgstr ""
+msgstr "Posredovanje SSH X11"
 
 #: src/remmina_ssh_plugin.c:1654
-#, fuzzy
 msgid "SSH compression"
 msgstr "Stiskanje SSH"
 
@@ -570,7 +543,6 @@ msgid "Don't remember passwords"
 msgstr "Shrani geslo"
 
 #: src/remmina_ssh_plugin.c:1656
-#, fuzzy
 msgid "Strict host key checking"
 msgstr "Strogo preverjanje ključa gostitelja"
 
@@ -645,9 +617,8 @@ msgid "SSH identity file not selected."
 msgstr "Datoteka SSH kjluča še ni nastavljena."
 
 #: src/remmina_ssh.c:890
-#, fuzzy
 msgid "No username found. Asking user to enter it."
-msgstr "Shranjena geslo SSH ni bilo predloženo. Uporabnik jo mora vnesti."
+msgstr "Uporabniškega imena ni bilo mogoče najti. Vnesite uporabniško ime."
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:901
@@ -1507,10 +1478,8 @@ msgid "Auto-start this profile"
 msgstr "Samodejni zagon tega profila"
 
 #: src/remmina_file_editor.c:1453
-#, fuzzy
-#| msgid "New connection profile"
 msgid "Connection profile security"
-msgstr "Povezava VNC spodletela: %s"
+msgstr "Varnost profila povezave"
 
 #: src/remmina_file_editor.c:1456
 msgid "Require password to connect or edit the profile"
@@ -1859,7 +1828,7 @@ msgid "- or protocol://username:encryptedpassword@host:port"
 msgstr "- ali protokol://username:encryptedpassword@host:port"
 
 #: src/remmina.c:448
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Examples:\n"
 "To connect using an existing connection profile, use:\n"
@@ -1907,15 +1876,21 @@ msgstr ""
 "Za hitro povezavo z uporabo URI:\n"
 "\n"
 "\tremmina -c rdp://username@server\n"
-"\tremmina -c rdp://domaina\\\\username@server\n"
+"\tremmina -c rdp://domain\\\\username@server\n"
 "\tremmina -c vnc://username@server\n"
 "\tremmina -c vnc://server?VncUsername=username\n"
 "\tremmina -c ssh://user@server\n"
 "\tremmina -c spice://server\n"
+"\tremmina -c https://example.com\n"
+"\n"
+"Za hitro vzpostavitev povezave in poimenovanje povezave\n"
+"\n"
+"\tremmina -c ssh://user@server%connection_name\n"
 "\n"
 "Za hitro povezavo z uporabo URI skupaj s šifriranim geslom:\n"
 "\n"
 "\tremmina -c rdp://username:encrypted-password@server\n"
+"\n"
 "\tremmina -c vnc://username:encrypted-password@server\n"
 "\tremmina -c vnc://server?VncUsername=username\\&VncPassword=encrypted-"
 "password\n"
@@ -1927,8 +1902,9 @@ msgstr ""
 "Za posodobitev uporabniškega imena in gesla ter nastavitev drugačnega načina "
 "ločljivosti povezovalnega profila Remmina uporabite:\n"
 "\n"
-"\tremmina --update-profile /PATH/TO/FOO.remmina --set-option username --set-"
-"option resolution_mode=2 --set-option password\n"
+"\techo \"username\\n"
+"apassword\" | remmina --update-profile /PATH/TO/FOO.remmina --set-option "
+"username --set-option resolution_mode=2 --set-option password\n"
 
 #. TRANSLATORS: The placeholder %s is a directory path
 #: src/remmina_sftp_client.c:176
@@ -2358,9 +2334,8 @@ msgid "Share folder"
 msgstr "Souporaba mape"
 
 #: plugins/spice/spice_plugin.c:727
-#, fuzzy
 msgid "Proxy"
-msgstr "URL proxyja"
+msgstr "Posrednik"
 
 #: plugins/spice/spice_plugin.c:728 plugins/rdp/rdp_plugin.c:3290
 #, fuzzy
@@ -3071,10 +3046,8 @@ msgstr ""
 "in 400."
 
 #: plugins/x2go/x2go_plugin.c:3347
-#, fuzzy
-#| msgid "SSH private key passphrase"
 msgid "Your private key"
-msgstr "Datoteka z zasebnim ključem SSH"
+msgstr "Vaš zaseben ključ"
 
 #: plugins/x2go/x2go_plugin.c:3387
 #, fuzzy
@@ -3448,7 +3421,6 @@ msgid "2600 (Windows XP), 7601 (Windows Vista/7), 9600 (Windows 8 and newer)"
 msgstr "2600 (Windows XP), 7601 (Windows Vista/7), 9600 (Windows 8 in novejši)"
 
 #: plugins/rdp/rdp_plugin.c:3153
-#, fuzzy
 msgid ""
 "Used i.a. by terminal services in a smart card channel to distinguish client "
 "capabilities:\n"
@@ -3460,11 +3432,10 @@ msgid ""
 msgstr ""
 "Uporabljajo ga med drugim terminalske storitve v kanalu pametne kartice za "
 "razlikovanje zmogljivosti odjemalca:\n"
-"  - < 4034: osnovne funkcije pametne kartice Windows XP\n"
-"  - 4034-7064: Windows Vista/7: SCardReadCache(),\n"
+"  • <  4034: osnovne funkcije pametne kartice Windows XP\n"
+"  • 4034-7064: Windows Vista/7: SCardReadCache(),\n"
 "    SCardWriteCache(), SCardGetTransmitCount()\n"
-"  - >= 7065: Windows 8 in novejše: SCRCCardCard: SCRCCardCard: Windows 8 in "
-"novejše: SCardGetReaderIcon(),\n"
+"  • >= 7065: Windows 8 in novejše: SCardGetReaderIcon(),\n"
 "    SCardGetDeviceTypeId()"
 
 #: plugins/rdp/rdp_plugin.c:3161
@@ -3848,16 +3819,12 @@ msgstr ""
 "(privzeto: 20)"
 
 #: plugins/rdp/rdp_plugin.c:3301
-#, fuzzy
-#| msgid "Remote Connection Profile"
 msgid "Move mouse when connection is idle"
-msgstr "Povezava VNC spodletela: %s"
+msgstr "Premaknite miško, ko je povezava v mirovanju"
 
 #: plugins/rdp/rdp_plugin.c:3302
-#, fuzzy
-#| msgid "Remote Connection Profile"
 msgid "Press keys when connection is idle"
-msgstr "Povezava VNC spodletela: %s"
+msgstr "Pritisnite tipke, ko je povezava v mirovanju"
 
 #: plugins/rdp/rdp_plugin.c:3303
 #, fuzzy
@@ -4001,9 +3968,9 @@ msgid "Export connection in Windows .rdp file format"
 msgstr "Izvozi povezavo v vrsti datoteke Windows .rdp"
 
 #: plugins/rdp/rdp_event.c:363
-#, fuzzy, c-format
+#, c-format
 msgid "Reconnection attempt %d of %d…"
-msgstr "Povezovanje z napravo '%s'…"
+msgstr "Poskus ponovne povezave %d od %d …"
 
 #. TRANSLATORS: the placeholder may be either an IP/FQDN or a server hostname
 #: plugins/rdp/rdp_event.c:1265
@@ -4601,10 +4568,8 @@ msgid "Turn off encryption"
 msgstr "Onemogoči usklajevanje odložišča"
 
 #: plugins/vnc/vnc_plugin.c:2195
-#, fuzzy
-#| msgid "Create new connection profile"
 msgid "Close on connection failure"
-msgstr "Povezava VNC spodletela: %s"
+msgstr "Zapri ob napaki pri povezavi"
 
 #: plugins/vnc/vnc_plugin.c:2207
 msgid "Open Chat…"
