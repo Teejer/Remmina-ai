@@ -79,6 +79,23 @@ static char* extract_authorization_code(char* url)
 	return NULL;
 }
 
+static gchar* get_auth_hints(RemminaProtocolWidget *gp) {
+	RemminaFile *remminafile = remmina_plugin_service->protocol_plugin_get_file(gp);
+	GString *url_params = g_string_new(NULL);
+
+	const gchar* username = remmina_plugin_service->file_get_string(remminafile, "username");
+	if (username != NULL) {
+		g_string_append_printf(url_params, "&login_hint=%s", username);
+	}
+
+	const gchar* domain = remmina_plugin_service->file_get_string(remminafile, "domain");
+	if (domain != NULL) {
+		g_string_append_printf(url_params, "&domain_hint=%s", domain);
+	}
+
+	return g_string_free(url_params, FALSE);
+}
+
 static void delete_event_cb(GtkWidget *dialog, GdkEvent* event, RemminaProtocolWidget *gp) {
 	SET_TOKEN_URI(gp, AUTH_CANCELLED);
 }
@@ -146,6 +163,7 @@ static BOOL remmina_rdp_get_rdsaad_access_token(freerdp* instance, const char* s
 	size_t redirect_uri_len = 0;
 	char* auth_uri = NULL;
 	size_t auth_uri_len = 0;
+	char* auth_hints = NULL;
 
 	assert(scope);
 	assert(req_cnf);
@@ -156,20 +174,27 @@ static BOOL remmina_rdp_get_rdsaad_access_token(freerdp* instance, const char* s
 
 	const char* client_id =
 	    freerdp_settings_get_string(instance->context->settings, FreeRDP_GatewayAvdClientID);
-	if (!client_id)
+	if (!client_id) {
 		goto cleanup;
+	}
 
 	winpr_asprintf(&redirect_uri, &redirect_uri_len,
 	               "ms-appx-web%%3a%%2f%%2fMicrosoft.AAD.BrokerPlugin%%2f%s", client_id);
-	if (!redirect_uri)
+	if (!redirect_uri) {
 		goto cleanup;
+	}
 
 	const char* ep = freerdp_utils_aad_get_wellknown_string(instance->context,
 	                                                        AAD_WELLKNOWN_authorization_endpoint);
 
+	auth_hints = get_auth_hints(gp);
+	if (!auth_hints) {
+		goto cleanup;
+	}
+
 	winpr_asprintf(&auth_uri, &auth_uri_len, "%s?client_id=%s&response_type="
-	       "code&scope=%s&redirect_uri=%s",
-	       ep, client_id, scope, redirect_uri);
+	       "code&scope=%s&redirect_uri=%s%s",
+	       ep, client_id, scope, redirect_uri, auth_hints);
 	if (!auth_uri) {
 		goto cleanup;
 	}
@@ -211,6 +236,7 @@ cleanup:
 	free(auth_uri);
 	free(redirect_uri);
 	free(token_request);
+	free(auth_hints);
 	SET_AUTH_URI(gp, NULL);
 	SET_TOKEN_URI(gp, NULL);
 	return rc && (*token != NULL);
@@ -232,6 +258,7 @@ static BOOL remmina_rdp_get_avd_access_token(freerdp* instance, char** token) {
 	size_t redirect_uri_len = 0;
 	char* auth_uri = NULL;
 	size_t auth_uri_len = 0;
+	char* auth_hints = NULL;
 	const char* scope = "https%3A%2F%2Fwww.wvd.microsoft.com%2F.default";
 
 	assert(token);
@@ -263,9 +290,14 @@ static BOOL remmina_rdp_get_avd_access_token(freerdp* instance, char** token) {
 	const char* ep = freerdp_utils_aad_get_wellknown_string(instance->context,
 	                                                        AAD_WELLKNOWN_authorization_endpoint);
 
+	auth_hints = get_auth_hints(gp);
+	if (!auth_hints) {
+		goto cleanup;
+	}
+
 	winpr_asprintf(&auth_uri, &auth_uri_len, "%s?client_id=%s&response_type="
-	       "code&scope=%s&redirect_uri=%s",
-	       ep, client_id, scope, redirect_uri);
+	       "code&scope=%s&redirect_uri=%s%s",
+	       ep, client_id, scope, redirect_uri, auth_hints);
 	if (!auth_uri) {
 		goto cleanup;
 	}
@@ -309,6 +341,7 @@ cleanup:
 	free(auth_uri);
 	free(redirect_uri);
 	free(token_request);
+	free(auth_hints);
 	SET_AUTH_URI(gp, NULL);
 	SET_TOKEN_URI(gp, NULL);
 	return rc && (*token != NULL);
