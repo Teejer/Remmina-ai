@@ -392,6 +392,10 @@ struct rf_context {
 	time_t			last_time_idle_keypress;
 	FREERDP_REMAP_TABLE* remap_table;
 
+#ifdef WITH_SSO_MIB
+	struct _RemminaSsoMib* sso_mib;
+#endif
+
 	enum { REMMINA_POSTCONNECT_ERROR_OK = 0, REMMINA_POSTCONNECT_ERROR_GDI_INIT = 1, REMMINA_POSTCONNECT_ERROR_NO_H264 } postconnect_error;
 };
 

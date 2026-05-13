@@ -48,6 +48,9 @@
 #include "rdp_monitor.h"
 #include "rdp_channels.h"
 #include "rdp_web_auth.h"
+#ifdef WITH_SSO_MIB
+#include "rdp_sso_mib.h"
+#endif
 
 #include <errno.h>
 #include <pthread.h>
@@ -729,7 +732,7 @@ static BOOL rf_keyboard_set_ime_status(rdpContext *context, UINT16 imeId, UINT32
 	return TRUE;
 }
 
-#if FREERDP_CHECK_VERSION(3, 24, 3)
+#if FREERDP_CHECK_VERSION(3, 25, 0)
 static void remmina_rdp_OnUserNotificationEventHandler(void *context,
                                                         const UserNotificationEventArgs *e)
 {
@@ -765,7 +768,7 @@ static BOOL remmina_rdp_pre_connect(freerdp *instance)
 					 remmina_rdp_OnChannelConnectedEventHandler);
 	PubSub_SubscribeChannelDisconnected(instance->context->pubSub,
 						remmina_rdp_OnChannelDisconnectedEventHandler);
-#if FREERDP_CHECK_VERSION(3, 24, 3)
+#if FREERDP_CHECK_VERSION(3, 25, 0)
 	PubSub_SubscribeUserNotification(instance->context->pubSub,
 					 remmina_rdp_OnUserNotificationEventHandler);
 #endif
@@ -1033,6 +1036,9 @@ static BOOL remmina_rdp_authenticate_ex(freerdp* instance, char** username, char
 		case AUTH_NLA:
 		case AUTH_TLS:
 		case AUTH_RDP:
+#if FREERDP_CHECK_VERSION(3, 18, 0)
+		case AUTH_RDSTLS:
+#endif
 			if ((*username) && (*password)){
 				return true;
 			}
@@ -1061,7 +1067,7 @@ static BOOL remmina_rdp_authenticate_ex(freerdp* instance, char** username, char
 			cfg_key_password = FreeRDP_Password;
 			flags = 0;
 			break;
-#if FREERDP_CHECK_VERSION(3, 24, 3)
+#if FREERDP_CHECK_VERSION(3, 25, 0)
 		case AUTH_FIDO_PIN:
 			if ((*password))
 				return TRUE;
@@ -1202,6 +1208,13 @@ static SSIZE_T remmina_rdp_retry_dialog(freerdp* instance, const char* what, siz
 static void remmina_rdp_post_final_disconnect(freerdp* instance)
 {
 	// Clean up resources allocated in PreConnect
+#ifdef WITH_SSO_MIB
+	rfContext *rfi = (rfContext *)instance->context;
+	if (rfi) {
+		remmina_sso_mib_free(rfi->sso_mib);
+		rfi->sso_mib = NULL;
+	}
+#endif
 }
 #endif
 
@@ -1959,6 +1972,7 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayHttpTransport, FALSE);
 			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayHttpUseWebsockets, FALSE);
 			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_GatewayArmTransport, TRUE);
+			freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_AadSecurity, TRUE);
 #endif
 		}
 		remmina_plugin_service->get_server_port(s, 443, &gateway_host, &gateway_port);
@@ -2521,7 +2535,7 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 		 * doesn’t know anything about info on smart card */
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_PasswordIsSmartcardPin, TRUE);
 
-#if FREERDP_CHECK_VERSION(3, 24, 3)
+#if FREERDP_CHECK_VERSION(3, 25, 0)
 	if (remmina_plugin_service->file_get_int(remminafile, "sharewebauthn", FALSE))
 		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_RedirectWebAuthN, TRUE);
 #endif
@@ -3400,7 +3414,7 @@ static const RemminaProtocolSetting remmina_rdp_advanced_settings[] =
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK,	  "serialpermissive",	    N_("(SELinux) permissive mode for serial ports"),	 TRUE,	NULL,		  NULL														 },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK,	  "shareparallel",	    N_("Share parallel ports"),				 TRUE,	NULL,		  NULL														 },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK,	  "sharesmartcard",	    N_("Share a smart card"),				 TRUE,	NULL,		  NULL														 },
-#if FREERDP_CHECK_VERSION(3, 24, 3)
+#if FREERDP_CHECK_VERSION(3, 25, 0)
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK,	  "sharewebauthn",	    N_("Share WebAuthn (FIDO2) credentials"),		 TRUE,	NULL,		  NULL														 },
 #endif
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK,	  "disableclipboard",	    N_("Turn off clipboard sync"),			 TRUE,	NULL,		  NULL														 },

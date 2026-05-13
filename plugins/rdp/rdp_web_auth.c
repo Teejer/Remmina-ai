@@ -36,6 +36,27 @@
 
 #include "rdp_web_auth.h"
 
+#ifdef WITH_SSO_MIB
+#include "rdp_sso_mib.h"
+#include "rdp_plugin.h"
+
+static BOOL remmina_sso_mib_try_access_token(freerdp *instance, AccessTokenType tokenType,
+                                              char **token, size_t count,
+                                              const char *scope, const char *req_cnf)
+{
+	rfContext *rfi = (rfContext *)instance->context;
+
+	if (!rfi->sso_mib)
+		rfi->sso_mib = remmina_sso_mib_new();
+
+	if (!rfi->sso_mib)
+		return FALSE;
+
+	return remmina_sso_mib_get_access_token(rfi->sso_mib, instance, tokenType, token,
+	                                         count, scope, req_cnf);
+}
+#endif
+
 #ifdef WITH_RDP_AUTH_AAD
 #include "rdp_plugin.h"
 #include <webkit2/webkit2.h>
@@ -350,39 +371,50 @@ cleanup:
 BOOL remmina_rdp_get_access_token(freerdp* instance, AccessTokenType tokenType, char** token,
 									size_t count, ...)
 {
+	const char* scope = NULL;
+	const char* req_cnf = NULL;
+
+	va_list ap = { 0 };
+	va_start(ap, count);
+	if (tokenType == ACCESS_TOKEN_TYPE_AAD)
+	{
+		if (count < 2)
+		{
+			REMMINA_PLUGIN_ERROR(
+			         "ACCESS_TOKEN_TYPE_AAD expected 2 additional arguments, but got %zu, aborting",
+			         count);
+			va_end(ap);
+			return FALSE;
+		}
+		else if (count > 2) {
+			REMMINA_PLUGIN_WARNING(
+			          "ACCESS_TOKEN_TYPE_AAD expected 2 additional arguments, but got %zu, ignoring",
+			          count);
+		}
+		scope = va_arg(ap, const char*);
+		req_cnf = va_arg(ap, const char*);
+	}
+	else if (tokenType == ACCESS_TOKEN_TYPE_AVD)
+	{
+		if (count != 0) {
+			REMMINA_PLUGIN_WARNING(
+			          "ACCESS_TOKEN_TYPE_AVD expected 0 additional arguments, but got %zu, ignoring",
+			          count);
+		}
+	}
+	va_end(ap);
+
+#ifdef WITH_SSO_MIB
+	if (remmina_sso_mib_try_access_token(instance, tokenType, token, count, scope, req_cnf))
+		return TRUE;
+#endif
+
 	switch (tokenType)
 	{
 		case ACCESS_TOKEN_TYPE_AAD:
-		{
-			if (count < 2)
-			{
-				REMMINA_PLUGIN_ERROR(
-				         "ACCESS_TOKEN_TYPE_AAD expected 2 additional arguments, but got %zu, aborting",
-				         count);
-				return FALSE;
-			}
-			else if (count > 2) {
-				REMMINA_PLUGIN_WARNING(
-				          "ACCESS_TOKEN_TYPE_AAD expected 2 additional arguments, but got %zu, ignoring",
-				          count);
-			}
-			va_list ap = { 0 };
-			va_start(ap, count);
-			const char* scope = va_arg(ap, const char*);
-			const char* req_cnf = va_arg(ap, const char*);
-			const BOOL rc = remmina_rdp_get_rdsaad_access_token(instance, scope, req_cnf, token);
-			va_end(ap);
-			return rc;
-		}
+			return remmina_rdp_get_rdsaad_access_token(instance, scope, req_cnf, token);
 		case ACCESS_TOKEN_TYPE_AVD:
-		{
-			if (count != 0) {
-				REMMINA_PLUGIN_WARNING(
-				          "ACCESS_TOKEN_TYPE_AVD expected 0 additional arguments, but got %zu, ignoring",
-				          count);
-			}
 			return remmina_rdp_get_avd_access_token(instance, token);
-		}
 		default:
 			REMMINA_PLUGIN_ERROR("Unexpected value for AccessTokenType [%" PRIuz "], aborting", tokenType);
 			return FALSE;
@@ -393,6 +425,22 @@ BOOL remmina_rdp_get_access_token(freerdp* instance, AccessTokenType tokenType, 
 BOOL remmina_rdp_get_access_token(freerdp* instance, AccessTokenType tokenType, char** token,
                                     size_t count, ...)
 {
+#ifdef WITH_SSO_MIB
+	const char* scope = NULL;
+	const char* req_cnf = NULL;
+
+	va_list ap = { 0 };
+	va_start(ap, count);
+	if (tokenType == ACCESS_TOKEN_TYPE_AAD && count >= 2)
+	{
+		scope = va_arg(ap, const char*);
+		req_cnf = va_arg(ap, const char*);
+	}
+	va_end(ap);
+
+	if (remmina_sso_mib_try_access_token(instance, tokenType, token, count, scope, req_cnf))
+		return TRUE;
+#endif
 	return client_cli_get_access_token(instance, tokenType, token, count);
 }
 #endif
