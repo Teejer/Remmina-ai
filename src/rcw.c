@@ -4585,6 +4585,8 @@ static gboolean rcw_hostkey_func(RemminaProtocolWidget *gp, guint keyval, gboole
 		remmina_file_set_int(cnnobj->remmina_file, "viewonly",
 				     (remmina_file_get_int(cnnobj->remmina_file, "viewonly", 0)
 				      == 0) ? 1 : 0);
+		gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(cnnobj->cnnwin->priv->toolitem_viewonly),
+					remmina_file_get_int(cnnobj->remmina_file, "viewonly", 0));
 	} else if (keyval == remmina_pref.shortcutkey_screenshot && !extrahardening) {
 		rcw_toolbar_screenshot(GTK_TOOL_ITEM(gp),
 				       cnnobj->cnnwin);
