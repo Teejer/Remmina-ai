@@ -425,12 +425,14 @@ static RemminaScaleMode get_current_allowed_scale_mode(RemminaConnectionObject *
 {
 	TRACE_CALL(__func__);
 	RemminaScaleMode scalemode;
-	gboolean plugin_has_dynres, plugin_can_scale;
+	gboolean plugin_has_dynres, plugin_can_scale, is_multimon;
 
 	scalemode = remmina_protocol_widget_get_current_scale_mode(REMMINA_PROTOCOL_WIDGET(cnnobj->proto));
 
 	plugin_has_dynres = remmina_protocol_widget_query_feature_by_type(REMMINA_PROTOCOL_WIDGET(cnnobj->proto),
 									  REMMINA_PROTOCOL_FEATURE_TYPE_DYNRESUPDATE);
+
+	is_multimon = remmina_protocol_widget_get_multimon(REMMINA_PROTOCOL_WIDGET(cnnobj->proto));
 
 	plugin_can_scale = remmina_protocol_widget_query_feature_by_type(REMMINA_PROTOCOL_WIDGET(cnnobj->proto),
 									 REMMINA_PROTOCOL_FEATURE_TYPE_SCALE);
@@ -439,6 +441,10 @@ static RemminaScaleMode get_current_allowed_scale_mode(RemminaConnectionObject *
 	if (remmina_pref.start_dynres && plugin_has_dynres && cnnobj->dynres_unlocked && scalemode == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_NONE) {
 		rco_change_scalemode(cnnobj, TRUE, FALSE);
 		scalemode = remmina_protocol_widget_get_current_scale_mode(REMMINA_PROTOCOL_WIDGET(cnnobj->proto));
+	}
+
+	if (is_multimon && scalemode == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_NONE) {
+		scalemode = REMMINA_PROTOCOL_WIDGET_SCALE_MODE_DYNRES;
 	}
 
 	/* Forbid scalemode REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED when not possible */
