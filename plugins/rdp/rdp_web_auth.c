@@ -151,10 +151,22 @@ static gboolean decide_policy_cb(WebKitWebView *web_view, WebKitPolicyDecision *
 	return TRUE;
 }
 
+static void remmina_rdp_webview_set_title(GtkWindow *dialog, RemminaProtocolWidget *gp) {
+	RemminaFile *remminafile = remmina_plugin_service->protocol_plugin_get_file(gp);
+	const gchar* name = remmina_plugin_service->file_get_string(remminafile, "name");
+
+	// TRANSLATORS: “%s” is a placeholder for the connection profile name
+	gchar* title = g_strdup_printf(_("Authenticating to “%s”…"), (name ? name : "*"));
+	gtk_window_set_title(dialog, title);
+
+	g_free(title);
+}
+
 static BOOL remmina_rdp_webview_show(RemminaProtocolWidget *gp) {
 	char* auth_uri = GET_AUTH_URI(gp);
 
 	GtkWidget *dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	remmina_rdp_webview_set_title(GTK_WINDOW(dialog), gp);
 	gtk_window_set_default_size(GTK_WINDOW(dialog), 500, 500);
 
 	WebKitWebView *webView = WEBKIT_WEB_VIEW(webkit_web_view_new());
