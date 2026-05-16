@@ -106,12 +106,16 @@ static gchar* get_auth_hints(RemminaProtocolWidget *gp) {
 
 	const gchar* username = remmina_plugin_service->file_get_string(remminafile, "username");
 	if (username != NULL) {
-		g_string_append_printf(url_params, "&login_hint=%s", username);
+		gchar* username_escaped = g_uri_escape_string(username, NULL, TRUE);
+		g_string_append_printf(url_params, "&login_hint=%s", username_escaped);
+		g_free(username_escaped);
 	}
 
 	const gchar* domain = remmina_plugin_service->file_get_string(remminafile, "domain");
 	if (domain != NULL) {
-		g_string_append_printf(url_params, "&domain_hint=%s", domain);
+		gchar* domain_escaped = g_uri_escape_string(domain, NULL, TRUE);
+		g_string_append_printf(url_params, "&domain_hint=%s", domain_escaped);
+		g_free(domain_escaped);
 	}
 
 	return g_string_free(url_params, FALSE);
