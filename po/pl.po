@@ -13,13 +13,14 @@
 # Antenore Gatta <antenore@simbiosi.org>, 2021.
 # Matthaiks <kitynska@gmail.com>, 2021, 2022, 2023, 2024, 2025, 2026.
 # Pavel Borecki <pavel.borecki@gmail.com>, 2026.
+# Grzegorz Szymaszek <gszymaszek@short.pl>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-02-16 14:10+0000\n"
-"Last-Translator: Matthaiks <kitynska@gmail.com>\n"
+"PO-Revision-Date: 2026-05-19 14:11+0000\n"
+"Last-Translator: Grzegorz Szymaszek <gszymaszek@short.pl>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/remmina/remmina/"
 "pl/>\n"
 "Language: pl\n"
@@ -28,7 +29,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.16\n"
+"X-Generator: Weblate 2026.6.dev0\n"
 "X-Launchpad-Export-Date: 2014-04-10 15:03+0000\n"
 
 #: src/remmina_icon.c:143
@@ -3085,8 +3086,8 @@ msgid ""
 "The Remote Desktop Gateway “%s” denied the user “%s\\%s” access due to "
 "policy."
 msgstr ""
-"Remote Desktop Gateway „%s” odmówiło dostępu użytkownikowi „%s\\%s” zgodnie "
-"z polityką."
+"Bramka zdalnego pulpitu „%s” odmówiła dostępu użytkownikowi „%s\\%s” zgodnie "
+"z polityką."
 
 #: plugins/rdp/rdp_plugin.c:2661
 #, c-format
