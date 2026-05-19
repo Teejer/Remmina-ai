@@ -106,12 +106,16 @@ static gchar* get_auth_hints(RemminaProtocolWidget *gp) {
 
 	const gchar* username = remmina_plugin_service->file_get_string(remminafile, "username");
 	if (username != NULL) {
-		g_string_append_printf(url_params, "&login_hint=%s", username);
+		gchar* username_escaped = g_uri_escape_string(username, NULL, TRUE);
+		g_string_append_printf(url_params, "&login_hint=%s", username_escaped);
+		g_free(username_escaped);
 	}
 
 	const gchar* domain = remmina_plugin_service->file_get_string(remminafile, "domain");
 	if (domain != NULL) {
-		g_string_append_printf(url_params, "&domain_hint=%s", domain);
+		gchar* domain_escaped = g_uri_escape_string(domain, NULL, TRUE);
+		g_string_append_printf(url_params, "&domain_hint=%s", domain_escaped);
+		g_free(domain_escaped);
 	}
 
 	return g_string_free(url_params, FALSE);
@@ -147,10 +151,22 @@ static gboolean decide_policy_cb(WebKitWebView *web_view, WebKitPolicyDecision *
 	return TRUE;
 }
 
+static void remmina_rdp_webview_set_title(GtkWindow *dialog, RemminaProtocolWidget *gp) {
+	RemminaFile *remminafile = remmina_plugin_service->protocol_plugin_get_file(gp);
+	const gchar* name = remmina_plugin_service->file_get_string(remminafile, "name");
+
+	// TRANSLATORS: “%s” is a placeholder for the connection profile name
+	gchar* title = g_strdup_printf(_("Authenticating to “%s”…"), (name ? name : "*"));
+	gtk_window_set_title(dialog, title);
+
+	g_free(title);
+}
+
 static BOOL remmina_rdp_webview_show(RemminaProtocolWidget *gp) {
 	char* auth_uri = GET_AUTH_URI(gp);
 
 	GtkWidget *dialog = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	remmina_rdp_webview_set_title(GTK_WINDOW(dialog), gp);
 	gtk_window_set_default_size(GTK_WINDOW(dialog), 500, 500);
 
 	WebKitWebView *webView = WEBKIT_WEB_VIEW(webkit_web_view_new());
