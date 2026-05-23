@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-05-11 11:12+0000\n"
+"PO-Revision-Date: 2026-05-23 12:11+0000\n"
 "Last-Translator: jernejp21 <jernejp21@tuta.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/remmina/"
 "remmina/sl/>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
 "n%100==4 ? 3 : 0);\n"
-"X-Generator: Weblate 2026.5-dev\n"
+"X-Generator: Weblate 2026.6.dev0\n"
 "X-Launchpad-Export-Date: 2014-09-20 14:25+0000\n"
 
 #: src/remmina_icon.c:143
@@ -147,12 +147,10 @@ msgid "Super+"
 msgstr "Super+"
 
 #: src/remmina_key_chooser.h:44
-#, fuzzy
 msgid "Hyper+"
 msgstr "Hyper+"
 
 #: src/remmina_key_chooser.h:45
-#, fuzzy
 msgid "Meta+"
 msgstr "Meta+"
 
@@ -548,11 +546,11 @@ msgstr "Strogo preverjanje ključa gostitelja"
 
 #: src/remmina_ssh_plugin.c:1657
 msgid "Copy text on selection"
-msgstr ""
+msgstr "Kopiraj izbrano besedilo"
 
 #: src/remmina_ssh_plugin.c:1658
 msgid "Allow keys using ssh-rsa (insecure)"
-msgstr ""
+msgstr "Dovoli ključe, ki uporabljajo ssh-rsa (ni varno)"
 
 #: src/remmina_ssh_plugin.c:1678
 msgid "SSH - Secure Shell"
@@ -570,6 +568,8 @@ msgid ""
 "Using the «resolution» parameter in the Remmina preferences file is "
 "deprecated.\n"
 msgstr ""
+"Uporaba parametra »resolution« v datoteki z nastavitvami programa Remmina ni "
+"več priporočljiva.\n"
 
 #: src/remmina_ssh.c:751
 #, c-format
@@ -589,28 +589,27 @@ msgstr "Shranjena geslo SSH ni bilo predloženo. Uporabnik jo mora vnesti."
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:842 src/remmina_ssh.c:883 src/remmina_ssh.c:915
 #: src/remmina_ssh.c:954 src/remmina_ssh.c:1267
-#, fuzzy, c-format
+#, c-format
 msgid "Could not authenticate with public SSH key. %s"
-msgstr "Ni bilo mogoče preveriti pristnosti z javnim ključem SSH. %s"
+msgstr "Preverjanje pristnosti z javnim SSH ključem ni uspelo. %s"
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:851
-#, fuzzy, c-format
+#, c-format
 msgid "SSH certificate cannot be imported. %s"
 msgstr "Potrdila SSH ni mogoče uvoziti. %s"
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:860
-#, fuzzy, c-format
+#, c-format
 msgid "SSH certificate cannot be copied into the private SSH key. %s"
 msgstr "Potrdila SSH ni mogoče kopirati v zasebni ključ SSH. %s"
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:870
-#, fuzzy, c-format
-#| msgid "Could not authenticate with SSH password. %s"
+#, c-format
 msgid "Could not authenticate using SSH certificate. %s"
-msgstr "Ni bilo mogoče preveriti pristnosti s potrdilom SSH. %s"
+msgstr "Preverjanje pristnosti s certifikatom SSH ni uspelo. %s"
 
 #: src/remmina_ssh.c:884
 msgid "SSH identity file not selected."
@@ -622,14 +621,14 @@ msgstr "Uporabniškega imena ni bilo mogoče najti. Vnesite uporabniško ime."
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:901
-#, fuzzy, c-format
+#, c-format
 msgid "Public SSH key cannot be imported. %s"
 msgstr "Javnega ključa SSH ni mogoče uvoziti. %s"
 
 #: src/remmina_ssh.c:999
-#, fuzzy, c-format
+#, c-format
 msgid "Could not authenticate automatically with public SSH key. %s"
-msgstr "Ni bilo mogoče samodejno preveriti pristnosti z javnim ključem SSH. %s"
+msgstr "Samodejna overitev z javnim SSH ključem ni uspela. %s"
 
 #: src/remmina_ssh.c:1044
 #, c-format
@@ -642,7 +641,6 @@ msgid "Could not authenticate with SSH GSSAPI/Kerberos. %s"
 msgstr "Zagon SSH seje ni uspel: %s"
 
 #: src/remmina_ssh.c:1119
-#, fuzzy
 msgid "The public SSH key changed!"
 msgstr "Javni ključ SSH se je spremenil!"
 
@@ -658,9 +656,9 @@ msgstr "Povezava s ciljem SSH tunela ni uspela: %s"
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:1441
-#, fuzzy, c-format
+#, c-format
 msgid "Could not fetch the server's public SSH key. %s"
-msgstr "Ni bilo mogoče pridobiti javnega ključa SSH strežnika. %s"
+msgstr "Ni bilo mogoče pridobiti strežnikovega javnega SSH ključa. %s"
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:1448
@@ -708,7 +706,6 @@ msgid "Password for private SSH key"
 msgstr "Geslo za odklepanje zasebnega ključa"
 
 #: src/remmina_ssh.c:1520
-#, fuzzy
 msgid "SSH Kerberos/GSSAPI"
 msgstr "SSH Kerberos/GSSAPI"
 
@@ -724,14 +721,12 @@ msgid "SSH private key credentials"
 msgstr "Datoteka z zasebnim ključem SSH"
 
 #: src/remmina_ssh.c:1591 src/remmina_ssh.c:1617
-#, fuzzy
 msgid "SSH tunnel credentials"
-msgstr "Pooblastila za predor SSH"
+msgstr "Poverilnice za SSH tunel"
 
 #: src/remmina_ssh.c:1591 src/remmina_ssh.c:1617
-#, fuzzy
 msgid "SSH credentials"
-msgstr "Pooblastila SSH"
+msgstr "SSH poverilnice"
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:2368
@@ -752,12 +747,11 @@ msgid "Could not request port forwarding. %s"
 msgstr "Zahteva posredovanja vrat ni uspela: %s"
 
 #: src/remmina_ssh.c:2510
-#, fuzzy
 msgid "The server did not respond."
 msgstr "Strežnik se ni odzval."
 
 #: src/remmina_ssh.c:2548
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot connect to local port %i."
 msgstr "Ne morem se povezati z lokalnimi vrati %i."
 
@@ -792,28 +786,23 @@ msgid "Could not send data to tunnel listening socket. %s"
 msgstr "Podatkov ni bilo mogoče poslati v vtičnico za poslušanje v tunelu. %s"
 
 #: src/remmina_ssh.c:2752
-#, fuzzy
 msgid "Assign a destination port."
-msgstr "Pripišite namenska vrata."
+msgstr "Določite ciljna vrata."
 
 #: src/remmina_ssh.c:2759
-#, fuzzy
 msgid "Could not create socket."
 msgstr "Ni bilo mogoče ustvariti vtičnice."
 
 #: src/remmina_ssh.c:2769
-#, fuzzy
 msgid "Could not bind server socket to local port."
 msgstr "Vtičnice strežnika ni bilo mogoče vezati na lokalna vrata."
 
 #: src/remmina_ssh.c:2775
-#, fuzzy
 msgid "Could not listen to local port."
-msgstr "Ni mogel poslušati lokalnih vrat."
+msgstr "Poslušanje lokalnih vrat ni možno."
 
 #. TRANSLATORS: Do not translate pthread
 #: src/remmina_ssh.c:2785 src/remmina_ssh.c:2802 src/remmina_ssh.c:2820
-#, fuzzy
 msgid "Could not start pthread."
 msgstr "Ni bilo mogoče zagnati pthread."
 
@@ -842,7 +831,6 @@ msgid "Could not request shell. %s"
 msgstr "Lupine ni bilo mogoče zahtevati. %s"
 
 #: src/remmina_ssh.c:3185
-#, fuzzy
 msgid "Could not create PTY device."
 msgstr "Ni bilo mogoče ustvariti naprave PTY."
 
@@ -897,9 +885,8 @@ msgid "_Delete"
 msgstr "_Izbriši"
 
 #: src/remmina_ftp_client.c:771
-#, fuzzy
 msgid "Home"
-msgstr "Domov"
+msgstr "Dom"
 
 #: src/remmina_ftp_client.c:772
 msgid "Go to home folder"
@@ -963,7 +950,7 @@ msgstr "Dovoljenje"
 
 #: src/remmina_ftp_client.c:969
 msgid "Modified"
-msgstr ""
+msgstr "Spremenjeno"
 
 #: src/remmina_ftp_client.c:1021 plugins/rdp/rdp_plugin.c:3085
 msgid "Remote"
@@ -1048,9 +1035,8 @@ msgid "The Gateway passwords do not match"
 msgstr "Gesla vrat se ne ujemajo"
 
 #: src/remmina_mpchange.c:290
-#, fuzzy
 msgid "Resetting passwords, please wait…"
-msgstr "Ponastavljanje gesel, počakajte…"
+msgstr "Ponastavljanje gesel, prosimo počakajte…"
 
 #: src/remmina_mpchange.c:381
 #, fuzzy
@@ -1207,7 +1193,7 @@ msgstr "Najprej namestite vtičnik protokola %s."
 
 #: src/remmina_main.c:768
 msgid "The latest successful connection attempt, or a pre-computed date"
-msgstr ""
+msgstr "Zadnji uspešen poskus povezave ali vnaprej izračunan datum"
 
 #: src/remmina_main.c:770
 #, c-format
@@ -1220,11 +1206,11 @@ msgstr[3] "Skupno %i povezave."
 
 #: src/remmina_main.c:778
 msgid "Network status: fully online"
-msgstr ""
+msgstr "Stanje omrežja: v celoti na voljo"
 
 #: src/remmina_main.c:781
 msgid "Network status: offline"
-msgstr ""
+msgstr "Stanje omrežja: brez povezave"
 
 #: src/remmina_main.c:1059
 #, c-format
@@ -1243,7 +1229,7 @@ msgstr "Ste prepričani, da želite izbrisati izbrane datoteke na strežniku?"
 
 #: src/remmina_main.c:1170
 msgid "Failed to delete files!"
-msgstr ""
+msgstr "Datotek ni bilo mogoče izbrisati!"
 
 #: src/remmina_main.c:1353
 #, c-format
@@ -1413,11 +1399,11 @@ msgstr "Po meri"
 
 #: src/remmina_file_editor.c:666
 msgid "Assistance Mode"
-msgstr ""
+msgstr "Način pomoči"
 
 #: src/remmina_file_editor.c:957
 msgid "Save to..."
-msgstr ""
+msgstr "Shrani v ..."
 
 #: src/remmina_file_editor.c:958
 #, fuzzy
@@ -1426,7 +1412,7 @@ msgstr "_Shrani"
 
 #: src/remmina_file_editor.c:961
 msgid "Open ssh tunnel config"
-msgstr ""
+msgstr "Odpri nastavitev ssh tunela"
 
 #: src/remmina_file_editor.c:970
 #, fuzzy
@@ -1435,7 +1421,7 @@ msgstr "Kiosk Remmina"
 
 #: src/remmina_file_editor.c:973
 msgid "ssh_export.remssh"
-msgstr ""
+msgstr "ssh_export.remssh"
 
 #: src/remmina_file_editor.c:1288
 msgid "Keyboard mapping"
@@ -1483,15 +1469,15 @@ msgstr "Varnost profila povezave"
 
 #: src/remmina_file_editor.c:1456
 msgid "Require password to connect or edit the profile"
-msgstr ""
+msgstr "Za povezavo ali urejanje profila je potrebno geslo"
 
 #: src/remmina_file_editor.c:1460
 msgid "Unexpected disconnect"
-msgstr ""
+msgstr "Nepričakovana prekinitev povezave"
 
 #: src/remmina_file_editor.c:1463
 msgid "Keep window from closing if not disconnected by Remmina"
-msgstr ""
+msgstr "Prepreči zapiranje okna, če Remmina ni prekinila povezave"
 
 #: src/remmina_file_editor.c:1484
 #, fuzzy
@@ -1513,7 +1499,7 @@ msgstr "Isti strežnik na vratih %i"
 
 #: src/remmina_file_editor.c:1527
 msgid "Command arguments"
-msgstr ""
+msgstr "Argumenti ukaza"
 
 #: src/remmina_file_editor.c:1528
 msgid ""
@@ -1523,6 +1509,11 @@ msgid ""
 "Example: <-l username -p port>\n"
 "<-l user localhost> would not set localhost as there is no flag"
 msgstr ""
+"Preglasi vse druge možnosti\n"
+"Vse možnosti morda niso podprte\n"
+"Sprejema le pare zastavica-argument\n"
+"Primer: <-l uporabniško_ime -p vrata>\n"
+"<-l uporabnik localhost> ne nastavi localhost, saj ta zastavica ne obstaja"
 
 #: src/remmina_file_editor.c:1559 plugins/rdp/rdp_plugin.c:3286
 msgid "Start-up path"
@@ -1552,11 +1543,11 @@ msgstr "Zagonski program"
 
 #: src/remmina_file_editor.c:1651
 msgid "Export ssh tunnel settings"
-msgstr ""
+msgstr "Izvozi nastavitve ssh tunela"
 
 #: src/remmina_file_editor.c:1657
 msgid "Import ssh tunnel settings"
-msgstr ""
+msgstr "Uvozi nastavitve ssh tunela"
 
 #: src/remmina_file_editor.c:1692
 msgid "Basic"
@@ -1639,11 +1630,11 @@ msgstr "Uporabi '%s' kot ločilo podskupin"
 
 #: src/remmina_file_editor.c:2312 data/ui/remmina_main.glade:512
 msgid "Labels"
-msgstr ""
+msgstr "Oznake"
 
 #: src/remmina_file_editor.c:2326
 msgid "Label1,Label2"
-msgstr ""
+msgstr "Oznaka1,Oznaka2"
 
 #: src/remmina_file_editor.c:2398 src/remmina_file_editor.c:2417
 #, c-format
@@ -1714,7 +1705,6 @@ msgstr "TABELIČNI NAČRT"
 
 #. TRANSLATORS: Shown in terminal. Do not use characters that may be not supported on a terminal
 #: src/remmina.c:122
-#, fuzzy
 msgid "Quit"
 msgstr "Izhod"
 
@@ -2398,7 +2388,7 @@ msgstr "SPICE - Enostavni protokol za neodvisna računalniška okolja"
 
 #: plugins/spice/spice_plugin.c:803
 msgid "SPICE vv file"
-msgstr ""
+msgstr "Datoteka SPICE vv"
 
 #: plugins/spice/spice_plugin.c:895
 #, fuzzy
@@ -2436,7 +2426,7 @@ msgstr "Notranja napaka: %s"
 #: plugins/x2go/x2go_plugin.c:297 plugins/x2go/x2go_plugin.c:429
 #: plugins/x2go/x2go_plugin.c:516 plugins/x2go/x2go_plugin.c:1290
 msgid "Parameter 'custom_data' is not initialized!"
-msgstr ""
+msgstr "Parameter »custom_data« ni inicializiran!"
 
 #: plugins/x2go/x2go_plugin.c:310
 #, fuzzy
@@ -2466,15 +2456,15 @@ msgstr "Dovoljenje"
 
 #: plugins/x2go/x2go_plugin.c:477
 msgid "Create date"
-msgstr ""
+msgstr "Datum nastanka"
 
 #: plugins/x2go/x2go_plugin.c:478
 msgid "Suspended since"
-msgstr ""
+msgstr "Prekinjeno od"
 
 #: plugins/x2go/x2go_plugin.c:479
 msgid "Agent PID"
-msgstr ""
+msgstr "PID agenta"
 
 #: plugins/x2go/x2go_plugin.c:481
 #, fuzzy
@@ -2483,15 +2473,15 @@ msgstr "Uporabniško ime"
 
 #: plugins/x2go/x2go_plugin.c:482
 msgid "Cookie"
-msgstr ""
+msgstr "Piškotek"
 
 #: plugins/x2go/x2go_plugin.c:483
 msgid "Graphic port"
-msgstr ""
+msgstr "Grafični priključek"
 
 #: plugins/x2go/x2go_plugin.c:484
 msgid "SND port"
-msgstr ""
+msgstr "SND priključek"
 
 #: plugins/x2go/x2go_plugin.c:485
 #, fuzzy
@@ -2524,7 +2514,7 @@ msgstr "Nadaljuj"
 
 #: plugins/x2go/x2go_plugin.c:539
 msgid "_New"
-msgstr ""
+msgstr "_Nov"
 
 #. TRANSLATORS: Tooltip for terminating button inside Session-Chooser-Dialog.
 #. TRANSLATORS: Please stick to X2GoClient's way of translating.
@@ -2535,7 +2525,7 @@ msgstr ""
 #: plugins/x2go/x2go_plugin.c:622 plugins/x2go/x2go_plugin.c:624
 #, c-format
 msgid "Unknown property '%i'"
-msgstr ""
+msgstr "Neznana lastnost »%i«"
 
 #: plugins/x2go/x2go_plugin.c:711 plugins/x2go/x2go_plugin.c:758
 msgid "Could not find child GtkTreeView of session chooser dialog."

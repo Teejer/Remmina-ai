@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-04-15 13:09+0000\n"
+"PO-Revision-Date: 2026-05-19 10:11+0000\n"
 "Last-Translator: KAMI <kami911@gmail.com>\n"
 "Language-Team: Hungarian <https://hosted.weblate.org/projects/remmina/"
 "remmina/hu/>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1-dev\n"
+"X-Generator: Weblate 2026.6.dev0\n"
 "X-Launchpad-Export-Date: 2014-04-10 15:03+0000\n"
 
 #: src/remmina_icon.c:143
@@ -3493,7 +3493,7 @@ msgstr "Audió kimeneti üzemmód"
 
 #: plugins/rdp/rdp_plugin.c:3276
 msgid "Redirect local audio output"
-msgstr "Helyi mikrofon átirányítása"
+msgstr "Helyi hangkimenet átirányítása"
 
 #: plugins/rdp/rdp_plugin.c:3277
 msgid "Redirect local microphone"
