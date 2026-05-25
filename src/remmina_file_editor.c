@@ -985,6 +985,16 @@ static void remmina_file_editor_run_import_export_dialog(gpointer user_data, gin
 		remmina_file_editor_save_ssh_tunnel_tab(gfe, export_rf);
 		
 		export_rf->filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+
+		// Set the protocol same as the remmina profile
+		// If no protocol found, set to SSH to avoid other issues
+		const gchar* proto = remmina_file_get_string(priv->remmina_file, "protocol");
+		if (proto) {
+			remmina_file_set_string(export_rf, "protocol", proto);
+		}
+		else {
+			remmina_file_set_string(export_rf, "protocol", "SSH");
+		}
 		remmina_file_save(export_rf);
 
 	}

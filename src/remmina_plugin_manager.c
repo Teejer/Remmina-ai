@@ -1590,6 +1590,10 @@ gboolean remmina_plugin_manager_is_encrypted_setting(RemminaProtocolPlugin *pp, 
 	if (encrypted_settings_cache == NULL)
 		return FALSE;
 
+	if (!pp) {
+		return FALSE;
+	}
+
 	if (!(pht = g_hash_table_lookup(encrypted_settings_cache, pp->name)))
 		return FALSE;
 
