@@ -487,16 +487,14 @@ remmina_ssh_cp_to_ch_cb(int fd, int revents, void *userdata)
 {
 	TRACE_CALL(__func__);
 	ssh_channel channel = (ssh_channel)userdata;
-	gchar *buf = (gchar *) g_malloc ( sizeof(gchar) * 0x200000 );
-	if (buf ==NULL){
-		return -1;
-	}
-	gint sz = 0, ret = 0;
+	gchar buf[8192];
+	gssize sz = 0;
+	gint ret = 0;
 
 	node_t *temp_node = remmina_ssh_search_item(channel);
 
 	if (!channel) {
-		if (!temp_node->protected) {
+		if (temp_node && !temp_node->protected) {
 			shutdown(fd, SHUT_RDWR);
 			close(fd);
 			REMMINA_DEBUG("fd %d closed.", fd);
@@ -508,23 +506,23 @@ remmina_ssh_cp_to_ch_cb(int fd, int revents, void *userdata)
 	if ((revents & POLLIN) || (revents & POLLPRI)) {
 		sz = read(fd, buf, sizeof(buf));
 		if (sz > 0) {
-			ret = ssh_channel_write(channel, buf, sz);
-			if (ret != sz){
-				g_free(buf);
-				return -1;
+			gssize offset = 0;
+			while (offset < sz) {
+				ret = ssh_channel_write(channel, buf + offset, sz - offset);
+				if (ret <= 0) {
+					return -1;
+				}
+				offset += ret;
 			}
-				
 		} else if (sz < 0) {
-			g_free(buf);
 			return -1;
 		} else {
 			REMMINA_WARNING("Why the hell am I here?");
-			if (!temp_node->protected) {
+			if (temp_node && !temp_node->protected) {
 				shutdown(fd, SHUT_RDWR);
 				close(fd);
 				REMMINA_DEBUG("fd %d closed.", fd);
 			}
-			g_free(buf);
 			return -1;
 		}
 	}
@@ -534,7 +532,6 @@ remmina_ssh_cp_to_ch_cb(int fd, int revents, void *userdata)
 		ssh_channel_close(channel);
 		ret = -1;
 	}
-	g_free(buf);
 	return ret;
 }
 
