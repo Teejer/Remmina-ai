@@ -1753,7 +1753,7 @@ static void rcw_toolbar_viewonly_mode(GtkToolItem *toggle, RemminaConnectionWind
 	// This will only be available to plugins that support viewonly
 	TRACE_CALL(__func__);
 	RemminaConnectionObject *cnnobj;
-	gboolean bactive;
+	gboolean bactive = false;
 
 	if (!(cnnobj = rcw_get_visible_cnnobj(cnnwin))) {
 		return;
@@ -2080,21 +2080,18 @@ static void rcw_toolbar_menu(GtkToolItem *toggle, RemminaConnectionWindow *cnnwi
 static void rcw_toolbar_creds(GtkToolItem *toggle, RemminaConnectionWindow *cnnwin)
 {
 	TRACE_CALL(__func__);
-	RemminaConnectionWindowPriv *priv;
 	RemminaConnectionObject *cnnobj;
-	const RemminaProtocolFeature *feature;
 	GtkWidget *menu;
 	GtkWidget *menuitem = NULL;
 	if (cnnwin->priv->toolbar_is_reconfiguring)
 		return;
 	if (!(cnnobj = rcw_get_visible_cnnobj(cnnwin))) return;
-	priv = cnnobj->cnnwin->priv;
 
 	if (!gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(toggle)))
 		return;
 
-	gchar* username = remmina_file_get_string(cnnobj->remmina_file, "username");
-	gchar* password = remmina_file_get_string(cnnobj->remmina_file, "password");
+	const gchar* username = remmina_file_get_string(cnnobj->remmina_file, "username");
+	const gchar* password = remmina_file_get_string(cnnobj->remmina_file, "password");
 
 	if (username == NULL && password == NULL){
 		return;
@@ -2107,7 +2104,7 @@ static void rcw_toolbar_creds(GtkToolItem *toggle, RemminaConnectionWindow *cnnw
 		menuitem = gtk_menu_item_new_with_label(_("Insert username"));
 		gtk_widget_show(menuitem);
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
-		g_object_set_data(G_OBJECT(menuitem), "keystrokes", username);
+		g_object_set_data(G_OBJECT(menuitem), "keystrokes", (gpointer)username);
 		g_signal_connect_swapped(G_OBJECT(menuitem), "activate",
 										G_CALLBACK(remmina_protocol_widget_send_keystrokes),
 										REMMINA_PROTOCOL_WIDGET(cnnobj->proto));
@@ -2118,7 +2115,7 @@ static void rcw_toolbar_creds(GtkToolItem *toggle, RemminaConnectionWindow *cnnw
 			menuitem = gtk_menu_item_new_with_label(_("Insert password"));
 		gtk_widget_show(menuitem);
 		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
-		g_object_set_data(G_OBJECT(menuitem), "keystrokes", password);
+		g_object_set_data(G_OBJECT(menuitem), "keystrokes", (gpointer)password);
 		g_signal_connect_swapped(G_OBJECT(menuitem), "activate",
 										G_CALLBACK(remmina_protocol_widget_send_keystrokes),
 										REMMINA_PROTOCOL_WIDGET(cnnobj->proto));
