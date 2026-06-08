@@ -111,9 +111,8 @@ struct _RemminaConnectionWindowPriv {
 	/* Various delayed and timer event source ids */
 	guint						acs_eventsourceid;              // timeout
 	guint						spf_eventsourceid;              // idle
-	guint						grab_retry_eventsourceid;       // timeout
 	guint						delayed_grab_eventsourceid;
-	gboolean 					grab_pending_on_other_window;	// pending operations on other fullscreen window
+	guint						grab_retry_eventsourceid;       // timeout
 	guint						ftb_hide_eventsource;           // timeout
 	guint						tar_eventsource;                // timeout
 	guint						hidetb_eventsource;             // timeout
@@ -166,12 +165,12 @@ struct _RemminaConnectionWindowPriv {
 	gint						ss_width, ss_height;
 	gboolean					ss_maximized;
 
-	gboolean					kbcaptured;
-	gboolean					pointer_captured;
+	gint						grab_realize_source_id;
+	gboolean					grab_pending_status;
+	gboolean					grab_current_status;
+
 	gboolean					hostkey_activated;
 	gboolean					hostkey_used;
-
-	gboolean					pointer_entered;
 
 	RemminaConnectionWindowOnDeleteConfirmMode	on_delete_confirm_mode;
 };
@@ -204,11 +203,6 @@ enum {
 static guint rcw_signals[LAST_SIGNAL] =
 { 0 };
 
-typedef struct _grab_callback_data {
-	RemminaConnectionWindow *cnnwin;
-	GtkWindow* window;
-} grab_callback_data;
-
 static RemminaConnectionWindow *rcw_create_scrolled(gint width, gint height, gboolean maximize);
 static RemminaConnectionWindow *rcw_create_fullscreen(GtkWindow *old, gint view_mode);
 static gboolean rcw_hostkey_func(RemminaProtocolWidget *gp, guint keyval, gboolean release);
@@ -220,12 +214,14 @@ void rcw_grab_focus(RemminaConnectionWindow *cnnwin);
 static GtkWidget *rcw_create_toolbar(RemminaConnectionWindow *cnnwin, gint mode, gboolean is_floating);
 static void rcw_place_toolbar(GtkToolbar *toolbar, GtkGrid *grid, GtkWidget *sibling, int toolbar_placement);
 static void rco_update_toolbar(RemminaConnectionObject *cnnobj);
-static void rcw_keyboard_grab(RemminaConnectionWindow *cnnwin, GtkWindow*window);
+static void rcw_keyboard_grab_request(RemminaConnectionObject *cnnobj, gboolean want_grab);
+static void rcw_keyboard_grab(RemminaConnectionWindow *cnnwin);
 static GtkWidget *rcw_append_new_page(RemminaConnectionWindow *cnnwin, RemminaConnectionObject *cnnobj);
 
 static void rcw_ftb_drag_begin(GtkWidget *widget, GdkDragContext *context, gpointer user_data);
 
 static void rcw_create_widget_areas(RemminaConnectionObject*cnnobj);
+static GdkWindow* rcw_widget_active_area(RemminaConnectionWindow*cnnwin);
 static void rcw_show_widget_areas(RemminaConnectionWindow*priv);
 static void rcw_iconify_widget_areas(RemminaConnectionWindow*priv);
 static void rcw_restore_widget_areas(RemminaConnectionWindow*priv);
@@ -497,14 +493,9 @@ static void rcw_kp_ungrab(RemminaConnectionWindow *cnnwin)
 	keyboard = gdk_device_manager_get_client_pointer(manager);
 #endif
 
-	if (!cnnwin->priv->kbcaptured && !cnnwin->priv->pointer_captured)
-		return;
-
 #if DEBUG_KB_GRABBING
-	printf("DEBUG_KB_GRABBING: --- ungrabbing\n");
+	REMMINA_DEBUG("DEBUG_KB_GRABBING: --- ungrabbing");
 #endif
-
-
 
 #if GTK_CHECK_VERSION(3, 20, 0)
 	/* We can use gtk_seat_grab()/_ungrab() only after GTK 3.24 */
@@ -518,71 +509,20 @@ static void rcw_kp_ungrab(RemminaConnectionWindow *cnnwin)
 		G_GNUC_END_IGNORE_DEPRECATIONS
 	}
 #endif
-	cnnwin->priv->kbcaptured = FALSE;
-	cnnwin->priv->pointer_captured = FALSE;
 }
 
-static gboolean rcw_keyboard_grab_retry(grab_callback_data*grab_cb_info)
+static gboolean rcw_keyboard_grab_retry(RemminaConnectionWindow*cnnwin)
 {
 	TRACE_CALL(__func__);
 #if DEBUG_KB_GRABBING
-	printf("%s retry grab\n", __func__);
+	REMMINA_DEBUG("DEBUG_KB_GRABBING: retry grab");
 #endif
-	rcw_keyboard_grab(grab_cb_info->cnnwin, grab_cb_info->window);
-	grab_cb_info->cnnwin->priv->grab_retry_eventsourceid = 0;
-	g_free(grab_cb_info);
+	rcw_keyboard_grab(cnnwin);
+	cnnwin->priv->grab_retry_eventsourceid = 0;
 	return G_SOURCE_REMOVE;
 }
 
-static void rcw_pointer_ungrab(RemminaConnectionWindow *cnnwin)
-{
-	TRACE_CALL(__func__);
-#if GTK_CHECK_VERSION(3, 20, 0)
-	GdkSeat *seat;
-	GdkDisplay *display;
-	if (!cnnwin->priv->pointer_captured)
-		return;
-
-	display = gtk_widget_get_display(GTK_WIDGET(cnnwin));
-	seat = gdk_display_get_default_seat(display);
-	gdk_seat_ungrab(seat);
-#endif
-}
-
-static void rcw_pointer_grab(RemminaConnectionWindow *cnnwin)
-{
-	TRACE_CALL(__func__);
-	/* This function in Wayland is useless and generates a spurious leave-notify event.
-	 * Should we remove it ? https://gitlab.gnome.org/GNOME/mutter/-/issues/2450#note_1588081 */
-#if GTK_CHECK_VERSION(3, 20, 0)
-	GdkSeat *seat;
-	GdkDisplay *display;
-	GdkGrabStatus ggs;
-
-
-	if (cnnwin->priv->pointer_captured) {
-#if DEBUG_KB_GRABBING
-		printf("DEBUG_KB_GRABBING: pointer_captured is true, it should not\n");
-#endif
-		return;
-	}
-
-	display = gtk_widget_get_display(GTK_WIDGET(cnnwin));
-	seat = gdk_display_get_default_seat(display);
-	ggs = gdk_seat_grab(seat, gtk_widget_get_window(GTK_WIDGET(cnnwin)),
-			    GDK_SEAT_CAPABILITY_ALL_POINTING, TRUE, NULL, NULL, NULL, NULL);
-	if (ggs != GDK_GRAB_SUCCESS) {
-#if DEBUG_KB_GRABBING
-		printf("DEBUG_KB_GRABBING: GRAB of POINTER failed. GdkGrabStatus: %d\n", (int)ggs);
-#endif
-	} else {
-		cnnwin->priv->pointer_captured = TRUE;
-	}
-
-#endif
-}
-
-static void rcw_keyboard_grab(RemminaConnectionWindow *cnnwin, GtkWindow* window)
+static void rcw_keyboard_grab(RemminaConnectionWindow *cnnwin)
 {
 	TRACE_CALL(__func__);
 	GdkDisplay *display;
@@ -594,16 +534,6 @@ static void rcw_keyboard_grab(RemminaConnectionWindow *cnnwin, GtkWindow* window
 #endif
 	GdkGrabStatus ggs;
 	GdkDevice *keyboard = NULL;
-
-	if (window == NULL)
-		window = GTK_WINDOW(cnnwin);
-
-	if (cnnwin->priv->kbcaptured) {
-#if DEBUG_KB_GRABBING
-		printf("DEBUG_KB_GRABBING: %s not grabbing because already grabbed.\n", __func__);
-#endif
-		return;
-	}
 
 	display = gtk_widget_get_display(GTK_WIDGET(cnnwin));
 #if GTK_CHECK_VERSION(3, 20, 0)
@@ -618,9 +548,13 @@ static void rcw_keyboard_grab(RemminaConnectionWindow *cnnwin, GtkWindow* window
 		if (gdk_device_get_source(keyboard) != GDK_SOURCE_KEYBOARD)
 			keyboard = gdk_device_get_associated_device(keyboard);
 
+		GdkWindow*grab_window = rcw_widget_active_area(cnnwin);
+		if (grab_window == NULL) {
+			grab_window = gtk_widget_get_window(gtk_widget_get_toplevel(GTK_WIDGET(cnnwin)));
+		}
 
 #if DEBUG_KB_GRABBING
-		printf("DEBUG_KB_GRABBING: profile asks for grabbing, let’s try.\n");
+		REMMINA_DEBUG("DEBUG_KB_GRABBING: profile asks for grabbing, let’s try.");
 #endif
 		/* Up to GTK version 3.20 we can grab the keyboard with gdk_device_grab().
 		 * in GTK 3.20 gdk_seat_grab() should be used instead of gdk_device_grab().
@@ -641,35 +575,93 @@ static void rcw_keyboard_grab(RemminaConnectionWindow *cnnwin, GtkWindow* window
 		 * by unsetting GDK_CORE_DEVICE_EVENTS
 		 */
 #if GTK_CHECK_VERSION(3, 20, 0)
-		ggs = gdk_seat_grab(seat, gtk_widget_get_window(GTK_WIDGET(window)),
+		ggs = gdk_seat_grab(seat, grab_window,
 				    GDK_SEAT_CAPABILITY_KEYBOARD, TRUE, NULL, NULL, NULL, NULL);
 #else
-		ggs = gdk_device_grab(keyboard, gtk_widget_get_window(GTK_WIDGET(window)), GDK_OWNERSHIP_WINDOW,
+		ggs = gdk_device_grab(keyboard, grab_window, GDK_OWNERSHIP_WINDOW,
 				      TRUE, GDK_KEY_PRESS | GDK_KEY_RELEASE, NULL, GDK_CURRENT_TIME);
 #endif
-		if (ggs != GDK_GRAB_SUCCESS) {
+		// in multimon, need 'insist'
+		GdkGrabStatus success = cnnwin->priv->multi_mon ? GDK_GRAB_ALREADY_GRABBED : GDK_GRAB_SUCCESS;
+		if (ggs != success) {
 #if DEBUG_KB_GRABBING
-			printf("GRAB of keyboard failed.\n");
+			if (cnnwin->priv->multi_mon && ggs == GDK_GRAB_SUCCESS)
+				REMMINA_DEBUG("DEBUG_KB_GRABBING: grab keyboard ok, %s", cnnwin->priv->grab_retry_eventsourceid == 0 ? "will be retried":"last try");
+			else
+				REMMINA_DEBUG("DEBUG_KB_GRABBING: grab keyboard failed: %d, will be retried", ggs);
 #endif
 			/* Reschedule grabbing in half a second if not already done */
 			if (cnnwin->priv->grab_retry_eventsourceid == 0) {
-				grab_callback_data*grab_cb_info = g_malloc(sizeof(grab_callback_data));
-				grab_cb_info->cnnwin = cnnwin;
-				grab_cb_info->window = window;
-				cnnwin->priv->grab_retry_eventsourceid = g_timeout_add(500, (GSourceFunc)rcw_keyboard_grab_retry, grab_cb_info);
+				cnnwin->priv->grab_retry_eventsourceid = g_timeout_add(500, (GSourceFunc)rcw_keyboard_grab_retry, cnnwin);
 			}
 		} else {
 #if DEBUG_KB_GRABBING
-			printf("Keyboard grabbed\n");
-#endif
+			REMMINA_DEBUG("DEBUG_KB_GRABBING: keyboard grabbed");
+#endif			
 			if (cnnwin->priv->grab_retry_eventsourceid != 0) {
 				g_source_remove(cnnwin->priv->grab_retry_eventsourceid);
 				cnnwin->priv->grab_retry_eventsourceid = 0;
 			}
-			cnnwin->priv->kbcaptured = TRUE;
 		}
-	} else {
-		rcw_kp_ungrab(cnnwin);
+	}
+}
+
+
+static gboolean rcw_keyboard_grab_realize(RemminaConnectionObject* cnnobj) {
+#if DEBUG_KB_GRABBING
+		REMMINA_DEBUG("DEBUG_KB_GRABBING");
+#endif
+	cnnobj->cnnwin->priv->grab_realize_source_id = 0;
+	if (!cnnobj->cnnwin->priv->grab_pending_status) {
+#if DEBUG_KB_GRABBING
+		REMMINA_DEBUG("DEBUG_KB_GRABBING: ungrabing");
+#endif
+		rcw_kp_ungrab(cnnobj->cnnwin);
+		cnnobj->cnnwin->priv->grab_current_status = FALSE;
+		return G_SOURCE_REMOVE;
+	}
+	
+	if (!gtk_window_is_active(GTK_WINDOW(cnnobj->cnnwin)) && !rcw_widget_active_area(cnnobj->cnnwin)) {
+#if DEBUG_KB_GRABBING
+		REMMINA_DEBUG("DEBUG_KB_GRABBING: canceled, no connection window is active for now");
+#endif
+		return G_SOURCE_REMOVE;
+	}
+#if DEBUG_KB_GRABBING
+	REMMINA_DEBUG("DEBUG_KB_GRABBING: call grab");
+#endif
+	rcw_keyboard_grab(cnnobj->cnnwin);
+	cnnobj->cnnwin->priv->grab_current_status = TRUE;
+	return G_SOURCE_REMOVE;
+}
+
+static void rcw_keyboard_grab_request(RemminaConnectionObject *cnnobj, gboolean want_grab)
+{	
+	if (!cnnobj || cnnobj->connected == FALSE)
+		return;
+
+	/* option must be activated grab */
+	if (want_grab && remmina_file_get_int(cnnobj->remmina_file, "keyboard_grab", FALSE) == FALSE)
+		return;
+	
+#if DEBUG_KB_GRABBING
+	REMMINA_DEBUG("DEBUG_KB_GRABBING: grab_wanted=%d, done=%d", want_grab, cnnobj->cnnwin->priv->grab_current_status);
+#endif
+
+	gboolean changed = cnnobj->cnnwin->priv->grab_pending_status != want_grab || cnnobj->cnnwin->priv->grab_pending_status != cnnobj->cnnwin->priv->grab_current_status;
+	if (changed && cnnobj->cnnwin->priv->grab_realize_source_id != 0 && !want_grab) {
+#if DEBUG_KB_GRABBING
+		REMMINA_DEBUG("DEBUG_KB_GRABBING: ignoring ungrab because grab already asked in this session");
+#endif
+		return;
+	}
+	cnnobj->cnnwin->priv->grab_pending_status  = want_grab;
+	
+	if (changed && cnnobj->cnnwin->priv->grab_realize_source_id == 0) {
+#if DEBUG_KB_GRABBING
+		REMMINA_DEBUG("DEBUG_KB_GRABBING: launch deferred realize");
+#endif
+		cnnobj->cnnwin->priv->grab_realize_source_id = g_timeout_add(200, (GSourceFunc)rcw_keyboard_grab_realize, cnnobj);
 	}
 }
 
@@ -769,8 +761,7 @@ static void rcw_destroy(GtkWidget *widget, gpointer data)
 	cnnwin = (RemminaConnectionWindow *)widget;
 	priv = cnnwin->priv;
 
-	if (priv->kbcaptured)
-		rcw_kp_ungrab(cnnwin);
+	rcw_kp_ungrab(cnnwin);
 
 	if (priv->acs_eventsourceid) {
 		g_source_remove(priv->acs_eventsourceid);
@@ -783,6 +774,10 @@ static void rcw_destroy(GtkWidget *widget, gpointer data)
 	if (priv->grab_retry_eventsourceid) {
 		g_source_remove(priv->grab_retry_eventsourceid);
 		priv->grab_retry_eventsourceid = 0;
+	}
+	if (priv->grab_realize_source_id) {
+		g_source_remove(priv->grab_realize_source_id);
+		priv->grab_realize_source_id = 0;
 	}
 	if (cnnwin->priv->delayed_grab_eventsourceid) {
 		g_source_remove(cnnwin->priv->delayed_grab_eventsourceid);
@@ -2528,17 +2523,7 @@ static void rcw_toolbar_grab(GtkToolItem *toggle, RemminaConnectionWindow *cnnwi
 		remmina_file_set_int(cnnobj->remmina_file, "keyboard_grab", capture);
 	}
 
-	if (capture && cnnobj->connected) {
-
-#if DEBUG_KB_GRABBING
-		printf("DEBUG_KB_GRABBING: Grabbing for button\n");
-#endif
-		rcw_keyboard_grab(cnnobj->cnnwin, NULL);
-		if (cnnobj->cnnwin->priv->pointer_entered)
-			rcw_pointer_grab(cnnobj->cnnwin);
-	} else {
-		rcw_kp_ungrab(cnnobj->cnnwin);
-	}
+	rcw_keyboard_grab_request(cnnobj, capture && cnnobj->connected);
 
 	rco_update_toolbar(cnnobj);
 }
@@ -3117,31 +3102,31 @@ static void rcw_set_toolbar_visibility(RemminaConnectionWindow *cnnwin)
 
 #if DEBUG_KB_GRABBING
 static void print_crossing_event(GdkEventCrossing *event) {
-	printf("DEBUG_KB_GRABBING: --- Crossing event detail: ");
+	const char*event_name;
+	
 	switch (event->detail) {
-	case GDK_NOTIFY_ANCESTOR: printf("GDK_NOTIFY_ANCESTOR"); break;
-	case GDK_NOTIFY_VIRTUAL: printf("GDK_NOTIFY_VIRTUAL"); break;
-	case GDK_NOTIFY_NONLINEAR: printf("GDK_NOTIFY_NONLINEAR"); break;
-	case GDK_NOTIFY_NONLINEAR_VIRTUAL: printf("GDK_NOTIFY_NONLINEAR_VIRTUAL"); break;
-	case GDK_NOTIFY_UNKNOWN: printf("GDK_NOTIFY_UNKNOWN"); break;
-	case GDK_NOTIFY_INFERIOR: printf("GDK_NOTIFY_INFERIOR"); break;
-	default: printf("unknown");
+	case GDK_NOTIFY_ANCESTOR: event_name="GDK_NOTIFY_ANCESTOR"; break;
+	case GDK_NOTIFY_VIRTUAL: event_name="GDK_NOTIFY_VIRTUAL"; break;
+	case GDK_NOTIFY_NONLINEAR: event_name="GDK_NOTIFY_NONLINEAR"; break;
+	case GDK_NOTIFY_NONLINEAR_VIRTUAL: event_name="GDK_NOTIFY_NONLINEAR_VIRTUAL"; break;
+	case GDK_NOTIFY_UNKNOWN: event_name="GDK_NOTIFY_UNKNOWN"; break;
+	case GDK_NOTIFY_INFERIOR: event_name="GDK_NOTIFY_INFERIOR"; break;
+	default: event_name="unknown";
 	}
-	printf("\n");
-	printf("DEBUG_KB_GRABBING: --- Crossing event mode=");
+	REMMINA_DEBUG("DEBUG_KB_GRABBING: --- Crossing event detail: %s", event_name);
 	switch (event->mode) {
-	case GDK_CROSSING_NORMAL: printf("GDK_CROSSING_NORMAL"); break;
-	case GDK_CROSSING_GRAB: printf("GDK_CROSSING_GRAB"); break;
-	case GDK_CROSSING_UNGRAB: printf("GDK_CROSSING_UNGRAB"); break;
-	case GDK_CROSSING_GTK_GRAB: printf("GDK_CROSSING_GTK_GRAB"); break;
-	case GDK_CROSSING_GTK_UNGRAB: printf("GDK_CROSSING_GTK_UNGRAB"); break;
-	case GDK_CROSSING_STATE_CHANGED: printf("GDK_CROSSING_STATE_CHANGED"); break;
-	case GDK_CROSSING_TOUCH_BEGIN: printf("GDK_CROSSING_TOUCH_BEGIN"); break;
-	case GDK_CROSSING_TOUCH_END: printf("GDK_CROSSING_TOUCH_END"); break;
-	case GDK_CROSSING_DEVICE_SWITCH: printf("GDK_CROSSING_DEVICE_SWITCH"); break;
-	default: printf("unknown");
+	case GDK_CROSSING_NORMAL: event_name="GDK_CROSSING_NORMAL"; break;
+	case GDK_CROSSING_GRAB: event_name="GDK_CROSSING_GRAB"; break;
+	case GDK_CROSSING_UNGRAB: event_name="GDK_CROSSING_UNGRAB"; break;
+	case GDK_CROSSING_GTK_GRAB: event_name="GDK_CROSSING_GTK_GRAB"; break;
+	case GDK_CROSSING_GTK_UNGRAB: event_name="GDK_CROSSING_GTK_UNGRAB"; break;
+	case GDK_CROSSING_STATE_CHANGED: event_name="GDK_CROSSING_STATE_CHANGED"; break;
+	case GDK_CROSSING_TOUCH_BEGIN: event_name="GDK_CROSSING_TOUCH_BEGIN"; break;
+	case GDK_CROSSING_TOUCH_END: event_name="GDK_CROSSING_TOUCH_END"; break;
+	case GDK_CROSSING_DEVICE_SWITCH: event_name="GDK_CROSSING_DEVICE_SWITCH"; break;
+	default: event_name="unknown";
 	}
-	printf("\n");
+	REMMINA_DEBUG("DEBUG_KB_GRABBING: --- Crossing event mode=%s", event_name);
 }
 #endif
 
@@ -3196,7 +3181,7 @@ static gboolean rcw_on_enter_notify_event(GtkWidget *widget, GdkEventCrossing *e
 {
 	TRACE_CALL(__func__);
 #if DEBUG_KB_GRABBING
-	printf("DEBUG_KB_GRABBING: enter-notify-event on rcw received\n");
+	REMMINA_DEBUG("DEBUG_KB_GRABBING: enter-notify-event on rcw received");
 	print_crossing_event(event);
 #endif
 	return FALSE;
@@ -3211,13 +3196,13 @@ static gboolean rcw_on_leave_notify_event(GtkWidget *widget, GdkEventCrossing *e
 	RemminaConnectionWindow *cnnwin = (RemminaConnectionWindow *)widget;
 
 #if DEBUG_KB_GRABBING
-	printf("DEBUG_KB_GRABBING: leave-notify-event on rcw received\n");
+	REMMINA_DEBUG("DEBUG_KB_GRABBING: leave-notify-event on rcw received");
 	print_crossing_event(event);
 #endif
 
 	if (event->mode != GDK_CROSSING_NORMAL && event->mode != GDK_CROSSING_UNGRAB) {
 #if DEBUG_KB_GRABBING
-	printf("DEBUG_KB_GRABBING:   ignored because mode is not GDK_CROSSING_NORMAL GDK_CROSSING_UNGRAB\n");
+	REMMINA_DEBUG("DEBUG_KB_GRABBING: ignored because mode is not GDK_CROSSING_NORMAL GDK_CROSSING_UNGRAB");
 #endif
 		return FALSE;
 	}
@@ -3227,15 +3212,8 @@ static gboolean rcw_on_leave_notify_event(GtkWidget *widget, GdkEventCrossing *e
 		cnnwin->priv->delayed_grab_eventsourceid = 0;
 	}
 
-	/* Workaround for https://gitlab.gnome.org/GNOME/mutter/-/issues/2450#note_1586570 */
-	if (event->mode != GDK_CROSSING_UNGRAB) {
-		rcw_kp_ungrab(cnnwin);
-		rcw_pointer_ungrab(cnnwin);
-	} else {
-#if DEBUG_KB_GRABBING
-		printf("DEBUG_KB_GRABBING:   not ungrabbing, this event seems to be an unwanted event from GTK\n");
-#endif
-	}
+	RemminaConnectionObject* cnnobj = rcw_get_visible_cnnobj(cnnwin);
+	rcw_keyboard_grab_request(cnnobj, event->mode == GDK_CROSSING_UNGRAB);
 
 	return FALSE;
 }
@@ -3247,7 +3225,7 @@ static gboolean rco_leave_protocol_widget(GtkWidget *widget, GdkEventCrossing *e
 	TRACE_CALL(__func__);
 
 #if DEBUG_KB_GRABBING
-	printf("DEBUG_KB_GRABBING: received leave event on RCO.\n");
+	REMMINA_DEBUG("DEBUG_KB_GRABBING: received leave event on RCO.");
 	print_crossing_event(event);
 #endif
 
@@ -3256,12 +3234,12 @@ static gboolean rco_leave_protocol_widget(GtkWidget *widget, GdkEventCrossing *e
 		cnnobj->cnnwin->priv->delayed_grab_eventsourceid = 0;
 	}
 
-	cnnobj->cnnwin->priv->pointer_entered = FALSE;
-
 	/* Ungrab only if the leave is due to normal mouse motion and not to an inferior */
 	if (event->mode == GDK_CROSSING_NORMAL && event->detail != GDK_NOTIFY_INFERIOR)
-		rcw_kp_ungrab(cnnobj->cnnwin);
-
+		rcw_keyboard_grab_request(cnnobj, FALSE);
+	if (event->mode == GDK_CROSSING_UNGRAB)
+		rcw_keyboard_grab_request(cnnobj, FALSE);
+		
 	return FALSE;
 }
 
@@ -3270,63 +3248,25 @@ static gboolean rco_enter_protocol_widget(GtkWidget *widget, GdkEventCrossing *e
 				   RemminaConnectionObject *cnnobj)
 {
 	TRACE_CALL(__func__);
-	gboolean active;
 
 #if DEBUG_KB_GRABBING
-	printf("DEBUG_KB_GRABBING: %s: enter on protocol widget event received\n", __func__);
+	REMMINA_DEBUG("DEBUG_KB_GRABBING: enter on protocol widget event received");
 	print_crossing_event(event);
 #endif
 
 	RemminaConnectionWindowPriv *priv = cnnobj->cnnwin->priv;
 	if (!priv->sticky && event->mode == GDK_CROSSING_NORMAL)
 		rcw_floating_toolbar_show(cnnobj->cnnwin, FALSE);
-
-	priv->pointer_entered = TRUE;
+	
 	if (!cnnobj->connected) {
 #if DEBUG_KB_GRABBING
-		printf("DEBUG_KB_GRABBING: Not connected yet, abort\n");
+		REMMINA_DEBUG("DEBUG_KB_GRABBING: Not connected yet, abort");
 #endif
 		return FALSE;
 	}
-
-	if (event->mode == GDK_CROSSING_UNGRAB) {
-		// Someone steal our grab, take note and do not attempt to regrab
-		cnnobj->cnnwin->priv->kbcaptured = FALSE;
-		cnnobj->cnnwin->priv->pointer_captured = FALSE;
-		return FALSE;
-	}
-
-	/* Check if we need grabbing */
-	active = gtk_window_is_active(GTK_WINDOW(cnnobj->cnnwin));
-	if (remmina_file_get_int(cnnobj->remmina_file, "keyboard_grab", FALSE) && active) {
-		rcw_keyboard_grab(cnnobj->cnnwin, NULL);
-		rcw_pointer_grab(cnnobj->cnnwin);
-	}
+	rcw_keyboard_grab_request(cnnobj, event->mode != GDK_CROSSING_UNGRAB);
 
 	return FALSE;
-}
-
-static gboolean focus_in_delayed_grab(RemminaConnectionWindow *cnnwin)
-{
-	TRACE_CALL(__func__);
-
-#if DEBUG_KB_GRABBING
-	printf("DEBUG_KB_GRABBING:   %s\n", __func__);
-#endif
-	if (cnnwin->priv->pointer_entered) {
-#if DEBUG_KB_GRABBING
-		printf("DEBUG_KB_GRABBING:   delayed requesting kb and pointer grab, because of pointer inside\n");
-#endif
-		rcw_keyboard_grab(cnnwin, NULL);
-		rcw_pointer_grab(cnnwin);
-	}
-#if DEBUG_KB_GRABBING
-	else {
-		printf("DEBUG_KB_GRABBING:   %s not grabbing because pointer_entered is false\n", __func__);
-	}
-#endif
-	cnnwin->priv->delayed_grab_eventsourceid = 0;
-	return G_SOURCE_REMOVE;
 }
 
 static void rcw_focus_in(RemminaConnectionWindow *cnnwin)
@@ -3341,18 +3281,7 @@ static void rcw_focus_in(RemminaConnectionWindow *cnnwin)
 
 	if (!(cnnobj = rcw_get_visible_cnnobj(cnnwin))) return;
 
-	if (cnnobj && cnnobj->connected && remmina_file_get_int(cnnobj->remmina_file, "keyboard_grab", FALSE)) {
-#if DEBUG_KB_GRABBING
-		printf("DEBUG_KB_GRABBING: Received focus in on rcw, grabbing enabled: requesting kb grab, delayed\n");
-#endif
-		if (cnnwin->priv->delayed_grab_eventsourceid == 0)
-			cnnwin->priv->delayed_grab_eventsourceid = g_timeout_add(300, (GSourceFunc)focus_in_delayed_grab, cnnwin);
-	}
-#if DEBUG_KB_GRABBING
-	else {
-		printf("DEBUG_KB_GRABBING: Received focus in on rcw, but a condition will prevent to grab\n");
-	}
-#endif
+	rcw_keyboard_grab_request(cnnobj, TRUE);
 }
 
 static void rcw_focus_out(RemminaConnectionWindow *cnnwin)
@@ -3365,7 +3294,9 @@ static void rcw_focus_out(RemminaConnectionWindow *cnnwin)
 	TRACE_CALL(__func__);
 	RemminaConnectionObject *cnnobj;
 
-	rcw_kp_ungrab(cnnwin);
+	if (!(cnnobj = rcw_get_visible_cnnobj(cnnwin))) return;
+
+	rcw_keyboard_grab_request(cnnobj, FALSE);
 
 	cnnwin->priv->hostkey_activated = FALSE;
 	if (!(cnnobj = rcw_get_visible_cnnobj(cnnwin))) return;
@@ -3594,9 +3525,7 @@ static void rcw_init(RemminaConnectionWindow *cnnwin)
 	priv->multimon_main_monitor = -1;
 
 	priv->floating_toolbar_opacity = 1.0;
-	priv->kbcaptured = FALSE;
-	priv->pointer_captured = FALSE;
-	priv->pointer_entered = FALSE;
+	priv->grab_pending_status = FALSE;
 	priv->fss_view_mode = VIEWPORT_FULLSCREEN_MODE;
 	priv->ss_width = 640;
 	priv->ss_height = 480;
@@ -3612,7 +3541,7 @@ static gboolean rcw_focus_in_event(GtkWidget *widget, GdkEventWindowState *event
 {
 	TRACE_CALL(__func__);
 #if DEBUG_KB_GRABBING
-	printf("DEBUG_KB_GRABBING: RCW focus-in-event received\n");
+	REMMINA_DEBUG("DEBUG_KB_GRABBING: RCW focus-in-event received");
 #endif
 	rcw_focus_in((RemminaConnectionWindow *)widget);
 	return FALSE;
@@ -3622,11 +3551,55 @@ static gboolean rcw_focus_out_event(GtkWidget *widget, GdkEventWindowState *even
 {
 	TRACE_CALL(__func__);
 #if DEBUG_KB_GRABBING
-	printf("DEBUG_KB_GRABBING: RCW focus-out-event received\n");
+	REMMINA_DEBUG("DEBUG_KB_GRABBING: RCW focus-out-event received");
 #endif
 	rcw_focus_out((RemminaConnectionWindow *)widget);
 	return FALSE;
 }
+
+#if DEBUG_KB_GRABBING
+static void print_gdk_window_state_event(const char*message, GdkWindowState state)
+{
+	static const struct {
+    GdkWindowState flag;
+    const char *name;
+	} gdk_window_state_enum[] = {
+		{ GDK_WINDOW_STATE_WITHDRAWN, "GDK_WINDOW_STATE_WITHDRAWN" },
+		{ GDK_WINDOW_STATE_ICONIFIED, "GDK_WINDOW_STATE_ICONIFIED" },
+		{ GDK_WINDOW_STATE_MAXIMIZED, "GDK_WINDOW_STATE_MAXIMIZED" },
+		{ GDK_WINDOW_STATE_STICKY,    "GDK_WINDOW_STATE_STICKY" },
+		{ GDK_WINDOW_STATE_FULLSCREEN,"GDK_WINDOW_STATE_FULLSCREEN" },
+		{ GDK_WINDOW_STATE_ABOVE,     "GDK_WINDOW_STATE_ABOVE" },
+		{ GDK_WINDOW_STATE_BELOW,     "GDK_WINDOW_STATE_BELOW" },
+		{ GDK_WINDOW_STATE_FOCUSED,   "GDK_WINDOW_STATE_FOCUSED" },
+		{ GDK_WINDOW_STATE_TILED,     "GDK_WINDOW_STATE_TILED" },
+		{ GDK_WINDOW_STATE_TOP_TILED, "GDK_WINDOW_STATE_TOP_TILED" },
+		{ GDK_WINDOW_STATE_TOP_RESIZABLE,"GDK_WINDOW_STATE_TOP_RESIZABLE" },
+		{ GDK_WINDOW_STATE_RIGHT_TILED,"GDK_WINDOW_STATE_RIGHT_TILED" },
+		{ GDK_WINDOW_STATE_RIGHT_RESIZABLE,"GDK_WINDOW_STATE_RIGHT_RESIZABLE" },
+		{ GDK_WINDOW_STATE_BOTTOM_TILED,"GDK_WINDOW_STATE_BOTTOM_TILED" },
+		{ GDK_WINDOW_STATE_BOTTOM_RESIZABLE,"GDK_WINDOW_STATE_BOTTOM_RESIZABLE" },
+		{ GDK_WINDOW_STATE_LEFT_TILED,"GDK_WINDOW_STATE_LEFT_TILED" },
+		{ GDK_WINDOW_STATE_LEFT_RESIZABLE,"GDK_WINDOW_STATE_LEFT_RESIZABLE" }
+	};
+    int first = 1;
+    size_t table_size = sizeof(gdk_window_state_enum) / sizeof(gdk_window_state_enum[0]);
+	GString*state_str = g_string_new("");
+
+    for (size_t i = 0; i < table_size; ++i) {
+        if (state & gdk_window_state_enum[i].flag) {
+            if (!first) state_str = g_string_append(state_str, "|");
+            state_str = g_string_append(state_str, gdk_window_state_enum[i].name);
+            first = 0;
+        }
+    }
+    if (first) {
+        state_str = g_string_append(state_str, "GDK_WINDOW_STATE_NONE");
+    }
+	REMMINA_DEBUG(message, state_str->str);
+	g_string_free(state_str, TRUE);
+}
+#endif
 
 static gboolean rcw_state_event(GtkWidget *widget, GdkEventWindowState *event, gpointer user_data)
 {
@@ -3638,7 +3611,8 @@ static gboolean rcw_state_event(GtkWidget *widget, GdkEventWindowState *event, g
 		return FALSE;
 
 #if DEBUG_KB_GRABBING
-	printf("DEBUG_KB_GRABBING: window-state-event received\n");
+	print_gdk_window_state_event("DEBUG_KB_GRABBING: changed_mask=%s", event->changed_mask);
+	print_gdk_window_state_event("DEBUG_KB_GRABBING: new_window_state=%s", event->new_window_state);
 #endif
 
 	// This will trigger iconify/deiconify on other multimonitor windows
@@ -4764,14 +4738,7 @@ static void rco_on_connect(RemminaProtocolWidget *gp, RemminaConnectionObject *c
 
 	rco_update_toolbar(cnnobj);
 
-	if (cnnobj->cnnwin->priv->pointer_entered) {
-		/* Check if we need grabbing */
-		gboolean active = gtk_window_is_active(GTK_WINDOW(cnnobj->cnnwin));
-		if (remmina_file_get_int(cnnobj->remmina_file, "keyboard_grab", FALSE) && active) {
-			rcw_keyboard_grab(cnnobj->cnnwin, NULL);
-			rcw_pointer_grab(cnnobj->cnnwin);
-		}
-	}
+	rcw_keyboard_grab_request(cnnobj, TRUE);
 
 	REMMINA_DEBUG("Trying to present the window");
 	/* Try to present window */
@@ -4803,7 +4770,7 @@ static void rco_on_disconnect(RemminaProtocolWidget *gp, gpointer data)
 	}
 
 	rcw_kp_ungrab(cnnobj->cnnwin);
-	rcw_pointer_ungrab(cnnobj->cnnwin);
+	
 	cnnobj->connected = FALSE;
 
 	if (remmina_pref.save_view_mode) {
@@ -5292,55 +5259,6 @@ static gboolean rcw_map_event_fullscreen_monitor(GtkWidget *widget, GdkEvent *ev
 	return TRUE;
 }
 
-
-static gboolean rcw_other_fs_delayed_grab(grab_callback_data*grab_cb_info) {
-	TRACE_CALL(__func__);
-	MultimonWindow*w = RCW_MULTIMON(grab_cb_info->window);
-	if (w->priv == NULL)
-	        return G_SOURCE_REMOVE;
-#if DEBUG_KB_GRABBING
-	printf("DEBUG_KB_GRABBING:   %s\n", __func__);
-#endif
-	if (w->priv->pointer_entered) {
-#if DEBUG_KB_GRABBING
-		printf("DEBUG_KB_GRABBING:   delayed requesting kb and pointer grab, because of pointer inside\n");
-#endif
-		rcw_keyboard_grab(grab_cb_info->cnnwin, grab_cb_info->window);
-	}
-#if DEBUG_KB_GRABBING
-	else {
-		printf("DEBUG_KB_GRABBING:   %s not grabbing because pointer_entered is false\n", __func__);
-	}
-#endif
-	w->priv->delayed_grab_eventsourceid = 0;
-	grab_cb_info->cnnwin->priv->grab_pending_on_other_window = FALSE;
-	g_free(grab_cb_info);
-	return G_SOURCE_REMOVE;
-}
-
-static void rcw_other_fs_initiate_grab(MultimonWindow*w, RemminaConnectionObject* cnnobj)
-{
-	TRACE_CALL(__func__);
-	if (cnnobj && cnnobj->connected && remmina_file_get_int(cnnobj->remmina_file, "keyboard_grab", FALSE)) {
-#if DEBUG_KB_GRABBING
-		printf("DEBUG_KB_GRABBING: Received focus in on rcw_other_fs, grabbing enabled: requesting kb grab, delayed\n");
-#endif
-		if (w->priv->delayed_grab_eventsourceid == 0) {
-			grab_callback_data*grab_cb_info = g_malloc(sizeof(grab_callback_data));
-			grab_cb_info->cnnwin = cnnobj->cnnwin;
-			grab_cb_info->window = GTK_WINDOW(w);
-			cnnobj->cnnwin->priv->grab_pending_on_other_window = TRUE;
-			w->priv->delayed_grab_eventsourceid = g_timeout_add(300, (GSourceFunc)rcw_other_fs_delayed_grab, grab_cb_info);
-		}
-	}
-#if DEBUG_KB_GRABBING
-	else {
-		printf("DEBUG_KB_GRABBING: Received focus in on rcw_other_fs, but a condition will prevent to grab\n");
-	}
-#endif
-}
-
-
 /*
  *  Multimonitor extra windows management
  */
@@ -5349,27 +5267,40 @@ static void rcw_other_fs_initiate_grab(MultimonWindow*w, RemminaConnectionObject
 /* Focusing management */
 static gboolean rcw_other_fs_enter(MultimonWindow*w, GdkEventCrossing *event, RemminaConnectionObject* cnnobj) {
 	TRACE_CALL(__func__);
-	w->priv->pointer_entered = TRUE;
-	rcw_other_fs_initiate_grab(w, cnnobj);
-	return FALSE;
+#if DEBUG_KB_GRABBING
+	REMMINA_DEBUG("DEBUG_KB_GRABBING");
+	print_crossing_event(event);
+#endif
+	if (event->mode == GDK_CROSSING_UNGRAB) {
+		// Someone steal our grab, take note and do not attempt to regrab
+		rcw_keyboard_grab_request(cnnobj, FALSE);
+		return FALSE;
+	}
+	rcw_keyboard_grab_request(cnnobj, TRUE);
+	return TRUE;
 }
 
 static gboolean rcw_other_fs_leave(MultimonWindow*w, GdkEventCrossing *event, RemminaConnectionObject* cnnobj) {
 	TRACE_CALL(__func__);
-	if (cnnobj->cnnwin->priv->grab_pending_on_other_window)
-	        return TRUE;
-	w->priv->pointer_entered = FALSE;
-	return FALSE;
+#if DEBUG_KB_GRABBING
+	REMMINA_DEBUG("DEBUG_KB_GRABBING");
+	print_crossing_event(event);
+#endif
+	rcw_keyboard_grab_request(cnnobj, FALSE);
+	return TRUE;
 }
 
-static gboolean rcw_other_fs_focus_in(MultimonWindow*w, GdkEventWindowState *event, RemminaConnectionObject* cnnobj)
+static gboolean rcw_other_fs_focus_in(MultimonWindow*w, GdkEventFocus *event, RemminaConnectionObject* cnnobj)
 {
 	TRACE_CALL(__func__);
-	rcw_other_fs_initiate_grab(w, cnnobj);
-        if (IS_WAYLAND(w)) {
-                rcw_restore_widget_areas(cnnobj->cnnwin);
-        }
-	return FALSE;
+#if DEBUG_KB_GRABBING
+	REMMINA_DEBUG("DEBUG_KB_GRABBING: focus=%d %d", event->in, event->send_event);
+#endif
+	if (IS_WAYLAND(w)) {
+		rcw_restore_widget_areas(cnnobj->cnnwin);
+	}
+	rcw_keyboard_grab_request(cnnobj, TRUE);
+	return TRUE;
 }
 
 /* RCW_MULTIMON object */
@@ -5379,10 +5310,6 @@ static void remmina_fullscreen_window_dispose(GObject *object) {
 	if (fswin->priv != NULL && fswin->priv->drawing_area != NULL) {
 	    gtk_widget_destroy(fswin->priv->drawing_area);
 	fswin->priv->drawing_area = NULL;
-	}
-	if (fswin->priv->delayed_grab_eventsourceid != 0) {
-	        g_source_remove(fswin->priv->delayed_grab_eventsourceid);
-	        fswin->priv->delayed_grab_eventsourceid = 0;
 	}
 	g_signal_handlers_disconnect_by_func(G_OBJECT(fswin), G_CALLBACK(rcw_map_event_fullscreen_monitor), NULL);
 	g_signal_handlers_disconnect_by_func(GTK_WINDOW(fswin), "focus-in-event", G_CALLBACK(rcw_other_fs_focus_in));
@@ -5417,7 +5344,7 @@ static void multimon_window_init(MultimonWindow *fswin) {
 	g_signal_connect(G_OBJECT(fswin), "map-event", G_CALLBACK(rcw_map_event_fullscreen_monitor), 0);
 }
 
-static gint rcw_normalize_monitors(RemminaConnectionWindowPriv*priv) {
+static void rcw_normalize_monitors(RemminaConnectionWindowPriv*priv) {
 	// calculation to support translate monitors to 0,0. TODO: same thing for gaps between monitors?
 	gint min_x = INT_MAX, min_y = INT_MAX;
 	gint mostleft_monitor_y = 0, mosttop_monitor_x = 0;
@@ -5447,6 +5374,7 @@ static gint rcw_normalize_monitors(RemminaConnectionWindowPriv*priv) {
 		monwin->priv->geometry.x -= origin_shift_x;
 		monwin->priv->geometry.y -= origin_shift_y;
 	}
+	priv->multi_mon = priv->multimon_areas->len > 1;
 }
 
 static gint rcw_probe_monitors(RemminaConnectionObject *cnnobj, const gchar*monitorids_str) {
@@ -5462,6 +5390,7 @@ static gint rcw_probe_monitors(RemminaConnectionObject *cnnobj, const gchar*moni
 		monitorids = g_strsplit(monitorids_str, ",", -1);
 	}
 
+	priv->multi_mon = 0;
 	if (priv->multimon_areas != NULL)
 		g_ptr_array_free(priv->multimon_areas, TRUE);
 	
@@ -5665,6 +5594,23 @@ static void rcw_show_widget_areas(RemminaConnectionWindow*cnnwin) {
 			gtk_widget_show(GTK_WIDGET(fswin));
 		}
 	}
+}
+
+static GdkWindow* rcw_widget_active_area(RemminaConnectionWindow*cnnwin) {
+	TRACE_CALL(__func__);
+	g_return_val_if_fail(cnnwin != NULL && cnnwin->priv != NULL, FALSE);
+	if (cnnwin->priv->multimon_areas == NULL)
+	    return NULL;
+
+	for (guint i = 0; i < cnnwin->priv->multimon_areas->len; i++) {
+		MultimonWindow *fswin = g_ptr_array_index(cnnwin->priv->multimon_areas, i);
+		if (fswin != NULL && G_IS_OBJECT(fswin) && fswin->priv != NULL && fswin->priv->monitor != cnnwin->priv->multimon_main_monitor && fswin->priv->drawing_area != NULL) {
+			GdkWindow* w = gtk_widget_get_parent_window(GTK_WIDGET(fswin->priv->drawing_area));
+			if (gdk_window_get_state(w) & GDK_WINDOW_STATE_FOCUSED)
+				return w;
+		}
+	}
+	return NULL;
 }
 
 static void rcw_restore_widget_areas(RemminaConnectionWindow*cnnwin) {

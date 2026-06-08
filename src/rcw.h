@@ -74,8 +74,6 @@ typedef struct _MultimonWindowPriv {
 	gboolean iconified;
 	int physicalHeight, physicalWidth;
 	int isPrimary;
-	guint delayed_grab_eventsourceid;
-	gboolean pointer_entered;
 } MultimonWindowPriv;
 
 typedef struct _MultimonWindow {
