@@ -321,7 +321,7 @@ void remmina_rdp_event_update_regions(RemminaProtocolWidget *gp, RemminaPluginRd
 				gint org_x, org_y, mon_w, mon_h;
 				remmina_plugin_service->plugin_multimon_monitor_info(gp, i, NULL, &org_x, &org_y, &mon_w, &mon_h, NULL, NULL);
 
-				GdkRectangle dest_draw = {x-org_x, y-org_y, w, h };
+				GdkRectangle dest_draw = {x-org_x+rfi->orig_shift_x, y-org_y+rfi->orig_shift_y, w, h };
 				GdkRectangle dest_mon_position = {0, 0, mon_w, mon_h };
 
 				if (gdk_rectangle_intersect(&dest_draw, &dest_mon_position, NULL)) {
@@ -411,7 +411,7 @@ static gboolean remmina_rdp_event_on_draw_other_monitors(GtkWidget *widget, cair
 	remmina_plugin_service->plugin_multimon_monitor_info(gp, monitor, NULL, &x, &y, &width, &height, NULL, NULL);
 
 	cairo_surface_flush(rfi->surface);
-	cairo_translate(context, -x, -y);
+	cairo_translate(context, -x+rfi->orig_shift_x, -y+rfi->orig_shift_y);
 	cairo_set_source_surface(context, rfi->surface, 0, 0);
 	cairo_surface_mark_dirty(rfi->surface);
 
@@ -462,7 +462,7 @@ static gboolean remmina_rdp_event_on_draw(GtkWidget *widget, cairo_t *context, R
 
 		cairo_surface_flush(rfi->surface);
 
-		cairo_translate(context, -rfi->main_x, -rfi->main_y);
+		cairo_translate(context, -rfi->main_x+rfi->orig_shift_x, -rfi->main_y+rfi->orig_shift_y);
 		cairo_set_source_surface(context, rfi->surface, 0, 0);
 		cairo_surface_mark_dirty(rfi->surface);
 
@@ -621,11 +621,11 @@ static void remmina_rdp_event_translate_pos(RemminaProtocolWidget *gp, GtkWidget
 	rfi->motion_drawing_area = w;
 
 	if ((rfi->scale == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED) && (rfi->scale_width >= 1) && (rfi->scale_height >= 1)) {
-		*ox = (UINT16)(ix * remmina_plugin_service->protocol_plugin_get_width(gp) / rfi->scale_width) + delta_x;
-		*oy = (UINT16)(iy * remmina_plugin_service->protocol_plugin_get_height(gp) / rfi->scale_height) + delta_y;
+		*ox = (UINT16)(ix * remmina_plugin_service->protocol_plugin_get_width(gp) / rfi->scale_width) + delta_x - rfi->orig_shift_x;
+		*oy = (UINT16)(iy * remmina_plugin_service->protocol_plugin_get_height(gp) / rfi->scale_height) + delta_y - rfi->orig_shift_y;
 	} else {
-		*ox = (UINT16)ix + delta_x;
-		*oy = (UINT16)iy + delta_y;
+		*ox = (UINT16)ix + delta_x - rfi->orig_shift_x;
+		*oy = (UINT16)iy + delta_y - rfi->orig_shift_y;
 	}
 }
 

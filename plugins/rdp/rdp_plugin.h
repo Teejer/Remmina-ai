@@ -344,6 +344,8 @@ struct rf_context {
 
 	gint			main_x;		// main monitor (toolbar/drawing_area) origin
 	gint			main_y;
+	gint			orig_shift_x;
+	gint			orig_shift_y;
 
 	gint			srcBpp;
 	GdkDisplay *		display;

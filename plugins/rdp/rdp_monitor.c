@@ -105,6 +105,8 @@ void remmina_rdp_monitor_define (rfContext *rfi, guint32 *maxwidth, guint32 *max
 	REMMINA_PLUGIN_DEBUG("%d monitors have been configured", freerdp_settings_get_uint32(settings, FreeRDP_MonitorCount));
 	*maxwidth = destgeom.x < 0 ? destgeom.width-destgeom.x: destgeom.width;
 	*maxheight = destgeom.y < 0 ? destgeom.height-destgeom.y: destgeom.height;
+	rfi->orig_shift_x = destgeom.x;
+	rfi->orig_shift_y = destgeom.y;
 
 	REMMINA_PLUGIN_DEBUG("maxw and maxh: %ux%u", *maxwidth, *maxheight);
 }
