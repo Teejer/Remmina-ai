@@ -1753,7 +1753,7 @@ static void rcw_toolbar_viewonly_mode(GtkToolItem *toggle, RemminaConnectionWind
 	// This will only be available to plugins that support viewonly
 	TRACE_CALL(__func__);
 	RemminaConnectionObject *cnnobj;
-	gboolean bactive = false;
+	gboolean bactive = FALSE;
 
 	if (!(cnnobj = rcw_get_visible_cnnobj(cnnwin))) {
 		return;
