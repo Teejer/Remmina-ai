@@ -2522,7 +2522,6 @@ rcw_create_toolbar(RemminaConnectionWindow *cnnwin, gint mode, gboolean is_float
 	if (is_floating){
 			/* The pin button */
 		GtkToolItem* pinbutton = gtk_toggle_tool_button_new();
-		gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(pinbutton), "org.remmina.Remmina-pin-down-symbolic");
 		gtk_widget_show(GTK_WIDGET(pinbutton));
 		gtk_toolbar_insert(GTK_TOOLBAR(toolbar), pinbutton, -1);
 	#if GTK_CHECK_VERSION(3, 20, 0)
@@ -2531,6 +2530,7 @@ rcw_create_toolbar(RemminaConnectionWindow *cnnwin, gint mode, gboolean is_float
 		gtk_button_set_focus_on_click(GTK_BUTTON(pinbutton), FALSE);
 	#endif
 		gtk_widget_set_name(GTK_WIDGET(pinbutton), "remmina-pin-button");
+		gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(pinbutton), remmina_pref.toolbar_pin_down);
 		g_signal_connect(G_OBJECT(pinbutton), "clicked", G_CALLBACK(rcw_toolbar_pin), cnnwin);
 		priv->pin_button = GTK_WIDGET(pinbutton);
 		priv->pin_down = remmina_pref.toolbar_pin_down;
