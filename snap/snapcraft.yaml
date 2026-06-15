@@ -248,7 +248,6 @@ parts:
       craftctl default
 
       cp -r $CRAFT_PART_INSTALL/snap/$CRAFT_PROJECT_NAME/current/usr/share/metainfo $CRAFT_PART_INSTALL/usr/share/
-      sed --in-place '\|<id>org.remmina.Remmina</id>|a<icon type="stock">snap.remmina.org.remmina.Remmina</icon>' $CRAFT_PART_INSTALL/snap/$CRAFT_PROJECT_NAME/current/usr/share/metainfo/org.remmina.Remmina.appdata.xml
       update-mime-database ${CRAFT_PART_INSTALL}/usr/share/mime
 
     override-prime: |
