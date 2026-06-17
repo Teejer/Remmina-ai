@@ -372,6 +372,9 @@ endif()
 
 if(SNAP_BUILD)
   add_definitions(-DSNAP_BUILD)
+  if(NOT DEFINED REMMINA_SNAP_APP_ID)
+	set(REMMINA_SNAP_APP_ID "remmina_remmina")
+  endif()
 endif()
 
 # Uninstall support

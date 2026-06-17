@@ -1260,7 +1260,7 @@ void remmina_main_on_action_application_default(GSimpleAction *action, GVariant 
 	g_autoptr(GError) error = NULL;
 	GDesktopAppInfo *desktop_info;
 	GAppInfo *info = NULL;
-	g_autofree gchar *id = g_strconcat(REMMINA_APP_ID, ".desktop", NULL);
+	g_autofree gchar *id = g_strconcat(REMMINA_CLASS_ID, ".desktop", NULL);
 	int i;
 
 	desktop_info = g_desktop_app_info_new(id);

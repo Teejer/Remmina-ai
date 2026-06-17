@@ -322,7 +322,7 @@ static void remmina_icon_create_autostart_file(void)
 	g_key_file_set_string(gkeyfile, "Desktop Entry", "Name", _("Remmina Applet"));
 	// TRANSLATORS: Applet comment/description as per the Freedesktop Desktop entry specification https://specifications.freedesktop.org/desktop-entry-spec/latest/
 	g_key_file_set_string(gkeyfile, "Desktop Entry", "Comment", _("Connect to remote desktops through the applet menu"));
-	g_key_file_set_string(gkeyfile, "Desktop Entry", "Icon", REMMINA_APP_ID);
+	g_key_file_set_string(gkeyfile, "Desktop Entry", "Icon", REMMINA_CLASS_ID);
 	if (getenv("FLATPAK_ID")){
 		g_key_file_set_string(gkeyfile, "Desktop Entry", "Exec", "flatpak run org.remmina.Remmina -i");
 	}
@@ -430,6 +430,12 @@ void remmina_icon_init(void)
 					 APP_INDICATOR_STATUS_PASSIVE : APP_INDICATOR_STATUS_ACTIVE);
 		/* With libappindicator we can also change the icon on the fly */
 		app_indicator_set_icon(remmina_icon.icon, remmina_panel);
+	}
+	
+	if (g_getenv("SNAP") != NULL) {
+		gchar *snap_icons_path = g_strdup_printf("%s/usr/share/icons", g_getenv("SNAP"));
+		app_indicator_set_icon_theme_path(remmina_icon.icon, snap_icons_path);
+		g_free(snap_icons_path);
 	}
 	remmina_icon.indicator_connected = TRUE;
 #ifdef HAVE_LIBAVAHI_CLIENT
