@@ -130,10 +130,10 @@ parts:
     stage-packages:
       - libffi8
       - libusb-1.0-0
-      - libzvbi0
+      - libzvbi0t64
       - libfuse3-3
       - libkrb5-3
-      - libpkcs11-helper1
+      - libpkcs11-helper1t64
       - libswscale7
       - x11-utils
     cmake-parameters:
@@ -203,7 +203,7 @@ parts:
       - libspice-client-gtk-3.0-dev
       - libspice-protocol-dev
       - libssh-dev
-      - libssl3
+      - libssl3t64
       - libvncserver-dev
       - libvte-2.91-dev
       - libwebkit2gtk-4.1-dev
@@ -218,16 +218,16 @@ parts:
       - libkf5configcore5
       - libkf5wallet5
       - libkf5windowsystem5
-      - libqt5core5a
-      - libqt5dbus5
-      - libqt5gui5
-      - libqt5widgets5
+      - libqt5core5t64
+      - libqt5dbus5t64
+      - libqt5gui5t64
+      - libqt5widgets5t64
       - libqt5x11extras5
       - libssh-4
       - libusb-1.0-0
       - libvte-2.91-0
       - libxcb-keysyms1
-      - libzvbi0
+      - libzvbi0t64
       - openssh-client
       - pyhoca-cli
       - spice-client-glib-usb-acl-helper
@@ -287,11 +287,11 @@ parts:
       - libavutil58
       - libswresample4
       - libcacard0
-      - libzvbi0
+      - libzvbi0t64
       - libxvidcore4
-      - libusbredirhost1
+      - libusbredirhost1t64
       - libx265-199
-      - libusbredirparser1
+      - libusbredirparser1t64
       - libx264-164
       - libphodav-3.0-0
       - libsnappy1v5
@@ -310,7 +310,7 @@ parts:
       - -usr/lib/pkgconfig
       - -usr/lib/*/pkgconfig
   cleanup:
-    after: [freerdp, remmina, app]  
+    after: [freerdp, remmina, app]
     plugin: nil
     build-snaps: [core24, gnome-46-2404, gtk-common-themes]  # List all content-snaps you're using here
     override-prime: |
