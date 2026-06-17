@@ -2261,7 +2261,9 @@ static void rcw_toolbar_edit_pref(GtkToolItem *toggle, RemminaConnectionWindow *
 {
 	RemminaConnectionObject *cnnobj;
 
-	if (!(cnnobj = rcw_get_visible_cnnobj(cnnwin))) return;
+	if (!(cnnobj = rcw_get_visible_cnnobj(cnnwin))
+		|| cnnobj->remmina_file == NULL
+		|| cnnobj->remmina_file->filename == NULL) return;
 	GtkWidget* widget = remmina_file_editor_new_from_filename(cnnobj->remmina_file->filename);
 	
 	if (widget) {
@@ -2550,7 +2552,7 @@ rcw_create_toolbar(RemminaConnectionWindow *cnnwin, gint mode, gboolean is_float
 
 	/* Open Main window */
 	toolitem = gtk_tool_button_new(NULL, "Open Remmina Main window");
-	gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(toolitem), "go-home-symbolic");
+	gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(toolitem), "org.remmina.Remmina-go-home-symbolic");
 	gtk_tool_item_set_tooltip_text(toolitem, _("Open the Remmina main window"));
 	gtk_toolbar_insert(GTK_TOOLBAR(toolbar), toolitem, -1);
 	gtk_widget_show(GTK_WIDGET(toolitem));
@@ -2739,6 +2741,7 @@ rcw_create_toolbar(RemminaConnectionWindow *cnnwin, gint mode, gboolean is_float
 	/* Preferences */
 	toolitem = gtk_toggle_tool_button_new();
 	gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(toolitem), "org.remmina.Remmina-preferences-system-symbolic");
+	gtk_tool_button_set_label(GTK_TOOL_BUTTON(toolitem), _("_Preferences"));
 	gtk_tool_item_set_tooltip_text(toolitem, _("Preferences"));
 	gtk_toolbar_insert(GTK_TOOLBAR(toolbar), toolitem, -1);
 	gtk_widget_show(GTK_WIDGET(toolitem));
@@ -2757,9 +2760,9 @@ rcw_create_toolbar(RemminaConnectionWindow *cnnwin, gint mode, gboolean is_float
 
 	/* Credentials */
 	toolitem = gtk_toggle_tool_button_new();
-	gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(toolitem), "lock-symbolic");
-	gtk_tool_button_set_label(GTK_TOOL_BUTTON(toolitem), _("_Tools"));
-	gtk_tool_item_set_tooltip_text(toolitem, _("Tools"));
+	gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(toolitem), "org.remmina.Remmina-insert-object-symbolic");
+	gtk_tool_button_set_label(GTK_TOOL_BUTTON(toolitem), _("_Insert"));
+	gtk_tool_item_set_tooltip_text(toolitem, _("Insert"));
 	gtk_toolbar_insert(GTK_TOOLBAR(toolbar), toolitem, -1);
 	gtk_widget_show(GTK_WIDGET(toolitem));
 	g_signal_connect(G_OBJECT(toolitem), "toggled", G_CALLBACK(rcw_toolbar_creds), cnnwin);
@@ -2780,10 +2783,9 @@ rcw_create_toolbar(RemminaConnectionWindow *cnnwin, gint mode, gboolean is_float
 
 
 	toolitem = gtk_tool_button_new(NULL, "_Edit_pref");
-	gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(toolitem), "edit-symbolic");
+	gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(toolitem), "org.remmina.Remmina-document-properties-symbolic");
 	rcw_set_tooltip(GTK_WIDGET(toolitem), _("Edit Preferences"), remmina_pref.shortcutkey_screenshot, 0);
 	gtk_toolbar_insert(GTK_TOOLBAR(toolbar), toolitem, -1);
-	gtk_widget_show(GTK_WIDGET(toolitem));
 	g_signal_connect(G_OBJECT(toolitem), "clicked", G_CALLBACK(rcw_toolbar_edit_pref), cnnwin);
 	priv->toolitem_edit_pref = toolitem;
 
@@ -2941,6 +2943,10 @@ static void rco_update_toolbar(RemminaConnectionObject *cnnobj)
 	gtk_widget_set_sensitive(GTK_WIDGET(toolitem), bval && cnnobj->connected);
 
 	gtk_widget_set_sensitive(GTK_WIDGET(priv->toolitem_screenshot), cnnobj->connected);
+
+	if (cnnobj->remmina_file != NULL && cnnobj->remmina_file->filename != NULL) {
+		gtk_widget_show(GTK_WIDGET(cnnobj->cnnwin->priv->toolitem_edit_pref));
+	}
 
 	gtk_window_set_title(GTK_WINDOW(cnnobj->cnnwin), remmina_file_get_string(cnnobj->remmina_file, "name"));
 
