@@ -1,14 +1,17 @@
 name: remmina
 version: git
 adopt-info: remmina
-architectures:
-  - build-on: amd64
-  - build-on: arm64
-  - build-on: armhf
+platforms:
+  amd64:
+  arm64:
+  armhf:
 
-base: core22
+base: core24
 grade: stable
 confinement: strict
+
+source-code:
+  - https://gitlab.com/Remmina/Remmina
 
 # this line enables LZO compression for the snap
 compression: lzo
@@ -57,7 +60,6 @@ apps:
       - kerberos-tickets
     slots:
       - dbus-daemon
-
   ssh-agent:
     command: usr/bin/ssh-agent -D -a $SSH_AUTH_SOCK
     daemon: simple
@@ -67,6 +69,20 @@ apps:
       - network-bind
       - ssh-keys
 
+
+plugs:
+  gtk-3-themes:
+    interface: content
+    target: $SNAP/share/themes
+    default-provider: gtk-common-themes
+  icon-themes:
+    interface: content
+    target: $SNAP/share/icons
+    default-provider: gtk-common-themes
+  gpu-2404:
+    interface: content
+    target: $SNAP/gpu-2404
+    default-provider: mesa-2404
 
 parts:
 
@@ -83,7 +99,7 @@ parts:
   freerdp:
     plugin: cmake
     source: https://github.com/FreeRDP/FreeRDP.git
-    source-tag: 3.14.1
+    source-tag: 3.26.0
     source-depth: 1
     # override-build: |
     #   current_dir=$PWD
@@ -112,14 +128,14 @@ parts:
       - libpkcs11-helper1-dev
       - libswscale-dev
     stage-packages:
-      - libffi7
+      - libffi8
       - libusb-1.0-0
       - libzvbi0
-      - x11-utils
       - libfuse3-3
       - libkrb5-3
       - libpkcs11-helper1
-      - libswscale5
+      - libswscale7
+      - x11-utils
     cmake-parameters:
       # Workaround for ubuntu 18.04 armhf: build fails with "unable to find a register to spill"
       # remember to remove when snapcraft will be built in ubuntu >= 20.04
@@ -190,7 +206,7 @@ parts:
       - libssl3
       - libvncserver-dev
       - libvte-2.91-dev
-      - libwebkit2gtk-4.0-dev
+      - libwebkit2gtk-4.1-dev
       - libxkbfile-dev
       - python3-dev
       - pyhoca-cli
@@ -216,7 +232,6 @@ parts:
       - pyhoca-cli
       - spice-client-glib-usb-acl-helper
       - suckless-tools
-      - vim
       - xauth
       - xterm
     cmake-parameters:
@@ -242,41 +257,43 @@ parts:
     prime:
       - -usr/lib/pkgconfig
       - -usr/include
+      - -usr/share/themes/*
 
     override-build: |
       set -eu
       craftctl default
-
       cp -r $CRAFT_PART_INSTALL/snap/$CRAFT_PROJECT_NAME/current/usr/share/metainfo $CRAFT_PART_INSTALL/usr/share/
       update-mime-database ${CRAFT_PART_INSTALL}/usr/share/mime
 
     override-prime: |
       set -eu
       craftctl default
+
       # Remove forbidden links (I'm sure the audio won't work anymore)
       rm -f etc/pulse/client.conf.d/01-enable-autospawn.conf lib/systemd/system/pulseaudio-enable-autospawn.service
 
   app:
     plugin: nil
     stage-packages:
+      - gpg-agent
       - libindicator3-7
       - libavahi-ui-gtk3-0
       - libxkbfile1
       - libvncclient1
-      - libavcodec58
+      - libavcodec60
       - libavcodec-extra
       - libspice-client-glib-2.0-8
       - libspice-client-gtk-3.0-5
-      - libavutil56
-      - libswresample3
+      - libavutil58
+      - libswresample4
       - libcacard0
       - libzvbi0
       - libxvidcore4
       - libusbredirhost1
       - libx265-199
       - libusbredirparser1
-      - libx264-163
-      - libphodav-2.0-0
+      - libx264-164
+      - libphodav-3.0-0
       - libsnappy1v5
       - libshine3
       - libgsm1
@@ -284,6 +301,7 @@ parts:
       - libsoxr0
       - libnuma1
       - libsodium23
+      - libpulse0
       - libusb-1.0-0
     prime:
       - -usr/share/doc
@@ -294,14 +312,17 @@ parts:
   cleanup:
     after: [freerdp, remmina, app]  
     plugin: nil
-    build-snaps: [core22, gnome-42-2204, gtk-common-themes]  # List all content-snaps you're using here
+    build-snaps: [core24, gnome-46-2404, gtk-common-themes]  # List all content-snaps you're using here
     override-prime: |
       set -eux
-      for snap in "core22" "gnome-42-2204" "gtk-common-themes"; do  # List all content-snaps you're using here
-        cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$CRAFT_PRIME/{}" \;
+      for snap in "core24" "gnome-46-2404" "gtk-common-themes"; do  # List all content-snaps you're using here
+        cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$CRAFT_PRIME/{}" \; -exec echo removed "$CRAFT_PRIME/{}" \; -exec rm -f "$CRAFT_PRIME/usr/{}" \; -exec echo removed "$CRAFT_PRIME/usr/{}" \;
       done
+      # other non desired shared files
       for CRUFT in bug lintian man; do
         rm -rf $CRAFT_PRIME/usr/share/$CRUFT
       done
+
       find $CRAFT_PRIME/usr/share/doc/ -type f -not -name 'copyright' -delete
       find $CRAFT_PRIME/usr/share -type d -empty -delete
+
