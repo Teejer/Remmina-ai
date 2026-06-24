@@ -1513,22 +1513,53 @@ static int remmina_rdp_set_printers(void *user_data, unsigned flags, cups_dest_t
 	RemminaFile *remminafile = remmina_plugin_service->protocol_plugin_get_file(gp);
 	const gchar *s = remmina_plugin_service->file_get_string(remminafile, "printer_overrides");
 
-	RDPDR_PRINTER *printer;
-	printer = (RDPDR_PRINTER *)calloc(1, sizeof(RDPDR_PRINTER));
-
-#if FREERDP_VERSION_MAJOR >= 3
-	RDPDR_DEVICE *pdev;
-	pdev = &(printer->device);
-#else
-	RDPDR_PRINTER *pdev;
-	pdev = printer;
-#endif
-
-	pdev->Type = RDPDR_DTYP_PRINT;
-	REMMINA_PLUGIN_DEBUG("Printer Type: %d", pdev->Type);
-
 	freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_RedirectPrinters, TRUE);
 	freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_DeviceRedirection, TRUE);
+
+#if FREERDP_VERSION_MAJOR >= 3
+	gchar *d = NULL;
+	const char *args[4] = WINPR_C_ARRAY_INIT;
+	size_t count = 0;
+	args[count++] = dest->name;
+
+	REMMINA_PLUGIN_DEBUG("Destination: %s", dest->name);
+
+	if (s) {
+		d = remmina_rdp_find_prdriver(strdup(s), dest->name);
+		if (d) {
+			args[count++] = d;
+			REMMINA_PLUGIN_DEBUG("Printer DriverName set to: %s", d);
+		} else {
+		/**
+		 * When remmina_rdp_find_prdriver doesn't return a DriverName
+		 * it means that we don't want to share that printer
+		 *
+		 */
+		return 1;
+		}
+	}
+
+	RDPDR_DEVICE *printer = freerdp_device_new(RDPDR_DTYP_PRINT, count, args);
+	g_free(d);
+	if (!printer)
+		return 1;
+
+	REMMINA_PLUGIN_DEBUG("Printer Name: %s", printer->Name);
+	const RDPDR_PRINTER *p = (const RDPDR_PRINTER *)printer;
+	REMMINA_PLUGIN_DEBUG("Printer Driver: %s", p->DriverName);
+	if (!freerdp_device_collection_add(rfi->clientContext.context.settings, printer)) {
+		freerdp_device_free(printer);
+		return 1;
+	}
+
+#else
+	RDPDR_PRINTER *printer;
+	printer = (RDPDR_PRINTER *)calloc(1, sizeof(RDPDR_PRINTER));
+	RDPDR_PRINTER *pdev;
+	pdev = printer;
+	pdev->Type = RDPDR_DTYP_PRINT;
+
+	REMMINA_PLUGIN_DEBUG("Printer Type: %d", pdev->Type);
 
 	REMMINA_PLUGIN_DEBUG("Destination: %s", dest->name);
 	if (!(pdev->Name = _strdup(dest->name))) {
@@ -1567,6 +1598,7 @@ static int remmina_rdp_set_printers(void *user_data, unsigned flags, cups_dest_t
 		return 1;
 	}
 
+#endif
 	return 1;
 }
 #endif /* HAVE_CUPS */
@@ -2505,29 +2537,34 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 	}
 
 	const gchar *sn = remmina_plugin_service->file_get_string(remminafile, "smartcardname");
-	if (remmina_plugin_service->file_get_int(remminafile, "sharesmartcard", FALSE) ||
-			(sn != NULL && sn[0] != '\0')) {
+	if (remmina_plugin_service->file_get_int(remminafile, "sharesmartcard", FALSE) || (sn != NULL && sn[0] != '\0')) {
+#if FREERDP_VERSION_MAJOR >= 3
+		const char *args[4] = WINPR_C_ARRAY_INIT;
+		size_t count = 0;
+
+		if (sn != NULL && sn[0] != '\0')
+			args[count++] = sn;
+
+		RDPDR_DEVICE *smartcard = freerdp_device_new(RDPDR_DTYP_SMARTCARD, count, args);
+
+		freerdp_device_collection_add(rfi->clientContext.context.settings, smartcard);
+#else
 		RDPDR_SMARTCARD *smartcard;
 		smartcard = (RDPDR_SMARTCARD *)calloc(1, sizeof(RDPDR_SMARTCARD));
-
-#if FREERDP_VERSION_MAJOR >= 3
-		RDPDR_DEVICE *sdev;
-		sdev = &(smartcard->device);
-#else
 		RDPDR_SMARTCARD *sdev;
 		sdev = smartcard;
-#endif
 
 		sdev->Type = RDPDR_DTYP_SMARTCARD;
-
-		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_DeviceRedirection, TRUE);
 
 		if (sn != NULL && sn[0] != '\0')
 			sdev->Name = _strdup(sn);
 
-		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_RedirectSmartCards, TRUE);
-
 		freerdp_device_collection_add(rfi->clientContext.context.settings, (RDPDR_DEVICE *)smartcard);
+
+#endif
+
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_DeviceRedirection, TRUE);
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_RedirectSmartCards, TRUE);
 	}
 
 	if (remmina_plugin_service->file_get_int(remminafile, "passwordispin", FALSE))
@@ -2542,20 +2579,33 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 
 	/* /serial[:<name>[,<path>[,<driver>[,permissive]]]] */
 	if (remmina_plugin_service->file_get_int(remminafile, "shareserial", FALSE)) {
+#if FREERDP_VERSION_MAJOR >= 3
+		const char *args[4] = WINPR_C_ARRAY_INIT;
+		size_t count = 0;
+
+		const gchar *sn = remmina_plugin_service->file_get_string(remminafile, "serialname");
+		if (sn != NULL && sn[0] != '\0')
+			args[count++] = sn;
+
+		const gchar *sd = remmina_plugin_service->file_get_string(remminafile, "serialdriver");
+		if (sd != NULL && sd[0] != '\0')
+			args[count++] = sd;
+
+		const gchar *sp = remmina_plugin_service->file_get_string(remminafile, "serialpath");
+		if (sp != NULL && sp[0] != '\0')
+			args[count++] = sp;
+
+		if (remmina_plugin_service->file_get_int(remminafile, "serialpermissive", FALSE))
+			args[count++] = "permissive";
+
+		RDPDR_DEVICE *serial = freerdp_device_new(RDPDR_DTYP_SERIAL, count, args);
+		freerdp_device_collection_add(rfi->clientContext.context.settings, (RDPDR_DEVICE *)serial);
+#else
 		RDPDR_SERIAL *serial;
 		serial = (RDPDR_SERIAL *)calloc(1, sizeof(RDPDR_SERIAL));
-
-#if FREERDP_VERSION_MAJOR >= 3
-		RDPDR_DEVICE *sdev;
-		sdev = &(serial->device);
-#else
 		RDPDR_SERIAL *sdev;
 		sdev = serial;
-#endif
-
 		sdev->Type = RDPDR_DTYP_SERIAL;
-
-		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_DeviceRedirection, TRUE);
 
 		const gchar *sn = remmina_plugin_service->file_get_string(remminafile, "serialname");
 		if (sn != NULL && sn[0] != '\0')
@@ -2571,23 +2621,35 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 
 		if (remmina_plugin_service->file_get_int(remminafile, "serialpermissive", FALSE))
 			serial->Permissive = _strdup("permissive");
-
-		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_RedirectSerialPorts, TRUE);
-
 		freerdp_device_collection_add(rfi->clientContext.context.settings, (RDPDR_DEVICE *)serial);
+#endif
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_DeviceRedirection, TRUE);
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_RedirectSerialPorts, TRUE);
 	}
 
 	if (remmina_plugin_service->file_get_int(remminafile, "shareparallel", FALSE)) {
+#if FREERDP_VERSION_MAJOR >= 3
+		const gchar *pn = remmina_plugin_service->file_get_string(remminafile, "parallelname");
+		const gchar *dp = remmina_plugin_service->file_get_string(remminafile, "parallelpath");
+		const char *args[2] = WINPR_C_ARRAY_INIT;
+		size_t count = 0;
+		if (pn != NULL && pn[0] != '\0')
+			args[count++] = pn;
+		if (dp != NULL && dp[0] != '\0')
+			args[count++] = dp;
+
+		RDPDR_DEVICE *parallel = freerdp_device_new(RDPDR_DTYP_PARALLEL, count, args);
+
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_DeviceRedirection, TRUE);
+
+		freerdp_settings_set_bool(rfi->clientContext.context.settings, FreeRDP_RedirectParallelPorts, TRUE);
+
+		freerdp_device_collection_add(rfi->clientContext.context.settings, parallel);
+#else
 		RDPDR_PARALLEL *parallel;
 		parallel = (RDPDR_PARALLEL *)calloc(1, sizeof(RDPDR_PARALLEL));
-
-#if FREERDP_VERSION_MAJOR >= 3
-		RDPDR_DEVICE *pdev;
-		pdev = &(parallel->device);
-#else
 		RDPDR_PARALLEL *pdev;
 		pdev = parallel;
-#endif
 
 		pdev->Type = RDPDR_DTYP_PARALLEL;
 
@@ -2603,6 +2665,7 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 			parallel->Path = _strdup(dp);
 
 		freerdp_device_collection_add(rfi->clientContext.context.settings, (RDPDR_DEVICE *)parallel);
+#endif
 	}
 
 	/**
