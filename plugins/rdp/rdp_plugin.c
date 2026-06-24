@@ -1518,7 +1518,7 @@ static int remmina_rdp_set_printers(void *user_data, unsigned flags, cups_dest_t
 
 #if FREERDP_VERSION_MAJOR >= 3
 	gchar *d = NULL;
-	const char *args[4] = WINPR_C_ARRAY_INIT;
+	const char *args[4] = { 0 };
 	size_t count = 0;
 	args[count++] = dest->name;
 
@@ -2539,7 +2539,7 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 	const gchar *sn = remmina_plugin_service->file_get_string(remminafile, "smartcardname");
 	if (remmina_plugin_service->file_get_int(remminafile, "sharesmartcard", FALSE) || (sn != NULL && sn[0] != '\0')) {
 #if FREERDP_VERSION_MAJOR >= 3
-		const char *args[4] = WINPR_C_ARRAY_INIT;
+		const char *args[4] = { 0 };
 		size_t count = 0;
 
 		if (sn != NULL && sn[0] != '\0')
@@ -2580,7 +2580,7 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 	/* /serial[:<name>[,<path>[,<driver>[,permissive]]]] */
 	if (remmina_plugin_service->file_get_int(remminafile, "shareserial", FALSE)) {
 #if FREERDP_VERSION_MAJOR >= 3
-		const char *args[4] = WINPR_C_ARRAY_INIT;
+		const char *args[4] = { 0 };
 		size_t count = 0;
 
 		const gchar *sn = remmina_plugin_service->file_get_string(remminafile, "serialname");
@@ -2631,7 +2631,7 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 #if FREERDP_VERSION_MAJOR >= 3
 		const gchar *pn = remmina_plugin_service->file_get_string(remminafile, "parallelname");
 		const gchar *dp = remmina_plugin_service->file_get_string(remminafile, "parallelpath");
-		const char *args[2] = WINPR_C_ARRAY_INIT;
+		const char *args[2] = { 0 };
 		size_t count = 0;
 		if (pn != NULL && pn[0] != '\0')
 			args[count++] = pn;
