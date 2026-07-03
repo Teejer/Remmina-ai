@@ -2254,6 +2254,7 @@ remmina_ssh_tunnel_new_from_file(RemminaFile *remminafile)
 	tunnel->connect_func = NULL;
 	tunnel->disconnect_func = NULL;
 	tunnel->callback_data = NULL;
+	tunnel->destroy_idle_source_id = 0;
 
 	return tunnel;
 }
@@ -2696,6 +2697,7 @@ static gboolean remmina_ssh_notify_tunnel_main_thread_end(gpointer data)
 	TRACE_CALL(__func__);
 	RemminaSSHTunnel *tunnel = (RemminaSSHTunnel *)data;
 
+	tunnel->destroy_idle_source_id = 0;
 	/* Ask tunnel owner to destroy tunnel object */
 	if (tunnel->destroy_func)
 		(*tunnel->destroy_func)(tunnel, tunnel->destroy_func_callback_data);
@@ -2718,7 +2720,7 @@ remmina_ssh_tunnel_main_thread(gpointer data)
 	tunnel->thread = 0;
 
 	/* Do after tunnel thread cleanup */
-	IDLE_ADD((GSourceFunc)remmina_ssh_notify_tunnel_main_thread_end, (gpointer)tunnel);
+	tunnel->destroy_idle_source_id = IDLE_ADD((GSourceFunc)remmina_ssh_notify_tunnel_main_thread_end, (gpointer)tunnel);
 
 	return NULL;
 }
@@ -2842,6 +2844,11 @@ remmina_ssh_tunnel_free(RemminaSSHTunnel *tunnel)
 		pthread_cancel(thread);
 		pthread_join(thread, NULL);
 		tunnel->thread = 0;
+	}
+
+	if (tunnel->destroy_idle_source_id > 0) {
+		g_source_remove(tunnel->destroy_idle_source_id);
+		tunnel->destroy_idle_source_id = 0;
 	}
 
 	if (tunnel->tunnel_type == REMMINA_SSH_TUNNEL_XPORT && tunnel->remotedisplay > 0) {
