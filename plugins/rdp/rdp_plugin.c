@@ -1701,6 +1701,10 @@ static gchar *remmina_get_rdp_kbd_remap(const gchar *keymap)
 		return rdp_kbd_remap;
 	rdp_kbd_remap = g_malloc0(512);
 	display = XOpenDisplay(0);
+	if (!display) {
+		g_free(rdp_kbd_remap);
+		return NULL;
+	}
 	for (i = 0; table[i] > 0; i += 2) {
 #if !defined(WITHOUT_FREERDP_3x_DEPRECATED)
 		g_snprintf(keys, sizeof(keys), "0x%02x=0x%02x", freerdp_keyboard_get_rdp_scancode_from_x11_keycode(XKeysymToKeycode(display, table[i])),
