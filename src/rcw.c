@@ -4103,8 +4103,6 @@ static gint find_monitor_at_point  (GtkWidget *widget, gint x, gint y) {
 static void rcw_ftb_multimon_move_toolbar(RemminaConnectionWindowPriv *priv) {
 	GdkRectangle rec_monref;
 	int area_width = 0, area_height = 0;
-	GtkWidget* tboverlay = priv->overlay_ftb_fr;
-	GdkDisplay* d = gtk_widget_get_display(tboverlay);
 
 	if (!priv->multi_mon) {
 		return;
@@ -4114,6 +4112,14 @@ static void rcw_ftb_multimon_move_toolbar(RemminaConnectionWindowPriv *priv) {
 		REMMINA_DEBUG("Toolbar position adjustment not active");
 		return;
 	}
+
+	// overlay_ftb_fr only exists in fullscreen windows dont activate
+	// from single-mon
+	GtkWidget* tboverlay = priv->overlay_ftb_fr;
+	if (tboverlay == NULL || !GTK_IS_WIDGET(tboverlay))
+		return;
+
+	GdkDisplay* d = gtk_widget_get_display(tboverlay);
 
 #ifdef GDK_WINDOWING_WAYLAND
 	if (GDK_IS_WAYLAND_DISPLAY(d)) {
