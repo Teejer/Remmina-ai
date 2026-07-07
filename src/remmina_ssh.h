@@ -182,6 +182,7 @@ struct _RemminaSSHTunnel {
 
 	RemminaSSHTunnelCallback	destroy_func;
 	gpointer	destroy_func_callback_data;
+	guint				destroy_idle_source_id;
 
 };
 
