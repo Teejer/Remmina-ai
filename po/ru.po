@@ -18,7 +18,7 @@
 # flyvint <flyvint@gmail.com>, 2021.
 # Artem <Localizer_in_Russian@protonmail.com>, 2021.
 # Сергей <sw@atrus.ru>, 2022.
-# Сергей <asvmail.as@gmail.com>, 2022, 2023, 2024.
+# Сергей <asvmail.as@gmail.com>, 2022, 2023, 2024, 2026.
 # AHOHNMYC <lqwh2h2cwa@protonmail.com>, 2022.
 # Dmitriy Kulikov <kulikov@dima.perm.ru>, 2023.
 # korn3r <korn3r@gmail.com>, 2025.
@@ -27,8 +27,8 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2025-12-16 20:00+0000\n"
-"Last-Translator: korn3r <korn3r@gmail.com>\n"
+"PO-Revision-Date: 2026-07-08 11:01+0000\n"
+"Last-Translator: Сергей <asvmail.as@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/remmina/remmina/"
 "ru/>\n"
 "Language: ru\n"
@@ -37,7 +37,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.15.1-dev\n"
+"X-Generator: Weblate 2026.7.1.dev0\n"
 "X-Launchpad-Export-Date: 2014-04-10 15:03+0000\n"
 "X-Poedit-Flags-xgettext: --add-comments\n"
 
@@ -1491,7 +1491,7 @@ msgid ""
 msgstr ""
 "Перезаписывает все остальные параметры\n"
 "Могут поддерживаться не все параметры\n"
-"Принимаются только пары пары флаг-аргумент\n"
+"Принимаются только пары флаг-аргумент\n"
 "Пример: <-l имяпользователя -p порт>\n"
 "<-l пользователь localhost> не задаст localhost т.к. для него отсутствует "
 "флаг"
@@ -4349,9 +4349,9 @@ msgstr ""
 "<big><b>Не удалось загрузить новость</b></big>\n"
 "\n"
 "<span>\n"
-"<a href=\"https://gitlab.com/Remmina/Remmina/-/tags/\" title=\"Информация о "
-"релизах Remmina\"><i>Посетите веб-сайт, чтобы почитать информацию о релизах."
-"</i></a>.\n"
+"<a href=\"https://gitlab.com/Remmina/Remmina/-/tags/\" title=\"Remmina "
+"release notes\"><i>Посетите веб-сайт, чтобы почитать информацию о релизах.</"
+"i></a>.\n"
 "</span>"
 
 #: data/ui/remmina_about.glade:32 data/ui/remmina_main.glade:429
