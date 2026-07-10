@@ -1231,6 +1231,8 @@ void remmina_events_multimonitor(RemminaProtocolWidget* gp)
 	for (gint i = 0 ; i < n_monitors ; i++) {
 		GtkWidget*other_monitor_drawing_area = remmina_plugin_service->plugin_multimon_monitor_drawing_area(gp, i);
 		if (other_monitor_drawing_area != NULL) {
+			remmina_plugin_service->protocol_plugin_register_hostkey(gp, other_monitor_drawing_area);
+
 			g_signal_connect(G_OBJECT(other_monitor_drawing_area), "motion-notify-event", G_CALLBACK(remmina_rdp_event_on_motion), gp);
 			g_signal_connect(G_OBJECT(other_monitor_drawing_area), "draw", G_CALLBACK(remmina_rdp_event_on_draw_other_monitors), gp);
 			g_signal_connect(G_OBJECT(other_monitor_drawing_area), "button-press-event", G_CALLBACK(remmina_rdp_event_on_button), gp);
