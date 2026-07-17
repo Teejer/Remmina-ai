@@ -5807,3 +5807,13 @@ msgstr "<span weight='bold' size='larger'>Hromadná změna hesel</span>"
 
 #~ msgid "Negotiate protocol security"
 #~ msgstr "Dojednat zabezpečení protokolu"
+
+#: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "Řídit se světlým/tmavým motivem systému"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr "Automaticky přepínat mezi světlým a tmavým motivem podle nastavení plochy a udržovat synchronizaci při jeho změně."

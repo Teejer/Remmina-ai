@@ -5873,3 +5873,13 @@ msgstr "<span weight='bold' size='larger'>Cambio Password Multiplo</span>"
 
 #~ msgid "Negotiate protocol security"
 #~ msgstr "Negoziare la sicurezza del protocollo"
+
+#: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "Segui il tema chiaro/scuro del sistema"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr "Passa automaticamente dal tema chiaro a quello scuro in base all’impostazione del desktop e resta sincronizzato quando cambia."

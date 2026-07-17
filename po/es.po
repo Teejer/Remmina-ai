@@ -5947,3 +5947,13 @@ msgstr ""
 #~ msgid ""
 #~ "Send anonymous statistics for use on https://remmina.org/remmina-stats"
 #~ msgstr "Enviar estadísticas a remmina.org"
+
+#: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "Seguir el tema claro/oscuro del sistema"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr "Cambiar automáticamente entre el tema claro y oscuro según la configuración del escritorio y mantener la sincronización cuando cambie."

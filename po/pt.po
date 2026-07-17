@@ -5933,3 +5933,13 @@ msgstr ""
 
 #~ msgid "Run a plugin"
 #~ msgstr "Executar um ''plug-in''"
+
+#: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "Seguir o tema claro/escuro do sistema"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr "Alternar automaticamente entre o tema claro e escuro de acordo com a definição do ambiente de trabalho e manter a sincronização quando esta mudar."

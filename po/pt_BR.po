@@ -5821,3 +5821,13 @@ msgstr "<span weight='bold' size='larger'>Alterador de várias senhas</span>"
 
 #~ msgid "Negotiate protocol security"
 #~ msgstr "Negociar segurança de protocolo"
+
+#: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "Seguir o tema claro/escuro do sistema"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr "Alternar automaticamente entre o tema claro e escuro de acordo com a configuração da área de trabalho e manter sincronizado quando ela mudar."

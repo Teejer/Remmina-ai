@@ -5766,3 +5766,13 @@ msgstr "<span weight='bold' size='larger'>Multilösenordsbytare</span>"
 #~ msgid ""
 #~ "Send anonymous statistics for use on https://remmina.org/remmina-stats"
 #~ msgstr "Skicka statistik till remmina.org"
+
+#: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "Följ systemets ljusa/mörka tema"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr "Växla automatiskt mellan det ljusa och mörka temat efter skrivbordsinställningen och håll det synkroniserat när den ändras."

@@ -5850,3 +5850,13 @@ msgstr "<span weight='bold' size='larger'>Zmiana wielu haseł</span>"
 
 #~ msgid "Negotiate protocol security"
 #~ msgstr "Negocjuj bezpieczeństwo protokołu"
+
+#: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "Podążaj za jasnym/ciemnym motywem systemu"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr "Automatycznie przełączaj między jasnym a ciemnym motywem zgodnie z ustawieniem pulpitu i zachowuj synchronizację przy jego zmianie."
