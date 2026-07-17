@@ -55,6 +55,7 @@
 #include "rcw.h"
 #include "remmina_about.h"
 #include "remmina_pref.h"
+#include "remmina_theme.h"
 #include "remmina_pref_dialog.h"
 #include "remmina_widget_pool.h"
 #include "remmina_plugin_manager.h"
@@ -1216,9 +1217,7 @@ static void remmina_main_on_accel_application_preferences(GSimpleAction *action,
 
 void remmina_main_reload_preferences(void)
 {
-	GtkSettings *settings;
-	settings = gtk_settings_get_default();
-	g_object_set(settings, "gtk-application-prefer-dark-theme", remmina_pref.dark_theme, NULL);
+	remmina_theme_apply();
 	if (remminamain) {
 		if(remmina_pref.hide_searchbar){
 			gtk_toggle_button_set_active(remminamain->search_toggle, FALSE);
@@ -1487,9 +1486,15 @@ void remmina_main_on_action_application_plugins(GSimpleAction *action, GVariant 
 void remmina_main_on_action_application_dark_theme(GSimpleAction *action, GVariant *param, gpointer data)
 {
 	TRACE_CALL(__func__);
-	GtkSettings *settings;
 
-	settings = gtk_settings_get_default();
+	/* This action is only meaningful when its toggle widget exists; the switch is
+	 * not present in every layout, so guard against a NULL dereference when the
+	 * action is activated (e.g. through the GApplication/D-Bus action interface). */
+	if (!remminamain || !remminamain->switch_dark_mode)
+		return;
+
+	/* Manually toggling the dark theme opts out of following the system theme. */
+	remmina_pref.dark_theme_auto = FALSE;
 
 	if (gtk_switch_get_active(remminamain->switch_dark_mode))
 		remmina_pref.dark_theme = 1;
@@ -1497,7 +1502,7 @@ void remmina_main_on_action_application_dark_theme(GSimpleAction *action, GVaria
 		remmina_pref.dark_theme = 0;
 	remmina_pref_save();
 
-	g_object_set(settings, "gtk-application-prefer-dark-theme", remmina_pref.dark_theme, NULL);
+	remmina_theme_apply();
 }
 
 void remmina_main_on_action_help_homepage(GSimpleAction *action, GVariant *param, gpointer data)
@@ -1814,12 +1819,12 @@ static void remmina_main_init(void)
 	TRACE_CALL(__func__);
 	int i, qcp_idx, qcp_actidx;
 	char *name;
-	GtkSettings *settings;
 
 	REMMINA_DEBUG("Initializing the Remmina main window");
-	/* Switch to a dark theme if the user enabled it */
-	settings = gtk_settings_get_default();
-	g_object_set(settings, "gtk-application-prefer-dark-theme", remmina_pref.dark_theme, NULL);
+	/* Apply the dark/light theme: follow the system preference when enabled,
+	 * otherwise use the manually configured dark_theme setting. This also starts
+	 * monitoring the desktop so Remmina switches live when the OS toggles. */
+	remmina_theme_init();
 
 	REMMINA_DEBUG ("Initializing monitor");
 	remminamain->monitor = remmina_network_monitor_new();

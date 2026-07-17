@@ -106,6 +106,7 @@ typedef struct _RemminaPrefDialog {
 	GtkCheckButton *	checkbutton_applet_hide_totals;
 	GtkCheckButton *	checkbutton_applet_disable_tray;
 	GtkCheckButton *	checkbutton_dark_theme;
+	GtkCheckButton *	checkbutton_theme_auto;
 	GtkCheckButton *	checkbutton_applet_start_in_tray;
 
 	GtkButton *		button_keyboard_host_key;
@@ -187,6 +188,7 @@ void remmina_pref_dialog_on_key_chooser(GtkWidget *widget, gpointer user_data);
 void remmina_pref_dialog_vte_font_on_toggled(GtkSwitch *widget, RemminaPrefDialog *dialog);
 void remmina_pref_dialog_clear_recent(GtkWidget *widget, gpointer user_data);
 void remmina_pref_dialog_disable_tray_icon_on_toggled(GtkWidget *widget, RemminaPrefDialog *dialog);
+void remmina_pref_dialog_theme_auto_on_toggled(GtkWidget *widget, RemminaPrefDialog *dialog);
 void remmina_pref_on_dialog_destroy(GtkWidget *widget, gpointer user_data);
 void remmina_pref_on_color_scheme_selected(GtkWidget *widget, gpointer user_data);
 void remmina_pref_on_color_scheme_removed(GtkWidget *widget, gpointer user_data);

@@ -828,6 +828,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                       </packing>
                     </child>
                     <child>
+                      <object class="GtkCheckButton" id="checkbutton_theme_auto">
+                        <property name="label" translatable="yes">Follow system light/dark theme</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">False</property>
+                        <property name="tooltip-text" translatable="yes">Automatically switch between the light and dark theme to match the desktop setting, and keep in sync when it changes.</property>
+                        <property name="halign">start</property>
+                        <property name="margin-start">18</property>
+                        <property name="margin-end">18</property>
+                        <property name="draw-indicator">True</property>
+                        <signal name="toggled" handler="remmina_pref_dialog_theme_auto_on_toggled" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left-attach">0</property>
+                        <property name="top-attach">9</property>
+                      </packing>
+                    </child>
+                    <child>
                       <object class="GtkCheckButton" id="checkbutton_dark_theme">
                         <property name="label" translatable="yes">Prefer dark theme</property>
                         <property name="visible">True</property>
@@ -841,7 +859,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
-                        <property name="top-attach">9</property>
+                        <property name="top-attach">10</property>
                       </packing>
                     </child>
                     <child>
@@ -858,7 +876,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
-                        <property name="top-attach">10</property>
+                        <property name="top-attach">11</property>
                       </packing>
                     </child>
                     <child>
@@ -875,7 +893,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
-                        <property name="top-attach">11</property>
+                        <property name="top-attach">12</property>
                       </packing>
                     </child>
                     <child>
@@ -892,7 +910,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
-                        <property name="top-attach">12</property>
+                        <property name="top-attach">13</property>
                       </packing>
                     </child>
                     <child>
@@ -909,7 +927,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
-                        <property name="top-attach">13</property>
+                        <property name="top-attach">14</property>
                       </packing>
                     </child>
                     <child>
@@ -927,7 +945,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
-                        <property name="top-attach">14</property>
+                        <property name="top-attach">15</property>
                       </packing>
                     </child>
                     <child>

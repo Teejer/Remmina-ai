@@ -268,6 +268,12 @@ void remmina_pref_on_dialog_destroy(GtkWidget *widget, gpointer user_data)
 		rebuild_remmina_icon = TRUE;
 	}
 
+	b = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(remmina_pref_dialog->checkbutton_theme_auto));
+	if (remmina_pref.dark_theme_auto != b) {
+		remmina_pref.dark_theme_auto = b;
+		rebuild_remmina_icon = TRUE;
+	}
+
 	remmina_pref.grab_color_switch = gtk_switch_get_active(remmina_pref_dialog->switch_appearance_grab_color);
 	remmina_pref.grab_color = gtk_entry_get_text(remmina_pref_dialog->entry_grab_color);
 
@@ -408,6 +414,17 @@ void remmina_pref_dialog_disable_tray_icon_on_toggled(GtkWidget *widget, Remmina
 	gtk_widget_set_sensitive(GTK_WIDGET(remmina_pref_dialog->checkbutton_applet_start_in_tray), b);
 }
 
+void remmina_pref_dialog_theme_auto_on_toggled(GtkWidget *widget, RemminaPrefDialog *dialog)
+{
+	TRACE_CALL(__func__);
+	gboolean b;
+
+	/* The manual "Prefer dark theme" choice is irrelevant while we follow the system. */
+	b = !gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget));
+
+	gtk_widget_set_sensitive(GTK_WIDGET(remmina_pref_dialog->checkbutton_dark_theme), b);
+}
+
 /* Helper function for remmina_pref_dialog_init() */
 static void remmina_pref_dialog_set_button_label(GtkButton *button, guint keyval)
 {
@@ -531,6 +548,10 @@ static void remmina_pref_dialog_init(gboolean load_plugins)
 	gtk_widget_set_sensitive(GTK_WIDGET(remmina_pref_dialog->checkbutton_applet_disable_tray), FALSE);
 	gtk_widget_set_sensitive(GTK_WIDGET(remmina_pref_dialog->checkbutton_applet_start_in_tray), FALSE);
 #endif
+
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(remmina_pref_dialog->checkbutton_theme_auto), remmina_pref.dark_theme_auto);
+	/* When following the system theme, the manual dark-theme toggle has no effect. */
+	gtk_widget_set_sensitive(GTK_WIDGET(remmina_pref_dialog->checkbutton_dark_theme), !remmina_pref.dark_theme_auto);
 
 	remmina_pref_dialog_set_button_label(remmina_pref_dialog->button_keyboard_host_key, remmina_pref.hostkey);
 	remmina_pref_dialog_set_button_label(remmina_pref_dialog->button_keyboard_fullscreen, remmina_pref.shortcutkey_fullscreen);
@@ -850,6 +871,7 @@ GtkWidget *remmina_pref_dialog_new(gint default_tab, GtkWindow *parent)
 	remmina_pref_dialog->checkbutton_applet_hide_totals = GTK_CHECK_BUTTON(GET_OBJECT("checkbutton_applet_hide_totals"));
 	remmina_pref_dialog->checkbutton_applet_disable_tray = GTK_CHECK_BUTTON(GET_OBJECT("checkbutton_applet_disable_tray"));
 	remmina_pref_dialog->checkbutton_dark_theme = GTK_CHECK_BUTTON(GET_OBJECT("checkbutton_dark_theme"));
+	remmina_pref_dialog->checkbutton_theme_auto = GTK_CHECK_BUTTON(GET_OBJECT("checkbutton_theme_auto"));
 	remmina_pref_dialog->checkbutton_applet_start_in_tray = GTK_CHECK_BUTTON(GET_OBJECT("checkbutton_applet_start_in_tray"));
 
 	remmina_pref_dialog->button_keyboard_host_key = GTK_BUTTON(GET_OBJECT("button_keyboard_host_key"));

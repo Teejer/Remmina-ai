@@ -614,6 +614,14 @@ void remmina_pref_init(void)
 	else
 		remmina_pref.dark_theme = FALSE;
 
+	if (g_key_file_has_key(gkeyfile, "remmina_pref", "dark_theme_auto", NULL))
+		remmina_pref.dark_theme_auto = g_key_file_get_boolean(gkeyfile, "remmina_pref", "dark_theme_auto", NULL);
+	else
+		/* On a fresh install (no manual dark_theme choice was ever saved) follow the
+		 * desktop light/dark preference by default. Existing users who already had an
+		 * explicit dark_theme setting keep their manual choice until they opt in. */
+		remmina_pref.dark_theme_auto = !g_key_file_has_key(gkeyfile, "remmina_pref", "dark_theme", NULL);
+
 	if (g_key_file_has_key(gkeyfile, "remmina_pref", "list_refresh_workaround", NULL))
 		remmina_pref.list_refresh_workaround = g_key_file_get_boolean(gkeyfile, "remmina_pref", "list_refresh_workaround", NULL);
 	else
@@ -996,6 +1004,7 @@ gboolean remmina_pref_save(void)
 	g_key_file_set_boolean(gkeyfile, "remmina_pref", "applet_enable_avahi", remmina_pref.applet_enable_avahi);
 	g_key_file_set_boolean(gkeyfile, "remmina_pref", "disable_tray_icon", remmina_pref.disable_tray_icon);
 	g_key_file_set_boolean(gkeyfile, "remmina_pref", "dark_theme", remmina_pref.dark_theme);
+	g_key_file_set_boolean(gkeyfile, "remmina_pref", "dark_theme_auto", remmina_pref.dark_theme_auto);
 	g_key_file_set_integer(gkeyfile, "remmina_pref", "recent_maximum", remmina_pref.recent_maximum);
 	g_key_file_set_integer(gkeyfile, "remmina_pref", "default_mode", remmina_pref.default_mode);
 	g_key_file_set_integer(gkeyfile, "remmina_pref", "tab_mode", remmina_pref.tab_mode);

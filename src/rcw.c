@@ -60,6 +60,7 @@
 #include "remmina_ext_exec.h"
 #include "remmina_plugin_manager.h"
 #include "remmina_pref.h"
+#include "remmina_theme.h"
 #include "remmina_protocol_widget.h"
 #include "remmina_public.h"
 #include "remmina_scrolled_viewport.h"
@@ -4023,14 +4024,13 @@ static RemminaConnectionWindow *rcw_create_scrolled(gint width, gint height, gbo
 	GtkWidget *grid;
 	GtkWidget *toolbar;
 	GtkNotebook *notebook;
-	GtkSettings *settings = gtk_settings_get_default();
 
 	cnnwin = rcw_new(FALSE, 0);
 	gtk_widget_set_name(GTK_WIDGET(cnnwin), "remmina-connection-window-scrolled");
 	gtk_widget_realize(GTK_WIDGET(cnnwin));
 
 	gtk_window_set_default_size(GTK_WINDOW(cnnwin), width, height);
-	g_object_set(settings, "gtk-application-prefer-dark-theme", remmina_pref.dark_theme, NULL);
+	remmina_theme_apply();
 
 	/* Create the toolbar */
 	toolbar = rcw_create_toolbar(cnnwin, SCROLLED_WINDOW_MODE, FALSE);
