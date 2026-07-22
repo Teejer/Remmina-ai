@@ -119,6 +119,8 @@ list(
   "remmina_external_tools.h"
   "remmina_sysinfo.h"
   "remmina_sysinfo.c"
+  "remmina_theme.h"
+  "remmina_theme.c"
   "rcw.c"
   "rcw.h"
   "remmina_mpchange.c"

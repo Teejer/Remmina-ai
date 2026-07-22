@@ -6151,3 +6151,13 @@ msgstr ""
 #, fuzzy
 #~ msgid "Post-command"
 #~ msgstr "Vorige commando"
+
+#: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "Systeemthema (licht/donker) volgen"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr "Schakel automatisch tussen het lichte en donkere thema volgens de bureaubladinstelling en blijf synchroon wanneer die verandert."

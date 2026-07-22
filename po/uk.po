@@ -5879,3 +5879,13 @@ msgstr "<span weight='bold' size='larger'>Зміна багатьох парол
 
 #~ msgid "Negotiate protocol security"
 #~ msgstr "Узгоджувати захист протоколу"
+
+#: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "Стежити за світлою/темною темою системи"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr "Автоматично перемикатися між світлою та темною темою відповідно до налаштування стільниці та синхронізуватися під час його зміни."

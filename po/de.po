@@ -6000,3 +6000,13 @@ msgstr "<span weight='bold' size='larger'>Mehrfach Passwortwechsler</span>"
 #~ msgstr ""
 #~ "Anonymisierte Statistiken zur Benutzung auf https://remmina.org/remmina-"
 #~ "stats schicken"
+
+#: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "Hell-/Dunkel-Thema des Systems folgen"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr "Automatisch zwischen hellem und dunklem Thema passend zur Desktop-Einstellung wechseln und bei Änderungen synchron bleiben."

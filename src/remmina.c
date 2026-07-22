@@ -63,6 +63,7 @@
 #include "remmina_plugin_python.h"
 #endif
 #include "remmina_pref.h"
+#include "remmina_theme.h"
 #include "remmina_public.h"
 #include "remmina_sftp_plugin.h"
 #include "remmina_ssh_plugin.h"
@@ -296,6 +297,9 @@ static void remmina_on_startup(GApplication *app)
 	RemminaSecretPlugin *secret_plugin;
 
 	remmina_widget_pool_init();
+	/* Start following the desktop light/dark preference (if enabled in prefs) and
+	 * subscribe to live changes, before any window is shown. */
+	remmina_theme_init();
 	remmina_sftp_plugin_register();
 	remmina_ssh_plugin_register();
 	remmina_icon_init();

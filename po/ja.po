@@ -5884,3 +5884,13 @@ msgstr "<span weight='bold' size='larger'>マルチパスワードチェンジ�
 
 #~ msgid "Negotiate protocol security"
 #~ msgstr "プロトコルセキュリティのネゴシエート"
+
+#: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "システムのライト/ダークテーマに従う"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr "デスクトップの設定に合わせてライトテーマとダークテーマを自動的に切り替え、変更時にも同期を保ちます。"

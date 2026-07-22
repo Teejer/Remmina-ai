@@ -153,6 +153,7 @@ typedef struct _RemminaPref {
 	gboolean		confirm_close;
 	/* In RemminaPrefDialog appearance tab */
 	gboolean		dark_theme;
+	gboolean		dark_theme_auto;
 	gboolean		list_refresh_workaround;
 	gboolean		fullscreen_on_auto;
 	gboolean		always_show_tab;

@@ -5808,3 +5808,13 @@ msgstr "<span weight='bold' size='larger'>Множественная смена 
 #~ "Send anonymous statistics for use on https://remmina.org/remmina-stats"
 #~ msgstr ""
 #~ "Отправлять анонимную статистику для https://remmina.org/remmina-stats"
+
+#: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "Следовать светлой/тёмной теме системы"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr "Автоматически переключаться между светлой и тёмной темой в соответствии с настройкой рабочего стола и синхронизироваться при её изменении."
