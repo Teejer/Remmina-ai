@@ -4699,10 +4699,22 @@ msgid "Hide the search bar shown in the main window"
 msgstr "メインウィンドウに表示されている検索バーを隠す"
 
 #: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "システムのライト/ダークテーマに従う"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr ""
+"デスクトップの設定に合わせてライトテーマとダークテーマを自動的に切り替え、変"
+"更時にも同期を保ちます。"
+
+#: data/ui/remmina_preferences.glade:850
 msgid "Prefer dark theme"
 msgstr "ダークテーマを優先する"
 
-#: data/ui/remmina_preferences.glade:836
+#: data/ui/remmina_preferences.glade:854
 msgid ""
 "If a GTK theme includes a dark variant, it will be used instead of the "
 "configured theme."
@@ -5884,13 +5896,3 @@ msgstr "<span weight='bold' size='larger'>マルチパスワードチェンジ�
 
 #~ msgid "Negotiate protocol security"
 #~ msgstr "プロトコルセキュリティのネゴシエート"
-
-#: data/ui/remmina_preferences.glade:832
-msgid "Follow system light/dark theme"
-msgstr "システムのライト/ダークテーマに従う"
-
-#: data/ui/remmina_preferences.glade:836
-msgid ""
-"Automatically switch between the light and dark theme to match the desktop "
-"setting, and keep in sync when it changes."
-msgstr "デスクトップの設定に合わせてライトテーマとダークテーマを自動的に切り替え、変更時にも同期を保ちます。"

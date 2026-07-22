@@ -4591,10 +4591,22 @@ msgid "Hide the search bar shown in the main window"
 msgstr "Dölj sökfältet som visas i huvudfönstret"
 
 #: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "Följ systemets ljusa/mörka tema"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr ""
+"Växla automatiskt mellan det ljusa och mörka temat efter "
+"skrivbordsinställningen och håll det synkroniserat när den ändras."
+
+#: data/ui/remmina_preferences.glade:850
 msgid "Prefer dark theme"
 msgstr "Föredrar mörkt tema"
 
-#: data/ui/remmina_preferences.glade:836
+#: data/ui/remmina_preferences.glade:854
 msgid ""
 "If a GTK theme includes a dark variant, it will be used instead of the "
 "configured theme."
@@ -5766,13 +5778,3 @@ msgstr "<span weight='bold' size='larger'>Multilösenordsbytare</span>"
 #~ msgid ""
 #~ "Send anonymous statistics for use on https://remmina.org/remmina-stats"
 #~ msgstr "Skicka statistik till remmina.org"
-
-#: data/ui/remmina_preferences.glade:832
-msgid "Follow system light/dark theme"
-msgstr "Följ systemets ljusa/mörka tema"
-
-#: data/ui/remmina_preferences.glade:836
-msgid ""
-"Automatically switch between the light and dark theme to match the desktop "
-"setting, and keep in sync when it changes."
-msgstr "Växla automatiskt mellan det ljusa och mörka temat efter skrivbordsinställningen och håll det synkroniserat när den ändras."

@@ -4991,11 +4991,23 @@ msgid "Hide the search bar shown in the main window"
 msgstr "Verberg de zoekbalk in het hoofdvenster"
 
 #: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "Systeemthema (licht/donker) volgen"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr ""
+"Schakel automatisch tussen het lichte en donkere thema volgens de "
+"bureaubladinstelling en blijf synchroon wanneer die verandert."
+
+#: data/ui/remmina_preferences.glade:850
 #, fuzzy
 msgid "Prefer dark theme"
 msgstr "Voorkeur voor donker thema"
 
-#: data/ui/remmina_preferences.glade:836
+#: data/ui/remmina_preferences.glade:854
 msgid ""
 "If a GTK theme includes a dark variant, it will be used instead of the "
 "configured theme."
@@ -6151,13 +6163,3 @@ msgstr ""
 #, fuzzy
 #~ msgid "Post-command"
 #~ msgstr "Vorige commando"
-
-#: data/ui/remmina_preferences.glade:832
-msgid "Follow system light/dark theme"
-msgstr "Systeemthema (licht/donker) volgen"
-
-#: data/ui/remmina_preferences.glade:836
-msgid ""
-"Automatically switch between the light and dark theme to match the desktop "
-"setting, and keep in sync when it changes."
-msgstr "Schakel automatisch tussen het lichte en donkere thema volgens de bureaubladinstelling en blijf synchroon wanneer die verandert."

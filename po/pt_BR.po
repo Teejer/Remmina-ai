@@ -1826,9 +1826,9 @@ msgstr ""
 "Para atualizar o nome de usuário e a senha e definir um modo de resolução "
 "diferente para um perfil de conexão do Remmina, use:\n"
 "\n"
-"\techo \"username\\n"
-"apassword\" | remmina --update-profile /PATH/TO/FOO.remmina --set-option "
-"username --set-option resolution_mode=2 --set-option password\n"
+"\techo \"username\\napassword\" | remmina --update-profile /PATH/TO/"
+"FOO.remmina --set-option username --set-option resolution_mode=2 --set-"
+"option password\n"
 
 #. TRANSLATORS: The placeholder %s is a directory path
 #: src/remmina_sftp_client.c:176
@@ -4628,10 +4628,22 @@ msgid "Hide the search bar shown in the main window"
 msgstr "Ocultar a barra de pesquisa mostrada na janela principal"
 
 #: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "Seguir o tema claro/escuro do sistema"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr ""
+"Alternar automaticamente entre o tema claro e escuro de acordo com a "
+"configuração da área de trabalho e manter sincronizado quando ela mudar."
+
+#: data/ui/remmina_preferences.glade:850
 msgid "Prefer dark theme"
 msgstr "Preferir tema escuro"
 
-#: data/ui/remmina_preferences.glade:836
+#: data/ui/remmina_preferences.glade:854
 msgid ""
 "If a GTK theme includes a dark variant, it will be used instead of the "
 "configured theme."
@@ -5821,13 +5833,3 @@ msgstr "<span weight='bold' size='larger'>Alterador de várias senhas</span>"
 
 #~ msgid "Negotiate protocol security"
 #~ msgstr "Negociar segurança de protocolo"
-
-#: data/ui/remmina_preferences.glade:832
-msgid "Follow system light/dark theme"
-msgstr "Seguir o tema claro/escuro do sistema"
-
-#: data/ui/remmina_preferences.glade:836
-msgid ""
-"Automatically switch between the light and dark theme to match the desktop "
-"setting, and keep in sync when it changes."
-msgstr "Alternar automaticamente entre o tema claro e escuro de acordo com a configuração da área de trabalho e manter sincronizado quando ela mudar."

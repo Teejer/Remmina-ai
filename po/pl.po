@@ -4626,10 +4626,22 @@ msgid "Hide the search bar shown in the main window"
 msgstr "Ukryj pasek wyszukiwania pokazany w oknie głównym"
 
 #: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "Podążaj za jasnym/ciemnym motywem systemu"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr ""
+"Automatycznie przełączaj między jasnym a ciemnym motywem zgodnie z "
+"ustawieniem pulpitu i zachowuj synchronizację przy jego zmianie."
+
+#: data/ui/remmina_preferences.glade:850
 msgid "Prefer dark theme"
 msgstr "Preferuj ciemny motyw"
 
-#: data/ui/remmina_preferences.glade:836
+#: data/ui/remmina_preferences.glade:854
 msgid ""
 "If a GTK theme includes a dark variant, it will be used instead of the "
 "configured theme."
@@ -5850,13 +5862,3 @@ msgstr "<span weight='bold' size='larger'>Zmiana wielu haseł</span>"
 
 #~ msgid "Negotiate protocol security"
 #~ msgstr "Negocjuj bezpieczeństwo protokołu"
-
-#: data/ui/remmina_preferences.glade:832
-msgid "Follow system light/dark theme"
-msgstr "Podążaj za jasnym/ciemnym motywem systemu"
-
-#: data/ui/remmina_preferences.glade:836
-msgid ""
-"Automatically switch between the light and dark theme to match the desktop "
-"setting, and keep in sync when it changes."
-msgstr "Automatycznie przełączaj między jasnym a ciemnym motywem zgodnie z ustawieniem pulpitu i zachowuj synchronizację przy jego zmianie."

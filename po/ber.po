@@ -4307,10 +4307,20 @@ msgid "Hide the search bar shown in the main window"
 msgstr ""
 
 #: data/ui/remmina_preferences.glade:832
-msgid "Prefer dark theme"
+msgid "Follow system light/dark theme"
 msgstr ""
 
 #: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr ""
+
+#: data/ui/remmina_preferences.glade:850
+msgid "Prefer dark theme"
+msgstr ""
+
+#: data/ui/remmina_preferences.glade:854
 msgid ""
 "If a GTK theme includes a dark variant, it will be used instead of the "
 "configured theme."

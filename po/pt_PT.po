@@ -4748,10 +4748,22 @@ msgid "Hide the search bar shown in the main window"
 msgstr "Ocultar a barra de pesquisa mostrada na janela principal"
 
 #: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "Seguir o tema claro/escuro do sistema"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr ""
+"Alternar automaticamente entre o tema claro e escuro de acordo com a "
+"definição do ambiente de trabalho e manter a sincronização quando esta mudar."
+
+#: data/ui/remmina_preferences.glade:850
 msgid "Prefer dark theme"
 msgstr "Preferir tema escuro"
 
-#: data/ui/remmina_preferences.glade:836
+#: data/ui/remmina_preferences.glade:854
 msgid ""
 "If a GTK theme includes a dark variant, it will be used instead of the "
 "configured theme."
@@ -5877,13 +5889,3 @@ msgstr ""
 
 #~ msgid "Remote Desktop Preference"
 #~ msgstr "Preferências do Ambiente de Trabalho Remoto"
-
-#: data/ui/remmina_preferences.glade:832
-msgid "Follow system light/dark theme"
-msgstr "Seguir o tema claro/escuro do sistema"
-
-#: data/ui/remmina_preferences.glade:836
-msgid ""
-"Automatically switch between the light and dark theme to match the desktop "
-"setting, and keep in sync when it changes."
-msgstr "Alternar automaticamente entre o tema claro e escuro de acordo com a definição do ambiente de trabalho e manter a sincronização quando esta mudar."

@@ -1815,8 +1815,8 @@ msgstr ""
 "\tremmina -c rdp://felhasználónév:titkosított jelszó@szerver\n"
 "\n"
 "\tremmina -c vnc://felhasználónév:titkosított jelszó@szerver\n"
-"\tremmina -c vnc://server?VncUsername=felhasználónév\\"
-"&VncPassword=rejtjelezett-jelszó\n"
+"\tremmina -c vnc://server?"
+"VncUsername=felhasználónév\\&VncPassword=rejtjelezett-jelszó\n"
 "\n"
 "Jelszó titkosítása URI-val való használathoz:\n"
 "\n"
@@ -1825,9 +1825,9 @@ msgstr ""
 "A felhasználónév és jelszó frissítéséhez, valamint egy kapcsolati profil "
 "eltérő felbontási módjának beállításához használja:\n"
 "\n"
-"\techo \"username\\n"
-"apassword\" | remmina --update-profile /PATH/TO/FOO.remmina --set-option "
-"username --set-option resolution_mode=2 --set-option password\n"
+"\techo \"username\\napassword\" | remmina --update-profile /PATH/TO/"
+"FOO.remmina --set-option username --set-option resolution_mode=2 --set-"
+"option password\n"
 
 #. TRANSLATORS: The placeholder %s is a directory path
 #: src/remmina_sftp_client.c:176
@@ -4631,10 +4631,20 @@ msgid "Hide the search bar shown in the main window"
 msgstr "Keresősáv elrejtése a főablakban"
 
 #: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr ""
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr ""
+
+#: data/ui/remmina_preferences.glade:850
 msgid "Prefer dark theme"
 msgstr "Sötét téma előnyben részesítése"
 
-#: data/ui/remmina_preferences.glade:836
+#: data/ui/remmina_preferences.glade:854
 msgid ""
 "If a GTK theme includes a dark variant, it will be used instead of the "
 "configured theme."

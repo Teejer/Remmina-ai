@@ -4524,10 +4524,20 @@ msgid "Hide the search bar shown in the main window"
 msgstr "在主窗口中隐藏搜索栏"
 
 #: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr "跟随系统浅色/深色主题"
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr "根据桌面设置在浅色和深色主题之间自动切换，并在其更改时保持同步。"
+
+#: data/ui/remmina_preferences.glade:850
 msgid "Prefer dark theme"
 msgstr "喜欢深色主题"
 
-#: data/ui/remmina_preferences.glade:836
+#: data/ui/remmina_preferences.glade:854
 msgid ""
 "If a GTK theme includes a dark variant, it will be used instead of the "
 "configured theme."
@@ -5702,13 +5712,3 @@ msgstr "<span weight='bold' size='larger'>多密码转换器</span>"
 #~ msgid ""
 #~ "Send anonymous statistics for use on https://remmina.org/remmina-stats"
 #~ msgstr "将统计信息发送到 remmina.org"
-
-#: data/ui/remmina_preferences.glade:832
-msgid "Follow system light/dark theme"
-msgstr "跟随系统浅色/深色主题"
-
-#: data/ui/remmina_preferences.glade:836
-msgid ""
-"Automatically switch between the light and dark theme to match the desktop "
-"setting, and keep in sync when it changes."
-msgstr "根据桌面设置在浅色和深色主题之间自动切换，并在其更改时保持同步。"

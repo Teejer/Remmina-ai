@@ -5144,11 +5144,21 @@ msgid "Hide the search bar shown in the main window"
 msgstr "အဓိကပြတင်းပေါက်မှာ ပြထားတဲ့ ရှာဖွေရေး ဘားကို ဖုံးကွယ်ထားပါ"
 
 #: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr ""
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr ""
+
+#: data/ui/remmina_preferences.glade:850
 #, fuzzy
 msgid "Prefer dark theme"
 msgstr "အမှောင်အကြောင်းအရာကို ကြိုက်နှစ်သက်ပါ"
 
-#: data/ui/remmina_preferences.glade:836
+#: data/ui/remmina_preferences.glade:854
 #, fuzzy
 msgid ""
 "If a GTK theme includes a dark variant, it will be used instead of the "

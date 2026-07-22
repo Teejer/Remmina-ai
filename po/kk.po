@@ -640,7 +640,8 @@ msgstr "Жария SSH кілті өзгерді!"
 #: src/remmina_ssh.c:1232
 #, c-format
 msgid "Could not authenticate with keyboard-interactive. %s"
-msgstr "Интерактивті пернетақта арқылы аутентификациядан өту мүмкін болмады. %s"
+msgstr ""
+"Интерактивті пернетақта арқылы аутентификациядан өту мүмкін болмады. %s"
 
 #: src/remmina_ssh.c:1334
 #, c-format
@@ -1804,9 +1805,9 @@ msgstr ""
 "Пайдаланушы аты мен парольді жаңарту және Remmina қосылым профилінің басқа "
 "ажыратымдылық режимін орнату үшін мынаны пайдаланыңыз:\n"
 "\n"
-"\techo \"username\\n"
-"apassword\" | remmina --update-profile /PATH/TO/FOO.remmina --set-option "
-"username --set-option resolution_mode=2 --set-option password\n"
+"\techo \"username\\napassword\" | remmina --update-profile /PATH/TO/"
+"FOO.remmina --set-option username --set-option resolution_mode=2 --set-"
+"option password\n"
 
 #. TRANSLATORS: The placeholder %s is a directory path
 #: src/remmina_sftp_client.c:176
@@ -1864,7 +1865,8 @@ msgstr "Бумадан оқу мүмкін болмады. %s"
 
 #: src/remmina_sftp_client.c:848
 msgid "Are you sure you want to cancel the file transfer in progress?"
-msgstr "Орындалып жатқан файл тасымалын бас тартқыңыз келетініне сенімдісіз бе?"
+msgstr ""
+"Орындалып жатқан файл тасымалын бас тартқыңыз келетініне сенімдісіз бе?"
 
 #: src/remmina_sftp_client.c:882
 #, c-format
@@ -2483,7 +2485,8 @@ msgstr ""
 
 #: plugins/x2go/x2go_plugin.c:999
 msgid "Neither the 'path' nor 'dialog' parameters are initialized."
-msgstr "'path' немесе 'dialog' параметрлерінің ешқайсысы инициализацияланбаған."
+msgstr ""
+"'path' немесе 'dialog' параметрлерінің ешқайсысы инициализацияланбаған."
 
 #: plugins/x2go/x2go_plugin.c:1015
 msgid "GtkTreePath 'path' describes a non-existing row!"
@@ -3508,8 +3511,8 @@ msgid ""
 "\"Samsung_CLX-3300_Series\":\"Samsung CLX-3300 Series PS\";\"Canon MF410\":"
 "\"Canon MF410 Series UFR II\""
 msgstr ""
-"\"Samsung_CLX-3300_Series\":\"Samsung CLX-3300 Series PS\";\"Canon "
-"MF410\":\"Canon MF410 Series UFR II\""
+"\"Samsung_CLX-3300_Series\":\"Samsung CLX-3300 Series PS\";\"Canon MF410\":"
+"\"Canon MF410 Series UFR II\""
 
 #: plugins/rdp/rdp_plugin.c:3291
 msgid "Local serial name"
@@ -4299,8 +4302,8 @@ msgstr ""
 "\n"
 "<span>\n"
 "<a href=\"https://gitlab.com/Remmina/Remmina/-/tags/\" title=\"Remmina "
-"шығарылым жазбалары\"><i>Шығарылым жазбаларын оқу үшін веб-сайтқа кіріңіз</i>"
-"</a>.\n"
+"шығарылым жазбалары\"><i>Шығарылым жазбаларын оқу үшін веб-сайтқа кіріңіз</"
+"i></a>.\n"
 "</span>"
 
 #: data/ui/remmina_about.glade:32 data/ui/remmina_main.glade:429
@@ -4479,7 +4482,8 @@ msgstr ""
 
 #: data/ui/remmina_preferences.glade:400
 msgid "Only save generated screenshots, don't copy them to clipboard."
-msgstr "Тек жасалған скриншоттарды сақтаңыз, оларды алмасу буферіне көшірмеңіз."
+msgstr ""
+"Тек жасалған скриншоттарды сақтаңыз, оларды алмасу буферіне көшірмеңіз."
 
 #: data/ui/remmina_preferences.glade:404
 msgid "Prevent screenshots from entering clipboard"
@@ -4585,10 +4589,20 @@ msgid "Hide the search bar shown in the main window"
 msgstr "Негізгі терезеде көрсетілетін іздеу тақтасын жасыру"
 
 #: data/ui/remmina_preferences.glade:832
+msgid "Follow system light/dark theme"
+msgstr ""
+
+#: data/ui/remmina_preferences.glade:836
+msgid ""
+"Automatically switch between the light and dark theme to match the desktop "
+"setting, and keep in sync when it changes."
+msgstr ""
+
+#: data/ui/remmina_preferences.glade:850
 msgid "Prefer dark theme"
 msgstr "Қараңғы теманы қалау"
 
-#: data/ui/remmina_preferences.glade:836
+#: data/ui/remmina_preferences.glade:854
 msgid ""
 "If a GTK theme includes a dark variant, it will be used instead of the "
 "configured theme."
