@@ -2183,6 +2183,10 @@ static const RemminaProtocolSetting remmina_plugin_vnc_advanced_settings[] =
 #ifdef TCP_USER_TIMEOUT
 	{ REMMINA_PROTOCOL_SETTING_TYPE_INT,  "vnc_timeout", N_("TCP_USER_TIMEOUT length (seconds)"), FALSE, NULL, vnc_timeout_tooltip },
 #endif // TCP_USER_TIMEOUT
+	{ REMMINA_PROTOCOL_SETTING_TYPE_FILE,  "cacert", N_("CA certificate file"), FALSE, NULL, N_("CA certificate file for X509 authorization") },
+	{ REMMINA_PROTOCOL_SETTING_TYPE_FILE,  "cacrl", N_("CA certificate revocation list file"), FALSE, NULL, N_("CA certificate revocation list file for X509 authorization") },
+	{ REMMINA_PROTOCOL_SETTING_TYPE_FILE,  "clientcert", N_("Client certificate file"), FALSE, NULL, N_("Client certificate file for CA X509 authorization") },
+	{ REMMINA_PROTOCOL_SETTING_TYPE_FILE,  "clientkey", N_("Client private key file"), FALSE, NULL, N_("Client private key file for CA X509 authorization") },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK, "tightencoding",          N_("Force tight encoding"),			        TRUE,  NULL, N_("Enabling this may help when the remote desktop looks scrambled") },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK, "disablesmoothscrolling", N_("Disable smooth scrolling"),		        FALSE, NULL, NULL },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK, "disablepasswordstoring", N_("Forget passwords after use"),		        TRUE,  NULL, NULL },
