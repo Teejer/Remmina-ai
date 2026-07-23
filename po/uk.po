@@ -5,7 +5,7 @@
 # Olexandr Nesterenko <olexn@ukr.net>, 2019, 2020.
 # anonymous <noreply@weblate.org>, 2019.
 # Rostyslav <info@ubilling.net.ua>, 2020, 2021.
-# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022, 2023, 2024, 2025.
+# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022, 2023, 2024, 2025, 2026.
 # Солтыс Сергей <treefeed@mail.ru>, 2022.
 # Dan <denqwerta@gmail.com>, 2022.
 # Box5 <box5sht@gmail.com>, 2024.
@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2025-12-12 08:00+0000\n"
+"PO-Revision-Date: 2026-07-23 06:01+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <https://hosted.weblate.org/projects/remmina/"
 "remmina/uk/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.15-dev\n"
+"X-Generator: Weblate 2026.8.dev0\n"
 "X-Launchpad-Export-Date: 2014-04-10 15:04+0000\n"
 
 #: src/remmina_icon.c:143
@@ -2691,11 +2691,11 @@ msgstr ""
 
 #: plugins/x2go/x2go_plugin.c:2503
 msgid "Could not start X2Go session…"
-msgstr "Не вдалося розпочати сеанс SSH…"
+msgstr "Не вдалося розпочати сеанс X2Go…"
 
 #: plugins/x2go/x2go_plugin.c:2510
 msgid "Could not start X2Go session."
-msgstr "Не вдалося розпочати сеанс SSH."
+msgstr "Не вдалося розпочати сеанс X2Go."
 
 #: plugins/x2go/x2go_plugin.c:2511
 #, c-format
