@@ -872,7 +872,10 @@ remmina_plugin_vnc_rfb_credential(rfbClient *cl, int credentialType)
 
 	case rfbCredentialTypeX509:
 		if (gpdata->auth_first &&
-		    remmina_plugin_service->file_get_string(remminafile, "cacert")) {
+				remmina_plugin_service->file_get_string(remminafile, "cacert") &&
+				remmina_plugin_service->file_get_string(remminafile, "cacrl") &&
+				remmina_plugin_service->file_get_string(remminafile, "clientcert") &&
+				remmina_plugin_service->file_get_string(remminafile, "clientkey")) {
 			cred->x509Credential.x509CACertFile = g_strdup(remmina_plugin_service->file_get_string(remminafile, "cacert"));
 			cred->x509Credential.x509CACrlFile = g_strdup(remmina_plugin_service->file_get_string(remminafile, "cacrl"));
 			cred->x509Credential.x509ClientCertFile = g_strdup(remmina_plugin_service->file_get_string(remminafile, "clientcert"));
