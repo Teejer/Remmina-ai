@@ -335,6 +335,7 @@ struct rf_context {
 	gboolean		sw_gdi;
 	GtkWidget *		drawing_area;
 	GtkWidget *     motion_drawing_area;
+	gint			prev_num_monitors;
 	gint			scale_width;
 	gint			scale_height;
 	gdouble			scale_x;

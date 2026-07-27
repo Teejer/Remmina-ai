@@ -509,8 +509,10 @@ static gboolean remmina_rdp_event_delayed_monitor_layout(RemminaProtocolWidget *
 		gpheight = a.height;
 		prevwidth = remmina_plugin_service->protocol_plugin_get_width(gp);
 		prevheight = remmina_plugin_service->protocol_plugin_get_height(gp);
+		gint num_monitors = freerdp_settings_get_uint32(rfi->clientContext.context.settings, FreeRDP_MonitorCount);
 
-		if ((gpwidth != prevwidth || gpheight != prevheight) && gpwidth >= 200 && gpheight >= 200) {
+		if ((gpwidth != prevwidth || gpheight != prevheight || num_monitors != rfi->prev_num_monitors) && gpwidth >= 200 && gpheight >= 200) {
+			rfi->prev_num_monitors = num_monitors;
 			if (rfi->rdpgfxchan) {
 				/* Workaround for FreeRDP issue #5417 */
 				if (gpwidth < AVC_MIN_DESKTOP_WIDTH)
@@ -1250,7 +1252,6 @@ void remmina_events_multimonitor(RemminaProtocolWidget* gp)
 			gtk_widget_set_can_focus(other_monitor_drawing_area, TRUE);
 			gtk_widget_set_sensitive(other_monitor_drawing_area, TRUE);
 			gtk_widget_set_app_paintable(other_monitor_drawing_area, TRUE);
-			gtk_window_set_keep_above(GTK_WINDOW(gtk_widget_get_toplevel(other_monitor_drawing_area)), TRUE);
 			gtk_widget_grab_focus(other_monitor_drawing_area);
 			gtk_widget_show(other_monitor_drawing_area);
 		} else {

@@ -1431,9 +1431,10 @@ static void rcw_toolbar_fullscreen(GtkToolItem *toggle, RemminaConnectionWindow 
 			rcw_switch_viewmode(cnnwin, cnnwin->priv->fss_view_mode);
 		} else {
 			rcw_switch_viewmode(cnnwin, SCROLLED_WINDOW_MODE);
+			remmina_file_set_int(cnnobj->remmina_file, "multimon", 0);
+			remmina_file_save(cnnobj->remmina_file);
 		}
-	} else
-	if (gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(cnnwin->priv->toolitem_multimon))) {
+	} else if (gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(cnnwin->priv->toolitem_multimon))) {
 		rcw_switch_viewmode(cnnwin, cnnwin->priv->fss_view_mode);
 	} else {
 		rcw_switch_viewmode(cnnwin, SCROLLED_WINDOW_MODE);
@@ -1840,10 +1841,14 @@ static void rcw_toolbar_multi_monitor_mode(GtkToolItem *toggle, RemminaConnectio
 		REMMINA_DEBUG("Saving multimon as 1");
 		remmina_file_set_int(cnnobj->remmina_file, "multimon", 1);
 		remmina_file_save(cnnobj->remmina_file);
-		if (!gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(cnnwin->priv->toolitem_fullscreen))) {
-			cnnwin->priv->multi_mon = TRUE;
- 			gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(cnnwin->priv->toolitem_fullscreen), TRUE);
+		cnnwin->priv->multi_mon = TRUE;
+		if (cnnwin->priv->view_mode == VIEWPORT_FULLSCREEN_MODE || cnnwin->priv->view_mode == SCROLLED_FULLSCREEN_MODE) {
+			RemminaConnectionWindow* newwin = rcw_create_fullscreen(NULL, cnnwin->priv->view_mode);
+			rcw_migrate(cnnwin, newwin);
+			cnnwin = newwin;
 		}
+ 		gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(cnnwin->priv->toolitem_fullscreen), TRUE);
+		
 		remmina_protocol_widget_call_feature_by_type(REMMINA_PROTOCOL_WIDGET(cnnobj->proto),
 				REMMINA_PROTOCOL_FEATURE_TYPE_MULTIMON, 0);
 		rcw_create_widget_areas(cnnobj);
@@ -2997,11 +3002,15 @@ static void rco_update_toolbar(RemminaConnectionObject *cnnobj)
 	if (toolitem) {
 		gint hasmultimon = remmina_protocol_widget_query_feature_by_type(REMMINA_PROTOCOL_WIDGET(cnnobj->proto),
 										 REMMINA_PROTOCOL_FEATURE_TYPE_MULTIMON);
+		gboolean is_multimon = remmina_file_get_int(cnnobj->remmina_file, "multimon", FALSE) && hasmultimon;
 
 		gtk_widget_set_sensitive(GTK_WIDGET(toolitem), cnnobj->connected);
-		gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(toolitem),
-						  remmina_file_get_int(cnnobj->remmina_file, "multimon", FALSE));
+		gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(toolitem), is_multimon);
 		gtk_widget_set_sensitive(GTK_WIDGET(toolitem), hasmultimon);
+		if (is_multimon) {
+			gtk_widget_set_sensitive(GTK_WIDGET(priv->toolitem_scale), FALSE);
+			gtk_widget_set_sensitive(GTK_WIDGET(priv->scaler_option_button), FALSE);
+		}
 	}
 
 	toolitem = priv->toolitem_grab;
@@ -5053,7 +5062,7 @@ GtkWidget *rcw_open_from_file_full(RemminaFile *remminafile, GCallback disconnec
 		gtk_window_present(GTK_WINDOW(cnnobj->cnnwin));
 		nb_set_current_page(cnnobj->cnnwin->priv->notebook, newpage);
 	}
-	if (view_mode == VIEWPORT_FULLSCREEN_MODE ) {
+	if (view_mode == VIEWPORT_FULLSCREEN_MODE && ismultimon) {
 	        rcw_create_widget_areas(cnnobj);
 	}
 
@@ -5761,6 +5770,8 @@ GtkWidget* multimon_get_monitor_drawing_area(RemminaProtocolWidget *proto, gint 
 		monwin->priv->drawing_area = gtk_drawing_area_new();		
 		gtk_container_add(GTK_CONTAINER(monwin), monwin->priv->drawing_area);
 		gtk_widget_realize(monwin->priv->drawing_area);
+		if (proto->cnnobj->connected)
+			gtk_widget_show(GTK_WIDGET(monwin));
 	}
 	return monwin->priv->drawing_area;
 }
