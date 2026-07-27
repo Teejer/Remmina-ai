@@ -67,6 +67,7 @@
 #include "remmina_unlock.h"
 #include "remmina_utils.h"
 #include "remmina_widget_pool.h"
+#include "rcw_platform.h"
 #include "remmina/remmina_trace_calls.h"
 
 #ifdef GDK_WINDOWING_WAYLAND
@@ -5353,14 +5354,17 @@ static void multimon_window_init(MultimonWindow *fswin) {
 	g_signal_connect(G_OBJECT(fswin), "map-event", G_CALLBACK(rcw_map_event_fullscreen_monitor), 0);
 }
 
-static void rcw_normalize_monitors(RemminaConnectionWindowPriv*priv) {
+static void rcw_normalize_monitors(RemminaConnectionWindowPriv*priv, int multimon_main_monitor) {
 	// calculation to support translate monitors to 0,0. TODO: same thing for gaps between monitors?
+	gboolean hasPrimary = FALSE;
 	gint min_x = INT_MAX, min_y = INT_MAX;
 	gint mostleft_monitor_y = 0, mosttop_monitor_x = 0;
 	gint origin_shift_x = 0;
 	gint origin_shift_y = 0;
 	for (gint i = 0; i < priv->multimon_areas->len; ++i) {
 		MultimonWindow* monwin = RCW_MULTIMON(g_ptr_array_index(priv->multimon_areas, i));		
+		if (monwin->priv->isPrimary)
+			hasPrimary = TRUE;
 		if (monwin->priv->geometry.x < min_x) {
 			min_x = monwin->priv->geometry.x;
 			mostleft_monitor_y = monwin->priv->geometry.y;
@@ -5380,6 +5384,9 @@ static void rcw_normalize_monitors(RemminaConnectionWindowPriv*priv) {
 	}
 	for (gint i = 0; i < priv->multimon_areas->len; ++i) {
 		MultimonWindow* monwin = RCW_MULTIMON(g_ptr_array_index(priv->multimon_areas, i));		
+		if (!hasPrimary && multimon_main_monitor == i) {
+			monwin->priv->isPrimary = TRUE;
+		}
 		monwin->priv->geometry.x -= origin_shift_x;
 		monwin->priv->geometry.y -= origin_shift_y;
 	}
@@ -5398,6 +5405,8 @@ static gint rcw_probe_monitors(RemminaConnectionObject *cnnobj, const gchar*moni
 	if (monitorids_str != NULL) {
 		monitorids = g_strsplit(monitorids_str, ",", -1);
 	}
+
+	const GdkRectangle primary_monitor_geometry = rcw_first_monitor_geometry();
 
 	priv->multi_mon = 0;
 	if (priv->multimon_areas != NULL)
@@ -5453,6 +5462,11 @@ static gint rcw_probe_monitors(RemminaConnectionObject *cnnobj, const gchar*moni
 		wpriv->physicalHeight = gdk_monitor_get_height_mm(monitor);
 		wpriv->physicalWidth = gdk_monitor_get_width_mm(monitor);
 		wpriv->isPrimary = gdk_monitor_is_primary(monitor);
+
+		if (monitorids == NULL && gdk_rectangle_equal(&primary_monitor_geometry, &wpriv->geometry)) {
+			wpriv->isPrimary = 1;
+		}
+
 		wpriv->monitor = i;
 		// main monitor is either the primary, or first configured monitor
 		if (wpriv->isPrimary && multimon_main_monitor == -1 && monitorids == NULL)
@@ -5468,7 +5482,7 @@ static gint rcw_probe_monitors(RemminaConnectionObject *cnnobj, const gchar*moni
 		multimon_main_monitor = first_monitor;
 	}
 
-	rcw_normalize_monitors(priv);
+	rcw_normalize_monitors(priv, multimon_main_monitor);
 
 	return multimon_main_monitor;
 }
