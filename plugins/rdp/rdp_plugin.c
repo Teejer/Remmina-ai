@@ -1913,7 +1913,18 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 	if (remmina_plugin_service->file_get_string(remminafile, "domain"))
 		freerdp_settings_set_string(rfi->clientContext.context.settings, FreeRDP_Domain, remmina_plugin_service->file_get_string(remminafile, "domain"));
 
-	s = remmina_plugin_service->file_get_string(remminafile, "password");
+	/* Smartcard logon: when smartcard logon is active and a PIN is stored in the
+	 * dedicated smartcard_pin field, use it as the password so the card
+	 * middleware receives the saved PIN instead of an empty string. Only
+	 * override when a non-empty PIN exists - otherwise keep the ordinary
+	 * password, so the passwordispin (PIN in the password field) and gateway
+	 * same-credentials paths are unaffected. */
+	s = remmina_plugin_service->file_get_string(remminafile, "smartcard_pin");
+	const gboolean sc_logon =
+	    remmina_plugin_service->file_get_int(remminafile, "smartcard-logon", FALSE) ||
+	    remmina_plugin_service->file_get_int(remminafile, "passwordispin", FALSE);
+	if (!sc_logon || !s || !s[0])
+		s = remmina_plugin_service->file_get_string(remminafile, "password");
 	if (s){
 		freerdp_settings_set_string(rfi->clientContext.context.settings, FreeRDP_Password, s);
 	}
