@@ -13,7 +13,14 @@
 #cmakedefine HAVE_ERRNO_H
 
 #define remmina			"remmina"
-#define REMMINA_APP_ID		"${REMMINA_APP_ID}"
+
+#define REMMINA_APP_ID		 "${REMMINA_APP_ID}"
+#if defined(SNAP_BUILD)
+  #define REMMINA_CLASS_ID "${REMMINA_SNAP_APP_ID}"
+#else
+  #define REMMINA_CLASS_ID "${REMMINA_APP_ID}"
+#endif
+
 #define VERSION			"${Remmina_VERSION}"
 #define REMMINA_GIT_REVISION	"${REMMINA_GIT_REVISION}"
 

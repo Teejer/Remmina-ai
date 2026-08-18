@@ -77,7 +77,7 @@ Terminal=false
 Type=Application
 Categories=GTK;GNOME;X-GNOME-NetworkSettings;Network;
 Keywords=remote desktop;rdp;vnc;ssh;spice;
-StartupWMClass=@REMMINA_APP_ID@
+StartupWMClass=@REMMINA_CLASS_ID@
 MimeType=x-scheme-handler/rdp;x-scheme-handler/spice;x-scheme-handler/vnc;x-scheme-handler/ssh;x-scheme-handler/remmina;application/x-remmina;
 Actions=Kiosk;Profile;Tray;Quit;
 

@@ -2,7 +2,7 @@
 # See https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
 # Note that environment variables can be set in several places
 # See https://docs.gitlab.com/ee/ci/variables/#priority-of-environment-variables
-image: registry.gitlab.com/remmina/remmina/ubuntu:22.04
+image: registry.gitlab.com/remmina/remmina/ubuntu:24.04
 stages:
 - test
 - build
@@ -73,23 +73,23 @@ flatpak:test:
     refs:
       - schedules
 snap:build:
-  image: registry.gitlab.com/remmina/remmina/snap:22.04
+  image: registry.gitlab.com/remmina/remmina/snap:24.04
   stage: build
   before_script:
   - apt-get update -qq
   script:
   - apt-get install -y git
-  - mkdir -p ~/.local/share/snapcraft/provider/launchpad
-  - echo -en "[1]\n" > ~/.local/share/snapcraft/provider/launchpad/credentials
-  - echo -en "consumer_key = System-wide" >> ~/.local/share/snapcraft/provider/launchpad/credentials
-  - echo -en ":" >> ~/.local/share/snapcraft/provider/launchpad/credentials
-  - echo -en " Ubuntu (ubuntu)\n" >> ~/.local/share/snapcraft/provider/launchpad/credentials
-  - echo -en "consumer_secret = \n" >> ~/.local/share/snapcraft/provider/launchpad/credentials
-  - echo -en "access_token = " >> ~/.local/share/snapcraft/provider/launchpad/credentials
-  - echo -en $LAUNCHPAD_CREDENTIALS_ACCESS_TOKEN >> ~/.local/share/snapcraft/provider/launchpad/credentials
-  - echo -en "\naccess_secret = " >> ~/.local/share/snapcraft/provider/launchpad/credentials
-  - echo -en $LAUNCHPAD_CREDENTIALS_ACCESS_SECRET >> ~/.local/share/snapcraft/provider/launchpad/credentials
-  - echo -en "\n" >> ~/.local/share/snapcraft/provider/launchpad/credentials
+  - mkdir -p ~/.local/share/snapcraft
+  - echo -en "[1]\n" > ~/.local/share/snapcraft/launchpad-credentials
+  - echo -en "consumer_key = System-wide" >> ~/.local/share/snapcraft/launchpad-credentials
+  - echo -en ":" >> ~/.local/share/snapcraft/launchpad-credentials
+  - echo -en " Ubuntu (ubuntu)\n" >> ~/.local/share/snapcraft/launchpad-credentials
+  - echo -en "consumer_secret = \n" >> ~/.local/share/snapcraft/launchpad-credentials
+  - echo -en "access_token = " >> ~/.local/share/snapcraft/launchpad-credentials
+  - echo -en $LAUNCHPAD_CREDENTIALS_ACCESS_TOKEN >> ~/.local/share/snapcraft/launchpad-credentials
+  - echo -en "\naccess_secret = " >> ~/.local/share/snapcraft/launchpad-credentials
+  - echo -en $LAUNCHPAD_CREDENTIALS_ACCESS_SECRET >> ~/.local/share/snapcraft/launchpad-credentials
+  - echo -en "\n" >> ~/.local/share/snapcraft/launchpad-credentials
 
   - snapcraft remote-build --launchpad-accept-public-upload
 

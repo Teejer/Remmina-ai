@@ -304,11 +304,12 @@ static void remmina_on_startup(GApplication *app)
 	remmina_ssh_plugin_register();
 	remmina_icon_init();
 	g_set_application_name("Remmina");
-	gtk_window_set_default_icon_name(REMMINA_APP_ID);
+
+	gtk_window_set_default_icon_name(REMMINA_CLASS_ID);
 
 	/* Setting the X11 program class (WM_CLASS) is necessary to group
 	* windows with .desktop file which has the same StartupWMClass */
-	gdk_set_program_class(REMMINA_APP_ID);
+	gdk_set_program_class(REMMINA_CLASS_ID);
 
 	gtk_icon_theme_append_search_path(gtk_icon_theme_get_default(),
 					  REMMINA_RUNTIME_DATADIR G_DIR_SEPARATOR_S "icons");
@@ -432,12 +433,10 @@ int main(int argc, char *argv[])
 	remmina_file_manager_init();
 	remmina_plugin_manager_init();
 
-
-
 	app_id = g_application_id_is_valid(REMMINA_APP_ID) ? REMMINA_APP_ID : NULL;
 	app = gtk_application_new(app_id, G_APPLICATION_HANDLES_COMMAND_LINE | G_APPLICATION_CAN_OVERRIDE_APP_ID);
 #if !GTK_CHECK_VERSION(4, 0, 0) /* This is not needed anymore starting from GTK 4 */
-	g_set_prgname(app_id);
+	g_set_prgname(REMMINA_CLASS_ID);
 #endif
 	g_application_add_main_option_entries(G_APPLICATION(app), remmina_options);
 #if GLIB_CHECK_VERSION(2,56,0)
