@@ -845,6 +845,7 @@ void remmina_rdp_cliprdr_get_clipboard_data(RemminaProtocolWidget *gp, RemminaPl
 			{
 				size = strlen((char *)inbuf);
 				outbuf = lf2crlf(inbuf, (int *) &size);
+				g_free(inbuf);
 				break;
 			}
 			case CF_UNICODETEXT:
