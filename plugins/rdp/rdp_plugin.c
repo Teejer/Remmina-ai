@@ -322,6 +322,7 @@ static BOOL rf_process_event_queue(RemminaProtocolWidget *gp)
 #endif
 			response.requestedFormatData = event->clipboard_formatdataresponse.data;
 			rfi->clipboard.context->ClientFormatDataResponse(rfi->clipboard.context, &response);
+			free(event->clipboard_formatdataresponse.data);
 		}
 			break;
 
