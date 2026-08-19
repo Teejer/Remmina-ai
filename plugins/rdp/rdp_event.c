@@ -279,16 +279,14 @@ static void remmina_rdp_event_scale_area(RemminaProtocolWidget *gp, gint *x, gin
 	*h = sh;
 }
 
-/* Fixed 1px pad for DPI-scale glyph bleed (#3556); widen if a higher scale still leaves slivers. */
-static void remmina_rdp_event_pad_area_for_host_scale(RemminaProtocolWidget *gp, gint *x, gint *y, gint *w, gint *h)
+/* Fixed 1px pad for HiDPI redraw gaps (#3556); widen if a higher scale still leaves slivers. */
+static void remmina_rdp_event_pad_area_for_display_scale(RemminaProtocolWidget *gp, gint *x, gint *y, gint *w, gint *h)
 {
 	TRACE_CALL(__func__);
 	rfContext *rfi = GET_PLUGIN_DATA(gp);
 	rdpGdi *gdi = ((rdpContext *)rfi)->gdi;
-	rdpSettings *settings = rfi->clientContext.context.settings;
 
-	if (freerdp_settings_get_uint32(settings, FreeRDP_DesktopScaleFactor) == 100 &&
-	    freerdp_settings_get_uint32(settings, FreeRDP_DeviceScaleFactor) == 100)
+	if (gtk_widget_get_scale_factor(rfi->drawing_area) <= 1)
 		return;
 
 	*x = MAX(0, *x - 1);
@@ -312,7 +310,7 @@ void remmina_rdp_event_update_regions(RemminaProtocolWidget *gp, RemminaPluginRd
 		if (rfi->scale == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED)
 			remmina_rdp_event_scale_area(gp, &x, &y, &w, &h);
 		else
-			remmina_rdp_event_pad_area_for_host_scale(gp, &x, &y, &w, &h);
+			remmina_rdp_event_pad_area_for_display_scale(gp, &x, &y, &w, &h);
 
 		gtk_widget_queue_draw_area(rfi->drawing_area, x, y, w, h);
 	}
@@ -327,7 +325,7 @@ void remmina_rdp_event_update_rect(RemminaProtocolWidget *gp, gint x, gint y, gi
 	if (rfi->scale == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED)
 		remmina_rdp_event_scale_area(gp, &x, &y, &w, &h);
 	else
-		remmina_rdp_event_pad_area_for_host_scale(gp, &x, &y, &w, &h);
+		remmina_rdp_event_pad_area_for_display_scale(gp, &x, &y, &w, &h);
 
 	gtk_widget_queue_draw_area(rfi->drawing_area, x, y, w, h);
 }
