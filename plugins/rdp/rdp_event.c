@@ -279,6 +279,19 @@ static void remmina_rdp_event_scale_area(RemminaProtocolWidget *gp, gint *x, gin
 	*h = sh;
 }
 
+/* Always pad: GTK3's integer-only scale factor can't detect fractional HiDPI scales (#3556). */
+static void remmina_rdp_event_pad_redraw_area(RemminaProtocolWidget *gp, gint *x, gint *y, gint *w, gint *h)
+{
+	TRACE_CALL(__func__);
+	rfContext *rfi = GET_PLUGIN_DATA(gp);
+	rdpGdi *gdi = ((rdpContext *)rfi)->gdi;
+
+	*x = MAX(0, *x - 1);
+	*y = MAX(0, *y - 1);
+	*w = MIN(gdi->width - *x, *w + 2);
+	*h = MIN(gdi->height - *y, *h + 2);
+}
+
 void remmina_rdp_event_update_regions(RemminaProtocolWidget *gp, RemminaPluginRdpUiObject *ui)
 {
 	TRACE_CALL(__func__);
@@ -293,6 +306,8 @@ void remmina_rdp_event_update_regions(RemminaProtocolWidget *gp, RemminaPluginRd
 
 		if (rfi->scale == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED)
 			remmina_rdp_event_scale_area(gp, &x, &y, &w, &h);
+		else
+			remmina_rdp_event_pad_redraw_area(gp, &x, &y, &w, &h);
 
 		gtk_widget_queue_draw_area(rfi->drawing_area, x, y, w, h);
 	}
@@ -306,6 +321,8 @@ void remmina_rdp_event_update_rect(RemminaProtocolWidget *gp, gint x, gint y, gi
 
 	if (rfi->scale == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED)
 		remmina_rdp_event_scale_area(gp, &x, &y, &w, &h);
+	else
+		remmina_rdp_event_pad_redraw_area(gp, &x, &y, &w, &h);
 
 	gtk_widget_queue_draw_area(rfi->drawing_area, x, y, w, h);
 }
