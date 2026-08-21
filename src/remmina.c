@@ -46,6 +46,7 @@
 #endif
 #include <gio/gio.h>
 #include <glib/gi18n.h>
+#include <glib-unix.h>
 #include <stdlib.h>
 
 #include "config.h"
@@ -290,6 +291,12 @@ static gint remmina_on_command_line(GApplication *app, GApplicationCommandLine *
 	return status;
 }
 
+static gboolean remmina_sigint_cb(gpointer data)
+{
+	remmina_application_condexit(REMMINA_CONDEXIT_ONQUIT);
+	return G_SOURCE_REMOVE;
+}
+
 static void remmina_on_startup(GApplication *app)
 {
 	TRACE_CALL(__func__);
@@ -310,6 +317,9 @@ static void remmina_on_startup(GApplication *app)
 	/* Setting the X11 program class (WM_CLASS) is necessary to group
 	* windows with .desktop file which has the same StartupWMClass */
 	gdk_set_program_class(REMMINA_CLASS_ID);
+
+	g_unix_signal_add(SIGINT, remmina_sigint_cb, NULL);
+	g_unix_signal_add(SIGTERM, remmina_sigint_cb, NULL);
 
 	gtk_icon_theme_append_search_path(gtk_icon_theme_get_default(),
 					  REMMINA_RUNTIME_DATADIR G_DIR_SEPARATOR_S "icons");
