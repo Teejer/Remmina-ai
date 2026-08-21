@@ -333,19 +333,6 @@ void remmina_rdp_event_update_regions(RemminaProtocolWidget *gp, RemminaPluginRd
 	g_free(ui->reg.ureg);
 }
 
-void remmina_rdp_event_update_rect(RemminaProtocolWidget *gp, gint x, gint y, gint w, gint h)
-{
-	TRACE_CALL(__func__);
-	rfContext *rfi = GET_PLUGIN_DATA(gp);
-
-	if (rfi->scale == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED)
-		remmina_rdp_event_scale_area(gp, &x, &y, &w, &h);
-	else
-		remmina_rdp_event_pad_redraw_area(gp, &x, &y, &w, &h);
-
-	gtk_widget_queue_draw_area(rfi->drawing_area, x, y, w, h);
-}
-
 static void remmina_rdp_event_update_scale_factor(RemminaProtocolWidget *gp)
 {
 	TRACE_CALL(__func__);
