@@ -235,7 +235,6 @@ typedef struct _RemminaPref {
 	gchar *			expanded_group;
 	gboolean		toolbar_pin_down;
 	gint			floating_toolbar_placement;
-	gint			floating_toolbar_monitor;
 	gint			toolbar_placement;
 	gboolean		prevent_snap_welcome_message;
 	gchar *			last_quickconnect_protocol;

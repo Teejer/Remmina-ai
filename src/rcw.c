@@ -4270,10 +4270,7 @@ static void rcw_create_overlay_ftb_overlay(RemminaConnectionWindow *cnnwin)
 		gtk_widget_set_halign(GTK_WIDGET(priv->overlay_ftb_overlay), GTK_ALIGN_END);
 	}
 	else{
-		if (!priv->multi_mon)
-			gtk_widget_set_halign(GTK_WIDGET(priv->overlay_ftb_overlay), GTK_ALIGN_CENTER);
-		else
-			gtk_widget_set_halign(GTK_WIDGET(priv->overlay_ftb_overlay), GTK_ALIGN_START);	// in multi_mon we will adujust from left reference
+		gtk_widget_set_halign(GTK_WIDGET(priv->overlay_ftb_overlay), GTK_ALIGN_CENTER);
 	}
 
 	if (remmina_pref.floating_toolbar_placement == FLOATING_TOOLBAR_PLACEMENT_BOTTOM || 
@@ -4347,37 +4344,30 @@ static gboolean rcw_ftb_drag_drop(GtkWidget *widget, GdkDragContext *context,
 				  gint x, gint y, guint time, RemminaConnectionWindow *cnnwin)
 {
 	TRACE_CALL(__func__);
-	GdkRectangle wa;
+	gint width, height;
 	gint new_floating_toolbar_placement;
 	RemminaConnectionObject *cnnobj;
 
-	// read placement in current monitor
-	gint new_floating_toolbar_monitor = find_monitor_at_point(widget, x, y);
-	gdk_monitor_get_geometry(gdk_display_get_monitor(gtk_widget_get_display(widget), new_floating_toolbar_monitor), &wa);
-	x = x - wa.x;
-	y = y - wa.y;
+	gtk_window_get_size(GTK_WINDOW(cnnwin), &width, &height);
 
-
-	if (y >= wa.height / 2 && x < wa.width / 3)
+	if (y >= height / 2 && x < width / 3)
 		new_floating_toolbar_placement = FLOATING_TOOLBAR_PLACEMENT_BOTTOM_LEFT;
-	else if (y >= wa.height / 2 && x > (2*(wa.width / 3)))
+	else if (y >= height / 2 && x > (2*(width / 3)))
 		new_floating_toolbar_placement = FLOATING_TOOLBAR_PLACEMENT_BOTTOM_RIGHT;
-	else if (y < wa.height / 2 && x > (2*(wa.width / 3)))
+	else if (y < height / 2 && x > (2*(width / 3)))
 		new_floating_toolbar_placement = FLOATING_TOOLBAR_PLACEMENT_TOP_RIGHT;
-	else if (y < wa.height / 2 && x  < wa.width / 3)
+	else if (y < height / 2 && x  < width / 3)
 		new_floating_toolbar_placement = FLOATING_TOOLBAR_PLACEMENT_TOP_LEFT;
-	else if (y >= wa.height /2)
+	else if (y >= height /2)
 		new_floating_toolbar_placement = FLOATING_TOOLBAR_PLACEMENT_BOTTOM;
 	else
 		new_floating_toolbar_placement = FLOATING_TOOLBAR_PLACEMENT_TOP;
 
 	gtk_drag_finish(context, TRUE, TRUE, time);
 
-	if (new_floating_toolbar_placement != remmina_pref.floating_toolbar_placement ||
-		new_floating_toolbar_monitor != remmina_pref.floating_toolbar_monitor) {
+	if (new_floating_toolbar_placement != remmina_pref.floating_toolbar_placement) {
 		/* Destroy and recreate the FTB */
 		remmina_pref.floating_toolbar_placement = new_floating_toolbar_placement;
-		remmina_pref.floating_toolbar_monitor = new_floating_toolbar_monitor;
 		remmina_pref_save();
 		rcw_create_overlay_ftb_overlay(cnnwin);
 		cnnobj = rcw_get_visible_cnnobj(cnnwin);
@@ -4385,7 +4375,6 @@ static gboolean rcw_ftb_drag_drop(GtkWidget *widget, GdkDragContext *context,
 			rco_update_toolbar(cnnobj);
 		}
 	}
-
 	return TRUE;
 }
 
