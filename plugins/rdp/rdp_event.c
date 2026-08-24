@@ -739,7 +739,25 @@ static gboolean remmina_rdp_event_on_scroll(GtkWidget *widget, GdkEventScroll *e
 
 	/* See [MS-RDPBCGR] TS_POINTER_EVENT and WM_MOUSEWHEEL message */
 
-	switch (event->direction) {
+	GdkScrollDirection direction = event->direction;
+	double delta_y = 0.0;
+	double delta_x = 0.0;
+#if GTK_CHECK_VERSION(3, 4, 0)
+	delta_y = event->delta_y;
+	delta_x = event->delta_x;
+#endif
+
+	if (remmina_plugin_service->file_get_int(remminafile, "invert_scroll", FALSE)) {
+		if (direction == GDK_SCROLL_UP) direction = GDK_SCROLL_DOWN;
+		else if (direction == GDK_SCROLL_DOWN) direction = GDK_SCROLL_UP;
+		else if (direction == GDK_SCROLL_LEFT) direction = GDK_SCROLL_RIGHT;
+		else if (direction == GDK_SCROLL_RIGHT) direction = GDK_SCROLL_LEFT;
+		
+		delta_y = -delta_y;
+		delta_x = -delta_x;
+	}
+
+	switch (direction) {
 	case GDK_SCROLL_UP:
 		flag = PTR_FLAGS_WHEEL | 0x0078;  // 120 is one scroll unit defined in WM_MOUSEWHEEL
 		break;
@@ -759,12 +777,12 @@ static gboolean remmina_rdp_event_on_scroll(GtkWidget *widget, GdkEventScroll *e
 #if GTK_CHECK_VERSION(3, 4, 0)
 	case GDK_SCROLL_SMOOTH:
 
-		if (event->delta_y != 0.0) {
+		if (delta_y != 0.0) {
 			flag = PTR_FLAGS_WHEEL;
-			windows_delta = event->delta_y * -120;
-		} else if (event->delta_x != 0.0) {
+			windows_delta = delta_y * -120;
+		} else if (delta_x != 0.0) {
 			flag = PTR_FLAGS_HWHEEL;
-			windows_delta = event->delta_x * 120;
+			windows_delta = delta_x * 120;
 		} else {
 			return FALSE;
 		}

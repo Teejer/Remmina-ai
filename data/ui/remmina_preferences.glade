@@ -47,7 +47,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <child>
-                  <!-- n-columns=3 n-rows=17 -->
+                  
                   <object class="GtkGrid" id="grid_options">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
@@ -628,7 +628,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <child>
-                  <!-- n-columns=3 n-rows=10 -->
+                  
                   <object class="GtkGrid" id="grid_appearance">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
@@ -1065,7 +1065,7 @@ It changes the background colour of connection names in the Remmina connection t
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <child>
-                  <!-- n-columns=3 n-rows=4 -->
+                  
                   <object class="GtkGrid" id="grid_applet">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
@@ -1178,7 +1178,7 @@ It changes the background colour of connection names in the Remmina connection t
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <child>
-                  <!-- n-columns=3 n-rows=12 -->
+                  
                   <object class="GtkGrid" id="grid_keyboard">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
@@ -1612,6 +1612,37 @@ It changes the background colour of connection names in the Remmina connection t
                         <property name="width">2</property>
                       </packing>
                     </child>
+                  <child>
+                    <object class="GtkLabel" id="label_keyboard_invert_scroll">
+                      <property name="visible">True</property>
+                      <property name="can-focus">False</property>
+                      <property name="halign">start</property>
+                      <property name="margin-start">18</property>
+                      <property name="margin-end">6</property>
+                      <property name="label" translatable="yes">Invert scroll direction</property>
+                    </object>
+                    <packing>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">13</property>
+                    </packing>
+                  </child>
+                  <child>
+                    <object class="GtkButton" id="button_keyboard_invert_scroll">
+                      <property name="label">Invert scroll</property>
+                      <property name="width-request">100</property>
+                      <property name="visible">True</property>
+                      <property name="can-focus">True</property>
+                      <property name="receives-default">True</property>
+                      <property name="margin-start">6</property>
+                      <property name="margin-end">18</property>
+                      <signal name="clicked" handler="remmina_pref_dialog_on_key_chooser" swapped="no"/>
+                    </object>
+                    <packing>
+                      <property name="left-attach">1</property>
+                      <property name="top-attach">13</property>
+                      <property name="width">2</property>
+                    </packing>
+                  </child>
                   </object>
                 </child>
               </object>
@@ -1644,7 +1675,7 @@ It changes the background colour of connection names in the Remmina connection t
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <child>
-                  <!-- n-columns=3 n-rows=7 -->
+                  
                   <object class="GtkGrid" id="grid_ssh">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
@@ -1889,7 +1920,7 @@ It changes the background colour of connection names in the Remmina connection t
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <child>
-                  <!-- n-columns=2 n-rows=8 -->
+                  
                   <object class="GtkGrid">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
@@ -2174,7 +2205,7 @@ Except the "Weak" method, all the others are recommended, "Keystore" is the defa
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <child>
-                  <!-- n-columns=9 n-rows=18 -->
+                  
                   <object class="GtkGrid" id="grid_terminal">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>

@@ -727,6 +727,11 @@ void remmina_pref_init(void)
 	else
 		remmina_pref.shortcutkey_grab = GDK_KEY_Control_R;
 
+	if (g_key_file_has_key(gkeyfile, "remmina_pref", "shortcutkey_invert_scroll", NULL))
+		remmina_pref.shortcutkey_invert_scroll = g_key_file_get_integer(gkeyfile, "remmina_pref", "shortcutkey_invert_scroll", NULL);
+	else
+		remmina_pref.shortcutkey_invert_scroll = 0;
+
 	if (g_key_file_has_key(gkeyfile, "remmina_pref", "shortcutkey_minimize", NULL))
 		remmina_pref.shortcutkey_minimize = g_key_file_get_integer(gkeyfile, "remmina_pref", "shortcutkey_minimize", NULL);
 	else
@@ -1019,6 +1024,7 @@ gboolean remmina_pref_save(void)
 	g_key_file_set_integer(gkeyfile, "remmina_pref", "shortcutkey_scale", remmina_pref.shortcutkey_scale);
 	g_key_file_set_integer(gkeyfile, "remmina_pref", "shortcutkey_clipboard", remmina_pref.shortcutkey_clipboard);
 	g_key_file_set_integer(gkeyfile, "remmina_pref", "shortcutkey_grab", remmina_pref.shortcutkey_grab);
+	g_key_file_set_integer(gkeyfile, "remmina_pref", "shortcutkey_invert_scroll", remmina_pref.shortcutkey_invert_scroll);
 	g_key_file_set_integer(gkeyfile, "remmina_pref", "shortcutkey_multimon", remmina_pref.shortcutkey_multimon);
 	g_key_file_set_integer(gkeyfile, "remmina_pref", "shortcutkey_viewonly", remmina_pref.shortcutkey_viewonly);
 	g_key_file_set_integer(gkeyfile, "remmina_pref", "shortcutkey_screenshot", remmina_pref.shortcutkey_screenshot);

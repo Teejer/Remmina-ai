@@ -108,6 +108,7 @@
 #define REMMINA_RDP_FEATURE_DYNRESUPDATE         5
 #define REMMINA_RDP_FEATURE_MULTIMON             6
 #define REMMINA_RDP_FEATURE_VIEWONLY             7
+#define REMMINA_RDP_FEATURE_INVERT_SCROLL        8
 
 #define REMMINA_CONNECTION_TYPE_NONE             0
 
@@ -3530,6 +3531,7 @@ static const RemminaProtocolFeature remmina_rdp_features[] =
 	{ REMMINA_PROTOCOL_FEATURE_TYPE_MULTIMON,     REMMINA_RDP_FEATURE_MULTIMON,	           NULL,			                                     NULL,       NULL },
 	{ REMMINA_PROTOCOL_FEATURE_TYPE_TOOL,	      REMMINA_RDP_FEATURE_TOOL_SENDCTRLALTDEL, N_("Send Ctrl+Alt+Delete"),                           NULL,       NULL },
 	{ REMMINA_PROTOCOL_FEATURE_TYPE_UNFOCUS,      REMMINA_RDP_FEATURE_UNFOCUS,	           NULL,			                                     NULL,       NULL },
+	{ REMMINA_PROTOCOL_FEATURE_TYPE_INVERT_SCROLL,REMMINA_RDP_FEATURE_INVERT_SCROLL,       NULL,			                                     NULL,       NULL },
 	{ REMMINA_PROTOCOL_FEATURE_TYPE_END,	      0,				                       NULL,			                                     NULL,       NULL }
 };
 
