@@ -200,6 +200,7 @@ static RemminaConnectionWindow *rcw_create_fullscreen(GtkWindow *old, gint view_
 static gboolean rcw_hostkey_func(RemminaProtocolWidget *gp, guint keyval, gboolean release);
 static GtkWidget *rco_create_tab_page(RemminaConnectionObject *cnnobj);
 static GtkWidget *rco_create_tab_label(RemminaConnectionObject *cnnobj);
+static void rco_change_scalemode(RemminaConnectionObject *cnnobj, gboolean bdyn, gboolean bscale);
 
 void rcw_grab_focus(RemminaConnectionWindow *cnnwin);
 static GtkWidget *rcw_create_toolbar(RemminaConnectionWindow *cnnwin, gint mode, gboolean is_floating);
@@ -413,13 +414,11 @@ static RemminaScaleMode get_current_allowed_scale_mode(RemminaConnectionObject *
 	plugin_can_scale = remmina_protocol_widget_query_feature_by_type(REMMINA_PROTOCOL_WIDGET(cnnobj->proto),
 									 REMMINA_PROTOCOL_FEATURE_TYPE_SCALE);
 
-	if (remmina_pref.start_dynres){
-		scalemode = REMMINA_PROTOCOL_WIDGET_SCALE_MODE_DYNRES;
+	/* force switch scale mode when auto and unlocked */
+	if (remmina_pref.start_dynres && plugin_has_dynres && cnnobj->dynres_unlocked && scalemode == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_NONE) {
+		rco_change_scalemode(cnnobj, TRUE, FALSE);
+		scalemode = remmina_protocol_widget_get_current_scale_mode(REMMINA_PROTOCOL_WIDGET(cnnobj->proto));
 	}
-
-	/* Forbid scalemode REMMINA_PROTOCOL_WIDGET_SCALE_MODE_DYNRES when not possible */
-	if ((!plugin_has_dynres) && scalemode == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_DYNRES)
-		scalemode = REMMINA_PROTOCOL_WIDGET_SCALE_MODE_NONE;
 
 	/* Forbid scalemode REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED when not possible */
 	if (!plugin_can_scale && scalemode == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED)
@@ -1707,7 +1706,7 @@ static void rco_change_scalemode(RemminaConnectionObject *cnnobj, gboolean bdyn,
 static void rcw_toolbar_dynres(GtkToolItem *toggle, RemminaConnectionWindow *cnnwin)
 {
 	TRACE_CALL(__func__);
-	gboolean bdyn, bscale;
+	gboolean bdyn, bscale, plugin_has_dynres, plugin_can_scale;
 	RemminaConnectionObject *cnnobj;
 
 	if (cnnwin->priv->toolbar_is_reconfiguring)
@@ -1718,10 +1717,23 @@ static void rcw_toolbar_dynres(GtkToolItem *toggle, RemminaConnectionWindow *cnn
 		bdyn = gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(toggle));
 		bscale = gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(cnnobj->cnnwin->priv->toolitem_scale));
 
-		if (bdyn && bscale) {
-			gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(cnnobj->cnnwin->priv->toolitem_scale), FALSE);
+		plugin_has_dynres = remmina_protocol_widget_query_feature_by_type(REMMINA_PROTOCOL_WIDGET(cnnobj->proto),
+									REMMINA_PROTOCOL_FEATURE_TYPE_DYNRESUPDATE);
+
+		plugin_can_scale = remmina_protocol_widget_query_feature_by_type(REMMINA_PROTOCOL_WIDGET(cnnobj->proto),
+									REMMINA_PROTOCOL_FEATURE_TYPE_SCALE);
+
+		if (!(plugin_has_dynres && cnnobj->dynres_unlocked))
+			bdyn = FALSE;
+
+		if (!plugin_can_scale)
 			bscale = FALSE;
-		}
+
+		if (bdyn && bscale)
+			bscale = FALSE;
+
+		gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(toggle), bdyn);
+		gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(cnnobj->cnnwin->priv->toolitem_scale), bscale);
 
 		rco_change_scalemode(cnnobj, bdyn, bscale);
 	}
@@ -1730,22 +1742,37 @@ static void rcw_toolbar_dynres(GtkToolItem *toggle, RemminaConnectionWindow *cnn
 static void rcw_toolbar_scaled_mode(GtkToolItem *toggle, RemminaConnectionWindow *cnnwin)
 {
 	TRACE_CALL(__func__);
-	gboolean bdyn, bscale;
+	gboolean bdyn, bscale, plugin_has_dynres, plugin_can_scale;
 	RemminaConnectionObject *cnnobj;
 
 	if (cnnwin->priv->toolbar_is_reconfiguring)
 		return;
 	if (!(cnnobj = rcw_get_visible_cnnobj(cnnwin))) return;
 
-	bdyn = gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(cnnobj->cnnwin->priv->toolitem_dynres));
-	bscale = gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(toggle));
+	if (cnnobj->connected) {
+		bdyn = gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(cnnobj->cnnwin->priv->toolitem_dynres));
+		bscale = gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(toggle));
 
-	if (bdyn && bscale) {
-		gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(cnnobj->cnnwin->priv->toolitem_dynres), FALSE);
-		bdyn = FALSE;
+		plugin_has_dynres = remmina_protocol_widget_query_feature_by_type(REMMINA_PROTOCOL_WIDGET(cnnobj->proto),
+									REMMINA_PROTOCOL_FEATURE_TYPE_DYNRESUPDATE);
+
+		plugin_can_scale = remmina_protocol_widget_query_feature_by_type(REMMINA_PROTOCOL_WIDGET(cnnobj->proto),
+									REMMINA_PROTOCOL_FEATURE_TYPE_SCALE);
+
+		if ((!plugin_has_dynres || !cnnobj->dynres_unlocked))
+			bdyn = FALSE;
+
+		if (!plugin_can_scale)
+			bscale = FALSE;
+
+		if (bdyn && bscale)
+			bdyn = FALSE;
+
+		gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(cnnobj->cnnwin->priv->toolitem_dynres), bdyn);
+		gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(toggle), bscale);
+
+		rco_change_scalemode(cnnobj, bdyn, bscale);
 	}
-
-	rco_change_scalemode(cnnobj, bdyn, bscale);
 }
 
 static void rcw_toolbar_viewonly_mode(GtkToolItem *toggle, RemminaConnectionWindow *cnnwin)
