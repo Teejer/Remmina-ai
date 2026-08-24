@@ -195,6 +195,7 @@ typedef struct _RemminaPref {
 	guint			shortcutkey_grab;
 	guint			shortcutkey_viewonly;
 	guint			shortcutkey_screenshot;
+	guint			shortcutkey_invert_scroll;
 	guint			shortcutkey_minimize;
 	guint			shortcutkey_disconnect;
 	guint			shortcutkey_toolbar;

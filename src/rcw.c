@@ -125,6 +125,7 @@ struct _RemminaConnectionWindowPriv {
 	GtkToolItem *					toolitem_scale;
 	GtkToolItem *					toolitem_viewonly;
 	GtkToolItem *					toolitem_grab;
+	GtkToolItem *					toolitem_invert_scroll;
 	GtkToolItem *					toolitem_multimon;
 	GtkToolItem *					toolitem_preferences;
 	GtkToolItem *					toolitem_tools;
@@ -2478,6 +2479,26 @@ static void rcw_toolbar_grab(GtkToolItem *toggle, RemminaConnectionWindow *cnnwi
 	rco_update_toolbar(cnnobj);
 }
 
+static void rcw_toolbar_invert_scroll(GtkToolItem *toggle, RemminaConnectionWindow *cnnwin)
+{
+	gboolean capture;
+	RemminaConnectionObject *cnnobj;
+
+	if (cnnwin->priv->toolbar_is_reconfiguring){
+		return;
+	}
+
+	if (!(cnnobj = rcw_get_visible_cnnobj(cnnwin))) {
+		return;
+	}
+
+	capture = gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON(toggle));
+	
+	if (cnnobj->connected && cnnobj->proto) {
+		remmina_file_set_int(cnnobj->remmina_file, "invert_scroll", capture);
+	}
+}
+
 static void rcw_update_pin(RemminaConnectionWindow *cnnwin)
 {
 	TRACE_CALL(__func__);
@@ -2730,12 +2751,26 @@ rcw_create_toolbar(RemminaConnectionWindow *cnnwin, gint mode, gboolean is_float
 	gtk_widget_show(GTK_WIDGET(toolitem));
 	g_signal_connect(G_OBJECT(toolitem), "toggled", G_CALLBACK(rcw_toolbar_grab), cnnwin);
 	priv->toolitem_grab = toolitem;
+
 	if (!cnnobj)
 		gtk_widget_set_sensitive(GTK_WIDGET(toolitem), FALSE);
 	else {
 		const gchar *protocol = remmina_file_get_string(cnnobj->remmina_file, "protocol");
 		if (g_strcmp0(protocol, "SFTP") == 0 || g_strcmp0(protocol, "SSH") == 0)
 			gtk_widget_set_sensitive(GTK_WIDGET(toolitem), FALSE);
+	}
+
+	/* Invert Scroll button */
+	toolitem = gtk_toggle_tool_button_new();
+	gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(toolitem), "input-mouse-symbolic");
+	rcw_set_tooltip(GTK_WIDGET(toolitem), _("Invert scroll direction"),
+			remmina_pref.shortcutkey_invert_scroll, 0);
+	gtk_toolbar_insert(GTK_TOOLBAR(toolbar), toolitem, -1);
+	gtk_widget_show(GTK_WIDGET(toolitem));
+	g_signal_connect(G_OBJECT(toolitem), "toggled", G_CALLBACK(rcw_toolbar_invert_scroll), cnnwin);
+	priv->toolitem_invert_scroll = toolitem;
+	if (!cnnobj){
+		gtk_widget_set_sensitive(GTK_WIDGET(toolitem), FALSE);
 	}
 
 	/* Preferences */
@@ -2924,6 +2959,15 @@ static void rco_update_toolbar(RemminaConnectionObject *cnnobj)
 	gtk_widget_set_sensitive(GTK_WIDGET(toolitem), cnnobj->connected);
 	gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(toolitem),
 					  remmina_file_get_int(cnnobj->remmina_file, "keyboard_grab", FALSE));
+
+	toolitem = priv->toolitem_invert_scroll;
+	if (toolitem) {
+		gint hasinvertscroll = remmina_protocol_widget_query_feature_by_type(REMMINA_PROTOCOL_WIDGET(cnnobj->proto),
+										 REMMINA_PROTOCOL_FEATURE_TYPE_INVERT_SCROLL);
+		gtk_widget_set_sensitive(GTK_WIDGET(toolitem), hasinvertscroll && cnnobj->connected);
+		gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(toolitem),
+						  remmina_file_get_int(cnnobj->remmina_file, "invert_scroll", FALSE));
+	}
 	const gchar *protocol = remmina_file_get_string(cnnobj->remmina_file, "protocol");
 	if (g_strcmp0(protocol, "SFTP") == 0 || g_strcmp0(protocol, "SSH") == 0) {
 		gtk_widget_set_sensitive(GTK_WIDGET(toolitem), FALSE);
@@ -4587,6 +4631,14 @@ static gboolean rcw_hostkey_func(RemminaProtocolWidget *gp, guint keyval, gboole
 			!gtk_toggle_tool_button_get_active(
 				GTK_TOGGLE_TOOL_BUTTON(
 					priv->toolitem_grab)));
+	} else if (keyval == remmina_pref.shortcutkey_invert_scroll && !extrahardening) {
+		if (priv->toolitem_invert_scroll && gtk_widget_is_sensitive(GTK_WIDGET(priv->toolitem_invert_scroll))) {
+			gtk_toggle_tool_button_set_active(
+				GTK_TOGGLE_TOOL_BUTTON(priv->toolitem_invert_scroll),
+				!gtk_toggle_tool_button_get_active(
+					GTK_TOGGLE_TOOL_BUTTON(
+						priv->toolitem_invert_scroll)));
+		}
 	} else if (keyval == remmina_pref.shortcutkey_minimize && !extrahardening) {
 		rcw_toolbar_minimize(GTK_TOOL_ITEM(gp),
 				     cnnobj->cnnwin);

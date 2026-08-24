@@ -118,6 +118,7 @@ typedef struct _RemminaPrefDialog {
 	GtkButton *		button_keyboard_clipboard;
 	GtkButton *		button_keyboard_multimon;
 	GtkButton *		button_keyboard_grab_keyboard;
+	GtkButton *		button_keyboard_invert_scroll;
 	GtkButton *		button_keyboard_screenshot;
 	GtkButton *		button_keyboard_viewonly;
 	GtkButton *		button_keyboard_minimize;
