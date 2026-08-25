@@ -40,7 +40,6 @@
 #include <gtk/gtkx.h>
 #include <glib/gi18n.h>
 #include <gmodule.h>
-#include <stdlib.h>
 
 #include "remmina_chat_window.h"
 #include "remmina_masterthread_exec.h"

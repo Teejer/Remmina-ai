@@ -1,6 +1,8 @@
 /*
  * Remmina - The GTK+ Remote Desktop Client
- * Copyright (C) 2016-2020 Antenore Gatta, Giovanni Panozzo
+ * Copyright (C) 2009 - Vic Lee
+ * Copyright (C) 2014-2015 Antenore Gatta, Fabio Castelli, Giovanni Panozzo
+ * Copyright (C) 2016-2023 Antenore Gatta, Giovanni Panozzo
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,14 +34,18 @@
  *
  */
 
-#pragma once
+#include "rcw_platform.h"
 
+#include "config.h"
+#if defined(HAVE_KDE_OUTPUT_ORDER_V1)
+#include "rcw_platform_kde.h"
+#endif
 
-#include <freerdp/freerdp.h>
-#include "rdp_plugin.h"
+const GdkRectangle rcw_first_monitor_geometry() {
+	GdkRectangle result = {};
+#if defined(HAVE_KDE_OUTPUT_ORDER_V1)
+	result = rcw_kde_first_monitor_geometry();
+#endif
 
-G_BEGIN_DECLS
-
-void remmina_rdp_monitor_define(rfContext *rfi, guint32 *maxwidth, guint32 *maxheight);
-
-G_END_DECLS
+	return result;
+}

@@ -64,7 +64,6 @@ enum {
 enum {
 	UNDEFINED_MODE			= 0,
 	SCROLLED_WINDOW_MODE		= 1,
-	FULLSCREEN_MODE			= 2,
 	SCROLLED_FULLSCREEN_MODE	= 3,
 	VIEWPORT_FULLSCREEN_MODE	= 4
 };
@@ -161,7 +160,6 @@ typedef struct _RemminaPref {
 	gboolean		mp_left;
 	gboolean		start_fullscreen;
 	gboolean		start_dynres;
-	gboolean 		toolbar_fix_position_multimon;
 	gboolean		hide_connection_toolbar;
 	gboolean		hide_searchbar;
 	gint			default_mode;
@@ -237,7 +235,6 @@ typedef struct _RemminaPref {
 	gchar *			expanded_group;
 	gboolean		toolbar_pin_down;
 	gint			floating_toolbar_placement;
-	gint			floating_toolbar_monitor;
 	gint			toolbar_placement;
 	gboolean		prevent_snap_welcome_message;
 	gchar *			last_quickconnect_protocol;

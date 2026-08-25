@@ -121,6 +121,10 @@ list(
   "remmina_sysinfo.c"
   "remmina_theme.h"
   "remmina_theme.c"
+  "rcw_platform_kde.c"
+  "rcw_platform_kde.h"
+  "rcw_platform.c"
+  "rcw_platform.h"
   "rcw.c"
   "rcw.h"
   "remmina_mpchange.c"
@@ -134,6 +138,7 @@ list(
 set(RESOURCE_LIST
     ${CMAKE_CURRENT_SOURCE_DIR}/../data/ui/remmina_about.glade
     ${CMAKE_CURRENT_SOURCE_DIR}/../data/ui/remmina_bug_report.glade
+	${CMAKE_CURRENT_SOURCE_DIR}/../data/ui/remmina_file_editor.glade
     ${CMAKE_CURRENT_SOURCE_DIR}/../data/ui/remmina_key_chooser.glade
     ${CMAKE_CURRENT_SOURCE_DIR}/../data/ui/remmina_main.glade
     ${CMAKE_CURRENT_SOURCE_DIR}/../data/ui/remmina_mpc.glade
@@ -170,6 +175,10 @@ if(WITH_PYTHONLIBS)
     include_directories(SYSTEM ${PYTHON_INCLUDE_DIRS})
     target_link_libraries(remmina ${PYTHON_LIBRARIES})
   endif()
+endif()
+
+if(HAVE_KDE_OUTPUT_ORDER_V1)
+	target_sources(remmina PRIVATE ${KDE_OUTPKODE_GENERATED_C})
 endif()
 
 if(WITH_MANPAGES)

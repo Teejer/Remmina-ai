@@ -61,6 +61,7 @@ include(CheckHasModule)
 include(FindPCRE2)
 include(GlibCompileResourcesSupport)
 include(FindIntl)
+include(FindKDEProtocols)
 
 # ---------------------------------------------------------------------
 # Package creation with CMake depends on the value of umask - if permissions are
