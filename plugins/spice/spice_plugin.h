@@ -85,6 +85,7 @@ typedef struct _RemminaPluginSpiceData {
 	gboolean		isUnix;
 	GAsyncQueue *		keys_queue;
 	gboolean 		is_sending_keys;
+	gboolean 		is_multimonitor;
 
 #ifdef SPICE_GTK_CHECK_VERSION
 #  if SPICE_GTK_CHECK_VERSION(0, 31, 0)
