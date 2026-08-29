@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-08-29 19:51+0000\n"
+"PO-Revision-Date: 2026-08-29 21:51+0000\n"
 "Last-Translator: BennyBeat <bennybeat@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/remmina/remmina/"
 "ca/>\n"
@@ -1394,7 +1394,6 @@ msgid "Remmina Files"
 msgstr "Fitxers del Remmina"
 
 #: src/remmina_file_editor.c:973
-#, fuzzy
 msgid "ssh_export.remssh"
 msgstr "ssh_export.remssh"
 
@@ -1610,10 +1609,6 @@ msgstr "Mostra «Quant a»"
 
 #. TRANSLATORS: Shown in terminal. Do not use characters that may be not supported on a terminal
 #: src/remmina.c:104
-#, fuzzy
-#| msgid ""
-#| "Connect either to a desktop described in a file (.remmina or a filetype "
-#| "supported by a plugin) or a supported URI (RDP, VNC, SSH or SPICE)"
 msgid ""
 "Connect either to a desktop described in a file (.remmina or a filetype "
 "supported by a plugin) or a supported URI (RDP, VNC, SSH, HTTP, HTTPS or "
@@ -1769,39 +1764,7 @@ msgid "- or protocol://username:encryptedpassword@host:port"
 msgstr "- o protocol://nom-d'usuari:contrasenya-xifrada@servidor:port"
 
 #: src/remmina.c:448
-#, fuzzy, c-format
-#| msgid ""
-#| "Examples:\n"
-#| "To connect using an existing connection profile, use:\n"
-#| "\n"
-#| "\tremmina -c FILE.remmina\n"
-#| "\n"
-#| "To quick connect using a URI:\n"
-#| "\n"
-#| "\tremmina -c rdp://username@server\n"
-#| "\tremmina -c rdp://domain\\\\username@server\n"
-#| "\tremmina -c vnc://username@server\n"
-#| "\tremmina -c vnc://server?VncUsername=username\n"
-#| "\tremmina -c ssh://user@server\n"
-#| "\tremmina -c spice://server\n"
-#| "\n"
-#| "To quick connect using a URI along with an encrypted password:\n"
-#| "\n"
-#| "\tremmina -c rdp://username:encrypted-password@server\n"
-#| "\tremmina -c vnc://username:encrypted-password@server\n"
-#| "\tremmina -c vnc://server?VncUsername=username\\&VncPassword=encrypted-"
-#| "password\n"
-#| "\n"
-#| "To encrypt a password for use with a URI:\n"
-#| "\n"
-#| "\tremmina --encrypt-password\n"
-#| "\n"
-#| "To update username and password and set a different resolution mode of a "
-#| "Remmina connection profile, use:\n"
-#| "\n"
-#| "\techo \"username\\napassword\" | remmina --update-profile /PATH/TO/"
-#| "FOO.remmina --set-option username --set-option resolution_mode=2 --set-"
-#| "option password\n"
+#, c-format
 msgid ""
 "Examples:\n"
 "To connect using an existing connection profile, use:\n"
@@ -1854,11 +1817,17 @@ msgstr ""
 "\tremmina -c vnc://server?VncUsername=username\n"
 "\tremmina -c ssh://user@server\n"
 "\tremmina -c spice://server\n"
+"\tremmina -c https://example.com\n"
+"\n"
+"Per a una connexió ràpida i anomenant la connexió:\n"
+"\n"
+"\tremmina -c ssh://user@server%connection_name\n"
 "\n"
 "Per a una connexió ràpida utilitzant una URI i a més una contrasenya "
 "xifrada:\n"
 "\n"
 "\tremmina -c rdp://username:encrypted-password@server\n"
+"\n"
 "\tremmina -c vnc://username:encrypted-password@server\n"
 "\tremmina -c vnc://server?VncUsername=username\\&VncPassword=encrypted-"
 "password\n"
@@ -1870,9 +1839,9 @@ msgstr ""
 "Per a actualitzar el nom d'usuari i la contrasenya i establir un mode de "
 "resolució diferent d'un perfil de connexió del Remmina, utilitzeu:\n"
 "\n"
-"\techo \"username\\napassword\" | remmina --update-profile /PATH/TO/"
-"FOO.remmina --set-option username --set-option resolution_mode=2 --set-"
-"option password\n"
+"\techo \"username\\n"
+"apassword\" | remmina --update-profile /PATH/TO/FOO.remmina --set-option "
+"username --set-option resolution_mode=2 --set-option password\n"
 
 #. TRANSLATORS: The placeholder %s is a directory path
 #: src/remmina_sftp_client.c:176
@@ -2063,8 +2032,6 @@ msgid "Toggle scaled mode"
 msgstr "Canvia el mode d’escalat"
 
 #: src/rcw.c:2586
-#, fuzzy
-#| msgid "View-only mode"
 msgid "View only mode"
 msgstr "Mode de només visualització"
 
@@ -2098,8 +2065,6 @@ msgid "Minimize window"
 msgstr "Minimitza la finestra"
 
 #: src/rcw.c:2701
-#, fuzzy
-#| msgid "Connect"
 msgid "Reconnect"
 msgstr "Connecta"
 
@@ -2543,9 +2508,7 @@ msgstr ""
 "%s"
 
 #: plugins/x2go/x2go_plugin.c:948
-#, fuzzy, c-format
-#| msgid ""
-#| "An unknown error occured while trying to start PyHoca-CLI. Exit code: %i"
+#, c-format
 msgid ""
 "An unknown error occurred while trying to start PyHoca-CLI. Exit code: %i"
 msgstr ""
@@ -2553,10 +2516,7 @@ msgstr ""
 "sortida: %i"
 
 #: plugins/x2go/x2go_plugin.c:955
-#, fuzzy, c-format
-#| msgid ""
-#| "An unknown error occured while trying to start PyHoca-CLI. Exit code: %i. "
-#| "Error: '%s'"
+#, c-format
 msgid ""
 "An unknown error occurred while trying to start PyHoca-CLI. Exit code: %i. "
 "Error: '%s'"
@@ -3296,7 +3256,7 @@ msgstr "ALT + Tab"
 
 #: plugins/rdp/rdp_plugin.c:3125
 msgid "Win + Tab"
-msgstr ""
+msgstr "Super + Tab"
 
 #: plugins/rdp/rdp_plugin.c:3140
 msgid "0 — Windows 7 compatible"
@@ -3470,16 +3430,12 @@ msgid "Restricted admin mode password hash"
 msgstr "Hash de contrasenya del mode d'administració restringit"
 
 #: plugins/rdp/rdp_plugin.c:3243
-#, fuzzy
-#| msgid "Share a smart card"
 msgid "Use a smartcard for logon"
-msgstr "Comparteix una targeta intel·ligent"
+msgstr "Utilitza per a l'accés una targeta intel·ligent"
 
 #: plugins/rdp/rdp_plugin.c:3244
-#, fuzzy
-#| msgid "Enter RDP SmartCard PIN"
 msgid "Smartcard PIN"
-msgstr "Introduïu el PIN de la targeta intel·ligent RDP"
+msgstr "PIN de la targeta intel·ligent"
 
 #: plugins/rdp/rdp_plugin.c:3245
 msgid "Left-handed mouse support"
@@ -3502,7 +3458,7 @@ msgstr "Habilita el monitor múltiple"
 
 #: plugins/rdp/rdp_plugin.c:3248
 msgid "Force multi monitor when toggled"
-msgstr ""
+msgstr "Força el mode multipantalla en alternar"
 
 #: plugins/rdp/rdp_plugin.c:3249
 msgid "Span screen over multiple monitors"
@@ -3683,16 +3639,12 @@ msgid "Move mouse when connection is idle"
 msgstr "Mou el cursor quan la connexió s'inactivi"
 
 #: plugins/rdp/rdp_plugin.c:3302
-#, fuzzy
-#| msgid "Move mouse when connection is idle"
 msgid "Press keys when connection is idle"
-msgstr "Mou el cursor quan la connexió s'inactivi"
+msgstr "Utilitzeu el teclat quan la connexió s'inactivi"
 
 #: plugins/rdp/rdp_plugin.c:3303
-#, fuzzy
-#| msgid "Desktop orientation"
 msgid "Keys combination"
-msgstr "Orientació de l’escriptori"
+msgstr "Combinació de tecles"
 
 #: plugins/rdp/rdp_plugin.c:3305
 msgid "Attempt to connect in assistance mode"
@@ -4709,13 +4661,15 @@ msgstr "Amaga la barra de cerca a la finestra principal"
 
 #: data/ui/remmina_preferences.glade:832
 msgid "Follow system light/dark theme"
-msgstr ""
+msgstr "Tema clar/fosc com el sistema"
 
 #: data/ui/remmina_preferences.glade:836
 msgid ""
 "Automatically switch between the light and dark theme to match the desktop "
 "setting, and keep in sync when it changes."
 msgstr ""
+"Canvia automàticament al tema clar o fosc per a coincidir amb la "
+"configuració del sistema, mantenint la sincronització si aquest canvia."
 
 #: data/ui/remmina_preferences.glade:850
 msgid "Prefer dark theme"
@@ -4740,19 +4694,19 @@ msgstr ""
 
 #: data/ui/remmina_preferences.glade:866
 msgid "Display message prompts on the left side of the screen"
-msgstr ""
+msgstr "Mostra notificacions a l'esquerra de la pantalla"
 
 #: data/ui/remmina_preferences.glade:883
 msgid "If supported, launch in fullscreen by default"
-msgstr ""
+msgstr "Inicia a pantalla completa quan sigui possible"
 
 #: data/ui/remmina_preferences.glade:900
 msgid "If supported, launch with dynamic resolution by default"
-msgstr ""
+msgstr "Inicia amb resolució dinàmica quan sigui possible"
 
 #: data/ui/remmina_preferences.glade:917
 msgid "Multimonitor: performs adjustments on the toolbar position"
-msgstr ""
+msgstr "Multipantalla: realitza ajustaments a la posició de la barra d'eines"
 
 #: data/ui/remmina_preferences.glade:941
 msgid "“Grab all keyboard events” status colour"
@@ -5076,16 +5030,12 @@ msgid "Pick a terminal colouring file"
 msgstr "Trieu un fitxer de color per al terminal"
 
 #: data/ui/remmina_preferences.glade:2382
-#, fuzzy
-#| msgid "Colour theme"
 msgid "Remove colour theme"
-msgstr "Tema de color"
+msgstr "Suprimeix el tema de color"
 
 #: data/ui/remmina_preferences.glade:2396
-#, fuzzy
-#| msgid "_Remove"
 msgid "Remove"
-msgstr "_Elimina"
+msgstr "Elimina"
 
 #: data/ui/remmina_preferences.glade:2411
 msgid "Bright colours"
