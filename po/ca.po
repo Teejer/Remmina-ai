@@ -20,7 +20,7 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-08-29 21:51+0000\n"
+"PO-Revision-Date: 2026-08-29 23:51+0000\n"
 "Last-Translator: BennyBeat <bennybeat@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/remmina/remmina/"
 "ca/>\n"
@@ -2551,8 +2551,6 @@ msgstr ""
 "%s"
 
 #: plugins/x2go/x2go_plugin.c:1235
-#, fuzzy
-#| msgid "An error occured."
 msgid "An error occurred."
 msgstr "Hi ha hagut un error."
 
@@ -3256,7 +3254,7 @@ msgstr "ALT + Tab"
 
 #: plugins/rdp/rdp_plugin.c:3125
 msgid "Win + Tab"
-msgstr "Super + Tab"
+msgstr "Súper + Tab"
 
 #: plugins/rdp/rdp_plugin.c:3140
 msgid "0 — Windows 7 compatible"
@@ -3655,10 +3653,8 @@ msgid "Prefer IPv6 AAAA record over IPv4 A record"
 msgstr "Prefereix l'enregistrament IPv6 AAAA sobre el IPv4 A"
 
 #: plugins/rdp/rdp_plugin.c:3308
-#, fuzzy
-#| msgid "Prefer IPv6 AAAA record over IPv4 A record"
 msgid "Force preferred IPv4 A record or IPv6 AAAA record"
-msgstr "Prefereix l'enregistrament IPv6 AAAA sobre el IPv4 A"
+msgstr "Força l'enregistrament preferit IPv4 o IPv4 AAAA"
 
 #: plugins/rdp/rdp_plugin.c:3310
 msgid "Share printers"
@@ -3746,7 +3742,7 @@ msgstr "Actualitza el framebuffer encara que no sigui visible"
 
 #: plugins/rdp/rdp_plugin.c:3334
 msgid "Allow sending empty password"
-msgstr ""
+msgstr "Permet enviar una contrasenya buida"
 
 #: plugins/rdp/rdp_plugin.c:3360
 msgid "RDP - Remote Desktop Protocol"
@@ -3870,18 +3866,18 @@ msgid "General settings"
 msgstr "Configuració general"
 
 #: plugins/rdp/rdp_settings.c:723
-#, fuzzy
-#| msgid "Edit settings"
 msgid "Auth settings"
-msgstr "Edita la configuració"
+msgstr "Configuració d'autenticació"
 
 #: plugins/rdp/rdp_settings.c:730
 msgid "FreeRDP auth-pkg-list"
-msgstr ""
+msgstr "Autenticació compatible FreeRDP auth-pkg-list"
 
 #: plugins/rdp/rdp_settings.c:743
 msgid "Authentication package filter(comma-separated list, use '!' to exclude)"
 msgstr ""
+"Filtre del mode d'autenticació (llista separada per comes, utilitzeu «!» per "
+"a excloure)"
 
 #: plugins/tool_hello_world/plugin_config.h:40
 msgid "Hello, World!"
@@ -4260,6 +4256,9 @@ msgid ""
 "  • This timeout controls how long the client will try to contact the server "
 "before dropping the connection"
 msgstr ""
+"Durada del temps d'espera de VNC en segons\n"
+"  • Aquesta opció controla el temps que el client disposa per a establir la "
+"connexió amb el servidor abans de tallar la connexió"
 
 #: plugins/vnc/vnc_plugin.c:2149
 msgid "Repeater"
@@ -4274,14 +4273,12 @@ msgid "Override pre-set VNC encodings"
 msgstr "Substituïu les codificacions VNC preestablertes"
 
 #: plugins/vnc/vnc_plugin.c:2182
-#, fuzzy
-#| msgid "Dynamic resolution enforced aspec ratio"
 msgid "Dynamic resolution enforced aspect ratio"
 msgstr "Relació d'aspecte imposada per la resolució dinàmica"
 
 #: plugins/vnc/vnc_plugin.c:2184
 msgid "TCP_USER_TIMEOUT length (seconds)"
-msgstr ""
+msgstr "Durada TCP_USER_TIMEOUT (segons)"
 
 #: plugins/vnc/vnc_plugin.c:2186
 msgid "Force tight encoding"
@@ -4304,10 +4301,8 @@ msgid "Turn off encryption"
 msgstr "Desactiva el xifratge"
 
 #: plugins/vnc/vnc_plugin.c:2195
-#, fuzzy
-#| msgid "Create new connection profile"
 msgid "Close on connection failure"
-msgstr "Crea un perfil de connexió"
+msgstr "Tanca si falla la connexió"
 
 #: plugins/vnc/vnc_plugin.c:2207
 msgid "Open Chat…"
@@ -4528,14 +4523,6 @@ msgstr "Plantilla per als noms de fitxers de perfil"
 
 #. Placeholders used to name a Remmina connection profile
 #: data/ui/remmina_preferences.glade:381
-#, fuzzy
-#| msgid ""
-#| "%G Name of group (slashes \\/ are converted to dashes -)\n"
-#| "%P Protocol name\n"
-#| "%N Connection name\n"
-#| "%h Hostname/IP\n"
-#| "\n"
-#| "\n"
 msgid ""
 "%G Name of group (slashes \\/ are converted to dashes -)\n"
 "%P Protocol name\n"
@@ -4545,9 +4532,7 @@ msgstr ""
 "%G Nom del grup (les barres \\/ es converteixen en guions)\n"
 "%P Nom del protocol\n"
 "%N Nom de la connexió\n"
-"%h Nom de l'amfitrió/IP\n"
-"\n"
-"\n"
+"%h Nom de l'amfitrió/IP "
 
 #: data/ui/remmina_preferences.glade:400
 msgid "Only save generated screenshots, don't copy them to clipboard."
@@ -4643,17 +4628,15 @@ msgstr "Oculta"
 
 #: data/ui/remmina_preferences.glade:761
 msgid "Minimal"
-msgstr ""
+msgstr "Mínim"
 
 #: data/ui/remmina_preferences.glade:777
 msgid "Fullscreen toolbar visibility"
 msgstr "Visibilitat de la barra d'eines en pantalla completa"
 
 #: data/ui/remmina_preferences.glade:792
-#, fuzzy
-#| msgid "Fullscreen toolbar visibility"
 msgid "Fullscreen toolbar delay (in seconds)"
-msgstr "Visibilitat de la barra d'eines en pantalla completa"
+msgstr "Retard de la barra d'eines de pantalla completa (en segons)"
 
 #: data/ui/remmina_preferences.glade:816
 msgid "Hide the search bar shown in the main window"
