@@ -36,6 +36,7 @@
 
 #include "config.h"
 #include "remmina_avahi.h"
+#include "remmina_icon.h"
 #include "remmina/remmina_trace_calls.h"
 
 #ifdef HAVE_LIBAVAHI_CLIENT
@@ -97,6 +98,8 @@ remmina_avahi_resolve_callback(
 
 		g_print("(remmina-applet avahi-resolver) Added service '%s'\n", value);
 
+		remmina_icon_populate_menu();
+
 		break;
 	}
 
@@ -151,6 +154,7 @@ remmina_avahi_browse_callback(
 		key = g_strdup_printf("%s,%s,%s", name, type, domain);
 		g_hash_table_remove(ga->discovered_services, key);
 		g_free(key);
+		remmina_icon_populate_menu();
 		break;
 
 	case AVAHI_BROWSER_ALL_FOR_NOW:
