@@ -34,6 +34,7 @@ flatpak build --build-dir="${PWD}/_flatpak_build" app/ \
           -DCMAKE_INSTALL_PREFIX:PATH=/app \
           -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo \
           -DWITH_MANPAGES:BOOL=OFF \
+          -DWITH_FREERDP3:BOOL=ON \
           ../..
 
 flatpak build app/ \
