@@ -89,7 +89,8 @@ static void remmina_rdp_file_import_field(RemminaFile *remminafile, const gchar 
 		}
 	} else if (g_strcmp0(key, "redirectprinters") == 0) {
 		remmina_plugin_service->file_set_int(remminafile, "shareprinter", (atoi(value) == 1));
-	} else if (g_strcmp0(key, "redirectsmartcard") == 0) {
+	} else if (g_strcmp0(key, "redirectsmartcard") == 0 ||
+		   g_strcmp0(key, "redirectsmartcards") == 0) {
 		remmina_plugin_service->file_set_int(remminafile, "sharesmartcard", (atoi(value) == 1));
 	} else if (g_strcmp0(key, "redirectclipboard") == 0) {
 		remmina_plugin_service->file_set_int(remminafile, "disableclipboard", (atoi(value) != 1));
@@ -260,9 +261,8 @@ gboolean remmina_rdp_file_export_channel(RemminaFile *remminafile, FILE *fp)
 	else
 		fprintf(fp, "audiocapturemode:i:1\r\n");
 	fprintf(fp, "redirectprinters:i:%i\r\n", remmina_plugin_service->file_get_int(remminafile, "shareprinter", FALSE) ? 1 : 0);
-	fprintf(fp, "redirectsmartcard:i:%i\r\n", remmina_plugin_service->file_get_int(remminafile, "sharesmartcard", FALSE) ? 1 : 0);
+	fprintf(fp, "redirectsmartcards:i:%i\r\n", remmina_plugin_service->file_get_int(remminafile, "sharesmartcard", FALSE) ? 1 : 0);
 	fprintf(fp, "redirectcomports:i:0\r\n");
-	fprintf(fp, "redirectsmartcards:i:0\r\n");
 	fprintf(fp, "redirectclipboard:i:1\r\n");
 	fprintf(fp, "redirectposdevices:i:0\r\n");
 	fprintf(fp, "autoreconnection enabled:i:1\r\n");
