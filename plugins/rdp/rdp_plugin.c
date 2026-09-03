@@ -2499,15 +2499,18 @@ static gboolean remmina_rdp_main(RemminaProtocolWidget *gp)
 	const gchar *sn = remmina_plugin_service->file_get_string(remminafile, "smartcardname");
 	if (remmina_plugin_service->file_get_int(remminafile, "sharesmartcard", FALSE) || (sn != NULL && sn[0] != '\0')) {
 #if FREERDP_VERSION_MAJOR >= 3
-		const char *args[4] = { 0 };
-		size_t count = 0;
+		CLPARAM *args[2];
+		size_t acount = 1;
 
-		if (sn != NULL && sn[0] != '\0')
-			args[count++] = sn;
-
-		RDPDR_DEVICE *smartcard = freerdp_device_new(RDPDR_DTYP_SMARTCARD, count, args);
-
-		freerdp_device_collection_add(rfi->clientContext.context.settings, smartcard);
+		/* Use the same helper as drive/printer sharing. calloc(sizeof(RDPDR_SMARTCARD))
+		 * is too small for FreeRDP 3's RDPDR_DEVICE_EX; clone then SIGSEGVs (#3572). */
+		args[0] = "smartcard";
+		if (sn != NULL && sn[0] != '\0') {
+			args[1] = (CLPARAM *)sn;
+			acount = 2;
+		}
+		if (!freerdp_client_add_device_channel(rfi->clientContext.context.settings, acount, args))
+			REMMINA_PLUGIN_DEBUG("freerdp_client_add_device_channel(smartcard) failed");
 #else
 		RDPDR_SMARTCARD *smartcard;
 		smartcard = (RDPDR_SMARTCARD *)calloc(1, sizeof(RDPDR_SMARTCARD));
