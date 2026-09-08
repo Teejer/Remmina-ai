@@ -534,6 +534,29 @@
             ]
         },
         {
+            "name": "uriparser",
+            "buildsystem": "cmake-ninja",
+            "config-opts": [
+                "-DCMAKE_BUILD_TYPE:STRING=Release",
+                "-DCMAKE_INSTALL_LIBDIR:PATH=lib",
+                "-DURIPARSER_BUILD_DOCS:BOOL=OFF",
+                "-DURIPARSER_BUILD_TESTS:BOOL=OFF",
+                "-DURIPARSER_BUILD_TOOLS:BOOL=OFF"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/uriparser/uriparser.git",
+                    "tag": "uriparser-1.0.2",
+                    "commit": "9b2bed92f5deecf740819f9bf27724bee2fe9c12",
+                    "x-checker-data": {
+                        "type": "git",
+                        "tag-pattern": "^uriparser-([\\d.]+)$"
+                    }
+                }
+            ]
+        },
+        {
             "name": "freerdp",
             "buildsystem": "cmake-ninja",
             "cleanup": [],
@@ -569,8 +592,8 @@
                 {
                     "type": "git",
                     "url": "https://github.com/FreeRDP/FreeRDP.git",
-                    "tag": "3.20.0",
-                    "commit": "b8e790a02ede8dd64ff7177fb9027d1844e66bb6",
+                    "tag": "3.31.1",
+                    "commit": "63b948ca5cb94307fd5444ee6e73927a41ccdab4",
                     "x-checker-data": {
                         "type": "git",
                         "tag-pattern": "^([\\d.]+)$"
