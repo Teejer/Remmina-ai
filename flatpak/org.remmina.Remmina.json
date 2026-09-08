@@ -228,16 +228,12 @@
                 {
                     "type": "git",
                     "url": "https://github.com/LudovicRousseau/PCSC.git",
-                    "tag": "2.3.3",
-                    "commit": "3ef55e02979de6834015b380c1d21671eeb4e9f5",
+                    "tag": "2.4.1",
+                    "commit": "5a96d5b1c6a3658c581a793d01f6a00e1a44e360",
                     "x-checker-data": {
                         "type": "git",
                         "tag-pattern": "^pcsc-([\\d.]+)$"
                     }
-                },
-                {
-                    "type": "patch",
-                    "path": "patches/pcsc-lite-protocol.patch"
                 }
             ]
         },
