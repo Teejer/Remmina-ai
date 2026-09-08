@@ -38,7 +38,9 @@
 #include <gmodule.h>
 #include "vnc_plugin.h"
 #include <rfb/rfbclient.h>
-
+#ifdef HAVE_MALLOC_TRIM
+#include <malloc.h>
+#endif
 #ifdef HAVE_NETINET_TCP_H
 #include <netinet/tcp.h>
 #endif
@@ -1846,6 +1848,11 @@ static gboolean remmina_plugin_vnc_close_connection_timeout(RemminaProtocolWidge
 
 	pthread_mutex_destroy(&gpdata->buffer_mutex);
 	remmina_plugin_service->protocol_plugin_signal_connection_closed(gp);
+
+	/* there is a large amount in glibc arenas; won't be freed for OS otherwise */
+#ifdef HAVE_MALLOC_TRIM
+	malloc_trim(0);
+#endif
 
 	return FALSE;
 }

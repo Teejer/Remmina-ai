@@ -76,6 +76,9 @@
 #include <errno.h>
 #endif
 #include <pthread.h>
+#ifdef HAVE_MALLOPT
+#include <malloc.h>
+#endif
 #ifdef HAVE_LIBGCRYPT
 #include <gcrypt.h>
 # if GCRYPT_VERSION_NUMBER < 0x010600
@@ -391,6 +394,12 @@ int main(int argc, char *argv[])
 	GtkApplication *app;
 	const gchar *app_id;
 	int status;
+
+	// Remmina does not need the default arena number (CPU cores x 8), 2 seem optimal for us
+#ifdef HAVE_MALLOPT
+	if (!g_getenv("MALLOC_ARENA_MAX"))
+		mallopt(M_ARENA_MAX, 2);
+#endif
 
 	g_unsetenv("GDK_CORE_DEVICE_EVENTS");
 
