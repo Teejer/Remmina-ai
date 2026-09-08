@@ -85,6 +85,9 @@
 
 #include <unistd.h>
 #include <string.h>
+#ifdef HAVE_MALLOC_TRIM
+#include <malloc.h>
+#endif
 
 #ifdef GDK_WINDOWING_X11
 #include <X11/Xlib.h>
@@ -2850,6 +2853,11 @@ static gboolean complete_cleanup_on_main_thread(gpointer data)
 	 * can be removed */
 	if (!orphaned)
 		remmina_plugin_service->protocol_plugin_signal_connection_closed(gp);
+
+#ifdef HAVE_MALLOC_TRIM
+	/* there is a large amount in glibc arenas; won't be freed for OS otherwise */
+	malloc_trim(0);
+#endif
 
 	return G_SOURCE_REMOVE;
 }

@@ -11,6 +11,8 @@
 #cmakedefine HAVE_UNISTD_H
 #cmakedefine HAVE_SYS_UN_H
 #cmakedefine HAVE_ERRNO_H
+#cmakedefine HAVE_MALLOC_TRIM
+#cmakedefine HAVE_MALLOPT
 #cmakedefine HAVE_KDE_OUTPUT_ORDER_V1
 
 #define remmina			"remmina"

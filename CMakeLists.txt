@@ -285,6 +285,9 @@ check_include_files(unistd.h HAVE_UNISTD_H)
 check_include_files(sys/un.h HAVE_SYS_UN_H)
 check_include_files(errno.h HAVE_ERRNO_H)
 
+check_symbol_exists(malloc_trim malloc.h HAVE_MALLOC_TRIM)
+check_symbol_exists(mallopt malloc.h HAVE_MALLOPT)
+
 include_directories(.)
 include_directories(src/include)
 
