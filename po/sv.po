@@ -12,13 +12,14 @@
 # l <snelhingst@gmail.com>, 2021.
 # Andreas Florin <andreas.florin.1988@outlook.com>, 2024.
 # Daniel Nylander <daniel@danielnylander.se>, 2025, 2026.
+# Daniel Nylander <yeagersthlm@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-01-30 06:10+0000\n"
-"Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
+"PO-Revision-Date: 2026-09-10 15:53+0000\n"
+"Last-Translator: Daniel Nylander <yeagersthlm@gmail.com>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/remmina/remmina/"
 "sv/>\n"
 "Language: sv\n"
@@ -26,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16-dev\n"
+"X-Generator: Weblate 2026.9.1\n"
 "X-Launchpad-Export-Date: 2014-04-10 15:03+0000\n"
 
 #: src/remmina_icon.c:143
@@ -433,7 +434,7 @@ msgstr "Autentiseringstyp"
 #: src/remmina_ssh_plugin.c:1608 plugins/spice/spice_plugin.c:723
 #: plugins/vnc/vnc_plugin.c:2151 plugins/vnc/vnc_plugin.c:2163
 msgid "User password"
-msgstr "Användarens Lösenord"
+msgstr "Användarens lösenord"
 
 #: src/remmina_ssh_plugin.c:1611 src/remmina_file_editor.c:1601
 msgid "SSH certificate file"
