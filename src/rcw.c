@@ -5201,6 +5201,8 @@ void rco_destroy_message_panel(RemminaConnectionObject *cnnobj, RemminaMessagePa
 		g_list_free(childs);
 		if (lastPanel)
 			gtk_widget_show(GTK_WIDGET(lastPanel));
+		else if (cnnobj->connected && cnnobj->proto)
+			remmina_protocol_widget_grab_focus(REMMINA_PROTOCOL_WIDGET(cnnobj->proto));
 	}
 }
 
