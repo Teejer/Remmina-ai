@@ -168,7 +168,7 @@ static RemminaFile *remmina_rdp_file_import_channel(GIOChannel *channel)
 
 			if (p) {
 				p++;
-				remmina_rdp_file_import_field(remminafile, line, p);
+				remmina_rdp_file_import_field(remminafile, g_strstrip(line), g_strstrip(p));
 			}
 		}
 
