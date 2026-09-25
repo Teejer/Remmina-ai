@@ -99,7 +99,7 @@ parts:
   freerdp:
     plugin: cmake
     source: https://github.com/FreeRDP/FreeRDP.git
-    source-tag: 3.26.0
+    source-tag: 3.31.1
     source-depth: 1
     # override-build: |
     #   current_dir=$PWD
@@ -120,9 +120,11 @@ parts:
       - libsecret-1-dev
       - libssl-dev
       - libx11-dev
+      - liburiparser-dev
       - libusb-1.0-0-dev
       - libxkbfile-dev
       - libxv-dev
+      - libva-dev
       - libfuse3-dev
       - libkrb5-dev
       - libpkcs11-helper1-dev
