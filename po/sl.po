@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-05-23 12:11+0000\n"
+"PO-Revision-Date: 2026-09-25 14:51+0000\n"
 "Last-Translator: jernejp21 <jernejp21@tuta.com>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/remmina/"
 "remmina/sl/>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
 "n%100==4 ? 3 : 0);\n"
-"X-Generator: Weblate 2026.6.dev0\n"
+"X-Generator: Weblate 2026.10.dev0\n"
 "X-Launchpad-Export-Date: 2014-09-20 14:25+0000\n"
 
 #: src/remmina_icon.c:143
@@ -58,52 +58,58 @@ msgid "Connect to remote desktops through the applet menu"
 msgstr "Poveži z oddaljenimi namizji preko menija gradnikov"
 
 #: src/remmina_icon.c:395
+#, fuzzy
 msgid "StatusNotifier/Appindicator support in “"
-msgstr ""
+msgstr "Podpora za StatusNotifier/Appindicator v „"
 
 #. TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
 #: src/remmina_icon.c:402
-#, c-format
+#, c-format, fuzzy
 msgid "%s your desktop does support it"
-msgstr ""
+msgstr "%s vaše namizje jo podpira"
 
 #. TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
 #: src/remmina_icon.c:404
-#, c-format
+#, c-format, fuzzy
 msgid "%s and Remmina has built-in (compiled) support for libappindicator."
 msgstr ""
+"%s in Remmina ima vgrajeno (previzualizirano) podporo za libappindicator."
 
 #. TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
 #: src/remmina_icon.c:407
-#, c-format
+#, c-format, fuzzy
 msgid ""
 "%s not supported natively by your Desktop Environment. libappindicator will "
 "try to fallback to GtkStatusIcon/xembed"
 msgstr ""
+"%s vaše namizno okolje ne podpira izvorno. libappindicator bo poskusil "
+"uporabiti nadomestno možnost GtkStatusIcon/xembed"
 
 #. TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
 #: src/remmina_icon.c:411
-#, c-format
+#, c-format, fuzzy
 msgid "%s You may need to install, and use XApp Status Applet"
-msgstr ""
+msgstr "%s Morda boste morali namestiti in uporabiti XApp Status Applet"
 
 #. TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
 #: src/remmina_icon.c:414
-#, c-format
+#, c-format, fuzzy
 msgid "%s You may need to install, and use KStatusNotifierItem"
-msgstr ""
+msgstr "%s Morda boste morali namestiti in uporabiti KStatusNotifierItem"
 
 #. TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
 #: src/remmina_icon.c:417
-#, c-format
+#, c-format, fuzzy
 msgid "%s You may need to install, and use XEmbed SNI Proxy"
-msgstr ""
+msgstr "%s Morda boste morali namestiti in uporabiti XEmbed SNI Proxy"
 
 #. TRANSLATORS: %s is a placeholder for "StatusNotifier/Appindicator suppor in “DESKTOP NAME”: "
 #: src/remmina_icon.c:420
-#, c-format
+#, c-format, fuzzy
 msgid "%s You may need to install, and use Gnome Shell Extension Appindicator"
 msgstr ""
+"%s Morda boste morali namestiti in uporabiti Gnome Shell Extension "
+"Appindicator"
 
 #: src/remmina_log.c:131
 msgid "Remmina debugging window"
@@ -1247,8 +1253,9 @@ msgid "RDP Files"
 msgstr "Datoteka"
 
 #: src/remmina_main.c:1390
+#, fuzzy
 msgid "Virt-Viewer Files"
-msgstr ""
+msgstr "Datoteke Virt-Viewer"
 
 #: src/remmina_main.c:1395
 #, fuzzy
@@ -1789,10 +1796,13 @@ msgid "Enable fullscreen"
 msgstr "Premaknjen v celozaslonski način"
 
 #: src/remmina.c:142
+#, fuzzy
 msgid ""
 "Enable extra hardening (disable closing confirmation, disable unsafe "
 "shortcut keys, hide tabs, hide search bar)"
 msgstr ""
+"Omogoči dodatno zaščito (onemogoči potrditev zapiranja, onemogoči nevarne "
+"bližnjične tipke, skrij zavihke, skrij iskalno vrstico)"
 
 #: src/remmina.c:143
 #, fuzzy
@@ -1804,12 +1814,17 @@ msgstr "Ni ikone pladnja"
 #. * to log more verbose statements.
 #.
 #: src/remmina.c:391
+#, fuzzy
 msgid ""
 "Remmina does not log all output statements. Turn on more verbose output by "
 "using \"G_MESSAGES_DEBUG=remmina\" as an environment variable.\n"
 "More info available on the Remmina wiki at:\n"
 "https://gitlab.com/Remmina/Remmina/-/wikis/Usage/Remmina-debugging"
 msgstr ""
+"Remmina ne beleži vseh izhodnih izjav. Vklopite podrobnejši izhod z uporabo "
+"okoljske spremenljivke \"G_MESSAGES_DEBUG=remmina\". Več informacij je na "
+"voljo na wikiju Remmina na naslovu: https://gitlab.com/Remmina/Remmina/-/"
+"wikis/Usage/Remmina-debugging"
 
 #. TRANSLATORS: Shown in terminal. Do not use characters that may be not supported on a terminal
 #: src/remmina.c:445
@@ -2021,6 +2036,7 @@ msgid "Send clipboard content as keystrokes"
 msgstr "Pošiljanje vsebine odložišča kot pritiskov tipk"
 
 #: src/rcw.c:2143
+#, fuzzy
 msgid ""
 "CAUTION: Pasted text will be sent as a sequence of key-codes as if typed on "
 "your local keyboard.\n"
@@ -2035,6 +2051,13 @@ msgid ""
 "to local key-codes won’t be sent to the server.\n"
 "\n"
 msgstr ""
+"POZOR: Prilepljeno besedilo bo poslano kot zaporedje kod tipk, kot bi ga "
+"tipkali na lokalni tipkovnici. • Za najboljše rezultate uporabite enake "
+"nastavitve tipkovnice tako za odjemalca kot za strežnik. • Če se tipkovnica "
+"odjemalca razlikuje od tipkovnice strežnika, lahko prejeto besedilo vsebuje "
+"napačne ali nepravilne znake. • Znaki Unicode in drugi posebni znaki, ki jih "
+"ni mogoče pretvoriti v lokalne kode tipk, ne bodo poslani na strežnik.\n"
+"\n"
 
 #: src/rcw.c:2259
 #, fuzzy
@@ -2144,10 +2167,13 @@ msgstr ""
 #. TRANSLATORS: This should be a link to the Remmina wiki page:
 #. TRANSLATORS: 'GtkSocket feature is not available'.
 #: src/rcw.c:4751
+#, fuzzy
 msgid ""
 "https://gitlab.com/Remmina/Remmina/-/wikis/GtkSocket-feature-is-not-"
 "available-in-a-Wayland-session"
 msgstr ""
+"https://gitlab.com/Remmina/Remmina/-/wikis/GtkSocket-feature-is-not-"
+"available-in-a-Wayland-session"
 
 #: src/rcw.c:4900
 #, fuzzy
@@ -2159,6 +2185,7 @@ msgstr "Opozorilo: Ta vtičnik zahteva GtkSocket, ki pa ni na voljo."
 #. TRANSLATORS: This should be a link to the Remmina wiki page:
 #. 'GtkSocket feature is not available'.
 #: src/rcw.c:4906
+#, fuzzy
 msgid ""
 "Plugins relying on GtkSocket can't run in a Wayland session.\n"
 "For more info and a possible workaround, please visit the Remmina wiki at:\n"
@@ -2166,6 +2193,10 @@ msgid ""
 "https://gitlab.com/Remmina/Remmina/-/wikis/GtkSocket-feature-is-not-"
 "available-in-a-Wayland-session"
 msgstr ""
+"Vtičniki, ki se zanašajo na GtkSocket, ne morejo delovati v seji Wayland. Za "
+"več informacij in morebitno rešitev obiščite wiki Remmina na naslovu: "
+"https://gitlab.com/Remmina/Remmina/-/wikis/GtkSocket-feature-is-not-"
+"available-in-a-Wayland-session"
 
 #: src/rcw.c:4920
 #, fuzzy
@@ -2397,11 +2428,13 @@ msgid "Export connection in virt-viewer .vv file format"
 msgstr "Izvozi povezavo v vrsti datoteke Windows .rdp"
 
 #: plugins/x2go/x2go_plugin.c:71
-#, c-format
+#, c-format, fuzzy
 msgid ""
 "The command-line feature '%s' is not available! Attempting to start PyHoca-"
 "CLI without using this feature…"
 msgstr ""
+"Funkcija ukazne vrstice '%s' ni na voljo! Poskus zagona PyHoca-CLI brez "
+"uporabe te funkcije…"
 
 #: plugins/x2go/x2go_plugin.c:296 plugins/x2go/x2go_plugin.c:428
 #: plugins/x2go/x2go_plugin.c:515 plugins/x2go/x2go_plugin.c:621
@@ -2519,8 +2552,9 @@ msgstr "_Nov"
 #. TRANSLATORS: Tooltip for terminating button inside Session-Chooser-Dialog.
 #. TRANSLATORS: Please stick to X2GoClient's way of translating.
 #: plugins/x2go/x2go_plugin.c:548
+#, fuzzy
 msgid "Terminating X2Go sessions can take a moment."
-msgstr ""
+msgstr "Prekinjanje sej X2Go lahko traja nekaj trenutkov."
 
 #: plugins/x2go/x2go_plugin.c:622 plugins/x2go/x2go_plugin.c:624
 #, c-format
@@ -2528,47 +2562,62 @@ msgid "Unknown property '%i'"
 msgstr "Neznana lastnost »%i«"
 
 #: plugins/x2go/x2go_plugin.c:711 plugins/x2go/x2go_plugin.c:758
+#, fuzzy
 msgid "Could not find child GtkTreeView of session chooser dialog."
 msgstr ""
+"Ni bilo mogoče najti podrejenega elementa GtkTreeView v pogovornem oknu za "
+"izbiro seje."
 
 #: plugins/x2go/x2go_plugin.c:723
+#, fuzzy
 msgid ""
 "Neither the 'dialog' nor 'treeview' parameters are initialized! At least one "
 "of them must be given."
 msgstr ""
+"Niti parameter 'dialog' niti 'treeview' nista pripravljena! Navesti je treba "
+"vsaj enega od njiju."
 
 #: plugins/x2go/x2go_plugin.c:732
+#, fuzzy
 msgid ""
 "Could not obtain \"GtkTreeModelFilter*\" of the session chooser dialog, for "
 "unknown reason."
 msgstr ""
+"Iz neznanega razloga ni bilo mogoče pridobiti \"GtkTreeModelFilter*\" "
+"pogovornega okna za izbiro seje."
 
 #: plugins/x2go/x2go_plugin.c:767
 msgid "Could not get currently selected row (session)!"
 msgstr "Trenutno izbrane vrstice (seja) ni bilo mogoče pridobiti!"
 
 #: plugins/x2go/x2go_plugin.c:786
-#, c-format
+#, c-format, fuzzy
 msgid ""
 "Exactly one session should be selectable but '%i' rows (sessions) are "
 "selected."
 msgstr ""
+"Izbrati bi bilo mogoče natanko eno sejo, vendar je izbranih '%i' vrstic (sej)"
+"."
 
 #: plugins/x2go/x2go_plugin.c:835
+#, fuzzy
 msgid "Failed to fill 'GtkTreeIter'."
-msgstr ""
+msgstr "Polnjenje 'GtkTreeIter' ni uspelo."
 
 #: plugins/x2go/x2go_plugin.c:868
+#, fuzzy
 msgid "parameter 'argv' is 'NULL'."
-msgstr ""
+msgstr "parameter 'argv' je 'NULL'."
 
 #: plugins/x2go/x2go_plugin.c:879
+#, fuzzy
 msgid "parameter 'error' is 'NULL'."
-msgstr ""
+msgstr "parameter 'error' je 'NULL'."
 
 #: plugins/x2go/x2go_plugin.c:887
+#, fuzzy
 msgid "parameter 'env' is either invalid or uninitialized."
-msgstr ""
+msgstr "parameter 'env' je neveljaven ali nepripravljen."
 
 #: plugins/x2go/x2go_plugin.c:903 plugins/x2go/x2go_plugin.c:2480
 #, fuzzy
@@ -2576,10 +2625,11 @@ msgid "Started PyHoca-CLI with the following arguments:"
 msgstr "Začel pyhoca-cli z naslednjimi argumenti:"
 
 #: plugins/x2go/x2go_plugin.c:927
+#, fuzzy
 msgid ""
 "The necessary PyHoca-CLI process has encountered a internet connection "
 "problem."
-msgstr ""
+msgstr "Potrebni proces PyHoca-CLI je naletel na težavo z internetno povezavo."
 
 #: plugins/x2go/x2go_plugin.c:937
 #, c-format
@@ -2607,12 +2657,14 @@ msgstr ""
 "Napaka: »%s«"
 
 #: plugins/x2go/x2go_plugin.c:999
+#, fuzzy
 msgid "Neither the 'path' nor 'dialog' parameters are initialized."
-msgstr ""
+msgstr "Niti parameter 'path' niti 'dialog' nista pripravljena."
 
 #: plugins/x2go/x2go_plugin.c:1015
+#, fuzzy
 msgid "GtkTreePath 'path' describes a non-existing row!"
-msgstr ""
+msgstr "GtkTreePath 'path' opisuje neobstoječo vrstico!"
 
 #: plugins/x2go/x2go_plugin.c:1060 plugins/x2go/x2go_plugin.c:1070
 #: plugins/x2go/x2go_plugin.c:2150
@@ -2622,8 +2674,9 @@ msgid "'Invalid connection data.'"
 msgstr "Skupna povezava"
 
 #: plugins/x2go/x2go_plugin.c:1102
+#, fuzzy
 msgid "Parameter 'custom_data' is not fully initialized!"
-msgstr ""
+msgstr "Parameter 'custom_data' ni popolnoma pripravljen!"
 
 #: plugins/x2go/x2go_plugin.c:1223
 #, c-format
@@ -2639,23 +2692,24 @@ msgid "An error occurred."
 msgstr "Prišlo je do napake."
 
 #: plugins/x2go/x2go_plugin.c:1330 plugins/x2go/x2go_plugin.c:1345
+#, fuzzy
 msgid "Could not get session ID from session chooser dialog."
-msgstr ""
+msgstr "Iz pogovornega okna za izbiro seje ni bilo mogoče pridobiti ID-ja seje."
 
 #: plugins/x2go/x2go_plugin.c:1337
-#, c-format
+#, c-format, fuzzy
 msgid "Resuming session: '%s'"
-msgstr ""
+msgstr "Nadaljevanje seje: '%s'"
 
 #: plugins/x2go/x2go_plugin.c:1352
-#, c-format
+#, c-format, fuzzy
 msgid "Terminating session: '%s'"
-msgstr ""
+msgstr "Prekinjanje seje: '%s'"
 
 #: plugins/x2go/x2go_plugin.c:1526
-#, c-format
+#, c-format, fuzzy
 msgid "Disconnected from %s:%d via X2Go"
-msgstr ""
+msgstr "Povezava z %s:%d prek X2Go je prekinjena"
 
 #: plugins/x2go/x2go_plugin.c:1598
 #, fuzzy
@@ -2679,8 +2733,9 @@ msgstr ""
 "morebitne napake ter se prepričajte, da je oddaljeni strežnik dosegljiv."
 
 #: plugins/x2go/x2go_plugin.c:1650
+#, fuzzy
 msgid "Can't save empty username!"
-msgstr ""
+msgstr "Praznega uporabniškega imena ni mogoče shraniti!"
 
 #: plugins/x2go/x2go_plugin.c:1664
 msgid "Could not save new credentials."
@@ -2704,10 +2759,14 @@ msgid "Password input cancelled. Aborting…"
 msgstr "Vnos gesla je bil preklican. Prekinjam …"
 
 #: plugins/x2go/x2go_plugin.c:1741
+#, fuzzy
 msgid ""
 "Tip: Check the 'Save password' checkbox or manually input your X2Go username "
 "and password in the profile settings to store them for faster logins."
 msgstr ""
+"Nasvet: Označite potrditveno polje 'Shrani geslo' ali ročno vnesite "
+"uporabniško ime in geslo za X2Go v nastavitvah profila, da jih shranite za "
+"hitrejšo prijavo."
 
 #: plugins/x2go/x2go_plugin.c:1772
 #, fuzzy
@@ -2719,24 +2778,29 @@ msgid "Authentication cancelled. Aborting…"
 msgstr "Preverjanje pristnosti je bilo preklican. Prekinjam …"
 
 #: plugins/x2go/x2go_plugin.c:1988
+#, fuzzy
 msgid ""
 "Could not parse the output of PyHoca-CLI's --list-sessions option. Creating "
 "a new session now."
 msgstr ""
+"Ni bilo mogoče razčleniti izhoda možnosti --list-sessions orodja PyHoca-CLI. "
+"Zdaj se ustvarja nova seja."
 
 #: plugins/x2go/x2go_plugin.c:2025
+#, fuzzy
 msgid "Could not allocate enough memory!"
-msgstr ""
+msgstr "Ni bilo mogoče dodeliti dovolj pomnilnika!"
 
 #: plugins/x2go/x2go_plugin.c:2035
-#, c-format
+#, c-format, fuzzy
 msgid "Found already existing X2Go session with ID: '%s'"
-msgstr ""
+msgstr "Najdena je že obstoječa seja X2Go z ID-jem: '%s'"
 
 #. TRANSLATORS: Please stick to X2GoClient's translation.
 #: plugins/x2go/x2go_plugin.c:2078
+#, fuzzy
 msgid "Suspended"
-msgstr ""
+msgstr "V mirovanju"
 
 #. TRANSLATORS: Please stick to X2GoClient's translation.
 #: plugins/x2go/x2go_plugin.c:2081
@@ -2752,9 +2816,12 @@ msgid "Terminated"
 msgstr "Končaj"
 
 #: plugins/x2go/x2go_plugin.c:2117
+#, fuzzy
 msgid ""
 "Could not find any sessions on remote machine. Creating a new session now."
 msgstr ""
+"Na oddaljenem računalniku ni bilo mogoče najti nobene seje. Zdaj se ustvarja "
+"nova seja."
 
 #: plugins/x2go/x2go_plugin.c:2170
 msgid "Choose a session to resume:"
@@ -2765,24 +2832,25 @@ msgid "Waiting for user to select a session…"
 msgstr "Čakam, da uporabnik izbere sejo …"
 
 #: plugins/x2go/x2go_plugin.c:2221
+#, fuzzy
 msgid "No session was selected. Creating a new one."
-msgstr ""
+msgstr "Nobena seja ni bila izbrana. Ustvarjanje nove."
 
 #: plugins/x2go/x2go_plugin.c:2293
-#, c-format
+#, c-format, fuzzy
 msgid "A non-critical error happened: %s"
-msgstr ""
+msgstr "Prišlo je do nekritične napake: %s"
 
 #: plugins/x2go/x2go_plugin.c:2298
-#, c-format
+#, c-format, fuzzy
 msgid "User chose to resume session with ID: '%s'"
-msgstr ""
+msgstr "Uporabnik se je odločil za nadaljevanje seje z ID-jem: '%s'"
 
 #. TRANSLATORS: Please stick to X2GoClient's way of translating.
 #: plugins/x2go/x2go_plugin.c:2319
-#, c-format
+#, c-format, fuzzy
 msgid "Resuming session '%s'…"
-msgstr ""
+msgstr "Nadaljevanje seje '%s'…"
 
 #: plugins/x2go/x2go_plugin.c:2440
 #, fuzzy
@@ -2917,8 +2985,9 @@ msgid "Validation data in ProtocolSettings array is invalid!"
 msgstr "Podatki za preverjanje v polju ProtocolSettings so neveljavni!"
 
 #: plugins/x2go/x2go_plugin.c:3150
+#, fuzzy
 msgid "Parameters 'key' or 'value' are 'NULL'!"
-msgstr ""
+msgstr "Parametra 'key' ali 'value' sta 'NULL'!"
 
 #: plugins/x2go/x2go_plugin.c:3168
 #, fuzzy, c-format
@@ -2936,12 +3005,14 @@ msgid "The lower limit is not a valid integer!"
 msgstr "Omejitev minimum ni veljavno celo število!"
 
 #: plugins/x2go/x2go_plugin.c:3222
+#, fuzzy
 msgid "The lower limit is too high!"
-msgstr ""
+msgstr "Spodnja meja je previsoka!"
 
 #: plugins/x2go/x2go_plugin.c:3227
+#, fuzzy
 msgid "The lower limit is too low!"
-msgstr ""
+msgstr "Spodnja meja je prenizka!"
 
 #: plugins/x2go/x2go_plugin.c:3232 plugins/x2go/x2go_plugin.c:3262
 #: plugins/x2go/x2go_plugin.c:3282
@@ -2950,8 +3021,9 @@ msgid "Something unknown went wrong."
 msgstr "Nekaj je šlo narobe."
 
 #: plugins/x2go/x2go_plugin.c:3237 plugins/x2go/x2go_plugin.c:3267
+#, fuzzy
 msgid "Please check the RemminaProtocolSetting array for possible errors."
-msgstr ""
+msgstr "Preverite polje RemminaProtocolSetting za morebitne napake."
 
 #: plugins/x2go/x2go_plugin.c:3247
 #, fuzzy
@@ -2959,12 +3031,14 @@ msgid "The upper limit is not a valid integer!"
 msgstr "Vnos ni veljavno celo število!"
 
 #: plugins/x2go/x2go_plugin.c:3252
+#, fuzzy
 msgid "The upper limit is too high!"
-msgstr ""
+msgstr "Zgornja meja je previsoka!"
 
 #: plugins/x2go/x2go_plugin.c:3257
+#, fuzzy
 msgid "The upper limit is too low!"
-msgstr ""
+msgstr "Zgornja meja je prenizka!"
 
 #: plugins/x2go/x2go_plugin.c:3277
 #, fuzzy
@@ -3078,14 +3152,15 @@ msgid "Enter RDP gateway authentication credentials"
 msgstr "Vnesite poverilnice za avtentikacijo prehoda RDP"
 
 #: plugins/rdp/rdp_plugin.c:1036
+#, fuzzy
 msgid "Enter RDP SmartCard PIN"
-msgstr ""
+msgstr "Vnesite kodo PIN za pametno kartico RDP"
 
 #. TRANSLATORS: the placeholder may be either an IP/FQDN or a server hostname
 #: plugins/rdp/rdp_plugin.c:1336
-#, c-format
+#, c-format, fuzzy
 msgid "Disconnected from %s via RDP"
-msgstr ""
+msgstr "Povezava z %s prek RDP je prekinjena"
 
 #: plugins/rdp/rdp_plugin.c:2556
 msgid "Could not authenticate using smartcard."
@@ -3354,56 +3429,69 @@ msgid "NLA extended protocol security"
 msgstr "Razširjena varnost protokola NLA"
 
 #: plugins/rdp/rdp_plugin.c:3104 plugins/rdp/rdp_plugin.c:3115
+#, fuzzy
 msgid "Every 1 min"
-msgstr ""
+msgstr "Vsako 1 min"
 
 #: plugins/rdp/rdp_plugin.c:3105 plugins/rdp/rdp_plugin.c:3116
+#, fuzzy
 msgid "Every 3 min"
-msgstr ""
+msgstr "Vsake 3 min"
 
 #: plugins/rdp/rdp_plugin.c:3106 plugins/rdp/rdp_plugin.c:3117
+#, fuzzy
 msgid "Every 5 min"
-msgstr ""
+msgstr "Vsakih 5 min"
 
 #: plugins/rdp/rdp_plugin.c:3107 plugins/rdp/rdp_plugin.c:3118
+#, fuzzy
 msgid "Every 10 min"
-msgstr ""
+msgstr "Vsakih 10 min"
 
 #: plugins/rdp/rdp_plugin.c:3114
+#, fuzzy
 msgid "Every 30 sec"
-msgstr ""
+msgstr "Vsakih 30 s"
 
 #: plugins/rdp/rdp_plugin.c:3124
+#, fuzzy
 msgid "ALT_L + Tab"
-msgstr ""
+msgstr "ALT_L + Tab"
 
 #: plugins/rdp/rdp_plugin.c:3125
+#, fuzzy
 msgid "Win + Tab"
-msgstr ""
+msgstr "Win + Tab"
 
 #: plugins/rdp/rdp_plugin.c:3140
+#, fuzzy
 msgid "0 — Windows 7 compatible"
-msgstr ""
+msgstr "0 — združljivo s sistemom Windows 7"
 
 #: plugins/rdp/rdp_plugin.c:3141
+#, fuzzy
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: plugins/rdp/rdp_plugin.c:3142
+#, fuzzy
 msgid "2"
-msgstr ""
+msgstr "2"
 
 #: plugins/rdp/rdp_plugin.c:3143
+#, fuzzy
 msgid "3"
-msgstr ""
+msgstr "3"
 
 #: plugins/rdp/rdp_plugin.c:3144
+#, fuzzy
 msgid "4"
-msgstr ""
+msgstr "4"
 
 #: plugins/rdp/rdp_plugin.c:3145
+#, fuzzy
 msgid "5"
-msgstr ""
+msgstr "5"
 
 #: plugins/rdp/rdp_plugin.c:3150
 #, fuzzy
@@ -3597,8 +3685,9 @@ msgid "Enable multi monitor"
 msgstr "Omogočite več monitorjev"
 
 #: plugins/rdp/rdp_plugin.c:3248
+#, fuzzy
 msgid "Force multi monitor when toggled"
-msgstr ""
+msgstr "Vsili več monitorjev ob preklopu"
 
 #: plugins/rdp/rdp_plugin.c:3249
 #, fuzzy
@@ -3822,8 +3911,9 @@ msgid "Keys combination"
 msgstr "Usmeritev namizja"
 
 #: plugins/rdp/rdp_plugin.c:3305
+#, fuzzy
 msgid "Attempt to connect in assistance mode"
-msgstr ""
+msgstr "Poskusi se povezati v načinu pomoči"
 
 #: plugins/rdp/rdp_plugin.c:3306
 #, fuzzy
@@ -3934,12 +4024,14 @@ msgid "Enable Gateway websockets support"
 msgstr "Omogočite podporo za spletne vtičnice Gateway"
 
 #: plugins/rdp/rdp_plugin.c:3333
+#, fuzzy
 msgid "Update framebuffer even when not visible"
-msgstr ""
+msgstr "Posodobi pomnilnik sličic, tudi ko ni viden"
 
 #: plugins/rdp/rdp_plugin.c:3334
+#, fuzzy
 msgid "Allow sending empty password"
-msgstr ""
+msgstr "Dovoli pošiljanje praznega gesla"
 
 #: plugins/rdp/rdp_plugin.c:3360
 msgid "RDP - Remote Desktop Protocol"
@@ -4133,8 +4225,9 @@ msgid "Asynchronous execution"
 msgstr "Asinhrono izvajanje"
 
 #: plugins/exec/exec_plugin.c:309
+#, fuzzy
 msgid "Kill process on disconnect"
-msgstr ""
+msgstr "Končaj proces ob prekinitvi povezave"
 
 #: plugins/gvnc/gvnc_plugin_config.h:40
 #, fuzzy
@@ -4446,9 +4539,9 @@ msgid "Connected to %s:%d via VNC"
 msgstr "Povezan na %s:%d prek VNC"
 
 #: plugins/vnc/vnc_plugin.c:1795
-#, c-format
+#, c-format, fuzzy
 msgid "Disconnected from %s:%d via VNC"
-msgstr ""
+msgstr "Povezava z %s:%d prek VNC je prekinjena"
 
 #: plugins/vnc/vnc_plugin.c:2092
 #, fuzzy
@@ -4488,6 +4581,7 @@ msgstr ""
 "    x11vnc -display :0 -connect 192.168.1.36:8888"
 
 #: plugins/vnc/vnc_plugin.c:2109
+#, fuzzy
 msgid ""
 "Lock the aspect ratio when dynamic resolution is enabled:\n"
 "\n"
@@ -4495,8 +4589,13 @@ msgid ""
 "  • 16:9 corresponds roughly to 1.7777, 4:3 corresponds roughly to 1.333\n"
 "  • The default value of 0 does not enforce any aspect ratio"
 msgstr ""
+"Zakleni razmerje stranic, ko je omogočena dinamična ločljivost: • Razmerje "
+"stranic je treba vnesti kot decimalno število, npr. 1.777 • 16:9 ustreza "
+"približno 1.7777, 4:3 ustreza približno 1.333 • Privzeta vrednost 0 ne "
+"uveljavlja nobenega razmerja stranic"
 
 #: plugins/vnc/vnc_plugin.c:2116
+#, fuzzy
 msgid ""
 "Overriding the pre-set VNC encoding quality:\n"
 "\n"
@@ -4508,6 +4607,12 @@ msgid ""
 "  • “Best (slowest)” sets encoding to “copyrect zrle ultra zlib hextile "
 "corre rre raw”"
 msgstr ""
+"Prepisovanje vnaprej nastavljene kakovosti kodiranja VNC: • „Slaba "
+"(najhitrejša)“ nastavi kodiranje na „copyrect zlib hextile raw“ • „Srednja“ "
+"nastavi kodiranje na „tight zrle ultra copyrect hextile zlib corre rre raw“ "
+"• „Dobra“ nastavi kodiranje na „tight zrle ultra copyrect hextile zlib corre "
+"rre raw“ • „Najboljša (najpočasnejša)“ nastavi kodiranje na „copyrect zrle "
+"ultra zlib hextile corre rre raw“"
 
 #: plugins/vnc/vnc_plugin.c:2125
 msgid ""
@@ -4525,8 +4630,9 @@ msgid "Listen on port"
 msgstr "Poslušaj na vratih"
 
 #: plugins/vnc/vnc_plugin.c:2181
+#, fuzzy
 msgid "Override pre-set VNC encodings"
-msgstr ""
+msgstr "Prepiši vnaprej nastavljena kodiranja VNC"
 
 #: plugins/vnc/vnc_plugin.c:2182
 msgid "Dynamic resolution enforced aspect ratio"
@@ -4537,12 +4643,14 @@ msgid "TCP_USER_TIMEOUT length (seconds)"
 msgstr ""
 
 #: plugins/vnc/vnc_plugin.c:2186
+#, fuzzy
 msgid "Force tight encoding"
-msgstr ""
+msgstr "Vsili kodiranje tight"
 
 #: plugins/vnc/vnc_plugin.c:2186
+#, fuzzy
 msgid "Enabling this may help when the remote desktop looks scrambled"
-msgstr ""
+msgstr "Omogočanje tega lahko pomaga, če je oddaljeno namizje videti popačeno"
 
 #: plugins/vnc/vnc_plugin.c:2190 plugins/vnc/vnc_plugin.c:2205
 #, fuzzy
@@ -4596,8 +4704,9 @@ msgid "Choose a new key"
 msgstr "Izberite nov ključ"
 
 #: data/ui/remmina_key_chooser.glade:84 data/ui/remmina_key_chooser.glade:88
+#, fuzzy
 msgid "Allow key modifiers"
-msgstr ""
+msgstr "Dovoli spremenilne tipke"
 
 #: data/ui/remmina_key_chooser.glade:121
 #, fuzzy
@@ -4843,8 +4952,9 @@ msgid "Clear"
 msgstr "Počisti"
 
 #: data/ui/remmina_preferences.glade:465
+#, fuzzy
 msgid "Confirm before closing multiple tabs"
-msgstr ""
+msgstr "Potrdi pred zapiranjem več zavihkov"
 
 #: data/ui/remmina_preferences.glade:497
 #, fuzzy
@@ -4861,8 +4971,9 @@ msgstr ""
 "site\">remmina.org</a> (*)"
 
 #: data/ui/remmina_preferences.glade:562
+#, fuzzy
 msgid "Disable tip of the day"
-msgstr ""
+msgstr "Onemogoči nasvet dneva"
 
 #: data/ui/remmina_preferences.glade:614
 #, fuzzy
@@ -4982,8 +5093,9 @@ msgid "Always show notes"
 msgstr "Vedno prikaži zavihke"
 
 #: data/ui/remmina_preferences.glade:853
+#, fuzzy
 msgid "Add a column displaying any notes associated with a connection."
-msgstr ""
+msgstr "Dodaj stolpec, ki prikazuje morebitne opombe, povezane s povezavo."
 
 #: data/ui/remmina_preferences.glade:866
 msgid "Display message prompts on the left side of the screen"
@@ -5095,8 +5207,9 @@ msgid "Send clipboard as keystrokes"
 msgstr "Pošiljanje vsebine odložišča kot pritiskov tipk"
 
 #: data/ui/remmina_preferences.glade:1581
+#, fuzzy
 msgid "Send-clipboard"
-msgstr ""
+msgstr "Pošlji odložišče"
 
 #: data/ui/remmina_preferences.glade:1611
 #, fuzzy
@@ -5179,14 +5292,20 @@ msgid "SSH options"
 msgstr "Možnosti SSH"
 
 #: data/ui/remmina_preferences.glade:1873
+#, fuzzy
 msgid ""
 "Time in seconds before Remmina will lock the session and asks for a password "
 "again. Default: 300 Seconds."
 msgstr ""
+"Čas v sekundah, preden bo Remmina zaklenila sejo in znova zahtevala geslo. "
+"Privzeto: 300 sekund."
 
 #: data/ui/remmina_preferences.glade:1885
+#, fuzzy
 msgid "Set and use a secret key to protect Remmina from unauthorized use."
 msgstr ""
+"Nastavite in uporabite tajni ključ za zaščito Remmine pred nepooblaščeno "
+"uporabo."
 
 #: data/ui/remmina_preferences.glade:1890
 #, fuzzy
@@ -5198,16 +5317,19 @@ msgid "Use secret key authentication for some widgets"
 msgstr "Za nekatere dodatke uporabi preverjanje pristnosti s skrivnim ključem"
 
 #: data/ui/remmina_preferences.glade:1921
+#, fuzzy
 msgid "Valid for"
-msgstr ""
+msgstr "Veljavno"
 
 #: data/ui/remmina_preferences.glade:1932
+#, fuzzy
 msgid "Number of seconds to keep password valid for"
-msgstr ""
+msgstr "Število sekund, v katerih ostane geslo veljavno"
 
 #: data/ui/remmina_preferences.glade:1937
+#, fuzzy
 msgid "timeout in seconds (default 300)"
-msgstr ""
+msgstr "časovna omejitev v sekundah (privzeto 300)"
 
 #: data/ui/remmina_preferences.glade:1949
 #, fuzzy
@@ -5223,13 +5345,15 @@ msgid "Require to connect"
 msgstr "%s geslo"
 
 #: data/ui/remmina_preferences.glade:1964
+#, fuzzy
 msgid "Creation, editing, copying, and deletions require the Remmina password"
-msgstr ""
+msgstr "Ustvarjanje, urejanje, kopiranje in brisanje zahtevajo geslo za Remmino"
 
 #. Creation, editing, copying, and deletions require the primary password
 #: data/ui/remmina_preferences.glade:1968
+#, fuzzy
 msgid "Require to modify"
-msgstr ""
+msgstr "Zahtevaj za spreminjanje"
 
 #: data/ui/remmina_preferences.glade:1979
 #, fuzzy
@@ -5251,6 +5375,7 @@ msgid "Encryption"
 msgstr "Opis"
 
 #: data/ui/remmina_preferences.glade:2050
+#, fuzzy
 msgid ""
 "These are the encryption methods used by Remmina to store passwords.\n"
 "\n"
@@ -5260,18 +5385,26 @@ msgid ""
 "\"Intermediate\" doesn't use as much memory or processing power, and "
 "\"Sensitive\" is more secure, but uses +1 GiB of RAM and many CPU cycles. "
 msgstr ""
+"To so metode šifriranja, ki jih Remmina uporablja za shranjevanje gesel. "
+"Razen metode \"Šibka\" so priporočljive vse ostale, \"Zbirka ključev\" pa je "
+"privzeta, saj se integrira s KDE/Plasma in GNOME. \"Vmesna\" ne porabi "
+"toliko pomnilnika ali procesorske moči, \"Občutljiva\" pa je bolj varna, "
+"vendar porabi +1 GiB RAM-a in veliko procesorskih ciklov. "
 
 #: data/ui/remmina_preferences.glade:2059
+#, fuzzy
 msgid "Intermediate (+64 MiB RAM)"
-msgstr ""
+msgstr "Vmesna (+64 MiB RAM)"
 
 #: data/ui/remmina_preferences.glade:2060
+#, fuzzy
 msgid "Strong (+256 MiB, ~2009 CPU)"
-msgstr ""
+msgstr "Močna (+256 MiB, ~2009 procesor)"
 
 #: data/ui/remmina_preferences.glade:2061
+#, fuzzy
 msgid "Sensitive (+1 GiB, ~2014 CPU)"
-msgstr ""
+msgstr "Občutljiva (+1 GiB, ~2014 procesor)"
 
 #: data/ui/remmina_preferences.glade:2077
 #, fuzzy
@@ -5335,8 +5468,9 @@ msgstr ""
 "palete (poleg tega, da besedilo postane krepko)."
 
 #: data/ui/remmina_preferences.glade:2336
+#, fuzzy
 msgid "Show bold text in bright colors"
-msgstr ""
+msgstr "Prikaži krepko besedilo v svetlih barvah"
 
 #: data/ui/remmina_preferences.glade:2350
 msgid "Colour theme"
@@ -5521,32 +5655,38 @@ msgid "Remmina Preferences"
 msgstr "Prednostne nastavitve programa Remmina"
 
 #: data/ui/remmina_bug_report.glade:43
+#, fuzzy
 msgid "Include System Info"
-msgstr ""
+msgstr "Vključi podatke o sistemu"
 
 #: data/ui/remmina_bug_report.glade:59
+#, fuzzy
 msgid "Include Debug Data"
-msgstr ""
+msgstr "Vključi podatke za iskanje napak"
 
 #: data/ui/remmina_bug_report.glade:75
+#, fuzzy
 msgid "Submit"
-msgstr ""
+msgstr "Pošlji"
 
 #: data/ui/remmina_bug_report.glade:114
 msgid "Name/Username:"
 msgstr "Ime/Uporabniško ime:"
 
 #: data/ui/remmina_bug_report.glade:141
+#, fuzzy
 msgid "E-mail:"
-msgstr ""
+msgstr "E-pošta:"
 
 #: data/ui/remmina_bug_report.glade:154
+#, fuzzy
 msgid "Email"
-msgstr ""
+msgstr "E-pošta"
 
 #: data/ui/remmina_bug_report.glade:173 data/ui/remmina_bug_report.glade:188
+#, fuzzy
 msgid "Bug Title"
-msgstr ""
+msgstr "Naslov napake"
 
 #: data/ui/remmina_bug_report.glade:200
 #, fuzzy
@@ -5555,10 +5695,13 @@ msgid "Bug Description"
 msgstr "Opis"
 
 #: data/ui/remmina_bug_report.glade:245
+#, fuzzy
 msgid ""
 "Clicking \"Submit\" will send this to Remmina's GitLab page and "
 "automatically create a new issue on the issue tracker."
 msgstr ""
+"S klikom na \"Pošlji\" boste to poslali na GitLab stran Remmine in samodejno "
+"ustvarili novo zadevo v sledilniku zadev."
 
 #: data/ui/remmina_bug_report.glade:296
 #, fuzzy
@@ -5640,8 +5783,9 @@ msgid "Export"
 msgstr "Izvozi"
 
 #: data/ui/remmina_main.glade:349
+#, fuzzy
 msgid "Report Bug"
-msgstr ""
+msgstr "Prijavi napako"
 
 #: data/ui/remmina_main.glade:366
 msgid "Make Remmina your default remote desktop client"
