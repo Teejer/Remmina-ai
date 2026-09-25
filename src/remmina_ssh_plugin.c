@@ -246,6 +246,16 @@ static RemminaPluginService *remmina_plugin_service = NULL;
 static gboolean
 remmina_plugin_ssh_on_size_allocate(GtkWidget *widget, GtkAllocation *alloc, RemminaProtocolWidget *gp);
 
+static void
+remmina_plugin_ssh_shell_exit(gpointer data)
+{
+	RemminaProtocolWidget *gp = (RemminaProtocolWidget *)data;
+	RemminaPluginSshData *gpdata = GET_PLUGIN_DATA(gp);
+
+	gpdata->shell = NULL;
+	remmina_plugin_service->protocol_plugin_signal_connection_closed(gp);
+}
+
 static gboolean
 valid_color(GdkRGBA const *color)
 {
@@ -302,8 +312,7 @@ remmina_plugin_ssh_main_thread(gpointer data)
 
 		if (remmina_ssh_init_session(REMMINA_SSH(shell)) &&
 		    remmina_ssh_auth(REMMINA_SSH(shell), NULL, gp, remminafile) == REMMINA_SSH_AUTH_SUCCESS &&
-		    remmina_ssh_shell_open(shell, (RemminaSSHExitFunc)
-					   remmina_plugin_service->protocol_plugin_signal_connection_closed, gp))
+		    remmina_ssh_shell_open(shell, remmina_plugin_ssh_shell_exit, gp))
 			cont = TRUE;
 	} else {
 		/* New SSH Shell connection */
@@ -328,8 +337,7 @@ remmina_plugin_ssh_main_thread(gpointer data)
 			switch (ret) {
 			case REMMINA_SSH_AUTH_SUCCESS:
 				REMMINA_DEBUG("Authentication success");
-				if (!remmina_ssh_shell_open(shell, (RemminaSSHExitFunc)
-							    remmina_plugin_service->protocol_plugin_signal_connection_closed, gp)) {
+				if (!remmina_ssh_shell_open(shell, remmina_plugin_ssh_shell_exit, gp)) {
 					remmina_plugin_service->protocol_plugin_set_error(gp, "%s", ssh->error);
 					break;
 				}

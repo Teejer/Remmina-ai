@@ -257,6 +257,7 @@ typedef struct _RemminaSSHShell {
 	RemminaSSHExitFunc	exit_callback;
 	gpointer		user_data;
 	ssh_event		event;
+	guint			exit_idle_source_id;
 } RemminaSSHShell;
 
 /* Create a new SSH Shell session object from RemminaFile */

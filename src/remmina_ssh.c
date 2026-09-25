@@ -2710,6 +2710,7 @@ remmina_ssh_tunnel_main_thread(gpointer data)
 {
 	TRACE_CALL(__func__);
 	RemminaSSHTunnel *tunnel = (RemminaSSHTunnel *)data;
+	gint cancel_state;
 
 	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
 
@@ -2717,10 +2718,13 @@ remmina_ssh_tunnel_main_thread(gpointer data)
 		remmina_ssh_tunnel_main_thread_proc(data);
 		if (tunnel->server_sock < 0 || tunnel->thread == 0 || !tunnel->running) break;
 	}
-	tunnel->thread = 0;
-
-	/* Do after tunnel thread cleanup */
+	/* Do after tunnel thread cleanup. Cancellation must stay disabled until
+	 * the idle source is fully attached, otherwise g_source_attach() can be
+	 * cancelled while holding the main-context lock. */
+	pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &cancel_state);
 	tunnel->destroy_idle_source_id = IDLE_ADD((GSourceFunc)remmina_ssh_notify_tunnel_main_thread_end, (gpointer)tunnel);
+	tunnel->thread = 0;
+	pthread_setcancelstate(cancel_state, NULL);
 
 	return NULL;
 }
@@ -2978,12 +2982,10 @@ remmina_ssh_call_exit_callback_on_main_thread(gpointer data)
 	TRACE_CALL(__func__);
 
 	RemminaSSHShell *shell = (RemminaSSHShell *)data;
+	shell->exit_idle_source_id = 0;
 	if (shell->exit_callback)
 		shell->exit_callback(shell->user_data);
-	if (shell) {
-		remmina_ssh_shell_free(shell);
-		shell = NULL;
-	}
+	remmina_ssh_shell_free(shell);
 	return FALSE;
 }
 
@@ -2997,6 +2999,7 @@ remmina_ssh_shell_thread(gpointer data)
 	remminafile = remmina_protocol_widget_get_file(gp);
 	ssh_channel channel = NULL;
 	gint ret;
+	gint cancel_state;
 	gchar *filename;
 	const gchar *dir;
 	const gchar *sshlogname;
@@ -3166,10 +3169,11 @@ remmina_ssh_shell_thread(gpointer data)
 	ssh_channel_free(channel);
 	UNLOCK_SSH(shell)
 
-	shell->thread = 0;
-
+	pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &cancel_state);
 	if (shell->exit_callback)
-		IDLE_ADD((GSourceFunc)remmina_ssh_call_exit_callback_on_main_thread, (gpointer)shell);
+		shell->exit_idle_source_id = IDLE_ADD((GSourceFunc)remmina_ssh_call_exit_callback_on_main_thread, (gpointer)shell);
+	shell->thread = 0;
+	pthread_setcancelstate(cancel_state, NULL);
 	return NULL;
 }
 
@@ -3232,6 +3236,10 @@ remmina_ssh_shell_free(RemminaSSHShell *shell)
 	if (shell->thread) {
 		pthread_cancel(shell->thread);
 		if (shell->thread) pthread_join(shell->thread, NULL);
+	}
+	if (shell->exit_idle_source_id > 0) {
+		g_source_remove(shell->exit_idle_source_id);
+		shell->exit_idle_source_id = 0;
 	}
 	close(shell->slave);
 	if (shell->exec) {
