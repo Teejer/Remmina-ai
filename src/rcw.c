@@ -3889,6 +3889,53 @@ static void rco_on_close_button_clicked(GtkButton *button, RemminaConnectionObje
 	}
 }
 
+static void rco_on_detach_tab_activate(GtkMenuItem *menuitem, RemminaConnectionObject *cnnobj)
+{
+	RemminaConnectionWindow *newcnnwin;
+	GtkNotebook *old_notebook, *new_notebook;
+	gint current_page_index;
+	GtkWidget *tab_content;
+
+	old_notebook = GTK_NOTEBOOK(cnnobj->cnnwin->priv->notebook);
+	tab_content = nb_find_page_by_cnnobj(old_notebook, cnnobj);
+	if (!tab_content){
+		return;
+	} 
+	current_page_index = gtk_notebook_page_num(old_notebook, tab_content);
+
+	g_object_ref(tab_content);
+	gtk_notebook_remove_page(old_notebook, current_page_index);
+
+	newcnnwin = rcw_create_scrolled(0, 0, FALSE);
+	new_notebook = GTK_NOTEBOOK(newcnnwin->priv->notebook);
+
+	GtkWidget *label = rco_create_tab_label(cnnobj);
+	gtk_notebook_append_page(new_notebook, tab_content, label);
+	gtk_notebook_set_tab_reorderable(new_notebook, tab_content, TRUE);
+	gtk_notebook_set_tab_detachable(new_notebook, tab_content, TRUE);
+	gtk_widget_set_can_focus(gtk_widget_get_parent(label), FALSE);
+	g_object_unref(tab_content);
+
+	cnnobj->cnnwin = newcnnwin;
+	gtk_widget_show_all(GTK_WIDGET(newcnnwin));
+}
+
+static gboolean rco_on_tab_label_button_press(GtkWidget *widget, GdkEventButton *event, RemminaConnectionObject *cnnobj)
+{
+	GtkWidget *menu, *menuitem;
+
+	if (event->type == GDK_BUTTON_PRESS && event->button == GDK_BUTTON_SECONDARY) {
+		menu = gtk_menu_new();
+		menuitem = gtk_menu_item_new_with_label(_("Detach Tab"));
+		g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(rco_on_detach_tab_activate), cnnobj);
+		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+		gtk_widget_show_all(menu);
+		gtk_menu_popup_at_pointer(GTK_MENU(menu), (GdkEvent *)event);
+		return TRUE;
+	}
+	return FALSE;
+}
+
 static GtkWidget *rco_create_tab_label(RemminaConnectionObject *cnnobj)
 {
 	TRACE_CALL(__func__);
@@ -3934,8 +3981,13 @@ static GtkWidget *rco_create_tab_label(RemminaConnectionObject *cnnobj)
 
 	g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(rco_on_close_button_clicked), cnnobj);
 
+	GtkWidget *event_box = gtk_event_box_new();
+	gtk_event_box_set_visible_window(GTK_EVENT_BOX(event_box), FALSE);
+	gtk_container_add(GTK_CONTAINER(event_box), hbox);
+	gtk_widget_show(event_box);
+	g_signal_connect(G_OBJECT(event_box), "button-press-event", G_CALLBACK(rco_on_tab_label_button_press), cnnobj);
 
-	return hbox;
+	return event_box;
 }
 
 static GtkWidget *rco_create_tab_page(RemminaConnectionObject *cnnobj)
@@ -4129,6 +4181,7 @@ rcw_create_notebook(RemminaConnectionWindow *cnnwin)
 	GtkNotebook *notebook;
 
 	notebook = GTK_NOTEBOOK(gtk_notebook_new());
+	gtk_notebook_set_group_name(notebook, "remmina-rcw-group");
 
 	gtk_notebook_set_scrollable(GTK_NOTEBOOK(notebook), TRUE);
 	gtk_widget_show(GTK_WIDGET(notebook));
