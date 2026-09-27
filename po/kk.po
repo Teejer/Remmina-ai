@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: remmina\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-04-21 19:09+0000\n"
+"PO-Revision-Date: 2026-09-27 20:51+0000\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <https://hosted.weblate.org/projects/remmina/remmina/"
 "kk/>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.17.1-dev\n"
+"X-Generator: Weblate 2026.10.dev0\n"
 "X-Launchpad-Export-Date: 2014-04-10 15:03+0000\n"
 
 #: src/remmina_icon.c:143
@@ -4590,13 +4590,15 @@ msgstr "Негізгі терезеде көрсетілетін іздеу та
 
 #: data/ui/remmina_preferences.glade:832
 msgid "Follow system light/dark theme"
-msgstr ""
+msgstr "Жүйелік ашық/қараңғы темасын қолдану"
 
 #: data/ui/remmina_preferences.glade:836
 msgid ""
 "Automatically switch between the light and dark theme to match the desktop "
 "setting, and keep in sync when it changes."
 msgstr ""
+"Жұмыс үстелінің параметрлеріне сәйкес ашық және қараңғы тақырыптар арасында "
+"автоматты түрде ауысып, олар өзгерген кезде синхрондауды сақтау."
 
 #: data/ui/remmina_preferences.glade:850
 msgid "Prefer dark theme"
