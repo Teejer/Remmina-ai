@@ -111,6 +111,11 @@ void rco_destroy_message_panel(RemminaConnectionObject *cnnobj, RemminaMessagePa
 void rco_show_message_panel(RemminaConnectionObject *cnnobj, RemminaMessagePanel *mp);
 void rco_get_monitor_geometry(RemminaConnectionObject *cnnobj, GdkRectangle *sz);
 
+void rcw_set_active_pane(RemminaConnectionWindow *cnnwin, RemminaConnectionObject *cnnobj);
+void rcw_set_active_pane_for_protocol_widget(RemminaProtocolWidget *gp);
+void rcw_split_connection(RemminaProtocolWidget *gp, GtkOrientation orientation);
+void rcw_split_connection_full(RemminaProtocolWidget *gp, GtkOrientation orientation, gpointer user_data);
+
 gint multimon_get_monitor_count(RemminaProtocolWidget *cnnwin);
 gboolean multimon_get_monitor_info(RemminaProtocolWidget *cnnwin, gint index, gboolean*is_primary, gint*x, gint*y, gint*width, gint*height, gint*phys_width_mm, gint* phys_height_mm);
 void multimon_set_monitor_drawing_area(RemminaProtocolWidget *proto, gint index, GtkWidget*drawing_area);

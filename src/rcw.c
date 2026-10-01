@@ -185,6 +185,7 @@ typedef struct _RemminaConnectionObject {
 	GtkWidget *			viewport;
 
 	GtkWidget *			scrolled_container;
+	GtkWidget *			tab_page;
 
 	gboolean			plugin_can_scale;
 
@@ -209,6 +210,7 @@ static RemminaConnectionWindow *rcw_create_fullscreen(GtkWindow *old, gint view_
 static gboolean rcw_hostkey_func(RemminaProtocolWidget *gp, guint keyval, gboolean release);
 static GtkWidget *rco_create_tab_page(RemminaConnectionObject *cnnobj);
 static GtkWidget *rco_create_tab_label(RemminaConnectionObject *cnnobj);
+static GtkWidget *nb_find_page_by_cnnobj(GtkNotebook *notebook, RemminaConnectionObject *cnnobj);
 static void rco_change_scalemode(RemminaConnectionObject *cnnobj, gboolean bdyn, gboolean bscale);
 
 void rcw_grab_focus(RemminaConnectionWindow *cnnwin);
@@ -287,6 +289,9 @@ static void rcw_class_init(RemminaConnectionWindowClass *klass)
 					"}\n"
 					"#remmina-tab-page {\n"
 					"  background-color: black;\n"
+					"}\n"
+					".remmina-active-terminal-pane {\n"
+					"  border: 1px solid #3584e4;\n"
 					"}\n"
 					"#remmina-scrolled-container {\n"
 					"}\n"
@@ -397,11 +402,60 @@ static void rcw_class_init(RemminaConnectionWindowClass *klass)
 static RemminaConnectionObject *rcw_get_cnnobj_at_page(RemminaConnectionWindow *cnnwin, gint npage)
 {
 	GtkWidget *po;
+	RemminaConnectionObject *active_cnn;
 
 	if (!cnnwin->priv->notebook)
 		return NULL;
 	po = gtk_notebook_get_nth_page(GTK_NOTEBOOK(cnnwin->priv->notebook), npage);
+	if (!po)
+		return NULL;
+	active_cnn = g_object_get_data(G_OBJECT(po), "active-cnnobj");
+	if (active_cnn){
+		return active_cnn;
+	}
 	return g_object_get_data(G_OBJECT(po), "cnnobj");
+}
+
+void rcw_set_active_pane(RemminaConnectionWindow *cnnwin, RemminaConnectionObject *cnnobj)
+{
+	TRACE_CALL(__func__);
+	if (!cnnwin || !cnnobj)
+		return;
+
+	GtkWidget *page = cnnobj->tab_page ? cnnobj->tab_page : (cnnwin->priv && cnnwin->priv->notebook ? nb_find_page_by_cnnobj(cnnwin->priv->notebook, cnnobj) : NULL);
+	if (!page)
+		return;
+
+	RemminaConnectionObject *prev_active = g_object_get_data(G_OBJECT(page), "active-cnnobj");
+	if (prev_active == cnnobj)
+		return;
+
+	g_object_set_data(G_OBJECT(page), "active-cnnobj", cnnobj);
+
+	// Update CSS highlight 
+	GList *list = g_object_get_data(G_OBJECT(page), "cnnobj-list");
+	guint len = g_list_length(list);
+	for (GList *l = list; l != NULL; l = l->next) {
+		RemminaConnectionObject *co = (RemminaConnectionObject *)l->data;
+		if (co && co->scrolled_container) {
+			GtkStyleContext *ctx = gtk_widget_get_style_context(co->scrolled_container);
+			if (co == cnnobj && len > 1) {
+				gtk_style_context_add_class(ctx, "remmina-active-terminal-pane");
+			} else {
+				gtk_style_context_remove_class(ctx, "remmina-active-terminal-pane");
+			}
+		}
+	}
+
+	//Update toolbar for the newly active pane 
+	rco_update_toolbar(cnnobj);
+}
+
+void rcw_set_active_pane_for_protocol_widget(RemminaProtocolWidget *gp)
+{
+	if (gp && gp->cnnobj && gp->cnnobj->cnnwin) {
+		rcw_set_active_pane(gp->cnnobj->cnnwin, gp->cnnobj);
+	}
 }
 
 static RemminaConnectionObject *rcw_get_visible_cnnobj(RemminaConnectionWindow *cnnwin)
@@ -684,9 +738,22 @@ static void rcw_close_all_connections(RemminaConnectionWindow *cnnwin)
 		n = gtk_notebook_get_n_pages(notebook);
 		for (i = n - 1; i >= 0; i--) {
 			w = gtk_notebook_get_nth_page(notebook, i);
-			cnnobj = (RemminaConnectionObject *)g_object_get_data(G_OBJECT(w), "cnnobj");
-			/* Do close the connection on this tab */
-			remmina_protocol_widget_close_connection(REMMINA_PROTOCOL_WIDGET(cnnobj->proto));
+			GList *list = g_object_get_data(G_OBJECT(w), "cnnobj-list");
+			if (list) {
+				GList *copy = g_list_copy(list);
+				for (GList *l = copy; l != NULL; l = l->next) {
+					RemminaConnectionObject *co = (RemminaConnectionObject *)l->data;
+					if (co && co->proto){
+						remmina_protocol_widget_close_connection(REMMINA_PROTOCOL_WIDGET(co->proto));
+					}
+				}
+				g_list_free(copy);
+			} else {
+				cnnobj = (RemminaConnectionObject *)g_object_get_data(G_OBJECT(w), "cnnobj");
+				if (cnnobj && cnnobj->proto){
+					remmina_protocol_widget_close_connection(REMMINA_PROTOCOL_WIDGET(cnnobj->proto));
+				}
+			}
 		}
 	}
 }
@@ -697,6 +764,7 @@ gboolean rcw_delete(RemminaConnectionWindow *cnnwin)
 	RemminaConnectionWindowPriv *priv = cnnwin->priv;
 	GtkNotebook *notebook;
 	GtkWidget *dialog;
+	GtkWidget *w;
 	gint i, n, nopen;
 
 	/* connection already closed */
@@ -713,9 +781,21 @@ gboolean rcw_delete(RemminaConnectionWindow *cnnwin)
 		nopen = 0;
 		/* count all non-closed connections */
 		for(i = 0; i < n; i ++) {
-			RemminaConnectionObject *cnnobj = rcw_get_cnnobj_at_page(cnnwin, i);
-			if (!remmina_protocol_widget_is_closed((RemminaProtocolWidget *)cnnobj->proto))
-				nopen ++;
+			w = gtk_notebook_get_nth_page(notebook, i);
+			GList *list = g_object_get_data(G_OBJECT(w), "cnnobj-list");
+			if (list) {
+				for (GList *l = list; l != NULL; l = l->next) {
+					RemminaConnectionObject *co = (RemminaConnectionObject *)l->data;
+					if (co && co->proto && !remmina_protocol_widget_is_closed((RemminaProtocolWidget *)co->proto)){
+						nopen ++;
+					}
+				}
+			} else {
+				RemminaConnectionObject *cnnobj = rcw_get_cnnobj_at_page(cnnwin, i);
+				if (cnnobj && cnnobj->proto && !remmina_protocol_widget_is_closed((RemminaProtocolWidget *)cnnobj->proto)){
+					nopen ++;
+				}
+			}
 		}
 		if (nopen > 1) {
 			dialog = gtk_message_dialog_new(GTK_WINDOW(cnnwin), GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION,
@@ -3278,6 +3358,7 @@ static gboolean rco_enter_protocol_widget(GtkWidget *widget, GdkEventCrossing *e
 		return FALSE;
 	}
 	rcw_keyboard_grab_request(cnnobj, event->mode != GDK_CROSSING_UNGRAB);
+	rcw_set_active_pane(cnnobj->cnnwin, cnnobj);
 
 	return FALSE;
 }
@@ -3827,11 +3908,19 @@ static GtkWidget *nb_find_page_by_cnnobj(GtkNotebook *notebook, RemminaConnectio
 
 	if (cnnobj == NULL || cnnobj->cnnwin == NULL || cnnobj->cnnwin->priv == NULL)
 		return NULL;
+	if (cnnobj->tab_page && GTK_IS_WIDGET(cnnobj->tab_page)){
+		return cnnobj->tab_page;
+	}
 	found_page = NULL;
 	np = gtk_notebook_get_n_pages(cnnobj->cnnwin->priv->notebook);
 	for (i = 0; i < np; i++) {
 		pg = gtk_notebook_get_nth_page(cnnobj->cnnwin->priv->notebook, i);
 		if (g_object_get_data(G_OBJECT(pg), "cnnobj") == cnnobj) {
+			found_page = pg;
+			break;
+		}
+		GList *list = g_object_get_data(G_OBJECT(pg), "cnnobj-list");
+		if (g_list_find(list, cnnobj)) {
 			found_page = pg;
 			break;
 		}
@@ -3861,15 +3950,63 @@ static void rco_closewin(RemminaProtocolWidget *gp)
 	if (cnnobj && cnnobj->cnnwin) {
 		page_to_remove = nb_find_page_by_cnnobj(cnnobj->cnnwin->priv->notebook, cnnobj);
 		if (page_to_remove) {
-			gtk_notebook_remove_page(
-				cnnobj->cnnwin->priv->notebook,
-				gtk_notebook_page_num(cnnobj->cnnwin->priv->notebook, page_to_remove));
-			/* Invalidate pointers to objects destroyed by page removal */
-			cnnobj->aspectframe = NULL;
-			cnnobj->viewport = NULL;
-			cnnobj->scrolled_container = NULL;
-			/* we cannot invalidate cnnobj->proto, because it can be already been
-			 * detached from the widget hierarchy in rco_on_disconnect() */
+			GtkWidget *parent = cnnobj->scrolled_container ? gtk_widget_get_parent(cnnobj->scrolled_container) : NULL;
+			GList *list = g_object_get_data(G_OBJECT(page_to_remove), "cnnobj-list");
+			list = g_list_remove(list, cnnobj);
+			g_object_set_data(G_OBJECT(page_to_remove), "cnnobj-list", list);
+
+			if (parent && GTK_IS_PANED(parent)) {
+				// This connection is inside a split pane. Collapse the paned and promote sibling 
+				GtkWidget *child1 = gtk_paned_get_child1(GTK_PANED(parent));
+				GtkWidget *child2 = gtk_paned_get_child2(GTK_PANED(parent));
+				GtkWidget *sibling = (child1 == cnnobj->scrolled_container) ? child2 : child1;
+				GtkWidget *grandparent = gtk_widget_get_parent(parent);
+
+				if (sibling) {
+					g_object_ref(sibling);
+					if (child1) gtk_container_remove(GTK_CONTAINER(parent), child1);
+					if (child2) gtk_container_remove(GTK_CONTAINER(parent), child2);
+
+					if (grandparent && GTK_IS_BOX(grandparent)) {
+						gtk_container_remove(GTK_CONTAINER(grandparent), parent);
+						gtk_box_pack_start(GTK_BOX(grandparent), sibling, TRUE, TRUE, 0);
+					} else if (grandparent && GTK_IS_PANED(grandparent)) {
+						if (gtk_paned_get_child1(GTK_PANED(grandparent)) == parent) {
+							gtk_container_remove(GTK_CONTAINER(grandparent), parent);
+							gtk_paned_pack1(GTK_PANED(grandparent), sibling, TRUE, FALSE);
+						} else {
+							gtk_container_remove(GTK_CONTAINER(grandparent), parent);
+							gtk_paned_pack2(GTK_PANED(grandparent), sibling, TRUE, FALSE);
+						}
+					}
+					g_object_unref(sibling);
+				}
+
+				cnnobj->aspectframe = NULL;
+				cnnobj->viewport = NULL;
+				cnnobj->scrolled_container = NULL;
+
+				if (g_object_get_data(G_OBJECT(page_to_remove), "active-cnnobj") == cnnobj) {
+					RemminaConnectionObject *next_active = list ? (RemminaConnectionObject *)list->data : NULL;
+					rcw_set_active_pane(cnnobj->cnnwin, next_active);
+				} else {
+					if (g_list_length(list) <= 1 && list) {
+						RemminaConnectionObject *rem = (RemminaConnectionObject *)list->data;
+						if (rem && rem->scrolled_container) {
+							GtkStyleContext *ctx = gtk_widget_get_style_context(rem->scrolled_container);
+							gtk_style_context_remove_class(ctx, "remmina-active-terminal-pane");
+						}
+					}
+				}
+			} else {
+				// Last pane in tab, remove notebook page
+				gtk_notebook_remove_page(
+					cnnobj->cnnwin->priv->notebook,
+					gtk_notebook_page_num(cnnobj->cnnwin->priv->notebook, page_to_remove));
+				cnnobj->aspectframe = NULL;
+				cnnobj->viewport = NULL;
+				cnnobj->scrolled_container = NULL;
+			}
 		}
 	}
 	if (cnnobj) {
@@ -3884,6 +4021,24 @@ static void rco_closewin(RemminaProtocolWidget *gp)
 static void rco_on_close_button_clicked(GtkButton *button, RemminaConnectionObject *cnnobj)
 {
 	TRACE_CALL(__func__);
+	GtkWidget *page = cnnobj->tab_page ? cnnobj->tab_page : (cnnobj->cnnwin && cnnobj->cnnwin->priv ? nb_find_page_by_cnnobj(cnnobj->cnnwin->priv->notebook, cnnobj) : NULL);
+	if (page) {
+		GList *list = g_object_get_data(G_OBJECT(page), "cnnobj-list");
+		if (list && g_list_length(list) > 1) {
+			GList *copy = g_list_copy(list);
+			for (GList *l = copy; l != NULL; l = l->next) {
+				RemminaConnectionObject *co = (RemminaConnectionObject *)l->data;
+				if (co && REMMINA_IS_PROTOCOL_WIDGET(co->proto)) {
+					if (!remmina_protocol_widget_is_closed((RemminaProtocolWidget *)co->proto))
+						remmina_protocol_widget_close_connection(REMMINA_PROTOCOL_WIDGET(co->proto));
+					else
+						rco_closewin((RemminaProtocolWidget *)co->proto);
+				}
+			}
+			g_list_free(copy);
+			return;
+		}
+	}
 	if (REMMINA_IS_PROTOCOL_WIDGET(cnnobj->proto)) {
 		if (!remmina_protocol_widget_is_closed((RemminaProtocolWidget *)cnnobj->proto))
 			remmina_protocol_widget_close_connection(REMMINA_PROTOCOL_WIDGET(cnnobj->proto));
@@ -4017,6 +4172,7 @@ static GtkWidget *rcw_append_new_page(RemminaConnectionWindow *cnnwin, RemminaCo
 	label = rco_create_tab_label(cnnobj);
 
 	cnnobj->cnnwin = cnnwin;
+	cnnobj->tab_page = page;
 
 	gtk_notebook_append_page(notebook, page, label);
 	gtk_notebook_set_tab_reorderable(notebook, page, TRUE);
@@ -4027,6 +4183,10 @@ static GtkWidget *rcw_append_new_page(RemminaConnectionWindow *cnnwin, RemminaCo
 	if (gtk_widget_get_parent(cnnobj->scrolled_container) != NULL)
 		printf("REMMINA WARNING in %s: scrolled_container already has a parent\n", __func__);
 	gtk_box_pack_start(GTK_BOX(page), cnnobj->scrolled_container, TRUE, TRUE, 0);
+
+	GList *list = g_list_append(NULL, cnnobj);
+	g_object_set_data(G_OBJECT(page), "cnnobj-list", list);
+	g_object_set_data(G_OBJECT(page), "active-cnnobj", cnnobj);
 
 	gtk_widget_show(page);
 
@@ -4091,7 +4251,9 @@ static void rcw_on_switch_page(GtkNotebook *notebook, GtkWidget *newpage, guint 
 	RemminaConnectionWindowPriv *priv = cnnwin->priv;
 	RemminaConnectionObject *cnnobj_newpage;
 
-	cnnobj_newpage = g_object_get_data(G_OBJECT(newpage), "cnnobj");
+	cnnobj_newpage = g_object_get_data(G_OBJECT(newpage), "active-cnnobj");
+	if (!cnnobj_newpage)
+		cnnobj_newpage = g_object_get_data(G_OBJECT(newpage), "cnnobj");
 	if (priv->spf_eventsourceid)
 		g_source_remove(priv->spf_eventsourceid);
 	priv->spf_eventsourceid = g_idle_add(rcw_on_switch_page_finalsel, cnnobj_newpage);
@@ -5198,6 +5360,155 @@ GtkWidget *rcw_open_from_file_full(RemminaFile *remminafile, GCallback disconnec
 	cnnobj->deferred_open_size_allocate_handler = g_signal_connect(G_OBJECT(cnnobj->proto), "size-allocate", G_CALLBACK(rpw_size_allocated_on_connection), NULL);
 
 	return cnnobj->proto;
+}
+
+static void on_paned_initial_size_allocate(GtkWidget *widget, GdkRectangle *allocation, gpointer user_data)
+{
+	GtkOrientation orient = GPOINTER_TO_INT(user_data);
+	gint size = (orient == GTK_ORIENTATION_VERTICAL) ? allocation->height : allocation->width;
+	if (size > 0) {
+		gtk_paned_set_position(GTK_PANED(widget), size / 2);
+	}
+	g_signal_handlers_disconnect_by_func(widget, on_paned_initial_size_allocate, user_data);
+}
+
+void rcw_split_connection_full(RemminaProtocolWidget *gp, GtkOrientation orientation, gpointer user_data)
+{
+	TRACE_CALL(__func__);
+	RemminaConnectionObject *source_cnnobj;
+	RemminaConnectionObject *new_cnnobj;
+	RemminaConnectionWindow *cnnwin;
+	GtkWidget *page;
+	GtkWidget *source_widget;
+	GtkWidget *parent;
+	GtkWidget *paned;
+	GtkAllocation alloc;
+	gint pos;
+	RemminaScaleMode scalemode;
+	gint view_mode;
+
+	if (!gp || !gp->cnnobj)
+		return;
+
+	source_cnnobj = gp->cnnobj;
+	cnnwin = source_cnnobj->cnnwin;
+	if (!cnnwin || !cnnwin->priv || !cnnwin->priv->notebook)
+		return;
+
+	page = source_cnnobj->tab_page ? source_cnnobj->tab_page : nb_find_page_by_cnnobj(cnnwin->priv->notebook, source_cnnobj);
+	if (!page)
+		return;
+
+	source_widget = source_cnnobj->scrolled_container;
+	if (!source_widget)
+		return;
+
+	parent = gtk_widget_get_parent(source_widget);
+	if (!parent)
+		return;
+
+	new_cnnobj = g_new0(RemminaConnectionObject, 1);
+	new_cnnobj->cnnwin = cnnwin;
+	new_cnnobj->tab_page = page;
+	new_cnnobj->remmina_file = remmina_file_dup(source_cnnobj->remmina_file);
+
+	new_cnnobj->proto = remmina_protocol_widget_new();
+	remmina_protocol_widget_setup(REMMINA_PROTOCOL_WIDGET(new_cnnobj->proto), new_cnnobj->remmina_file, new_cnnobj);
+
+	if (remmina_protocol_widget_has_error(REMMINA_PROTOCOL_WIDGET(new_cnnobj->proto))) {
+		REMMINA_WARNING("Failed to setup protocol widget for split connection");
+		g_free(new_cnnobj);
+		return;
+	}
+
+	gtk_widget_set_name(GTK_WIDGET(new_cnnobj->proto), "remmina-protocol-widget");
+	gtk_widget_set_halign(GTK_WIDGET(new_cnnobj->proto), GTK_ALIGN_FILL);
+	gtk_widget_set_valign(GTK_WIDGET(new_cnnobj->proto), GTK_ALIGN_FILL);
+
+	if (user_data)
+		g_object_set_data(G_OBJECT(new_cnnobj->proto), "user-data", user_data);
+
+	/* Viewport */
+	new_cnnobj->viewport = gtk_viewport_new(NULL, NULL);
+	gtk_widget_set_name(new_cnnobj->viewport, "remmina-cw-viewport");
+	gtk_widget_show(new_cnnobj->viewport);
+	gtk_container_set_border_width(GTK_CONTAINER(new_cnnobj->viewport), 0);
+	gtk_viewport_set_shadow_type(GTK_VIEWPORT(new_cnnobj->viewport), GTK_SHADOW_NONE);
+
+	view_mode = SCROLLED_WINDOW_MODE;
+	scalemode = get_current_allowed_scale_mode(new_cnnobj, NULL, NULL);
+	new_cnnobj->scrolled_container = rco_create_scrolled_container(scalemode, view_mode);
+	remmina_protocol_widget_set_current_scale_mode(REMMINA_PROTOCOL_WIDGET(new_cnnobj->proto), scalemode);
+
+	gtk_container_add(GTK_CONTAINER(new_cnnobj->scrolled_container), new_cnnobj->viewport);
+	new_cnnobj->plugin_can_scale = remmina_plugin_manager_query_feature_by_type(
+		REMMINA_PLUGIN_TYPE_PROTOCOL,
+		remmina_file_get_string(new_cnnobj->remmina_file, "protocol"),
+		REMMINA_PROTOCOL_FEATURE_TYPE_SCALE);
+
+	new_cnnobj->aspectframe = NULL;
+	gtk_container_add(GTK_CONTAINER(new_cnnobj->viewport), new_cnnobj->proto);
+
+	paned = gtk_paned_new(orientation);
+	gtk_widget_show(paned);
+
+	// Get current size of source widget to split 50/50 
+	gtk_widget_get_allocation(source_widget, &alloc);
+	pos = (orientation == GTK_ORIENTATION_VERTICAL) ? alloc.height / 2 : alloc.width / 2;
+
+	// Replace source_widget in parent with paned 
+	g_object_ref(source_widget);
+	if (GTK_IS_BOX(parent)) {
+		gtk_container_remove(GTK_CONTAINER(parent), source_widget);
+		gtk_box_pack_start(GTK_BOX(parent), paned, TRUE, TRUE, 0);
+	} else if (GTK_IS_PANED(parent)) {
+		if (gtk_paned_get_child1(GTK_PANED(parent)) == source_widget) {
+			gtk_container_remove(GTK_CONTAINER(parent), source_widget);
+			gtk_paned_pack1(GTK_PANED(parent), paned, TRUE, FALSE);
+		} else {
+			gtk_container_remove(GTK_CONTAINER(parent), source_widget);
+			gtk_paned_pack2(GTK_PANED(parent), paned, TRUE, FALSE);
+		}
+	}
+
+	gtk_paned_pack1(GTK_PANED(paned), source_widget, TRUE, FALSE);
+	g_object_unref(source_widget);
+
+	gtk_paned_pack2(GTK_PANED(paned), new_cnnobj->scrolled_container, TRUE, FALSE);
+	if (pos > 0) {
+		gtk_paned_set_position(GTK_PANED(paned), pos);
+	} else {
+		g_signal_connect(G_OBJECT(paned), "size-allocate", G_CALLBACK(on_paned_initial_size_allocate), GINT_TO_POINTER(orientation));
+	}
+
+	GList *list = g_object_get_data(G_OBJECT(page), "cnnobj-list");
+	if (!list)
+		list = g_list_append(NULL, source_cnnobj);
+	list = g_list_append(list, new_cnnobj);
+	g_object_set_data(G_OBJECT(page), "cnnobj-list", list);
+
+	gtk_widget_show(new_cnnobj->proto);
+	g_signal_connect(G_OBJECT(new_cnnobj->proto), "connect", G_CALLBACK(rco_on_connect), new_cnnobj);
+	g_signal_connect(G_OBJECT(new_cnnobj->proto), "disconnect", G_CALLBACK(rco_on_disconnect), NULL);
+	g_signal_connect(G_OBJECT(new_cnnobj->proto), "desktop-resize", G_CALLBACK(rco_on_desktop_resize), NULL);
+	g_signal_connect(G_OBJECT(new_cnnobj->proto), "update-align", G_CALLBACK(rco_on_update_align), NULL);
+	g_signal_connect(G_OBJECT(new_cnnobj->proto), "lock-dynres", G_CALLBACK(rco_on_lock_dynres), NULL);
+	g_signal_connect(G_OBJECT(new_cnnobj->proto), "unlock-dynres", G_CALLBACK(rco_on_unlock_dynres), NULL);
+	g_signal_connect(G_OBJECT(new_cnnobj->proto), "enter-notify-event", G_CALLBACK(rco_enter_protocol_widget), new_cnnobj);
+	g_signal_connect(G_OBJECT(new_cnnobj->proto), "leave-notify-event", G_CALLBACK(rco_leave_protocol_widget), new_cnnobj);
+
+	gtk_widget_show_all(paned);
+
+	rcw_set_active_pane(cnnwin, new_cnnobj);
+
+	new_cnnobj->deferred_open_size_allocate_handler = g_signal_connect(
+		G_OBJECT(new_cnnobj->proto), "size-allocate",
+		G_CALLBACK(rpw_size_allocated_on_connection), NULL);
+}
+
+void rcw_split_connection(RemminaProtocolWidget *gp, GtkOrientation orientation)
+{
+	rcw_split_connection_full(gp, orientation, NULL);
 }
 
 GtkWindow *rcw_get_gtkwindow(RemminaConnectionObject *cnnobj)
