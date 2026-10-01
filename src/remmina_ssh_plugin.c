@@ -806,16 +806,76 @@ static void remmina_plugin_ssh_call_sftp(GtkMenuItem *menuitem, RemminaProtocolW
 gboolean
 remmina_ssh_plugin_popup_menu(GtkWidget *widget, GdkEvent *event, GtkWidget *menu)
 {
-	if ((event->type == GDK_BUTTON_PRESS) && (((GdkEventButton *)event)->button == 3)) {
+	if (event->type == GDK_BUTTON_PRESS) {
+		RemminaProtocolWidget *gp = REMMINA_PROTOCOL_WIDGET(gtk_widget_get_ancestor(widget, REMMINA_TYPE_PROTOCOL_WIDGET));
+		if (gp) {
+			rcw_set_active_pane_for_protocol_widget(gp);
+		}
+		if (((GdkEventButton *)event)->button == 3) {
 #if GTK_CHECK_VERSION(3, 22, 0)
-		gtk_menu_popup_at_pointer(GTK_MENU(menu), NULL);
+			gtk_menu_popup_at_pointer(GTK_MENU(menu), NULL);
 #else
-		gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL,
-			       ((GdkEventButton *)event)->button, gtk_get_current_event_time());
+			gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL,
+				       ((GdkEventButton *)event)->button, gtk_get_current_event_time());
 #endif
-		return TRUE;
+			return TRUE;
+		}
 	}
 
+	return FALSE;
+}
+
+static void remmina_plugin_ssh_split_h(GtkMenuItem *menuitem, RemminaProtocolWidget *gp)
+{
+	TRACE_CALL(__func__);
+	RemminaPluginSshData *gpdata = GET_PLUGIN_DATA(gp);
+	rcw_split_connection_full(gp, GTK_ORIENTATION_VERTICAL, gpdata ? gpdata->shell : NULL);
+}
+
+static void remmina_plugin_ssh_split_v(GtkMenuItem *menuitem, RemminaProtocolWidget *gp)
+{
+	TRACE_CALL(__func__);
+	RemminaPluginSshData *gpdata = GET_PLUGIN_DATA(gp);
+	rcw_split_connection_full(gp, GTK_ORIENTATION_HORIZONTAL, gpdata ? gpdata->shell : NULL);
+}
+
+static void remmina_plugin_ssh_close_term(GtkMenuItem *menuitem, RemminaProtocolWidget *gp)
+{
+	TRACE_CALL(__func__);
+	if (!remmina_protocol_widget_is_closed(gp))
+		remmina_protocol_widget_close_connection(gp);
+}
+
+static gboolean
+remmina_ssh_plugin_on_key_press(GtkWidget *widget, GdkEventKey *event, RemminaProtocolWidget *gp)
+{
+	guint state = event->state & (GDK_CONTROL_MASK | GDK_SHIFT_MASK | GDK_MOD1_MASK);
+	if (state == (GDK_CONTROL_MASK | GDK_SHIFT_MASK)) {
+		if (event->keyval == GDK_KEY_O || event->keyval == GDK_KEY_o) {
+			RemminaPluginSshData *gpdata = GET_PLUGIN_DATA(gp);
+			rcw_split_connection_full(gp, GTK_ORIENTATION_VERTICAL, gpdata ? gpdata->shell : NULL);
+			return TRUE;
+		}
+		if (event->keyval == GDK_KEY_E || event->keyval == GDK_KEY_e) {
+			RemminaPluginSshData *gpdata = GET_PLUGIN_DATA(gp);
+			rcw_split_connection_full(gp, GTK_ORIENTATION_HORIZONTAL, gpdata ? gpdata->shell : NULL);
+			return TRUE;
+		}
+		if (event->keyval == GDK_KEY_W || event->keyval == GDK_KEY_w) {
+			if (!remmina_protocol_widget_is_closed(gp))
+				remmina_protocol_widget_close_connection(gp);
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
+static gboolean
+remmina_ssh_plugin_on_vte_focus_in(GtkWidget *widget, GdkEventFocus *event, RemminaProtocolWidget *gp)
+{
+	if (gp) {
+		rcw_set_active_pane_for_protocol_widget(gp);
+	}
 	return FALSE;
 }
 
@@ -888,6 +948,23 @@ static void remmina_plugin_ssh_popup_ui(RemminaProtocolWidget *gp)
 			 G_CALLBACK(remmina_plugin_pop_search), gp);
 	g_signal_connect(G_OBJECT(sftp), "activate",
 			 G_CALLBACK(remmina_plugin_ssh_call_sftp), gp);
+
+	GtkWidget *sep = gtk_separator_menu_item_new();
+	GtkWidget *split_h = gtk_menu_item_new_with_label(_("Split horizontally (Ctrl+Shift+O)"));
+	GtkWidget *split_v = gtk_menu_item_new_with_label(_("Split vertically (Ctrl+Shift+E)"));
+	GtkWidget *close_term = gtk_menu_item_new_with_label(_("Close terminal (Ctrl+Shift+W)"));
+
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), sep);
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), split_h);
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), split_v);
+	gtk_menu_shell_append(GTK_MENU_SHELL(menu), close_term);
+
+	g_signal_connect(G_OBJECT(split_h), "activate",
+			 G_CALLBACK(remmina_plugin_ssh_split_h), gp);
+	g_signal_connect(G_OBJECT(split_v), "activate",
+			 G_CALLBACK(remmina_plugin_ssh_split_v), gp);
+	g_signal_connect(G_OBJECT(close_term), "activate",
+			 G_CALLBACK(remmina_plugin_ssh_close_term), gp);
 
 	gtk_widget_show_all(menu);
 }
@@ -1286,6 +1363,9 @@ remmina_plugin_ssh_terminal_init(RemminaProtocolWidget *gp, gboolean is_terminal
 
 	remmina_plugin_service->protocol_plugin_register_hostkey(gp, vte);
 
+	g_signal_connect(G_OBJECT(vte), "key-press-event", G_CALLBACK(remmina_ssh_plugin_on_key_press), gp);
+	g_signal_connect(G_OBJECT(vte), "focus-in-event", G_CALLBACK(remmina_ssh_plugin_on_vte_focus_in), gp);
+
 #if VTE_CHECK_VERSION(0, 28, 0)
 	vadjustment = gtk_scrollable_get_vadjustment(GTK_SCROLLABLE(vte));
 #else
@@ -1485,6 +1565,12 @@ remmina_plugin_ssh_call_feature(RemminaProtocolWidget *gp, const RemminaProtocol
 	case REMMINA_PLUGIN_SSH_FEATURE_TOOL_SEARCH:
 		remmina_plugin_pop_search(NULL, gp);
 		return;
+	case REMMINA_PLUGIN_SSH_FEATURE_TOOL_SPLIT_H:
+		rcw_split_connection_full(gp, GTK_ORIENTATION_VERTICAL, gpdata ? gpdata->shell : NULL);
+		return;
+	case REMMINA_PLUGIN_SSH_FEATURE_TOOL_SPLIT_V:
+		rcw_split_connection_full(gp, GTK_ORIENTATION_HORIZONTAL, gpdata ? gpdata->shell : NULL);
+		return;
 	}
 }
 
@@ -1588,6 +1674,8 @@ static RemminaProtocolFeature remmina_plugin_ssh_features[] =
 	{ REMMINA_PROTOCOL_FEATURE_TYPE_TOOL, REMMINA_PLUGIN_SSH_FEATURE_TOOL_DECREASE_FONT, N_("Decrease font size"),	N_("_Decrease font size"), NULL },
 	{ REMMINA_PROTOCOL_FEATURE_TYPE_TOOL, REMMINA_PLUGIN_SSH_FEATURE_TOOL_SEARCH,	     N_("Find text"),		N_("_Find text"),	   NULL },
 	{ REMMINA_PROTOCOL_FEATURE_TYPE_TOOL, REMMINA_PROTOCOL_FEATURE_TOOL_SFTP,	     N_("Open SFTP transfer…"), "folder-remote",	   NULL },
+	{ REMMINA_PROTOCOL_FEATURE_TYPE_TOOL, REMMINA_PLUGIN_SSH_FEATURE_TOOL_SPLIT_H,      N_("Split horizontally"),  N_("Split _horizontally"), NULL },
+	{ REMMINA_PROTOCOL_FEATURE_TYPE_TOOL, REMMINA_PLUGIN_SSH_FEATURE_TOOL_SPLIT_V,      N_("Split vertically"),    N_("Split _vertically"),   NULL },
 	{ REMMINA_PROTOCOL_FEATURE_TYPE_END,  0,					     NULL,			NULL,			   NULL }
 };
 
