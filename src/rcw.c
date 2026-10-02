@@ -539,6 +539,12 @@ static void rcw_kp_ungrab(RemminaConnectionWindow *cnnwin)
 		g_source_remove(cnnwin->priv->delayed_grab_eventsourceid);
 		cnnwin->priv->delayed_grab_eventsourceid = 0;
 	}
+	if (cnnwin->priv->grab_realize_source_id) {
+		g_source_remove(cnnwin->priv->grab_realize_source_id);
+		cnnwin->priv->grab_realize_source_id = 0;
+	}
+	cnnwin->priv->grab_current_status = FALSE;
+	cnnwin->priv->grab_pending_status = FALSE;
 
 	display = gtk_widget_get_display(GTK_WIDGET(cnnwin));
 #if GTK_CHECK_VERSION(3, 20, 0)
@@ -4010,6 +4016,10 @@ static void rco_closewin(RemminaProtocolWidget *gp)
 		}
 	}
 	if (cnnobj) {
+		if (cnnobj->cnnwin && cnnobj->cnnwin->priv && cnnobj->cnnwin->priv->grab_realize_source_id) {
+			g_source_remove(cnnobj->cnnwin->priv->grab_realize_source_id);
+			cnnobj->cnnwin->priv->grab_realize_source_id = 0;
+		}
 		cnnobj->remmina_file = NULL;
 		g_free(cnnobj);
 		gp->cnnobj = NULL;
@@ -4237,6 +4247,9 @@ static gboolean rcw_on_switch_page_finalsel(gpointer user_data)
 								 rcw_floating_toolbar_hide, cnnobj->cnnwin);
 		rco_update_toolbar(cnnobj);
 		rcw_grab_focus(cnnobj->cnnwin);
+		if (cnnobj->connected) {
+			rcw_keyboard_grab_request(cnnobj, remmina_file_get_int(cnnobj->remmina_file, "keyboard_grab", FALSE));
+		}
 		if (priv->view_mode != SCROLLED_WINDOW_MODE)
 			rco_check_resize(cnnobj);
 	}
@@ -4972,9 +4985,14 @@ static void cb_lasterror_confirmed(void *cbdata, int btn)
 static void rco_on_disconnect(RemminaProtocolWidget *gp, gpointer data)
 {
 	TRACE_CALL(__func__);
+	if (!gp || !gp->cnnobj)
+		return;
 	RemminaConnectionObject *cnnobj = gp->cnnobj;
+	if (!cnnobj->cnnwin || !cnnobj->cnnwin->priv)
+		return;
 	RemminaConnectionWindowPriv *priv = cnnobj->cnnwin->priv;
 	GtkWidget *pparent;
+	gboolean is_visible_tab;
 
 	REMMINA_DEBUG("Disconnect signal received on RemminaProtocolWidget");
 	/* Detach the protocol widget from the notebook now, or we risk that a
@@ -4986,7 +5004,11 @@ static void rco_on_disconnect(RemminaProtocolWidget *gp, gpointer data)
 		gtk_container_remove(GTK_CONTAINER(pparent), cnnobj->proto);
 	}
 
-	rcw_kp_ungrab(cnnobj->cnnwin);
+	is_visible_tab = (rcw_get_visible_cnnobj(cnnobj->cnnwin) == cnnobj);
+
+	if (is_visible_tab) {
+		rcw_kp_ungrab(cnnobj->cnnwin);
+	}
 	
 	cnnobj->connected = FALSE;
 
@@ -4996,10 +5018,11 @@ static void rco_on_disconnect(RemminaProtocolWidget *gp, gpointer data)
 		remmina_file_save(cnnobj->remmina_file);
 	}
 
-	rcw_kp_ungrab(cnnobj->cnnwin);
-	gtk_toggle_tool_button_set_active(
-		GTK_TOGGLE_TOOL_BUTTON(priv->toolitem_grab),
-		FALSE);
+	if (is_visible_tab && priv->toolitem_grab) {
+		gtk_toggle_tool_button_set_active(
+			GTK_TOGGLE_TOOL_BUTTON(priv->toolitem_grab),
+			FALSE);
+	}
 
 	if (remmina_protocol_widget_has_error(gp)) {
 		/* We cannot close window immediately, but we must show a message panel */
