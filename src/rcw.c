@@ -80,7 +80,6 @@
 
 gchar *remmina_pref_file;
 RemminaPref remmina_pref;
-static gboolean should_display = FALSE;
 
 G_DEFINE_TYPE(RemminaConnectionWindow, rcw, GTK_TYPE_WINDOW)
 
@@ -115,6 +114,7 @@ struct _RemminaConnectionWindowPriv {
 	guint						delayed_grab_eventsourceid;
 	guint						grab_retry_eventsourceid;       // timeout
 	guint						ftb_hide_eventsource;           // timeout
+	guint						ftb_show_eventsource;           // timeout
 	guint						tar_eventsource;                // timeout
 	guint						hidetb_eventsource;             // timeout
 	guint						dwp_eventsourceid;              // timeout
@@ -874,6 +874,10 @@ static void rcw_destroy(GtkWidget *widget, gpointer data)
 		g_source_remove(priv->ftb_hide_eventsource);
 		priv->ftb_hide_eventsource = 0;
 	}
+	if (priv->ftb_show_eventsource) {
+		g_source_remove(priv->ftb_show_eventsource);
+		priv->ftb_show_eventsource = 0;
+	}
 	if (priv->tar_eventsource) {
 		g_source_remove(priv->tar_eventsource);
 		priv->tar_eventsource = 0;
@@ -1021,12 +1025,18 @@ static gboolean rcw_floating_toolbar_make_invisible(gpointer data)
 static void rcw_floating_toolbar_show(RemminaConnectionWindow *cnnwin, gboolean show)
 {
 	TRACE_CALL(__func__);
+	if (cnnwin == NULL || cnnwin->priv == NULL)
+		return;
 	RemminaConnectionWindowPriv *priv = cnnwin->priv;
 
 	if (priv->floating_toolbar_widget == NULL)
 		return;
 
 	if (show || priv->pin_down) {
+		if (priv->ftb_show_eventsource) {
+			g_source_remove(priv->ftb_show_eventsource);
+			priv->ftb_show_eventsource = 0;
+		}
 		/* Make the FTB no longer transparent, in case we have an hidden toolbar */
 		rcw_update_toolbar_opacity(cnnwin);
 		/* Remove outstanding hide events, if not yet active */
@@ -3229,19 +3239,23 @@ static void print_crossing_event(GdkEventCrossing *event) {
 }
 #endif
 
-static gboolean toolbar_display(gpointer user_data){
-	RemminaConnectionWindow *cnnwin = (RemminaConnectionWindow*) user_data;
-	if (should_display){
-		rcw_floating_toolbar_show(cnnwin, should_display);
+static gboolean toolbar_display(gpointer user_data)
+{
+	RemminaConnectionWindow *cnnwin = (RemminaConnectionWindow *)user_data;
+	if (cnnwin != NULL && cnnwin->priv != NULL) {
+		cnnwin->priv->ftb_show_eventsource = 0;
+		rcw_floating_toolbar_show(cnnwin, TRUE);
 	}
 	return G_SOURCE_REMOVE;
-
 }
 
 static gboolean rcw_floating_toolbar_on_enter(GtkWidget *widget, GdkEventCrossing *event,
 					      RemminaConnectionWindow *cnnwin)
 {
 	TRACE_CALL(__func__);
+	if (cnnwin == NULL || cnnwin->priv == NULL)
+		return TRUE;
+
 	GtkStyleContext *style_context = gtk_widget_get_style_context(cnnwin->priv->overlay_ftb_fr);
 	GtkBorder margin;
 	gtk_style_context_get_margin(style_context, gtk_style_context_get_state(style_context), &margin);
@@ -3249,15 +3263,16 @@ static gboolean rcw_floating_toolbar_on_enter(GtkWidget *widget, GdkEventCrossin
 		// the toolbar must not pop (the mouse pointer is not over the visible area, but on the left)
 		return TRUE;
 	}
-	if (remmina_pref.fullscreen_toolbar_delay > 0){
-		should_display = TRUE;
-		g_timeout_add(remmina_pref.fullscreen_toolbar_delay * 1000, G_SOURCE_FUNC(toolbar_display), cnnwin);
-	}
-	else{
+	if (remmina_pref.fullscreen_toolbar_delay > 0) {
+		if (cnnwin->priv->ftb_show_eventsource == 0) {
+			cnnwin->priv->ftb_show_eventsource = g_timeout_add(
+				remmina_pref.fullscreen_toolbar_delay * 1000,
+				G_SOURCE_FUNC(toolbar_display),
+				cnnwin);
+		}
+	} else {
 		rcw_floating_toolbar_show(cnnwin, TRUE);
 	}
-
-
 
 	return TRUE;
 }
@@ -3266,9 +3281,16 @@ static gboolean rcw_floating_toolbar_on_leave(GtkWidget *widget, GdkEventCrossin
 					      RemminaConnectionWindow *cnnwin)
 {
 	TRACE_CALL(__func__);
-	if (event->detail != GDK_NOTIFY_INFERIOR){
+	if (cnnwin == NULL || cnnwin->priv == NULL)
+		return TRUE;
+
+	if (cnnwin->priv->ftb_show_eventsource) {
+		g_source_remove(cnnwin->priv->ftb_show_eventsource);
+		cnnwin->priv->ftb_show_eventsource = 0;
+	}
+
+	if (event->detail != GDK_NOTIFY_INFERIOR) {
 		rcw_floating_toolbar_show(cnnwin, FALSE);
-		should_display = FALSE;
 	}
 
 	return TRUE;
@@ -3941,7 +3963,6 @@ static void rco_closewin(RemminaProtocolWidget *gp)
 	TRACE_CALL(__func__);
 	RemminaConnectionObject *cnnobj = gp->cnnobj;
 	GtkWidget *page_to_remove;
-	should_display = FALSE;
 
 	if (!cnnobj || !cnnobj->cnnwin || !G_IS_OBJECT(cnnobj->cnnwin)) {
 	    REMMINA_WARNING("Invalid cnnobj or cnnwin in rco_closewin");
