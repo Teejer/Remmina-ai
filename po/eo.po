@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Remmina package.
 # Allan Nordhøy <epost@anotheragency.no>, 2020, 2021, 2023, 2024.
-# phlostically <phlostically@mailinator.com>, 2021, 2022, 2024.
+# phlostically <phlostically@mailinator.com>, 2021, 2022, 2024, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: Remmina v1.4.3\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2024-09-04 16:09+0000\n"
+"PO-Revision-Date: 2026-10-03 14:51+0000\n"
 "Last-Translator: phlostically <phlostically@mailinator.com>\n"
 "Language-Team: Esperanto <https://hosted.weblate.org/projects/remmina/"
 "remmina/eo/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7.2-rc\n"
+"X-Generator: Weblate 2026.10.1.dev0\n"
 
 #: src/remmina_icon.c:143
 msgid "Enable Service Discovery"
@@ -154,12 +154,12 @@ msgid "<None>"
 msgstr "<Nenio>"
 
 #: src/remmina_exec.c:129
-#, fuzzy
-#| msgid "Are you sure you want to close this last active connection?"
 msgid ""
 "Are you sure you want to fully quit Remmina?\n"
 " This will close any active connections."
-msgstr "Ĉu vi certas, ke vi volas fermi ĉi tiun lastan aktivan konekton?"
+msgstr ""
+"Ĉu vi certas, ke vi volas plene malstartigi Remmina?\n"
+" Tio fermos ĉiujn aktivajn konektojn."
 
 #: src/remmina_exec.c:529
 #, c-format
@@ -212,7 +212,7 @@ msgstr "Fermi"
 
 #: src/remmina_message_panel.c:255
 msgid "Do you accept?"
-msgstr ""
+msgstr "Ĉu vi akceptas?"
 
 #: src/remmina_message_panel.c:261 src/remmina_message_panel.c:270
 msgid "Yes"
@@ -364,10 +364,8 @@ msgid "Kerberos (GSSAPI)"
 msgstr "Kerberos (GSSAPI)"
 
 #: src/remmina_ssh_plugin.c:1501
-#, fuzzy
-#| msgid "Keyboard type (auto)"
 msgid "Keyboard Interactive"
-msgstr "Klavartipo (aŭtomata)"
+msgstr "Interaga klavaro"
 
 #: src/remmina_ssh_plugin.c:1576 data/ui/remmina_main.glade:178
 msgid "Copy"
@@ -438,7 +436,7 @@ msgstr "Pasvorto por malŝlosi privatan ŝlosilon"
 
 #: src/remmina_ssh_plugin.c:1614
 msgid "Opening command"
-msgstr "Starta komando"
+msgstr "Malferma komando"
 
 #: src/remmina_ssh_plugin.c:1615
 msgid "Start-up background program"
@@ -536,21 +534,19 @@ msgstr "Strikta kontrolado de ŝlosilo de gastiganto"
 
 #: src/remmina_ssh_plugin.c:1657
 msgid "Copy text on selection"
-msgstr ""
+msgstr "Kopii tekston post elekto"
 
 #: src/remmina_ssh_plugin.c:1658
 msgid "Allow keys using ssh-rsa (insecure)"
-msgstr ""
+msgstr "Permesi ŝlosilojn uzantajn ssh-rsa (nesekurajn)"
 
 #: src/remmina_ssh_plugin.c:1678
 msgid "SSH - Secure Shell"
 msgstr "SSH - Sekura Ŝelo"
 
 #: src/remmina_ssh_plugin.c:1708
-#, fuzzy
-#| msgid "Terminal"
 msgid "Local Terminal"
-msgstr "Terminalo"
+msgstr "Loka terminalo"
 
 #. TRANSLATORS: This is a message that pops up when an external Remmina plugin tries to set the window resolution using a legacy parameter.
 #. TRANSLATORS: This is a message that pop-up when an external Remmina plugin tries to set the windows resolution using a legacy parameter.
@@ -572,11 +568,9 @@ msgid "Could not authenticate with SSH password. %s"
 msgstr "Ne povis aŭtentikigi per SSH-pasvorto. %s"
 
 #: src/remmina_ssh.c:837 src/remmina_ssh.c:910
-#, fuzzy
-#| msgid "No saved SSH passphrase supplied. Asking user to enter it."
 msgid "No saved SSH password supplied. Asking user to enter it."
 msgstr ""
-"Neniu konservita SSH-pasfrazo estis provizita. Petante uzanton entajpi ĝin."
+"Neniu konservita SSH-pasvorto estis provizita. Petante uzanton entajpi ĝin."
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:842 src/remmina_ssh.c:883 src/remmina_ssh.c:915
@@ -608,11 +602,8 @@ msgid "SSH identity file not selected."
 msgstr "SSH-identiga dosiero ne elektita."
 
 #: src/remmina_ssh.c:890
-#, fuzzy
-#| msgid "No saved SSH passphrase supplied. Asking user to enter it."
 msgid "No username found. Asking user to enter it."
-msgstr ""
-"Neniu konservita SSH-pasfrazo estis provizita. Petante uzanton entajpi ĝin."
+msgstr "Neniu salutnomo troviĝis. Petante uzanton entajpi ĝin."
 
 #. TRANSLATORS: The placeholder %s is an error message
 #: src/remmina_ssh.c:901
@@ -705,16 +696,12 @@ msgid "SSH Kerberos/GSSAPI"
 msgstr "SSH Kerberos/GSSAPI"
 
 #: src/remmina_ssh.c:1557
-#, fuzzy
-#| msgid "SSH tunnel credentials"
 msgid "SSH tunnel private key credentials"
-msgstr "Akreditiloj de SSH-tunelo"
+msgstr "Akreditiloj de SSH-tunela privata ŝlosilo"
 
 #: src/remmina_ssh.c:1557
-#, fuzzy
-#| msgid "SSH private key file"
 msgid "SSH private key credentials"
-msgstr "Dosiero de privata SSH-ŝlosilo"
+msgstr "SSH-privatŝlosilaj akreditiloj"
 
 #: src/remmina_ssh.c:1591 src/remmina_ssh.c:1617
 msgid "SSH tunnel credentials"
@@ -988,10 +975,8 @@ msgid "Language Wrapper"
 msgstr "Programlingva adaptilo"
 
 #: src/remmina_plugin_manager.c:790
-#, fuzzy
-#| msgid "Download"
 msgid "Plugin Download"
-msgstr "Elŝuti"
+msgstr "Elŝuti kromprogramon"
 
 #: src/remmina_plugin_manager.c:1396 data/ui/remmina_main.glade:340
 msgid "Plugins"
@@ -1028,10 +1013,8 @@ msgid "The passwords do not match"
 msgstr "La pasvortoj ne kongruas"
 
 #: src/remmina_mpchange.c:276
-#, fuzzy
-#| msgid "The passwords do not match"
 msgid "The Gateway passwords do not match"
-msgstr "La pasvortoj ne kongruas"
+msgstr "La kluzaj pasvortoj ne kongruas"
 
 #: src/remmina_mpchange.c:290
 msgid "Resetting passwords, please wait…"
@@ -1202,21 +1185,16 @@ msgid "Are you sure you want to delete “%s”?"
 msgstr "Ĉu vi certas, ke vi volas forigi «%s»?"
 
 #: src/remmina_main.c:1088
-#, fuzzy
-#| msgid "File downloaded"
 msgid "Failed to load files!"
-msgstr "Dosiero elŝutita"
+msgstr "Malsukcesis ŝargi dosierojn!"
 
 #: src/remmina_main.c:1159
-#, fuzzy
-#| msgid "Are you sure to delete the selected files on server?"
 msgid "Are you sure you want to delete the selected files?"
-msgstr ""
-"Ĉu vi certas, ke vi volas forigi la elektitajn dosierojn for de la servilo?"
+msgstr "Ĉu vi certas, ke vi volas forigi la elektitajn dosierojn?"
 
 #: src/remmina_main.c:1170
 msgid "Failed to delete files!"
-msgstr ""
+msgstr "Malsukcesis forviŝi dosierojn!"
 
 #: src/remmina_main.c:1353
 #, c-format
@@ -1233,7 +1211,7 @@ msgstr "RDP-dosieroj"
 
 #: src/remmina_main.c:1390
 msgid "Virt-Viewer Files"
-msgstr ""
+msgstr "Dosiero Virt-Viewer"
 
 #: src/remmina_main.c:1395
 msgid "All Files"
@@ -1245,16 +1223,12 @@ msgid "Import"
 msgstr "Enporti"
 
 #: src/remmina_main.c:1439
-#, fuzzy
-#| msgid "Create new connection profile"
 msgid "Select the connection profile."
-msgstr "Krei novan konektoprofilon"
+msgstr "Elektu la konektoprofilon."
 
 #: src/remmina_main.c:1448
-#, fuzzy
-#| msgid "Remmina data folder"
 msgid "Remmina couldn't export."
-msgstr "Datendosierujo de Remmina"
+msgstr "Remmina ne povis elporti."
 
 #: src/remmina_main.c:1457 src/remmina_file_editor.c:2153
 msgid "_Save"
@@ -1366,31 +1340,27 @@ msgstr "Alia"
 
 #: src/remmina_file_editor.c:666
 msgid "Assistance Mode"
-msgstr ""
+msgstr "Asista reĝimo"
 
 #: src/remmina_file_editor.c:957
 msgid "Save to..."
-msgstr ""
+msgstr "Konservi en…"
 
 #: src/remmina_file_editor.c:958
-#, fuzzy
-#| msgid "_Save"
 msgid "Save"
-msgstr "_Konservi"
+msgstr "Konservi"
 
 #: src/remmina_file_editor.c:961
 msgid "Open ssh tunnel config"
-msgstr ""
+msgstr "Malfermi agordojn pri ssh-tunelo"
 
 #: src/remmina_file_editor.c:970
-#, fuzzy
-#| msgid "Remmina Kiosk"
 msgid "Remmina Files"
-msgstr "Remmina (Enviciga Reĝimo)"
+msgstr "Dosieroj Remmina"
 
 #: src/remmina_file_editor.c:973
 msgid "ssh_export.remssh"
-msgstr ""
+msgstr "ssh_export.remssh"
 
 #: src/remmina_file_editor.c:1288
 msgid "Keyboard mapping"
@@ -1438,7 +1408,7 @@ msgstr "Postuli pasvorton por konekti aŭ modifi la profilon"
 
 #: src/remmina_file_editor.c:1460
 msgid "Unexpected disconnect"
-msgstr ""
+msgstr "Neatendita malkonekto"
 
 #: src/remmina_file_editor.c:1463
 msgid "Keep window from closing if not disconnected by Remmina"
@@ -1463,7 +1433,7 @@ msgstr "Sama servilo ĉe pordo %i"
 
 #: src/remmina_file_editor.c:1527
 msgid "Command arguments"
-msgstr ""
+msgstr "Komandaj argumentoj"
 
 #: src/remmina_file_editor.c:1528
 msgid ""
@@ -1487,24 +1457,20 @@ msgid "SSH private key file"
 msgstr "Dosiero de privata SSH-ŝlosilo"
 
 #: src/remmina_file_editor.c:1640
-#, fuzzy
-#| msgid "SSH Proxy Command"
 msgid "SSH Command"
-msgstr "SSH-Prokurila Komando"
+msgstr "SSH-komando"
 
 #: src/remmina_file_editor.c:1644
-#, fuzzy
-#| msgid "Startup program"
 msgid "Startup command"
-msgstr "Starta programo"
+msgstr "Starta komando"
 
 #: src/remmina_file_editor.c:1651
 msgid "Export ssh tunnel settings"
-msgstr ""
+msgstr "Elporti agordojn pri ssh-tunelo"
 
 #: src/remmina_file_editor.c:1657
 msgid "Import ssh tunnel settings"
-msgstr ""
+msgstr "Enporti agordojn pri ssh-tunelo"
 
 #: src/remmina_file_editor.c:1692
 msgid "Basic"
@@ -1601,17 +1567,14 @@ msgstr "Montri 'Pri'"
 
 #. TRANSLATORS: Shown in terminal. Do not use characters that may be not supported on a terminal
 #: src/remmina.c:104
-#, fuzzy
-#| msgid ""
-#| "Connect either to a desktop described in a file (.remmina or a filetype "
-#| "supported by a plugin) or a supported URI (RDP, VNC, SSH or SPICE)"
 msgid ""
 "Connect either to a desktop described in a file (.remmina or a filetype "
 "supported by a plugin) or a supported URI (RDP, VNC, SSH, HTTP, HTTPS or "
 "SPICE)"
 msgstr ""
-"Konekti al ekrano priskribita en dosiero (.rermmina aŭ dosiertipo subtenata "
-"de kromprogramo) aŭ subtenata retadreso (RDP, VNC, SSH, aŭ SPICE)"
+"Konekti al ekrano priskribita en dosiero (.remmina aŭ dosiertipo subtenata "
+"de kromprogramo) aŭ subtenata retadreso (RDP, VNC, SSH, HTTP, HTTPS, aŭ "
+"SPICE)"
 
 #: src/remmina.c:104 src/remmina.c:106 src/remmina.c:108
 msgid "FILE"
@@ -1707,16 +1670,12 @@ msgid "Encrypt a password"
 msgstr "Ĉifri pasvorton"
 
 #: src/remmina.c:138
-#, fuzzy
-#| msgid "Disable news notification"
 msgid "Disable news"
-msgstr "Malŝalti sciigadon pri novaĵoj"
+msgstr "Malŝalti novaĵojn"
 
 #: src/remmina.c:139
-#, fuzzy
-#| msgid "Disable toolbar"
 msgid "Disable stats"
-msgstr "Malŝalti ilobreton"
+msgstr "Malŝalti statistikojn"
 
 #: src/remmina.c:140
 msgid "Disable toolbar"
@@ -1727,7 +1686,6 @@ msgid "Enable fullscreen"
 msgstr "Ŝalti plenekranan reĝimon"
 
 #: src/remmina.c:142
-#, fuzzy
 msgid ""
 "Enable extra hardening (disable closing confirmation, disable unsafe "
 "shortcut keys, hide tabs, hide search bar)"
@@ -1744,12 +1702,6 @@ msgstr "Ne montri pletan ikonon"
 #. * to log more verbose statements.
 #.
 #: src/remmina.c:391
-#, fuzzy
-#| msgid ""
-#| "Remmina does not log all output statements. Turn on more verbose output "
-#| "by using \"G_MESSAGES_DEBUG=all\" as an environment variable.\n"
-#| "More info available on the Remmina wiki at:\n"
-#| "https://gitlab.com/Remmina/Remmina/-/wikis/Usage/Remmina-debugging"
 msgid ""
 "Remmina does not log all output statements. Turn on more verbose output by "
 "using \"G_MESSAGES_DEBUG=remmina\" as an environment variable.\n"
@@ -1757,7 +1709,7 @@ msgid ""
 "https://gitlab.com/Remmina/Remmina/-/wikis/Usage/Remmina-debugging"
 msgstr ""
 "Remmina ne registras ĉiom da eligeblaĵoj. Ŝaltu pli detalajn eligaĵojn per "
-"la medivariablo «G_MESSAGES_DEBUG=all».\n"
+"la medivariablo «G_MESSAGES_DEBUG=remmina».\n"
 "Pliaj informoj disponeblas ĉe la retejo de Remmina:\n"
 "https://gitlab.com/Remmina/Remmina/-/wikis/Usage/Remmina-debugging"
 
@@ -1987,7 +1939,6 @@ msgid "Send clipboard content as keystrokes"
 msgstr "Sendi enhavon de tondujo kiel klavofrapojn"
 
 #: src/rcw.c:2143
-#, fuzzy
 msgid ""
 "CAUTION: Pasted text will be sent as a sequence of key-codes as if typed on "
 "your local keyboard.\n"
@@ -2005,14 +1956,14 @@ msgstr ""
 "ATENTU: Algluita teksto estos sendita kiel sinsekvo de klavkodoj kvazaŭ "
 "tajpita per via loka klavaro.\n"
 "\n"
-"  • Por plej bonaj rezultoj uzu la samajn klavarajn agordojn por ambaŭ, "
+"  • Por plej bonaj rezultoj, uzu la samajn klavarajn agordojn por kaj "
 "kliento kaj servilo.\n"
 "\n"
-"  • Se kliento-klavaro diferencas de servilo-klavaro la ricevita teksto "
+"  • Se klienta klavaro diferencas de servila klavaro, la ricevita teksto "
 "povas enhavi malĝustajn aŭ erarajn signojn.\n"
 "\n"
-"  • Unikodaj signoj kaj aliaj specialaj signoj, kiuj ne povas esti "
-"tradukitaj al lokaj ŝlosilkodoj, ne estos senditaj al la servilo.\n"
+"  • Unikodaj signoj kaj aliaj specialaj signoj, kiuj ne estas tradukeblaj al "
+"lokaj ŝlosilkodoj, ne estos senditaj al la servilo.\n"
 "\n"
 
 #: src/rcw.c:2259
@@ -2061,8 +2012,6 @@ msgid "Toggle scaled mode"
 msgstr "Baskuligi skalŝanĝan reĝimon"
 
 #: src/rcw.c:2586
-#, fuzzy
-#| msgid "View-only mode"
 msgid "View only mode"
 msgstr "Nurvida reĝimo"
 
@@ -2096,10 +2045,8 @@ msgid "Minimize window"
 msgstr "Minimumigi fenestron"
 
 #: src/rcw.c:2701
-#, fuzzy
-#| msgid "Connect"
 msgid "Reconnect"
-msgstr "Konekti"
+msgstr "Rekonekti"
 
 #: src/rcw.c:2709 data/ui/remmina_preferences.glade:1410
 msgid "Disconnect"
@@ -2229,10 +2176,9 @@ msgid "Enter SPICE password"
 msgstr "Entajpu pasvorton de SPICE"
 
 #: plugins/spice/spice_plugin.c:403
-#, fuzzy, c-format
-#| msgid "Disconnected from the SPICE server “%s”."
+#, c-format
 msgid "Disconnected from the SPICE %s."
-msgstr "Malkonektiĝis el SPICE-servilo «%s»."
+msgstr "Malkonektiĝis el SPICE %s."
 
 #: plugins/spice/spice_plugin.c:405
 #, c-format
@@ -2287,10 +2233,8 @@ msgid "Share folder"
 msgstr "Kunhavigi dosierujon"
 
 #: plugins/spice/spice_plugin.c:727
-#, fuzzy
-#| msgid "Proxy URL"
 msgid "Proxy"
-msgstr "Adreso de prokurilo"
+msgstr "Prokurilo"
 
 #: plugins/spice/spice_plugin.c:728 plugins/rdp/rdp_plugin.c:3290
 msgid "USB device redirection"
@@ -2345,13 +2289,11 @@ msgstr "SPICE - Simpla Protokolo por Sendependaj Komputomedioj"
 
 #: plugins/spice/spice_plugin.c:803
 msgid "SPICE vv file"
-msgstr ""
+msgstr "Dosiero SPICE vv"
 
 #: plugins/spice/spice_plugin.c:895
-#, fuzzy
-#| msgid "Export connection in Windows .rdp file format"
 msgid "Export connection in virt-viewer .vv file format"
-msgstr "Elporti konekton laŭ dosierformo .rdp de Windows"
+msgstr "Elporti konekton laŭ dosierformo virt-viewer .vv"
 
 #: plugins/x2go/x2go_plugin.c:71
 #, c-format
@@ -2444,8 +2386,6 @@ msgid "Visible"
 msgstr "Videbla"
 
 #: plugins/x2go/x2go_plugin.c:525
-#, fuzzy
-#| msgid "Couldn't retrieve valid `DialogData` or `sessions_list`! Aborting…"
 msgid "Could not retrieve valid `DialogData` or `sessions_list`! Aborting…"
 msgstr "Ne eblas akiri validan `DialogData` aŭ `sessions_list`! Kolapsante…"
 
@@ -2475,11 +2415,8 @@ msgid "Unknown property '%i'"
 msgstr "Nekonata atributo «%i»"
 
 #: plugins/x2go/x2go_plugin.c:711 plugins/x2go/x2go_plugin.c:758
-#, fuzzy
-#| msgid "Couldn't find child GtkTreeView of session chooser dialog."
 msgid "Could not find child GtkTreeView of session chooser dialog."
-msgstr ""
-"Ne eblis trovi idan objekton «GtkTreeView» de la seanco-elekta dialogo."
+msgstr "Ne eblis trovi idan objekton «GtkTreeView» de la seanco-elekta dialogo."
 
 #: plugins/x2go/x2go_plugin.c:723
 msgid ""
@@ -2498,8 +2435,6 @@ msgstr ""
 "seanco-elekta dialogo."
 
 #: plugins/x2go/x2go_plugin.c:767
-#, fuzzy
-#| msgid "Couldn't get currently selected row (session)!"
 msgid "Could not get currently selected row (session)!"
 msgstr "Ne eblis akiri la aktuale elektitan vicon (seancon)!"
 
@@ -2546,18 +2481,13 @@ msgstr ""
 "%s"
 
 #: plugins/x2go/x2go_plugin.c:948
-#, fuzzy, c-format
-#| msgid ""
-#| "An unknown error occured while trying to start PyHoca-CLI. Exit code: %i"
+#, c-format
 msgid ""
 "An unknown error occurred while trying to start PyHoca-CLI. Exit code: %i"
 msgstr "Nekonata eraro okazis dum provo lanĉi PyHoca-CLI. Elirkodo: %i"
 
 #: plugins/x2go/x2go_plugin.c:955
-#, fuzzy, c-format
-#| msgid ""
-#| "An unknown error occured while trying to start PyHoca-CLI. Exit code: %i. "
-#| "Error: '%s'"
+#, c-format
 msgid ""
 "An unknown error occurred while trying to start PyHoca-CLI. Exit code: %i. "
 "Error: '%s'"
@@ -2582,22 +2512,19 @@ msgid "Parameter 'custom_data' is not fully initialized!"
 msgstr "La parametro «custom_data» estas ne plene praŝargita!"
 
 #: plugins/x2go/x2go_plugin.c:1223
-#, fuzzy, c-format
-#| msgid "Could not start X2Go session."
+#, c-format
 msgid ""
 "Could not terminate X2Go session '%s':\n"
 "%s"
-msgstr "Ne povis komenci X2Go-seancon."
+msgstr ""
+"Ne povis fini X2Go-seancon «%s»:\n"
+"%s"
 
 #: plugins/x2go/x2go_plugin.c:1235
-#, fuzzy
-#| msgid "An error occured."
 msgid "An error occurred."
 msgstr "Eraro okazis."
 
 #: plugins/x2go/x2go_plugin.c:1330 plugins/x2go/x2go_plugin.c:1345
-#, fuzzy
-#| msgid "Couldn't get session ID from session chooser dialog."
 msgid "Could not get session ID from session chooser dialog."
 msgstr "Ne eblis akiri seancan identigilon el la seanco-elekta dialogo."
 
@@ -2626,11 +2553,6 @@ msgid "An error occured."
 msgstr "Eraro okazis."
 
 #: plugins/x2go/x2go_plugin.c:1607
-#, fuzzy
-#| msgid ""
-#| "The necessary child process 'pyhoca-cli' stopped unexpectedly.\n"
-#| "Please check your profile settings and PyHoca-CLI's output for possible "
-#| "errors. Also ensure the remote server is reachable."
 msgid ""
 "The necessary child process 'pyhoca-cli' stopped unexpectedly.\n"
 "Please check your profile settings and PyHoca-CLI's output for possible "
@@ -2639,7 +2561,8 @@ msgid ""
 msgstr ""
 "La nepra ida procezo «PyHoca-CLIi» haltis neatendite.\n"
 "Bonvolu kontroli viajn profilajn agordojn kaj la eligaĵon de PyHoca-CLI pri "
-"eblaj eraroj. Ankaŭ certigu, ke la fora servilo estas atingebla."
+"eblaj eraroj. Ankaŭ certigu, ke la fora servilo estas atingebla kaj vi uzas "
+"la ĝustajn akreditilojn."
 
 #: plugins/x2go/x2go_plugin.c:1650
 msgid "Can't save empty username!"
@@ -2650,28 +2573,20 @@ msgid "Could not save new credentials."
 msgstr "Ne eblis konservi novajn akreditilojn."
 
 #: plugins/x2go/x2go_plugin.c:1667
-#, fuzzy
-#| msgid ""
-#| "An error occured while trying to save new credentials: 's_password' or "
-#| "'s_username' strings were not set."
 msgid ""
 "Could not save new credentials: 's_password' or 's_username' strings were "
 "not set."
 msgstr ""
-"Eraro okazis dum provo konservi novajn akreditilojn: la signoĉeno "
-"«s_password» aŭ «s_username» ne estis valorizita."
+"Malsukcesis konservi novajn akreditilojn: la signoĉeno «s_password» aŭ «"
+"s_username» ne estis valorizita."
 
 #: plugins/x2go/x2go_plugin.c:1699
-#, fuzzy
-#| msgid "Password to unlock private key"
 msgid "Enter password to unlock the SSH key:"
-msgstr "Pasvorto por malŝlosi privatan ŝlosilon"
+msgstr "Tajpu pasvorton por malŝlosi la SSH-ŝlosilon:"
 
 #: plugins/x2go/x2go_plugin.c:1710
-#, fuzzy
-#| msgid "Authentication failure: %s"
 msgid "Password input cancelled. Aborting…"
-msgstr "Malsukceso de aŭtentikigo: %s"
+msgstr "Pasvorta enigo nuliĝis. Kolapsante…"
 
 #: plugins/x2go/x2go_plugin.c:1741
 msgid ""
@@ -2684,16 +2599,10 @@ msgid "Enter X2Go credentials"
 msgstr "Entajpu akreditilojn de X2Go"
 
 #: plugins/x2go/x2go_plugin.c:1801
-#, fuzzy
-#| msgid "Authentication failure: %s"
 msgid "Authentication cancelled. Aborting…"
-msgstr "Malsukceso de aŭtentikigo: %s"
+msgstr "Aŭtentikigo nuliĝis. Kolapsante…"
 
 #: plugins/x2go/x2go_plugin.c:1988
-#, fuzzy
-#| msgid ""
-#| "Couldn't parse the output of PyHoca-CLI's --list-sessions option. "
-#| "Creating a new session now."
 msgid ""
 "Could not parse the output of PyHoca-CLI's --list-sessions option. Creating "
 "a new session now."
@@ -2702,8 +2611,6 @@ msgstr ""
 "Kreante novan seancon nun."
 
 #: plugins/x2go/x2go_plugin.c:2025
-#, fuzzy
-#| msgid "Couldn't allocate enough memory!"
 msgid "Could not allocate enough memory!"
 msgstr "Malsukcesis akiri sufiĉe da memoro!"
 
@@ -2767,10 +2674,8 @@ msgstr ""
 "Distingivo estas ekster limoj. Bonvolu agordi ĝin en la profilaj agordoj."
 
 #: plugins/x2go/x2go_plugin.c:2503
-#, fuzzy
-#| msgid "Could not start X2Go session."
 msgid "Could not start X2Go session…"
-msgstr "Ne povis komenci X2Go-seancon."
+msgstr "Ne povis komenci X2Go-seancon…"
 
 #: plugins/x2go/x2go_plugin.c:2510
 msgid "Could not start X2Go session."
@@ -2782,11 +2687,6 @@ msgid "Could not start PyHoca-CLI (%i): '%s'"
 msgstr "Ne eblis lanĉi la programon PyHoca-CLI (%i): «%s»"
 
 #: plugins/x2go/x2go_plugin.c:2626
-#, fuzzy
-#| msgid ""
-#| "Couldn't get PyHoca-CLI's command-line features. This indicates it is "
-#| "either too old, or not installed. An old limited set of features will be "
-#| "used for now."
 msgid ""
 "Could not get PyHoca-CLI's command-line features. This indicates it is "
 "either too old, or not installed. An old limited set of features will be "
@@ -2991,10 +2891,8 @@ msgstr ""
 "esti inter 20 kaj 400."
 
 #: plugins/x2go/x2go_plugin.c:3347
-#, fuzzy
-#| msgid "SSH private key file"
 msgid "Your private key"
-msgstr "Dosiero de privata SSH-ŝlosilo"
+msgstr "Via privata ŝlosilo"
 
 #: plugins/x2go/x2go_plugin.c:3387
 msgid "X2Go plugin loaded."
@@ -3032,7 +2930,7 @@ msgstr "Entajpu akreditilojn de aŭtentikigo de RDP-kluzo"
 
 #: plugins/rdp/rdp_plugin.c:1036
 msgid "Enter RDP SmartCard PIN"
-msgstr ""
+msgstr "Tajpu PIN de RDP-saĝkarto"
 
 #. TRANSLATORS: the placeholder may be either an IP/FQDN or a server hostname
 #: plugins/rdp/rdp_plugin.c:1336
@@ -3041,10 +2939,8 @@ msgid "Disconnected from %s via RDP"
 msgstr "Malkonektita el %s per RDP"
 
 #: plugins/rdp/rdp_plugin.c:2556
-#, fuzzy
-#| msgid "Could not authenticate using SSH certificate. %s"
 msgid "Could not authenticate using smartcard."
-msgstr "Ne povis aŭtentikigi per SSH-atestilo. %s"
+msgstr "Ne povis aŭtentikigi per saĝkarto."
 
 #: plugins/rdp/rdp_plugin.c:2566
 #, c-format
@@ -3110,10 +3006,9 @@ msgstr ""
 "Ŝanĝu pasvorton de uzanto antaŭ konekto."
 
 #: plugins/rdp/rdp_plugin.c:2614
-#, fuzzy, c-format
-#| msgid "Cannot connect to the RDP server “%s”."
+#, c-format
 msgid "Failed to connect to the RDP server “%s”."
-msgstr "Ne povis konekti al la RDP-servilo «%s»."
+msgstr "Malsukcesis konekti al la RDP-servilo «%s»."
 
 #: plugins/rdp/rdp_plugin.c:2617
 #, c-format
@@ -3294,31 +3189,31 @@ msgstr "NLA-etendita protokola sekureco"
 
 #: plugins/rdp/rdp_plugin.c:3104 plugins/rdp/rdp_plugin.c:3115
 msgid "Every 1 min"
-msgstr ""
+msgstr "Po unu fojo en minuto"
 
 #: plugins/rdp/rdp_plugin.c:3105 plugins/rdp/rdp_plugin.c:3116
 msgid "Every 3 min"
-msgstr ""
+msgstr "Po unu fojo en 3 minutoj"
 
 #: plugins/rdp/rdp_plugin.c:3106 plugins/rdp/rdp_plugin.c:3117
 msgid "Every 5 min"
-msgstr ""
+msgstr "Po unu fojo en 5 minutoj"
 
 #: plugins/rdp/rdp_plugin.c:3107 plugins/rdp/rdp_plugin.c:3118
 msgid "Every 10 min"
-msgstr ""
+msgstr "Po unu fojo en 10 minutoj"
 
 #: plugins/rdp/rdp_plugin.c:3114
 msgid "Every 30 sec"
-msgstr ""
+msgstr "Po unu fojo en 30 sekundoj"
 
 #: plugins/rdp/rdp_plugin.c:3124
 msgid "ALT_L + Tab"
-msgstr ""
+msgstr "ALT_L + Tab"
 
 #: plugins/rdp/rdp_plugin.c:3125
 msgid "Win + Tab"
-msgstr ""
+msgstr "Win + Tab"
 
 #: plugins/rdp/rdp_plugin.c:3140
 msgid "0 — Windows 7 compatible"
@@ -3494,16 +3389,12 @@ msgid "Restricted admin mode password hash"
 msgstr "Pasvorta haketaĵo de limigita administra reĝimo"
 
 #: plugins/rdp/rdp_plugin.c:3243
-#, fuzzy
-#| msgid "Share a smart card"
 msgid "Use a smartcard for logon"
-msgstr "Kunhavigi saĝkarton"
+msgstr "Uzi saĝkarton por saluti"
 
 #: plugins/rdp/rdp_plugin.c:3244
-#, fuzzy
-#| msgid "Share smart card"
 msgid "Smartcard PIN"
-msgstr "Kunhavigi saĝkarton"
+msgstr "Saĝkarta PIN"
 
 #: plugins/rdp/rdp_plugin.c:3245
 msgid "Left-handed mouse support"
@@ -3701,36 +3592,28 @@ msgstr ""
 "La maksimuma nombro de rekonektaj provoj post RDP-malkonekto (implicite: 20)"
 
 #: plugins/rdp/rdp_plugin.c:3301
-#, fuzzy
-#| msgid "Remote Connection Profile"
 msgid "Move mouse when connection is idle"
-msgstr "Fora Konektoprofilo"
+msgstr "Movi muson, kiam konekto estas senokupa"
 
 #: plugins/rdp/rdp_plugin.c:3302
-#, fuzzy
-#| msgid "Remote Connection Profile"
 msgid "Press keys when connection is idle"
-msgstr "Fora Konektoprofilo"
+msgstr "Premi klavon, kiam konekto estas senokupa"
 
 #: plugins/rdp/rdp_plugin.c:3303
-#, fuzzy
-#| msgid "Desktop orientation"
 msgid "Keys combination"
-msgstr "Ekranorientiĝo"
+msgstr "Klavkombino"
 
 #: plugins/rdp/rdp_plugin.c:3305
 msgid "Attempt to connect in assistance mode"
-msgstr ""
+msgstr "Provi konekti en asista reĝimo"
 
 #: plugins/rdp/rdp_plugin.c:3306
 msgid "Prefer IPv6 AAAA record over IPv4 A record"
 msgstr "Preferi AAAA-rikordon de IPv6 ol A-rikordon de IPv4"
 
 #: plugins/rdp/rdp_plugin.c:3308
-#, fuzzy
-#| msgid "Prefer IPv6 AAAA record over IPv4 A record"
 msgid "Force preferred IPv4 A record or IPv6 AAAA record"
-msgstr "Preferi AAAA-rikordon de IPv6 ol A-rikordon de IPv4"
+msgstr "Devigi preferatan A-rikordon de IPv4 aŭ AAAA-rikordon de IPv6"
 
 #: plugins/rdp/rdp_plugin.c:3310
 msgid "Share printers"
@@ -3818,7 +3701,7 @@ msgstr ""
 
 #: plugins/rdp/rdp_plugin.c:3334
 msgid "Allow sending empty password"
-msgstr ""
+msgstr "Permesi sendi malplenan pasvorton"
 
 #: plugins/rdp/rdp_plugin.c:3360
 msgid "RDP - Remote Desktop Protocol"
@@ -3943,14 +3826,12 @@ msgid "General settings"
 msgstr "Ĝeneralaj agordoj"
 
 #: plugins/rdp/rdp_settings.c:723
-#, fuzzy
-#| msgid "Edit settings"
 msgid "Auth settings"
-msgstr "Redakti agordojn"
+msgstr "Agordoj pri aŭtentikigo"
 
 #: plugins/rdp/rdp_settings.c:730
 msgid "FreeRDP auth-pkg-list"
-msgstr ""
+msgstr "FreeRDP auth-pkg-list"
 
 #: plugins/rdp/rdp_settings.c:743
 msgid "Authentication package filter(comma-separated list, use '!' to exclude)"
@@ -3994,7 +3875,7 @@ msgstr "Nesinkrona rulado"
 
 #: plugins/exec/exec_plugin.c:309
 msgid "Kill process on disconnect"
-msgstr ""
+msgstr "Mortigi procezon post malkonekto"
 
 #: plugins/gvnc/gvnc_plugin_config.h:40
 msgid "Remmina VNC plugin for GNOME and KVM"
@@ -4335,7 +4216,6 @@ msgid "Listen on port"
 msgstr "Aŭskulti al pordo"
 
 #: plugins/vnc/vnc_plugin.c:2181
-#, fuzzy
 msgid "Override pre-set VNC encodings"
 msgstr "Anstataŭigi antaŭfiksitajn VNC-kodadojn"
 
@@ -4345,7 +4225,7 @@ msgstr ""
 
 #: plugins/vnc/vnc_plugin.c:2184
 msgid "TCP_USER_TIMEOUT length (seconds)"
-msgstr ""
+msgstr "Daŭro TCP_USER_TIMEOUT (en sekundoj)"
 
 #: plugins/vnc/vnc_plugin.c:2186
 msgid "Force tight encoding"
@@ -4368,10 +4248,8 @@ msgid "Turn off encryption"
 msgstr "Malŝalti ĉifradon"
 
 #: plugins/vnc/vnc_plugin.c:2195
-#, fuzzy
-#| msgid "Create new connection profile"
 msgid "Close on connection failure"
-msgstr "Krei novan konektoprofilon"
+msgstr "Fermi post malsukceso pri konekto"
 
 #: plugins/vnc/vnc_plugin.c:2207
 msgid "Open Chat…"
@@ -4404,30 +4282,13 @@ msgstr "Elekti novan klavon"
 
 #: data/ui/remmina_key_chooser.glade:84 data/ui/remmina_key_chooser.glade:88
 msgid "Allow key modifiers"
-msgstr ""
+msgstr "Permesi klavmodifilojn"
 
 #: data/ui/remmina_key_chooser.glade:121
 msgid "Please press the new key…"
 msgstr "Bonvolu premi la novan klavon…"
 
 #: data/ui/remmina_info.glade:90
-#, fuzzy
-#| msgid ""
-#| "<big><b>The news are turned off</b></big>\n"
-#| "\n"
-#| "<span>\n"
-#| "Turning on news means the program connects to a Remmina server to "
-#| "download the release notes.\n"
-#| "</span>\n"
-#| "\n"
-#| "<span>\n"
-#| "Version checking can only be activated at compile time.\n"
-#| "</span>\n"
-#| "\n"
-#| "<span>\n"
-#| "<a href=\"https://gitlab.com/Remmina/Remmina/-/tags/\" title=\"Remmina "
-#| "release notes\"><i>Visit the website to read the release notes</i></a>.\n"
-#| "</span>"
 msgid ""
 "<big><b>The news failed to load</b></big>\n"
 "\n"
@@ -4436,20 +4297,11 @@ msgid ""
 "release notes\"><i>Visit the website to read the release notes</i></a>.\n"
 "</span>"
 msgstr ""
-"<big><b>La novaĵoj estas malŝaltitaj</b></big>\n"
-"\n"
-"<span>\n"
-"Ŝalto de novaĵoj kaŭzas, ke la programo konektos al Remmina-servilo por "
-"elŝuti la liverajn notojn.\n"
-"</span>\n"
-"\n"
-"<span>\n"
-"Versio-kontrolado estas nur ŝaltebla dum tradukado.\n"
-"</span>\n"
+"<big><b>Ne eblis elŝuti la novaĵojn</b></big>\n"
 "\n"
 "<span>\n"
 "<a href=\"https://gitlab.com/Remmina/Remmina/-/tags/\" title=\"Liveraj notoj "
-"pri Remmina\"><i>Vizitu la retejon por legi la liverajn notojn.</i></a>\n"
+"pri Remmina\"><i>Vizitu la retejon por legi la liverajn notojn</i></a>.\n"
 "</span>"
 
 #: data/ui/remmina_about.glade:32 data/ui/remmina_main.glade:429
@@ -4457,18 +4309,14 @@ msgid "About"
 msgstr "Pri"
 
 #: data/ui/remmina_about.glade:36
-#, fuzzy
-#| msgid ""
-#| "Copyright © 2014–2023 Antenore Gatta, Giovanni Panozzo.\n"
-#| "Copyright © 2009–2014 Vic Lee\n"
-#| "More details in COPYING"
 msgid ""
 "Copyright © 2023–2024 Hiroyuki Tanaka, Sunil Bhat\n"
 "Copyright © 2014–2023 Antenore Gatta, Giovanni Panozzo\n"
 "Copyright © 2009–2014 Vic Lee\n"
 "More details in COPYING"
 msgstr ""
-"Kopirajtoj © 2014–2023 Antenore Gatta, Giovanni Panozzo.\n"
+"Kopirajtoj © 2023–2024 Hiroyuki Tanaka, Sunil Bhat \n"
+"Kopirajtoj © 2014–2023 Antenore Gatta, Giovanni Panozzo\n"
 "Kopirajtoj © 2009–2014 Vic Lee\n"
 "Pliaj detaloj en COPYING"
 
@@ -4573,11 +4421,6 @@ msgid "Screenshot filenames"
 msgstr "Dosiernomoj de ekrankopioj"
 
 #: data/ui/remmina_preferences.glade:282
-#, fuzzy
-#| msgid ""
-#| "%p Profile name\n"
-#| "%h Server name/IP\n"
-#| "%Y Year, %m Month, %d Day, %H Hour, %M Minute, %S Seconds (UTC time)\n"
 msgid ""
 "%p Profile name\n"
 "%h Server name/IP\n"
@@ -4585,7 +4428,7 @@ msgid ""
 msgstr ""
 "%p Nomo de profilo\n"
 "%h Nomo/IP-adreso de servilo\n"
-"%Y Jaro, %m Monato, %d Tago, %H Horo, %M Minuto, %S Sekundo (laŭ UTK)\n"
+"%Y Jaro, %m Monato, %d Tago, %H Horo, %M Minuto, %S Sekundo (laŭ UTK)"
 
 #: data/ui/remmina_preferences.glade:300
 msgid ""
@@ -4624,14 +4467,6 @@ msgstr "Ŝablono de profilaj dosiernomoj"
 
 #. Placeholders used to name a Remmina connection profile
 #: data/ui/remmina_preferences.glade:381
-#, fuzzy
-#| msgid ""
-#| "%G Name of group (slashes \\/ are converted to dashes -)\n"
-#| "%P Protocol name\n"
-#| "%N Connection name\n"
-#| "%h Host name/IP\n"
-#| "\n"
-#| "\n"
 msgid ""
 "%G Name of group (slashes \\/ are converted to dashes -)\n"
 "%P Protocol name\n"
@@ -4642,9 +4477,7 @@ msgstr ""
 "(-))\n"
 "%P Nomo de protokolo\n"
 "%N Nomo de konekto\n"
-"%h Nomo/IP-adreso de gastiganto\n"
-"\n"
-"\n"
+"%h Nomo/IP-adreso de gastiganto "
 
 #: data/ui/remmina_preferences.glade:400
 msgid "Only save generated screenshots, don't copy them to clipboard."
@@ -4664,32 +4497,24 @@ msgid "Confirm before closing multiple tabs"
 msgstr "Konfirmi antaŭ ol fermi plurajn langetojn"
 
 #: data/ui/remmina_preferences.glade:497
-#, fuzzy
-#| msgid "Send anonymous statistics"
 msgid "Disable anonymous statistics"
-msgstr "Sendi anonimajn statistikojn"
+msgstr "Malŝalti anonimajn statistikojn"
 
 #: data/ui/remmina_preferences.glade:529
-#, fuzzy
-#| msgid ""
-#| "Fetch news from <a href=\"https://remmina.org\" title=\"Remmina news "
-#| "site\">remmina.org</a> (*)"
 msgid ""
 "Disable news from <a href=\"https://remmina.org\" title=\"Remmina news "
 "site\">remmina.org</a>"
 msgstr ""
-"Preni novaĵojn el <a href=\"https://remmina.org\" title=\"Retejo de novaĵoj "
-"pri Remmina\">remmina.org</a> (*)"
+"Malŝalti novaĵojn el <a href=\"https://remmina.org\" title=\"Retejo de "
+"novaĵoj pri Remmina\">remmina.org</a>"
 
 #: data/ui/remmina_preferences.glade:562
 msgid "Disable tip of the day"
-msgstr ""
+msgstr "Malŝalti konsileton de la tago"
 
 #: data/ui/remmina_preferences.glade:614
-#, fuzzy
-#| msgid "General settings"
 msgid "General"
-msgstr "Ĝeneralaj agordoj"
+msgstr "Ĝenerala"
 
 #: data/ui/remmina_preferences.glade:639
 msgid "Always show tabs"
@@ -4747,17 +4572,15 @@ msgstr "Kaŝita"
 
 #: data/ui/remmina_preferences.glade:761
 msgid "Minimal"
-msgstr ""
+msgstr "Minimuma"
 
 #: data/ui/remmina_preferences.glade:777
 msgid "Fullscreen toolbar visibility"
 msgstr "Videbleco de ilobretoj dum plenekrana reĝimo"
 
 #: data/ui/remmina_preferences.glade:792
-#, fuzzy
-#| msgid "Fullscreen toolbar visibility"
 msgid "Fullscreen toolbar delay (in seconds)"
-msgstr "Videbleco de ilobretoj dum plenekrana reĝimo"
+msgstr "Prokrasto (en sekundoj) pri ilobreto dum plenekrana reĝimo"
 
 #: data/ui/remmina_preferences.glade:816
 msgid "Hide the search bar shown in the main window"
@@ -4765,7 +4588,7 @@ msgstr "Kaŝi la serĉobreton montratan en la ĉeffenestro"
 
 #: data/ui/remmina_preferences.glade:832
 msgid "Follow system light/dark theme"
-msgstr ""
+msgstr "Sekvi sisteman helan/malhelan etoson"
 
 #: data/ui/remmina_preferences.glade:836
 msgid ""
@@ -4786,10 +4609,8 @@ msgstr ""
 "agordita etoso."
 
 #: data/ui/remmina_preferences.glade:849
-#, fuzzy
-#| msgid "Always show tabs"
 msgid "Always show notes"
-msgstr "Ĉiam montri langetojn"
+msgstr "Ĉiam montri notojn"
 
 #: data/ui/remmina_preferences.glade:853
 msgid "Add a column displaying any notes associated with a connection."
@@ -4801,11 +4622,11 @@ msgstr ""
 
 #: data/ui/remmina_preferences.glade:883
 msgid "If supported, launch in fullscreen by default"
-msgstr ""
+msgstr "Starti en plenekrana reĝimo apriore, se tio eblas"
 
 #: data/ui/remmina_preferences.glade:900
 msgid "If supported, launch with dynamic resolution by default"
-msgstr ""
+msgstr "Starti kun dinamika ekrandistingivo apriore, se tio eblas"
 
 #: data/ui/remmina_preferences.glade:917
 msgid "Multimonitor: performs adjustments on the toolbar position"
@@ -4883,10 +4704,8 @@ msgid "View-only mode"
 msgstr "Nurvida reĝimo"
 
 #: data/ui/remmina_preferences.glade:1571
-#, fuzzy
-#| msgid "Send clipboard content as keystrokes"
 msgid "Send clipboard as keystrokes"
-msgstr "Sendi enhavon de tondujo kiel klavofrapojn"
+msgstr "Sendi tondujon kiel klavofrapojn"
 
 #: data/ui/remmina_preferences.glade:1581
 msgid "Send-clipboard"
@@ -5008,17 +4827,13 @@ msgid "Require to modify"
 msgstr "Postuli por modifi"
 
 #: data/ui/remmina_preferences.glade:1979
-#, fuzzy
-#| msgid "Enter your Remmina password to connect"
 msgid "Enter your Remmina password to view passwords"
-msgstr "Tajpu vian Remmina-pasvorton por konekti"
+msgstr "Tajpu vian Remmina-pasvorton por vidi pasvortojn"
 
 #. “Require to view passwords” is “Require the Remmina password before to connect”, the Remmina password is the Master/Principal Password, that is used to protect Remmina from unauthorized use.
 #: data/ui/remmina_preferences.glade:1983
-#, fuzzy
-#| msgid "Set new password"
 msgid "Require to view passwords"
-msgstr "Agordi novan pasvorton"
+msgstr "Postuli por vidi pasvortojn"
 
 #: data/ui/remmina_preferences.glade:2039
 msgid "Encryption"
@@ -5122,16 +4937,12 @@ msgid "Pick a terminal colouring file"
 msgstr "Elekti dosieron de terminalaj koloroj"
 
 #: data/ui/remmina_preferences.glade:2382
-#, fuzzy
-#| msgid "Colour theme"
 msgid "Remove colour theme"
-msgstr "Koloretoso"
+msgstr "Forigi koloretoson"
 
 #: data/ui/remmina_preferences.glade:2396
-#, fuzzy
-#| msgid "_Remove"
 msgid "Remove"
-msgstr "_Forigi"
+msgstr "Forigi"
 
 #: data/ui/remmina_preferences.glade:2411
 msgid "Bright colours"
@@ -5258,11 +5069,11 @@ msgstr "Preferoj pri Remmina"
 
 #: data/ui/remmina_bug_report.glade:43
 msgid "Include System Info"
-msgstr ""
+msgstr "Inkluzivi sistemajn informojn"
 
 #: data/ui/remmina_bug_report.glade:59
 msgid "Include Debug Data"
-msgstr ""
+msgstr "Inkluzivi datenojn por sencimigo"
 
 #: data/ui/remmina_bug_report.glade:75
 msgid "Submit"
@@ -5295,10 +5106,8 @@ msgid ""
 msgstr ""
 
 #: data/ui/remmina_bug_report.glade:296
-#, fuzzy
-#| msgid "Remmina password"
 msgid "Remmina Report Bug"
-msgstr "Pasvorto de Remmina"
+msgstr "Raporti cimon de Remmina"
 
 #: data/ui/remmina_unlock.glade:30
 msgid "Unlock Remmina"
@@ -5362,7 +5171,7 @@ msgstr "Elporti"
 
 #: data/ui/remmina_main.glade:349
 msgid "Report Bug"
-msgstr ""
+msgstr "Raporti cimon"
 
 #: data/ui/remmina_main.glade:366
 msgid "Make Remmina your default remote desktop client"
@@ -5492,28 +5301,20 @@ msgid "Confirm password"
 msgstr "Konfirmi pasvorton"
 
 #: data/ui/remmina_mpc.glade:320
-#, fuzzy
-#| msgid "Username"
 msgid "Gateway Username"
-msgstr "Salutnomo"
+msgstr "Kluza salutnomo"
 
 #: data/ui/remmina_mpc.glade:349
-#, fuzzy
-#| msgid "Remote Desktop Gateway domain"
 msgid "Gateway Domain"
-msgstr "Reteja adreso de Forakomputila Kluzo"
+msgstr "Kluza reteja adreso"
 
 #: data/ui/remmina_mpc.glade:415
-#, fuzzy
-#| msgid "Master password"
 msgid "Gateway Password"
-msgstr "Ĉefpasvorto"
+msgstr "Kluza pasvorto"
 
 #: data/ui/remmina_mpc.glade:440
-#, fuzzy
-#| msgid "Confirm password"
 msgid "Confirm Gateway Password"
-msgstr "Konfirmi pasvorton"
+msgstr "Konfirmi kluzan pasvorton"
 
 #. A column table with multiple check-boxes
 #: data/ui/remmina_mpc.glade:503
@@ -5537,12 +5338,9 @@ msgid "Domain\\Username"
 msgstr "Retejo\\Salutnomo"
 
 #: data/ui/remmina_mpc.glade:548
-#, fuzzy
-#| msgctxt "Multi password changer table"
-#| msgid "Domain\\Username"
 msgctxt "Multi password changer table"
 msgid "Gateway Domain\\Username"
-msgstr "Retejo\\Salutnomo"
+msgstr "Kluza Retejo\\Salutnomo"
 
 #: data/ui/remmina_mpc.glade:588
 msgid "<span weight='bold' size='larger'>Multi Password Changer</span>"
