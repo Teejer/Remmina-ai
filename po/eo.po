@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Remmina v1.4.3\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-10-03 14:51+0000\n"
+"PO-Revision-Date: 2026-10-03 21:51+0000\n"
 "Last-Translator: phlostically <phlostically@mailinator.com>\n"
 "Language-Team: Esperanto <https://hosted.weblate.org/projects/remmina/"
 "remmina/eo/>\n"
@@ -1923,7 +1923,7 @@ msgstr "Rulumita plenekrana reĝimo"
 
 #: src/rcw.c:1558
 msgid "Keep aspect ratio when scaled"
-msgstr "Konservu proporcion dum skalŝanĝado"
+msgstr "Konservu ekranformaton dum skalŝanĝado"
 
 #: src/rcw.c:1566
 msgid "Fill client window when scaled"
@@ -4175,6 +4175,11 @@ msgid ""
 "  • 16:9 corresponds roughly to 1.7777, 4:3 corresponds roughly to 1.333\n"
 "  • The default value of 0 does not enforce any aspect ratio"
 msgstr ""
+"Ŝlosi la ekranformaton, se dinamika distingivo estas ŝaltita:\n"
+"\n"
+"  • La ekranformato tajpiĝu kun decimala punkto, ekz. 1.777\n"
+"  • 16:9 estas proksimume 1.7777, kaj 4:3 estas proksimume 1.333\n"
+"  • La apriora valoro de 0 ne devigas ajnan ekranformaton"
 
 #: plugins/vnc/vnc_plugin.c:2116
 #, fuzzy
@@ -4221,7 +4226,7 @@ msgstr "Anstataŭigi antaŭfiksitajn VNC-kodadojn"
 
 #: plugins/vnc/vnc_plugin.c:2182
 msgid "Dynamic resolution enforced aspect ratio"
-msgstr ""
+msgstr "Ekranformato laŭ dinamika distingivo"
 
 #: plugins/vnc/vnc_plugin.c:2184
 msgid "TCP_USER_TIMEOUT length (seconds)"
