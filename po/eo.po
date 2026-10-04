@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Remmina v1.4.3\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-10-03 23:45+0000\n"
+"PO-Revision-Date: 2026-10-04 20:51+0000\n"
 "Last-Translator: phlostically <phlostically@mailinator.com>\n"
 "Language-Team: Esperanto <https://hosted.weblate.org/projects/remmina/"
 "remmina/eo/>\n"
@@ -3390,7 +3390,7 @@ msgstr "Ebligi plurmonitorecon"
 
 #: plugins/rdp/rdp_plugin.c:3248
 msgid "Force multi monitor when toggled"
-msgstr ""
+msgstr "Devigi plurekranecon post baskulo"
 
 #: plugins/rdp/rdp_plugin.c:3249
 msgid "Span screen over multiple monitors"
@@ -3671,7 +3671,7 @@ msgstr "Subteni kluzan retkonektinterfacon"
 
 #: plugins/rdp/rdp_plugin.c:3333
 msgid "Update framebuffer even when not visible"
-msgstr ""
+msgstr "Ĝisdatigi bufron, eĉ se ĝi ne estas videbla"
 
 #: plugins/rdp/rdp_plugin.c:3334
 msgid "Allow sending empty password"
@@ -4156,7 +4156,6 @@ msgstr ""
 "  • La apriora valoro de 0 ne devigas ajnan ekranformaton"
 
 #: plugins/vnc/vnc_plugin.c:2116
-#, fuzzy
 msgid ""
 "Overriding the pre-set VNC encoding quality:\n"
 "\n"
@@ -4168,16 +4167,15 @@ msgid ""
 "  • “Best (slowest)” sets encoding to “copyrect zrle ultra zlib hextile "
 "corre rre raw”"
 msgstr ""
-"Anstataŭigi la antaŭfiksitan VNC-kodigan kvaliton:\n"
+"Anstataŭigi la aprioran VNC-kodan kvaliton:\n"
 "\n"
-"  • \"Malbona (plej rapida)\" agordas kodigon al \"kopyrect zlib hextile "
-"raw\"\n"
-"  • \"Mediumo\" agordas kodigon al \"tight zrle ultra copyrect hextile zlib "
-"corre rre raw\"\n"
-"  • \"Bona\" agordas kodigon al \"tight zrle ultra copyrect hextile zlib "
-"corre rre raw\"\n"
-"  • \"Plej bona (plej malrapida)\" agordas kodigon al \"kopyrect zrle ultra "
-"zlib hextile corre rre raw\""
+"  • «Malbone (plej rapide)» uzas la kodon «copyrect zlib hextile raw»\n"
+"  • «Mezbone» uzas la kodon «tight zrle ultra copyrect hextile zlib corre "
+"rre raw»\n"
+"  • «Bone» uzas la kodon «tight zrle ultra copyrect hextile zlib corre rre "
+"raw»\n"
+"  • «Plej bone (plej malrapide)» uzas la kodon «copyrect zrle ultra zlib "
+"hextile corre rre raw»"
 
 #: plugins/vnc/vnc_plugin.c:2125
 msgid ""
@@ -4609,7 +4607,7 @@ msgstr "Starti kun dinamika ekrandistingivo apriore, se tio eblas"
 
 #: data/ui/remmina_preferences.glade:917
 msgid "Multimonitor: performs adjustments on the toolbar position"
-msgstr ""
+msgstr "Plurekrane: adapti la pozicion de la ilobreto"
 
 #: data/ui/remmina_preferences.glade:941
 msgid "“Grab all keyboard events” status colour"
@@ -4688,7 +4686,7 @@ msgstr "Sendi tondujon kiel klavofrapojn"
 
 #: data/ui/remmina_preferences.glade:1581
 msgid "Send-clipboard"
-msgstr ""
+msgstr "Sendi tondujon"
 
 #: data/ui/remmina_preferences.glade:1611
 msgid "Keyboard"
@@ -4761,10 +4759,12 @@ msgid ""
 "Time in seconds before Remmina will lock the session and asks for a password "
 "again. Default: 300 Seconds."
 msgstr ""
+"Daŭro en sekundoj, post kiam Remmina ŝlosos la seancon kaj repetos "
+"pasvorton. Apriore: 300 sekundoj."
 
 #: data/ui/remmina_preferences.glade:1885
 msgid "Set and use a secret key to protect Remmina from unauthorized use."
-msgstr ""
+msgstr "Starigi kaj uzi sekretan ŝlosilon, por protekti Remmina kontraŭ fiuzo."
 
 #: data/ui/remmina_preferences.glade:1890
 msgid "Remmina password"
@@ -5083,6 +5083,8 @@ msgid ""
 "Clicking \"Submit\" will send this to Remmina's GitLab page and "
 "automatically create a new issue on the issue tracker."
 msgstr ""
+"Se vi alklakos «Submeti», tio inkluziviĝos en aŭtomate kreota cimpaĝo ĉe la "
+"GitLab-paĝo de Remmina."
 
 #: data/ui/remmina_bug_report.glade:296
 msgid "Remmina Report Bug"
