@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Remmina v1.4.3\n"
 "Report-Msgid-Bugs-To: l10n@lists.remmina.org\n"
 "POT-Creation-Date: 2025-12-10 23:08+0900\n"
-"PO-Revision-Date: 2026-10-04 20:51+0000\n"
+"PO-Revision-Date: 2026-10-05 02:51+0000\n"
 "Last-Translator: phlostically <phlostically@mailinator.com>\n"
 "Language-Team: Esperanto <https://hosted.weblate.org/projects/remmina/"
 "remmina/eo/>\n"
@@ -1443,6 +1443,11 @@ msgid ""
 "Example: <-l username -p port>\n"
 "<-l user localhost> would not set localhost as there is no flag"
 msgstr ""
+"Superregas ĉiujn aliajn opciojn\n"
+"Ne ĉiuj opcioj estas subtenataj\n"
+"Nur akceptas parojn de flagoj-argumentoj\n"
+"Ekzemple: <-l salutnomo -p pordo>\n"
+"<-l salutnomo localhost> ne agordus localhost, ĉar la flago mankas"
 
 #: src/remmina_file_editor.c:1559 plugins/rdp/rdp_plugin.c:3286
 msgid "Start-up path"
@@ -3810,6 +3815,7 @@ msgstr "FreeRDP auth-pkg-list"
 #: plugins/rdp/rdp_settings.c:743
 msgid "Authentication package filter(comma-separated list, use '!' to exclude)"
 msgstr ""
+"Pako-filtrilo pri aŭtentikigo (kome apartigita listo; uzu «!» por ekskluzivi)"
 
 #: plugins/tool_hello_world/plugin_config.h:40
 msgid "Hello, World!"
@@ -4572,6 +4578,8 @@ msgid ""
 "Automatically switch between the light and dark theme to match the desktop "
 "setting, and keep in sync when it changes."
 msgstr ""
+"Aŭtomate ŝanĝi inter la hela kaj malhela etosoj, sinkronigante al la "
+"labortabla agordo."
 
 #: data/ui/remmina_preferences.glade:850
 msgid "Prefer dark theme"
@@ -4591,11 +4599,11 @@ msgstr "Ĉiam montri notojn"
 
 #: data/ui/remmina_preferences.glade:853
 msgid "Add a column displaying any notes associated with a connection."
-msgstr ""
+msgstr "Aldoni kolumnon de notoj asociitaj al konekto."
 
 #: data/ui/remmina_preferences.glade:866
 msgid "Display message prompts on the left side of the screen"
-msgstr ""
+msgstr "Montri mesaĝosciigojn ĉe la maldekstro de la ekrano"
 
 #: data/ui/remmina_preferences.glade:883
 msgid "If supported, launch in fullscreen by default"
