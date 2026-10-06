@@ -2598,15 +2598,30 @@ static void rcw_toolbar_reconnect(GtkToolItem *toggle, RemminaConnectionWindow *
 {
 	TRACE_CALL(__func__);
 	RemminaConnectionObject *cnnobj;
+	gchar *filename = NULL;
+	RemminaFile *remminafile = NULL;
 
 	if (cnnwin->priv->toolbar_is_reconfiguring)
 		return;
 	if (!(cnnobj = rcw_get_visible_cnnobj(cnnwin))) return;
-	if (cnnobj->connected){
-		cnnobj->remmina_file= remmina_file_load(cnnobj->remmina_file->filename);
+	if (!cnnobj->remmina_file) return;
+
+	if (cnnobj->remmina_file->filename) {
+		filename = g_strdup(cnnobj->remmina_file->filename);
+	} else {
+		remminafile = remmina_file_dup(cnnobj->remmina_file);
+	}
+
+	if (cnnobj->connected) {
 		rcw_toolbar_disconnect(toggle, cnnwin);
 	}
-	rcw_open_from_file(cnnobj->remmina_file);
+
+	if (filename) {
+		rcw_open_from_filename(filename);
+		g_free(filename);
+	} else if (remminafile) {
+		rcw_open_from_file(remminafile);
+	}
 }
 
 static void rcw_toolbar_grab(GtkToolItem *toggle, RemminaConnectionWindow *cnnwin)
@@ -5217,6 +5232,10 @@ GtkWidget *rcw_open_from_file_full(RemminaFile *remminafile, GCallback disconnec
 
 	if (disconnect_cb) {
 		g_print("disconnect_cb is deprecated inside rcw_open_from_file_full() and should be null\n");
+		return NULL;
+	}
+
+	if (!remminafile) {
 		return NULL;
 	}
 
