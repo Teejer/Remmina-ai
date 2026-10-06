@@ -518,6 +518,9 @@ remmina_file_get_string(RemminaFile *remminafile, const gchar *setting)
 	TRACE_CALL(__func__);
 	gchar *value;
 
+	if (!remminafile || !setting)
+		return NULL;
+
 	/* Returned value is a pointer to the string stored on the hash table,
 	 * please do not free it or the hash table will contain invalid pointer */
 	if (!remmina_masterthread_exec_is_main_thread()) {
@@ -596,6 +599,9 @@ gint remmina_file_get_int(RemminaFile *remminafile, const gchar *setting, gint d
 	TRACE_CALL(__func__);
 	gchar *value;
 	gint r;
+
+	if (!remminafile || !setting)
+		return default_value;
 
 	value = g_hash_table_lookup(remminafile->settings, setting);
 
