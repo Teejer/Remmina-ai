@@ -592,6 +592,19 @@ static void remmina_ssh_keystroke(RemminaProtocolWidget *gp, const guint keystro
 	return;
 }
 
+/* The VteTerminal of a live SSH session (used by the AI panel), or NULL */
+GtkWidget *remmina_ssh_plugin_get_vte(RemminaProtocolWidget *gp)
+{
+	RemminaPluginSshData *gpdata;
+
+	if (!gp || !REMMINA_IS_PROTOCOL_WIDGET(gp))
+		return NULL;
+	gpdata = GET_PLUGIN_DATA(gp);
+	if (!gpdata || !gpdata->vte || gpdata->closed)
+		return NULL;
+	return gpdata->vte;
+}
+
 
 /* regex */
 

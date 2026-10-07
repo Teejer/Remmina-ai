@@ -47,6 +47,7 @@ set(APPICONSCALE_ACTIONS_DATA
     scalable/actions/org.remmina.Remmina-fullscreen-symbolic.svg
     scalable/actions/org.remmina.Remmina-multi-monitor-symbolic.svg
     scalable/actions/org.remmina.Remmina-go-bottom-symbolic.svg
+    scalable/actions/org.remmina.Remmina-ai-symbolic.svg
     scalable/actions/org.remmina.Remmina-keyboard-symbolic.svg
     scalable/actions/org.remmina.Remmina-pan-down-symbolic.svg
     scalable/actions/org.remmina.Remmina-pan-up-symbolic.svg

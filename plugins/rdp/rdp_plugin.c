@@ -3240,6 +3240,18 @@ static gpointer mouse_jitter_list[] =
 	NULL
 };
 
+/* How the session adapts when the AI panel docks beside it (see
+ * rcw_ai_apply_fit in rcw.c). Empty value = protocol default
+ * (dynamic resolution for RDP, scaling for VNC). */
+static gpointer ai_fit_list[] =
+{
+	"",       N_("Default (dynamic resolution)"),
+	"dynres", N_("Dynamic resolution — remote re-renders at the new size"),
+	"scaled", N_("Scale to fit — shrink the existing picture"),
+	"scroll", N_("Do nothing — session scrolls behind the panel"),
+	NULL
+};
+
 static gpointer idle_keypress_time_list[] =
 {
 	"No",	  N_("No"),
@@ -3400,6 +3412,7 @@ static const RemminaProtocolSetting remmina_rdp_basic_settings[] =
 static const RemminaProtocolSetting remmina_rdp_advanced_settings[] =
 {
 	{ REMMINA_PROTOCOL_SETTING_TYPE_SELECT,	  "quality",		    N_("Quality"),					 FALSE, quality_list,	  NULL														 },
+	{ REMMINA_PROTOCOL_SETTING_TYPE_SELECT,	  "ai_fit",		    N_("AI panel fit"),				 FALSE, ai_fit_list,	  NULL														 },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_SELECT,	  "security",		    N_("Security protocol negotiation"),		 FALSE, security_list,	  NULL														 },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_SELECT,	  "gwtransp",		    N_("Gateway transport type"),			 FALSE, gwtransp_list,	  NULL														 },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_SELECT,	  "tls-seclevel",	    N_("TLS Security Level"),			 	 FALSE, tls_seclevel,	  NULL														 },

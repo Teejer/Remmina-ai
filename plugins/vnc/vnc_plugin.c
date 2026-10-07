@@ -1959,6 +1959,45 @@ static void remmina_plugin_vnc_keystroke(RemminaProtocolWidget *gp, const guint 
 	return;
 }
 
+/* Provides the current remote framebuffer to the RCW screenshot action and
+ * to the AI panel. Copies the plugin's own ARGB32 image surface. */
+static gboolean remmina_plugin_vnc_get_screenshot(RemminaProtocolWidget *gp,
+						  RemminaPluginScreenshotData *rpsd)
+{
+	RemminaPluginVncData *gpdata = GET_PLUGIN_DATA(gp);
+	cairo_surface_t *surface;
+	guchar *data;
+	gint width, height, stride;
+	unsigned char *buf;
+
+	if (!gpdata || !gpdata->rgb_buffer || !gpdata->running)
+		return FALSE;
+
+	LOCK_BUFFER(TRUE)
+	surface = gpdata->rgb_buffer;
+	width = cairo_image_surface_get_width(surface);
+	height = cairo_image_surface_get_height(surface);
+	stride = cairo_image_surface_get_stride(surface);
+	data = cairo_image_surface_get_data(surface);
+
+	buf = (unsigned char *)malloc((size_t)stride * height);
+	if (!buf) {
+		UNLOCK_BUFFER(TRUE)
+		return FALSE;
+	}
+	cairo_surface_flush(surface);
+	memcpy(buf, data, (size_t)stride * height);
+	UNLOCK_BUFFER(TRUE)
+
+	rpsd->buffer = buf;
+	rpsd->width = width;
+	rpsd->height = height;
+	rpsd->bitsPerPixel = 32;
+	rpsd->bytesPerPixel = 4;
+	/* Returning TRUE instructs the caller to free rpsd->buffer */
+	return TRUE;
+}
+
 #if LIBVNCSERVER_CHECK_VERSION_VERSION(0, 9, 14)
 static gboolean remmina_plugin_vnc_on_size_allocate(GtkWidget *widget, GtkAllocation *alloc, RemminaProtocolWidget *gp)
 {
@@ -2098,6 +2137,17 @@ static gpointer quality_list[] =
 	NULL
 };
 
+/* How the session adapts when the AI panel docks beside it (see
+ * rcw_ai_apply_fit in rcw.c). Empty value = scale to fit. */
+static gpointer vnc_ai_fit_list[] =
+{
+	"",       N_("Default (scale to fit)"),
+	"scaled", N_("Scale to fit — shrink the existing picture"),
+	"dynres", N_("Dynamic resolution — ask the server to resize"),
+	"scroll", N_("Do nothing — session scrolls behind the panel"),
+	NULL
+};
+
 static gchar repeater_tooltip[] =
 	N_("Connect to VNC using a repeater:\n"
 	   "  • The server field must contain the repeater ID, e.g. ID:123456789\n"
@@ -2189,6 +2239,7 @@ static const RemminaProtocolSetting remmina_plugin_vnci_basic_settings[] =
 static const RemminaProtocolSetting remmina_plugin_vnc_advanced_settings[] =
 {
 	{ REMMINA_PROTOCOL_SETTING_TYPE_TEXT,  "encodings",	   N_("Override pre-set VNC encodings"),	       FALSE, NULL, vncencodings_tooltip },
+	{ REMMINA_PROTOCOL_SETTING_TYPE_SELECT, "ai_fit",	   N_("AI panel fit"),			       FALSE, vnc_ai_fit_list, NULL },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_TEXT,  "aspect_ratio", N_("Dynamic resolution enforced aspect ratio"), FALSE, NULL, aspect_ratio_tooltip },
 #ifdef TCP_USER_TIMEOUT
 	{ REMMINA_PROTOCOL_SETTING_TYPE_INT,  "vnc_timeout", N_("TCP_USER_TIMEOUT length (seconds)"), FALSE, NULL, vnc_timeout_tooltip },
@@ -2248,7 +2299,10 @@ static RemminaProtocolPlugin remmina_plugin_vnc =
 	remmina_plugin_vnc_close_connection,            // Plugin close connection
 	remmina_plugin_vnc_query_feature,               // Query for available features
 	remmina_plugin_vnc_call_feature,                // Call a feature
-	remmina_plugin_vnc_keystroke                    // Send a keystroke
+	remmina_plugin_vnc_keystroke,                   // Send a keystroke
+	remmina_plugin_vnc_get_screenshot,              // Screenshot
+	NULL,                                           // RCW map event
+	NULL                                            // RCW unmap event
 };
 
 /* Protocol plugin definition and features */
@@ -2271,7 +2325,7 @@ static RemminaProtocolPlugin remmina_plugin_vnci =
 	remmina_plugin_vnc_query_feature,               // Query for available features
 	remmina_plugin_vnc_call_feature,                // Call a feature
 	remmina_plugin_vnc_keystroke,                   // Send a keystroke
-	NULL,                                           // No screenshot support available
+	remmina_plugin_vnc_get_screenshot,              // Screenshot
 	NULL,                                           // RCW map event
 	NULL                                            // RCW unmap event
 };

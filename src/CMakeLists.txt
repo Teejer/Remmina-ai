@@ -99,6 +99,8 @@ list(
   "remmina_sftp_plugin.h"
   "remmina_sodium.c"
   "remmina_sodium.h"
+  "remmina_ai_panel.c"
+  "remmina_ai_panel.h"
   "remmina_curl_connector.c"
   "remmina_curl_connector.h"
   "remmina_ssh.c"

@@ -71,6 +71,9 @@ void remmina_plugin_ssh_vte_paste_clipboard(GtkMenuItem *menuitem, gpointer vte)
 void remmina_plugin_ssh_vte_decrease_font(GtkMenuItem *menuitem, gpointer vte);
 void remmina_plugin_ssh_vte_increase_font(GtkMenuItem *menuitem, gpointer vte);
 gboolean remmina_ssh_plugin_popup_menu(GtkWidget *widget, GdkEvent *event, GtkWidget *menu);
+
+/* The VteTerminal of a live SSH session (for the AI panel), or NULL */
+GtkWidget *remmina_ssh_plugin_get_vte(RemminaProtocolWidget *gp);
 #endif
 
 G_END_DECLS

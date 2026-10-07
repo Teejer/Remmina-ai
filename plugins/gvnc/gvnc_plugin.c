@@ -155,29 +155,45 @@ static void gvnc_plugin_on_vnc_error(GtkWidget *vncdisplay G_GNUC_UNUSED, const 
 	gpdata->error_msg = g_strdup(msg);
 }
 
-static gboolean gvnc_plugin_get_screenshot(RemminaProtocolWidget *gp, RemminaPluginScreenshotData *rpsd) __attribute__ ((unused));
 static gboolean gvnc_plugin_get_screenshot(RemminaProtocolWidget *gp, RemminaPluginScreenshotData *rpsd)
 {
 	GVncPluginData *gpdata = GET_PLUGIN_DATA(gp);
-	const VncPixelFormat *currentFormat;
+	GdkPixbuf *pix;
+	const guchar *pixels;
+	gint width, height, rowstride;
+	size_t rowbytes;
+	gint y;
 
-	if (!gpdata)
+	if (!gpdata || !gpdata->vnc)
 		return FALSE;
 
-	/* Get current pixel format for server */
-	currentFormat = vnc_connection_get_pixel_format(gpdata->conn);
+	pix = vnc_display_get_pixbuf(VNC_DISPLAY(gpdata->vnc));
+	if (!pix)
+		return FALSE;
 
+	width = gdk_pixbuf_get_width(pix);
+	height = gdk_pixbuf_get_height(pix);
+	rowstride = gdk_pixbuf_get_rowstride(pix);
+	rowbytes = (size_t)width * 4;
 
-	GdkPixbuf *pix = vnc_display_get_pixbuf(VNC_DISPLAY(gpdata->vnc));
+	rpsd->buffer = (unsigned char *)malloc(rowbytes * height);
+	if (!rpsd->buffer) {
+		g_object_unref(pix);
+		return FALSE;
+	}
+	pixels = gdk_pixbuf_get_pixels(pix);
+	for (y = 0; y < height; y++)
+		memcpy(rpsd->buffer + (size_t)y * rowbytes,
+		       pixels + (size_t)y * rowstride, rowbytes);
 
-	rpsd->width = gdk_pixbuf_get_width(pix);
-	rpsd->height = gdk_pixbuf_get_height(pix);
-	rpsd->bitsPerPixel = currentFormat->bits_per_pixel;
-	rpsd->bytesPerPixel = rpsd->bitsPerPixel / 8;
+	rpsd->width = width;
+	rpsd->height = height;
+	/* GdkPixbuf from gtk-vnc is always 8-bit RGB(A) */
+	rpsd->bitsPerPixel = 32;
+	rpsd->bytesPerPixel = 4;
 
-
-
-	/* Returning TRUE instruct also the caller to deallocate rpsd->buffer */
+	g_object_unref(pix);
+	/* Returning TRUE instructs also the caller to deallocate rpsd->buffer */
 	return TRUE;
 }
 
@@ -838,8 +854,20 @@ static const RemminaProtocolSetting gvnc_plugin_basic_settings[] =
  * e) Values for REMMINA_PROTOCOL_SETTING_TYPE_SELECT or REMMINA_PROTOCOL_SETTING_TYPE_COMBO
  * f) Setting Tooltip
  */
+/* How the session adapts when the AI panel docks beside it (see
+ * rcw_ai_apply_fit in rcw.c). Empty value = scale to fit. */
+static gpointer gvnc_ai_fit_list[] =
+{
+	"",       N_("Default (scale to fit)"),
+	"scaled", N_("Scale to fit — shrink the existing picture"),
+	"dynres", N_("Dynamic resolution — ask the server to resize"),
+	"scroll", N_("Do nothing — session scrolls behind the panel"),
+	NULL
+};
+
 static const RemminaProtocolSetting gvnc_plugin_advanced_settings[] =
 {
+	{ REMMINA_PROTOCOL_SETTING_TYPE_SELECT, "ai_fit",	     N_("AI panel fit"),		            FALSE, gvnc_ai_fit_list, NULL },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK, "disableclipboard",	     N_("No clipboard sync"),	        TRUE,  NULL, NULL },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK, "disablepasswordstoring", N_("Forget passwords after use"),  FALSE, NULL, NULL },
 	{ REMMINA_PROTOCOL_SETTING_TYPE_CHECK, "disableserverbell",	     N_("Ignore remote bell messages"), TRUE,  NULL, NULL },
@@ -898,8 +926,7 @@ static RemminaProtocolPlugin remmina_plugin = {
 	gvnc_plugin_query_feature,              // Query for available features
 	gvnc_plugin_call_feature,               // Call a feature
 	gvnc_plugin_keystroke,                  // Send a keystroke
-	NULL,                                   // No screenshot support available
-	//gvnc_plugin_get_screenshot,             // No screenshot support available
+	gvnc_plugin_get_screenshot,             // Screenshot
 	NULL,                                   // RCW map event
 	NULL                                    // RCW unmap event
 };

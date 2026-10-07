@@ -68,6 +68,7 @@
 #include "remmina_utils.h"
 #include "remmina_widget_pool.h"
 #include "rcw_platform.h"
+#include "remmina_ai_panel.h"
 #include "remmina/remmina_trace_calls.h"
 
 #ifdef GDK_WINDOWING_WAYLAND
@@ -140,6 +141,8 @@ struct _RemminaConnectionWindowPriv {
 	GtkToolItem *					toolitem_duplicate;
 	GtkToolItem *					toolitem_screenshot;
 	GtkToolItem *					toolitem_edit_pref;
+	GtkToolItem *					toolitem_ai;
+	gboolean					ai_visible;
 	GtkWidget *					fullscreen_option_button;
 	GtkWidget *					fullscreen_scaler_button;
 	GtkWidget *					scaler_option_button;
@@ -192,6 +195,9 @@ typedef struct _RemminaConnectionObject {
 	gboolean			connected;
 	gboolean			dynres_unlocked;
 
+	/* Per-session AI panel (docked in the window grid when visible) */
+	GtkWidget *			ai_panel;
+
 	gulong				deferred_open_size_allocate_handler;
 } RemminaConnectionObject;
 
@@ -229,6 +235,12 @@ static void rcw_show_widget_areas(RemminaConnectionWindow*priv);
 static void rcw_iconify_widget_areas(RemminaConnectionWindow*priv);
 static void rcw_restore_widget_areas(RemminaConnectionWindow*priv);
 static void rcw_dispose_widget_areas(RemminaConnectionWindowPriv*priv);
+
+static void rcw_ai_ensure_panel(RemminaConnectionWindow *cnnwin,
+				RemminaConnectionObject *cnnobj);
+static void rcw_ai_apply_fit(RemminaConnectionObject *cnnobj, gboolean fit);
+static void rcw_ai_update_visibility(RemminaConnectionWindow *cnnwin,
+				     RemminaConnectionObject *hint);
 
 static const GtkTargetEntry dnd_targets_ftb[] =
 {
@@ -2571,6 +2583,410 @@ static void rcw_toolbar_screenshot(GtkToolItem *toggle, RemminaConnectionWindow 
 	cairo_surface_destroy(surface);
 }
 
+/* Public accessor: the connected protocol widget currently visible in
+ * this window, or NULL (used by the AI panel) */
+RemminaProtocolWidget *rcw_get_active_protocol_widget(RemminaConnectionWindow *cnnwin)
+{
+	RemminaConnectionObject *cnnobj;
+
+	if (!cnnwin || !cnnwin->priv)
+		return NULL;
+	cnnobj = rcw_get_visible_cnnobj(cnnwin);
+	if (!cnnobj || !cnnobj->connected || !cnnobj->proto)
+		return NULL;
+	return REMMINA_PROTOCOL_WIDGET(cnnobj->proto);
+}
+
+/* Ensure cnnobj has an AI panel docked in the window grid. */
+/* The RDP drawing area consumes button-press events (returns TRUE) and
+ * never grabs focus there — stock Remmina relies on focus being set once
+ * at tab switch. Once the AI panel exists, a click into its entry steals
+ * the keyboard and clicking back onto the remote desktop never wins it
+ * back. Worse, "button-press-event" carries GTK's
+ * _gtk_boolean_handled_accumulator: the emission STOPS as soon as any
+ * handler returns TRUE — the plugin's handler (connected when the
+ * connection starts, so always ahead of anything we add later) eats
+ * every click, and everything after it — including GTK's own
+ * focus-on-click class closure — never runs. There is no
+ * "connect_before" in GLib; the only hook that fires before all handlers
+ * and cannot be short-circuited is an emission hook. It grabs focus for
+ * the session and returns TRUE so the emission proceeds to the plugin
+ * untouched. */
+static gboolean
+rcw_ai_click_focus_hook(GSignalInvocationHint *ihint, guint n_param_values,
+			const GValue *param_values, gpointer data)
+{
+	GtkWidget *gp = GTK_WIDGET(data), *inst, *child, *toplevel, *focus;
+
+	(void)ihint;
+	/* Emission hooks are process-wide for the signal: only act on
+	 * presses on or inside our session widget */
+	if (n_param_values < 2 ||
+	    !G_TYPE_CHECK_VALUE_TYPE(&param_values[1], GDK_TYPE_EVENT))
+		return TRUE;
+	if (!GTK_IS_WIDGET(gp))
+		return FALSE;   /* our session died, unhook */
+	inst = GTK_WIDGET(g_value_get_object(&param_values[0]));
+	if (!GTK_IS_WIDGET(inst) || !gtk_widget_is_ancestor(inst, gp))
+		return TRUE;    /* click elsewhere, hands off */
+	if (((GdkEvent *)g_value_get_boxed(&param_values[1]))->type
+	    != GDK_BUTTON_PRESS)
+		return TRUE;
+
+	child = gtk_bin_get_child(GTK_BIN(gp));
+	toplevel = gtk_widget_get_toplevel(gp);
+	if (!GTK_IS_WINDOW(toplevel))
+		return TRUE;
+	focus = gtk_window_get_focus(GTK_WINDOW(toplevel));
+	if (child && focus != child)
+		remmina_protocol_widget_grab_focus(
+				REMMINA_PROTOCOL_WIDGET(gp));
+	return TRUE;
+}
+
+/* Idempotent: (re)installs after reconnects, which rebuild the child.
+ * The hook self-removes (returns FALSE) once its protocol widget dies,
+ * so it needs no explicit teardown. */
+static void
+rcw_ai_connect_focus_click(RemminaConnectionObject *cnnobj)
+{
+	GtkWidget *gp, *child;
+
+	if (!cnnobj || !cnnobj->proto || !GTK_IS_WIDGET(cnnobj->proto))
+		return;
+	gp = GTK_WIDGET(cnnobj->proto);
+	child = gtk_bin_get_child(GTK_BIN(gp));
+	if (!child || !GTK_IS_WIDGET(child) ||
+	    g_object_get_data(G_OBJECT(child), "ai-focus-click"))
+		return;
+	g_object_set_data(G_OBJECT(child), "ai-focus-click",
+			  GINT_TO_POINTER(1));
+	g_signal_add_emission_hook(
+		g_signal_lookup("button-press-event", GTK_TYPE_WIDGET), 0,
+		rcw_ai_click_focus_hook, gp, NULL);
+}
+
+/* The panel widget can be destroyed before its cnnobj (closing the window
+ * tears the grid down while the connection objects are freed later during
+ * disconnect cleanup). Keep the back-pointer clean so cnnobj teardown never
+ * touches freed memory. */
+static void
+rcw_ai_panel_freed(GtkWidget *panel, gpointer cnnobj)
+{
+	(void)panel;
+	((RemminaConnectionObject *)cnnobj)->ai_panel = NULL;
+}
+
+static void rcw_ai_ensure_panel(RemminaConnectionWindow *cnnwin,
+				RemminaConnectionObject *cnnobj)
+{
+	RemminaConnectionWindowPriv *priv = cnnwin->priv;
+	GtkWidget *anchor;
+	gboolean migrated;
+
+	if (!cnnobj)
+		return;
+	migrated = (cnnobj->ai_panel &&
+		    !gtk_widget_get_parent(cnnobj->ai_panel) &&
+		    g_object_get_data(G_OBJECT(cnnobj), "ai-panel-held"));
+	if (cnnobj->ai_panel && gtk_widget_get_parent(cnnobj->ai_panel))
+		return;   /* already docked here */
+	if (cnnobj->ai_panel && !migrated) {
+		/* panel widget survived its container somehow, and we hold
+		 * no keep-alive reference on it — rebuild */
+		gtk_widget_destroy(cnnobj->ai_panel);
+		cnnobj->ai_panel = NULL;
+	}
+
+	if (!cnnobj->ai_panel) {
+		cnnobj->ai_panel = remmina_ai_panel_new(cnnwin, cnnobj->proto);
+		gtk_widget_set_vexpand(cnnobj->ai_panel, TRUE);
+		gtk_widget_set_hexpand(cnnobj->ai_panel, FALSE);
+		g_signal_connect(cnnobj->ai_panel, "destroy",
+				 G_CALLBACK(rcw_ai_panel_freed), cnnobj);
+	}
+
+	/* Dock to the right of the notebook; if the toolbar is also on the
+	 * right, dock to the right of the toolbar instead so they don't
+	 * overlap in the same grid column. */
+	anchor = (remmina_pref.toolbar_placement == TOOLBAR_PLACEMENT_RIGHT) ?
+		priv->toolbar : GTK_WIDGET(priv->notebook);
+	gtk_grid_attach_next_to(GTK_GRID(priv->grid), cnnobj->ai_panel,
+				anchor, GTK_POS_RIGHT, 1, 1);
+	gtk_style_context_add_class(gtk_widget_get_style_context(cnnobj->ai_panel),
+				    "background");
+	gtk_widget_show_all(cnnobj->ai_panel);
+
+	if (migrated) {
+		/* re-docked a panel carried over from another window: its
+		 * chat history is intact; drop the keep-alive reference */
+		g_object_unref(cnnobj->ai_panel);
+		g_object_set_data(G_OBJECT(cnnobj), "ai-panel-held", NULL);
+	}
+
+	/* The panel appearing must not steal the keyboard from the
+	 * session; clicks back onto the session reclaim it (see
+	 * rcw_ai_connect_focus_click). */
+	rcw_ai_connect_focus_click(cnnobj);
+	rcw_grab_focus(cnnwin);
+
+	/* GTK 3.24.52 caches the grid's size negotiation: a child attached
+	 * after the window is mapped only gets allocated after an explicit
+	 * re-negotiation; queue_resize alone never reaches the grid. */
+	gtk_widget_queue_resize(gtk_widget_get_toplevel(GTK_WIDGET(priv->grid)));
+	gtk_container_check_resize(GTK_CONTAINER(priv->grid));
+}
+
+/* Show only the visible tab's panel (when the AI toggle is on), hide the
+ * rest. Called on toggle and on tab switch.
+ *
+ * `hint` is the cnnobj that is about to become visible (the "newpage" from
+ * switch-page, or a freshly-appended page). It MUST be passed from
+ * switch-page: inside that signal gtk_notebook_get_current_page() still
+ * reports the page being left (verified with a standalone GTK repro), so
+ * re-deriving the visible session here shows the wrong tab's panel and
+ * leaves the previous host's panel on screen after a new connection.
+ * Pass NULL only from contexts outside a page switch. */
+static void rcw_ai_update_visibility(RemminaConnectionWindow *cnnwin,
+				     RemminaConnectionObject *hint)
+{
+	RemminaConnectionWindowPriv *priv = cnnwin->priv;
+	RemminaConnectionObject *visible;
+	GtkWidget *page;
+	gint i, n;
+
+	if (!priv->grid || !priv->notebook)
+		return;   /* fullscreen/viewport windows have no dock grid */
+
+	n = gtk_notebook_get_n_pages(GTK_NOTEBOOK(priv->notebook));
+	visible = hint ? hint : rcw_get_visible_cnnobj(cnnwin);
+
+	/* a page that just became visible while the toggle is on (e.g. a
+	 * newly opened connection, or a tab detached in from another window
+	 * carrying its panel) gets a panel docked */
+	if (priv->ai_visible && visible &&
+	    priv->view_mode == SCROLLED_WINDOW_MODE &&
+	    (!visible->ai_panel ||
+	     !gtk_widget_get_parent(visible->ai_panel)))
+		rcw_ai_ensure_panel(cnnwin, visible);
+
+	for (i = 0; i < n; i++) {
+		RemminaConnectionObject *cnnobj;
+
+		page = gtk_notebook_get_nth_page(GTK_NOTEBOOK(priv->notebook), i);
+		cnnobj = g_object_get_data(G_OBJECT(page), "cnnobj");
+		if (!cnnobj || !cnnobj->ai_panel)
+			continue;
+		if (priv->ai_visible && cnnobj == visible) {
+			gtk_widget_show(cnnobj->ai_panel);
+			rcw_ai_apply_fit(cnnobj, TRUE);
+			/* reconnects rebuild the drawing area, so the
+			 * click-focus hook is re-checked each time a
+			 * session becomes visible (idempotent) */
+			rcw_ai_connect_focus_click(cnnobj);
+		} else {
+			gtk_widget_hide(cnnobj->ai_panel);
+			rcw_ai_apply_fit(cnnobj, FALSE);
+		}
+	}
+
+	/* the grid's cached negotiation is stale after show/hide too */
+	gtk_widget_queue_resize(gtk_widget_get_toplevel(GTK_WIDGET(priv->grid)));
+	gtk_container_check_resize(GTK_CONTAINER(priv->grid));
+
+	/* if a panel that just got hidden held the keyboard, hand focus
+	 * back to the visible session — hidden widgets silently keep the
+	 * window's focus pointer and keys would vanish */
+	{
+		GtkWidget *focus = gtk_window_get_focus(GTK_WINDOW(cnnwin));
+
+		if (focus) {
+			for (i = 0; i < n; i++) {
+				RemminaConnectionObject *cnnobj;
+
+				page = gtk_notebook_get_nth_page(
+					GTK_NOTEBOOK(priv->notebook), i);
+				cnnobj = g_object_get_data(G_OBJECT(page), "cnnobj");
+				if (!cnnobj || !cnnobj->ai_panel ||
+				    gtk_widget_is_visible(cnnobj->ai_panel))
+					continue;
+				if (gtk_widget_is_ancestor(cnnobj->ai_panel, focus)) {
+					rcw_grab_focus(cnnwin);
+					break;
+				}
+			}
+		}
+	}
+
+	/* update the visible session's panel context line */
+	if (visible && visible->ai_panel)
+		remmina_ai_panel_update(visible->ai_panel, visible->connected);
+}
+
+/* The AI panel steals width from the session's view, so while its panel
+ * is docked we make the session fit the remaining space. The fit mode
+ * is a per-connection setting: the profile key ai_fit selects it —
+ *
+ *   ai_fit = dynres   remote desktop re-renders at the new size (crisp;
+ *                     RDP only, this is the toolbar "Dynamic resolution"
+ *                     toggle). Default for RDP.
+ *   ai_fit = scaled   FreeRDP/VNC scales the existing framebuffer down
+ *                     (slightly soft). Default for VNC/GVNC.
+ *   ai_fit = scroll   leave the session alone; it scrolls behind the
+ *                     panel.
+ *
+ * The previous mode is restored when the panel hides, and a mode the
+ * user changes by hand while docked is never fought over. */
+static void rcw_ai_apply_fit(RemminaConnectionObject *cnnobj, gboolean fit)
+{
+	RemminaConnectionWindowPriv *priv;
+	RemminaScaleMode cur, want;
+	gint *saved;
+	const gchar *proto, *mode;
+	gboolean is_rdp;
+
+	if (!cnnobj || !cnnobj->proto || !cnnobj->cnnwin)
+		return;
+	proto = remmina_file_get_string(cnnobj->remmina_file, "protocol");
+	is_rdp = g_strcmp0(proto, "RDP") == 0;
+	if (!is_rdp && g_strcmp0(proto, "VNC") != 0 &&
+	    g_strcmp0(proto, "GVNC") != 0)
+		return;   /* SSH terminals and the rest don't resize */
+
+	mode = remmina_file_get_string(cnnobj->remmina_file, "ai_fit");
+	if (mode && g_ascii_strcasecmp(mode, "scroll") == 0)
+		want = REMMINA_PROTOCOL_WIDGET_SCALE_MODE_NONE;
+	else if (mode && g_ascii_strcasecmp(mode, "scaled") == 0)
+		want = REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED;
+	else if (mode && g_ascii_strcasecmp(mode, "dynres") == 0)
+		want = REMMINA_PROTOCOL_WIDGET_SCALE_MODE_DYNRES;
+	else
+		want = is_rdp ? REMMINA_PROTOCOL_WIDGET_SCALE_MODE_DYNRES
+		              : REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED;
+
+	/* Respect the same guards the toolbar toggles use (upstream commit
+	 * "Fix scalemode DYNRES being forced when it is not available"):
+	 * dynamic resolution only applies when the plugin supports it and
+	 * the session's dynres is unlocked (multimonitor locks it). Step
+	 * down to scaled, or scroll, rather than request a mode that would
+	 * be silently ignored. */
+	if (want == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_DYNRES &&
+	    !(remmina_protocol_widget_query_feature_by_type(
+                REMMINA_PROTOCOL_WIDGET(cnnobj->proto),
+                REMMINA_PROTOCOL_FEATURE_TYPE_DYNRESUPDATE) &&
+	      cnnobj->dynres_unlocked))
+		want = remmina_protocol_widget_query_feature_by_type(
+                REMMINA_PROTOCOL_WIDGET(cnnobj->proto),
+                REMMINA_PROTOCOL_FEATURE_TYPE_SCALE)
+			? REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED
+			: REMMINA_PROTOCOL_WIDGET_SCALE_MODE_NONE;
+
+	priv = cnnobj->cnnwin->priv;
+	saved = g_object_get_data(G_OBJECT(cnnobj), "ai-saved-scale");
+	cur = remmina_protocol_widget_get_current_scale_mode(
+			REMMINA_PROTOCOL_WIDGET(cnnobj->proto));
+
+	if (fit) {
+		gboolean want_scroll;
+
+		if (saved)
+			return;   /* already fitted by us */
+		want_scroll =
+			want == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_NONE;
+		if (want_scroll) {
+			/* nothing to do, but remember we were here so the
+			 * hide path stays symmetric */
+			saved = g_new(gint, 1);
+			*saved = cur;
+			g_object_set_data_full(G_OBJECT(cnnobj),
+					       "ai-saved-scale", saved,
+					       g_free);
+			return;
+		}
+		if (cur == want)
+			return;   /* already in the right mode */
+		if (!is_rdp &&
+		    cur != REMMINA_PROTOCOL_WIDGET_SCALE_MODE_NONE)
+			return;   /* VNC: respect a user-chosen mode */
+		saved = g_new(gint, 1);
+		*saved = cur;
+		g_object_set_data_full(G_OBJECT(cnnobj), "ai-saved-scale",
+				       saved, g_free);
+		rco_change_scalemode(cnnobj,
+				want == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_DYNRES,
+				want == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED);
+		/* Mirror the toolbar toggles from the mode that actually
+		 * took effect (rco_change_scalemode has its own guards) */
+		{
+			RemminaScaleMode now =
+				remmina_protocol_widget_get_current_scale_mode(
+					REMMINA_PROTOCOL_WIDGET(cnnobj->proto));
+
+			if (priv->toolitem_dynres)
+				gtk_toggle_tool_button_set_active(
+					GTK_TOGGLE_TOOL_BUTTON(priv->toolitem_dynres),
+					now == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_DYNRES);
+			if (priv->toolitem_scale)
+				gtk_toggle_tool_button_set_active(
+					GTK_TOGGLE_TOOL_BUTTON(priv->toolitem_scale),
+					now == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED);
+		}
+	} else if (saved) {
+		gint prev = *saved;
+
+		g_object_set_data(G_OBJECT(cnnobj), "ai-saved-scale", NULL);
+		if (want == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_NONE)
+			return;   /* scroll mode never changed anything */
+		/* only restore if we still own the mode (user didn't change it) */
+		if (cur == want) {
+			rco_change_scalemode(cnnobj,
+				prev == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_DYNRES,
+				prev == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED);
+			if (priv->toolitem_dynres)
+				gtk_toggle_tool_button_set_active(
+					GTK_TOGGLE_TOOL_BUTTON(priv->toolitem_dynres),
+					prev == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_DYNRES);
+			if (priv->toolitem_scale)
+				gtk_toggle_tool_button_set_active(
+					GTK_TOGGLE_TOOL_BUTTON(priv->toolitem_scale),
+					prev == REMMINA_PROTOCOL_WIDGET_SCALE_MODE_SCALED);
+		}
+	}
+}
+
+
+static void rcw_toolbar_ai(GtkToolItem *toggle, RemminaConnectionWindow *cnnwin)
+{
+	TRACE_CALL(__func__);
+	RemminaConnectionWindowPriv *priv = cnnwin->priv;
+	RemminaConnectionObject *cnnobj;
+
+	/* Don't read the toggle's active state here: inside the "clicked"
+	 * handler it can still hold the pre-click value (and gets reset by
+	 * toolbar reconfiguration on tab switches). Toggle our own flag. */
+	priv->ai_visible = !priv->ai_visible;
+
+	if (!priv->ai_visible) {
+		rcw_ai_update_visibility(cnnwin, NULL);
+		return;
+	}
+
+	if (cnnwin->priv->view_mode != SCROLLED_WINDOW_MODE) {
+		GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(cnnwin),
+				GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_OK,
+				_("The AI panel is available in windowed mode"));
+		g_signal_connect(G_OBJECT(dialog), "response", G_CALLBACK(gtk_widget_destroy), NULL);
+		gtk_widget_show(dialog);
+		gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(toggle), FALSE);
+		priv->ai_visible = FALSE;
+		return;
+	}
+
+	cnnobj = rcw_get_visible_cnnobj(cnnwin);
+	rcw_ai_ensure_panel(cnnwin, cnnobj);
+	rcw_ai_update_visibility(cnnwin, NULL);
+}
+
 static void rcw_toolbar_minimize(GtkToolItem *toggle, RemminaConnectionWindow *cnnwin)
 {
 	TRACE_CALL(__func__);
@@ -2982,13 +3398,22 @@ rcw_create_toolbar(RemminaConnectionWindow *cnnwin, gint mode, gboolean is_float
 	g_signal_connect(G_OBJECT(toolitem), "clicked", G_CALLBACK(rcw_toolbar_screenshot), cnnwin);
 	priv->toolitem_screenshot = toolitem;
 
-
 	toolitem = gtk_tool_button_new(NULL, "_Edit_pref");
 	gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(toolitem), "org.remmina.Remmina-document-properties-symbolic");
 	rcw_set_tooltip(GTK_WIDGET(toolitem), _("Edit Preferences"), remmina_pref.shortcutkey_screenshot, 0);
 	gtk_toolbar_insert(GTK_TOOLBAR(toolbar), toolitem, -1);
 	g_signal_connect(G_OBJECT(toolitem), "clicked", G_CALLBACK(rcw_toolbar_edit_pref), cnnwin);
 	priv->toolitem_edit_pref = toolitem;
+
+	/* AI panel */
+	toolitem = gtk_toggle_tool_button_new();
+	gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(toolitem), "org.remmina.Remmina-ai-symbolic");
+	gtk_tool_button_set_label(GTK_TOOL_BUTTON(toolitem), _("_AI"));
+	rcw_set_tooltip(GTK_WIDGET(toolitem), _("Toggle the AI assistant panel"), 0, 0);
+	gtk_toolbar_insert(GTK_TOOLBAR(toolbar), toolitem, -1);
+	gtk_widget_show(GTK_WIDGET(toolitem));
+	g_signal_connect(G_OBJECT(toolitem), "toggled", G_CALLBACK(rcw_toolbar_ai), cnnwin);
+	priv->toolitem_ai = toolitem;
 
 	/* Separator */
 	toolitem = gtk_separator_tool_item_new();
@@ -3160,6 +3585,10 @@ static void rco_update_toolbar(RemminaConnectionObject *cnnobj)
 	gtk_widget_set_sensitive(GTK_WIDGET(toolitem), bval && cnnobj->connected);
 
 	gtk_widget_set_sensitive(GTK_WIDGET(priv->toolitem_screenshot), cnnobj->connected);
+	if (priv->toolitem_ai)
+		gtk_widget_set_sensitive(GTK_WIDGET(priv->toolitem_ai), TRUE);
+	if (cnnobj->ai_panel)
+		remmina_ai_panel_update(cnnobj->ai_panel, cnnobj->connected);
 
 	if (cnnobj->remmina_file != NULL && cnnobj->remmina_file->filename != NULL) {
 		gtk_widget_show(GTK_WIDGET(cnnobj->cnnwin->priv->toolitem_edit_pref));
@@ -4056,6 +4485,24 @@ static void rco_closewin(RemminaProtocolWidget *gp)
 			g_source_remove(cnnobj->cnnwin->priv->grab_realize_source_id);
 			cnnobj->cnnwin->priv->grab_realize_source_id = 0;
 		}
+		if (cnnobj->ai_panel) {
+			GtkWidget *panel = cnnobj->ai_panel;
+
+			cnnobj->ai_panel = NULL;
+			/* stop the panel's destroy hook from writing into the
+			 * cnnobj we are about to free */
+			g_signal_handlers_disconnect_by_func(
+				panel, G_CALLBACK(rcw_ai_panel_freed), cnnobj);
+			if (g_object_get_data(G_OBJECT(cnnobj), "ai-panel-held")) {
+				/* detached-tab keep-alive ref: destroy a panel
+				 * that no window is showing anymore */
+				g_object_set_data(G_OBJECT(cnnobj),
+						  "ai-panel-held", NULL);
+				if (!gtk_widget_get_parent(panel))
+					gtk_widget_destroy(panel);
+				g_object_unref(panel);
+			}
+		}
 		cnnobj->remmina_file = NULL;
 		g_free(cnnobj);
 		gp->cnnobj = NULL;
@@ -4306,6 +4753,12 @@ static void rcw_on_switch_page(GtkNotebook *notebook, GtkWidget *newpage, guint 
 	if (priv->spf_eventsourceid)
 		g_source_remove(priv->spf_eventsourceid);
 	priv->spf_eventsourceid = g_idle_add(rcw_on_switch_page_finalsel, cnnobj_newpage);
+
+	/* swap to the newly-visible session's AI panel. Pass the new page's
+	 * cnnobj explicitly: get_current_page() still reports the page being
+	 * left while this signal runs, so update_visibility cannot re-derive
+	 * it here. */
+	rcw_ai_update_visibility(cnnwin, cnnobj_newpage);
 }
 
 static void rcw_on_page_added(GtkNotebook *notebook, GtkWidget *child, guint page_num,
@@ -4319,6 +4772,32 @@ static void rcw_on_page_removed(GtkNotebook *notebook, GtkWidget *child, guint p
 				RemminaConnectionWindow *cnnwin)
 {
 	TRACE_CALL(__func__);
+	RemminaConnectionObject *cnnobj;
+
+	/* The page's AI panel lives in the window grid, not in the page.
+	 * Unparent it and hold a keep-alive reference: if this tab is being
+	 * detached into another window, the panel (and its chat history) is
+	 * re-docked there by rcw_ai_ensure_panel; if the connection is being
+	 * torn down instead, the cnnobj cleanup destroys it and drops the
+	 * reference. */
+	cnnobj = g_object_get_data(G_OBJECT(child), "cnnobj");
+	if (cnnobj && cnnobj->ai_panel) {
+		GtkWidget *panel = cnnobj->ai_panel;
+		GtkWidget *parent = gtk_widget_get_parent(panel);
+
+		rcw_ai_apply_fit(cnnobj, FALSE);
+		if (!g_object_get_data(G_OBJECT(cnnobj), "ai-panel-held")) {
+			g_object_ref_sink(panel);
+			g_object_set_data(G_OBJECT(cnnobj), "ai-panel-held",
+					  GINT_TO_POINTER(1));
+		}
+		if (parent)
+			gtk_container_remove(GTK_CONTAINER(parent), panel);
+		if (cnnwin->priv->grid) {
+			gtk_widget_queue_resize(GTK_WIDGET(cnnwin));
+			gtk_container_check_resize(GTK_CONTAINER(cnnwin->priv->grid));
+		}
+	}
 
 	if (gtk_notebook_get_n_pages(GTK_NOTEBOOK(cnnwin->priv->notebook)) <= 0)  {
 		rcw_dispose_widget_areas(cnnwin->priv);
