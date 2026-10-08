@@ -229,6 +229,97 @@ void remmina_protocol_widget_grab_focus(RemminaProtocolWidget *gp)
 	}
 }
 
+/* Protocol plugins consume "button-press-event" on their drawing area and
+ * return TRUE. GTK's accumulator for that signal stops the emission as soon
+ * as any handler claims the event, and GLib has no "connect before the
+ * default handler" — so the focus-on-click class closure never runs and the
+ * session widget only ever receives keyboard focus when something hands it
+ * out explicitly (e.g. on tab switch). Once focus lands anywhere else — a
+ * toolbar entry, an authentication dialog, a side panel — a plain click on
+ * the remote desktop cannot win the keyboard back: the plugin eats the
+ * click before GTK can move focus.
+ *
+ * An emission hook is the only callback that runs before every handler of
+ * an emission and cannot be short-circuited by a TRUE return. Emission hooks
+ * are process-wide for the signal, so the hook first checks that the press
+ * happened inside its own session widget, then moves focus to the session
+ * and returns TRUE so the emission proceeds to the plugin handlers
+ * completely untouched.
+ *
+ * The hook carries a weak reference to its session widget: emission hooks
+ * outlive arbitrary widgets otherwise, and a hook that finds its widget
+ * finalized returns FALSE to unhook itself. */
+typedef struct {
+	GWeakRef gp_ref;   /* to the RemminaProtocolWidget */
+	gulong   hook_id;  /* our id on button-press-event, for explicit removal */
+} RemminaClickFocusHook;
+
+static void remmina_click_focus_hook_free(gpointer data)
+{
+	RemminaClickFocusHook *h = (RemminaClickFocusHook *)data;
+
+	g_weak_ref_clear(&h->gp_ref);
+	g_free(h);
+}
+
+static gboolean
+remmina_protocol_widget_click_focus_hook(GSignalInvocationHint *ihint,
+					 guint n_param_values,
+					 const GValue *param_values,
+					 gpointer data)
+{
+	RemminaClickFocusHook *h = (RemminaClickFocusHook *)data;
+	GtkWidget *gp, *session, *inst, *toplevel, *focus;
+	GdkEvent *event;
+
+	(void)ihint;
+
+	gp = g_weak_ref_get(&h->gp_ref);
+	if (!gp)
+		return FALSE;   /* session finalized: unhook (frees h) */
+
+	if (n_param_values < 2 ||
+	    !G_TYPE_CHECK_VALUE_TYPE(&param_values[1], GDK_TYPE_EVENT)) {
+		g_object_unref(gp);
+		return TRUE;
+	}
+
+	inst = GTK_WIDGET(g_value_get_object(&param_values[0]));
+	if (!GTK_IS_WIDGET(inst) ||
+	    !gtk_widget_is_ancestor(inst, gp)) {
+		g_object_unref(gp);
+		return TRUE;    /* press elsewhere in the process, hands off */
+	}
+
+	event = (GdkEvent *)g_value_get_boxed(&param_values[1]);
+	if (event->type != GDK_BUTTON_PRESS) {
+		g_object_unref(gp);
+		return TRUE;
+	}
+
+	session = gtk_bin_get_child(GTK_BIN(gp));
+	toplevel = gtk_widget_get_toplevel(gp);
+	focus = GTK_IS_WINDOW(toplevel)
+			? gtk_window_get_focus(GTK_WINDOW(toplevel))
+			: NULL;
+	if (session && focus != session)
+		remmina_protocol_widget_grab_focus(REMMINA_PROTOCOL_WIDGET(gp));
+	g_object_unref(gp);
+	return TRUE;
+}
+
+/* Called on the session widget's destroy: remove the hook immediately
+ * instead of waiting for it to self-remove on its next emission. */
+static void
+remmina_protocol_widget_remove_click_focus_hook(GtkWidget *gp, gpointer data)
+{
+	RemminaClickFocusHook *h = (RemminaClickFocusHook *)data;
+
+	g_signal_remove_emission_hook(
+		g_signal_lookup("button-press-event", GTK_TYPE_WIDGET),
+		h->hook_id);
+}
+
 static void remmina_protocol_widget_init(RemminaProtocolWidget *gp)
 {
 	TRACE_CALL(__func__);
@@ -2153,6 +2244,25 @@ void remmina_protocol_widget_setup(RemminaProtocolWidget *gp, RemminaFile *remmi
 
 	gp->priv->remmina_file = remminafile;
 	gp->cnnobj = cnnobj;
+
+	/* Make a click inside the session reclaim keyboard focus (see
+	 * remmina_protocol_widget_click_focus_hook above). Setup runs once
+	 * per protocol widget, including split-view panes and detached
+	 * tabs; the marker keeps this idempotent just in case. */
+	if (!g_object_get_data(G_OBJECT(gp), "click-focus-hook")) {
+		RemminaClickFocusHook *h = g_new0(RemminaClickFocusHook, 1);
+
+		g_object_set_data(G_OBJECT(gp), "click-focus-hook",
+				  GINT_TO_POINTER(1));
+		g_weak_ref_init(&h->gp_ref, gp);
+		h->hook_id = g_signal_add_emission_hook(
+			g_signal_lookup("button-press-event", GTK_TYPE_WIDGET), 0,
+			remmina_protocol_widget_click_focus_hook, h,
+			remmina_click_focus_hook_free);
+		g_signal_connect(G_OBJECT(gp), "destroy",
+				 G_CALLBACK(remmina_protocol_widget_remove_click_focus_hook),
+				 h);
+	}
 
 	/* Locate the protocol plugin */
 	plugin = (RemminaProtocolPlugin *)remmina_plugin_manager_get_plugin(REMMINA_PLUGIN_TYPE_PROTOCOL,
